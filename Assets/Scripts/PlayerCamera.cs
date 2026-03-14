@@ -5,16 +5,23 @@ using UnityEngine.InputSystem;
 
 public class PlayerCamera : MonoBehaviour
 {
-    public GameObject player;
+    GameObject player;
+
+    float thirdPersonRadius; // If 0 then first person.
+
+    public float thirdPersonScrollSensitivity;
     private float xMovement;
     private float yMovement;
     private float netY;
     private float netX;
-    public float scrollInput;
-    public float cameraDistanceMultiplier = 0;
-    public float cameraDistanceMultiplierReal = 0;
-    private Mouse _mouse;
-    private void OnEnable() => _mouse = Mouse.current;
+
+    public enum CameraState
+    {
+        FirstPerson,
+        ThirdPerson
+    };
+
+    public CameraState cameraState = CameraState.FirstPerson;
 
     void Update()
     {
@@ -24,18 +31,12 @@ public class PlayerCamera : MonoBehaviour
         }
         else return;
 
-        scrollInput = _mouse.scroll.ReadValue().y;
-        if (scrollInput < 0) cameraDistanceMultiplier += 0.5f;
-        else if (scrollInput > 0) cameraDistanceMultiplier -= 0.5f;
-        cameraDistanceMultiplier = Mathf.Clamp(cameraDistanceMultiplier, 0, 10);
-        if (cameraDistanceMultiplier < 3) cameraDistanceMultiplierReal = 0;
-        else cameraDistanceMultiplierReal = cameraDistanceMultiplier;
-
-
-        gameObject.transform.position = player.transform.GetChild(1).position - transform.forward * cameraDistanceMultiplierReal;
+        Vector3 centrePos = player.transform.GetChild(1).position;
 
         xMovement = Input.GetAxis("Mouse X");
         yMovement = Input.GetAxis("Mouse Y");
+
+        thirdPersonRadius -= Input.GetAxis("Mouse ScrollWheel") * thirdPersonScrollSensitivity;
 
         netX += xMovement;
         netY -= yMovement;
@@ -43,6 +44,18 @@ public class PlayerCamera : MonoBehaviour
         netY = Mathf.Clamp(netY, -90, 90);
 
         transform.rotation = Quaternion.Euler(netY, netX, 0);
-        player.transform.rotation = Quaternion.Euler(player.transform.eulerAngles.x, transform.eulerAngles.y, player.transform.eulerAngles.z);
+        player.transform.rotation = Quaternion.Euler(player.transform.eulerAngles.x,
+            transform.eulerAngles.y, player.transform.eulerAngles.z);
+
+        thirdPersonRadius = Mathf.Clamp(thirdPersonRadius, 0, 10);
+
+        if (thirdPersonRadius == 0)
+        {
+            cameraState = CameraState.FirstPerson;
+        }
+        else cameraState = CameraState.ThirdPerson;
+
+        transform.position = centrePos + (thirdPersonRadius *
+            (Quaternion.Euler(netY, netX, 0) * -Vector3.forward));
     }
 }

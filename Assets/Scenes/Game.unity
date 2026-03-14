@@ -377,7 +377,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63975d71543e83f4ba87cd2f14085702, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  thirdPersonScrollSensitivity: 10
+  cameraState: 0
 --- !u!1 &399353971
 GameObject:
   m_ObjectHideFlags: 0
