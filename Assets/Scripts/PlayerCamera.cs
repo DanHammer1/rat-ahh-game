@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.InputSystem;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -9,6 +10,11 @@ public class PlayerCamera : MonoBehaviour
     private float yMovement;
     private float netY;
     private float netX;
+    public float scrollInput;
+    public float cameraDistanceMultiplier = 0;
+    public float cameraDistanceMultiplierReal = 0;
+    private Mouse _mouse;
+    private void OnEnable() => _mouse = Mouse.current;
 
     void Update()
     {
@@ -18,7 +24,15 @@ public class PlayerCamera : MonoBehaviour
         }
         else return;
 
-        gameObject.transform.position = player.transform.GetChild(1).position;
+        scrollInput = _mouse.scroll.ReadValue().y;
+        if (scrollInput < 0) cameraDistanceMultiplier += 0.5f;
+        else if (scrollInput > 0) cameraDistanceMultiplier -= 0.5f;
+        cameraDistanceMultiplier = Mathf.Clamp(cameraDistanceMultiplier, 0, 10);
+        if (cameraDistanceMultiplier < 3) cameraDistanceMultiplierReal = 0;
+        else cameraDistanceMultiplierReal = cameraDistanceMultiplier;
+
+
+        gameObject.transform.position = player.transform.GetChild(1).position - transform.forward * cameraDistanceMultiplierReal;
 
         xMovement = Input.GetAxis("Mouse X");
         yMovement = Input.GetAxis("Mouse Y");
