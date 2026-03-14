@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UIElements;
 using System.Net.NetworkInformation;
-
-public class Movement : MonoBehaviour
+using Unity.Netcode;
+public class Movement : NetworkBehaviour
 {
     // camera rotation
     public float mouseSensitivity;
@@ -38,18 +38,22 @@ public class Movement : MonoBehaviour
         cameraTransform = Camera.main.transform;
 
         // Set the raycast to be slightly beneath the player's feet
-        playerHeight = GetComponent<CapsuleCollider>().height * transform.localScale.y;
+        playerHeight = GetComponent<Collider>().bounds.size.y/2 * transform.localScale.y;
         raycastDistance = (playerHeight / 2) + 0.2f;
     }
 
     void FixedUpdate()
     {
+        if (!IsOwner) return;
+        
         MovePlayer();
         ApplyJumpPhysics();
     }
 
     void Update()
     {
+        if (!IsOwner) return;
+
         moveHorizontal = Input.GetAxisRaw("Horizontal");
         moveForward = Input.GetAxisRaw("Vertical");
 
