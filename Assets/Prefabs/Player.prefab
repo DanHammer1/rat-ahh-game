@@ -156,6 +156,7 @@ GameObject:
   - component: {fileID: 3695980383490397597}
   - component: {fileID: 4569752443186205423}
   - component: {fileID: 8908341030978049199}
+  - component: {fileID: 3554162618360092705}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -384,3 +385,28 @@ MonoBehaviour:
   UseRigidBodyForMotion: 0
   AutoUpdateKinematicState: 1
   AutoSetKinematicOnDespawn: 1
+--- !u!114 &3554162618360092705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8956695940269091181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77e0c36f5ee130e4486bc2c284565e39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSensitivity: 10
+  moveSpeed: 5
+  jumpforce: 10
+  fallMultiplier: 2.5
+  ascendMultiplier: 2
+  isGrounded: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  groundCheckTimer: 0
+  groundCheckDelay: 0.3
+  playerHeight: 0
+  raycastDistance: 0

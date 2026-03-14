@@ -2,7 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class Camera : MonoBehaviour
+public class PlayerCamera : MonoBehaviour
 {
     public GameObject player;
     private float xMovement;
@@ -23,8 +23,11 @@ public class Camera : MonoBehaviour
         xMovement = Input.GetAxis("Mouse X");
         yMovement = Input.GetAxis("Mouse Y");
 
-        netX += Input.GetAxis("Mouse X");
-        netY -= Input.GetAxis("Mouse Y");
+        netX += xMovement;
+        netY -= yMovement;
+
+        netY = Mathf.Clamp(netY, -90, 90);
+
         transform.rotation = Quaternion.Euler(netY, netX, 0);
         player.transform.rotation = Quaternion.Euler(player.transform.eulerAngles.x, transform.eulerAngles.y, player.transform.eulerAngles.z);
     }
