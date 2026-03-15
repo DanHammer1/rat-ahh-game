@@ -35,17 +35,17 @@ public class Movement : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-        cameraTransform = Camera.main.transform;
+        // cameraTransform = Camera.main.transform;
 
         // Set the raycast to be slightly beneath the player's feet
-        playerHeight = GetComponent<Collider>().bounds.size.y/2 * transform.localScale.y;
+        playerHeight = GetComponent<Collider>().bounds.size.y / 2 * transform.localScale.y;
         raycastDistance = (playerHeight / 2) + 0.2f;
     }
 
     void FixedUpdate()
     {
         if (!IsOwner) return;
-        
+
         MovePlayer();
         ApplyJumpPhysics();
     }
@@ -56,8 +56,6 @@ public class Movement : NetworkBehaviour
 
         moveHorizontal = Input.GetAxisRaw("Horizontal");
         moveForward = Input.GetAxisRaw("Vertical");
-
-        // RotateCamera();
 
         if (Input.GetButton("Jump") && isGrounded)
         {
@@ -89,17 +87,6 @@ public class Movement : NetworkBehaviour
             rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
         }
     }
-
-    // void RotateCamera()
-    // {
-    //     float horizontalRotation = Input.GetAxis("Mouse X") * mouseSensitivity;
-    //     transform.Rotate(0, horizontalRotation, 0);
-
-    //     verticalRotation -= Input.GetAxis("Mouse Y") * mouseSensitivity;
-    //     verticalRotation = Mathf.Clamp(verticalRotation, -90, 90);
-
-    //     cameraTransform.localRotation = Quaternion.Euler(verticalRotation, 0, 0);
-    // }
 
     void Jump()
     {

@@ -4,19 +4,25 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using Unity.Netcode.Transports.UTP;
 using System.Collections;
+using Unity.Cinemachine;
+using UnityEditor;
 
 public class Loading : NetworkBehaviour
 {
 
     public GameObject playerPrefab;
+    public CinemachineTargetGroup targetGroup;
+    PlayerCamera playerCamera;
     void Start()
     {
+        playerCamera = FindFirstObjectByType<PlayerCamera>();
+
         if (NetworkManager.Singleton.IsServer)
         {
             LoadGameScene();
         }
     }
-    
+
 
     private void LoadGameScene()
     {
@@ -34,6 +40,7 @@ public class Loading : NetworkBehaviour
                     GameObject playerInstance = Instantiate(playerPrefab);
                     NetworkObject netObj = playerInstance.GetComponent<NetworkObject>();
                     netObj.SpawnAsPlayerObject(client, true);
+                    targetGroup.AddMember(playerCamera.player.transform.GetChild(1), 1f, 5f);
                 }
             }
         };

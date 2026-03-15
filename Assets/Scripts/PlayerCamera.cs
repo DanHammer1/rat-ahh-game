@@ -2,10 +2,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.InputSystem;
+using Unity.Cinemachine;
 
 public class PlayerCamera : MonoBehaviour
 {
-    GameObject player;
+    public GameObject player;
+    CinemachinePositionComposer cinemachinePositionComposer;
 
     float thirdPersonRadius; // If 0 then first person.
 
@@ -22,6 +24,12 @@ public class PlayerCamera : MonoBehaviour
     };
 
     public CameraState cameraState = CameraState.FirstPerson;
+
+
+    void Start()
+    {
+        cinemachinePositionComposer = this.GetComponent<CinemachinePositionComposer>();
+    }
 
     void Update()
     {
@@ -43,7 +51,7 @@ public class PlayerCamera : MonoBehaviour
 
         netY = Mathf.Clamp(netY, -90, 90);
 
-        transform.rotation = Quaternion.Euler(netY, netX, 0);
+        // transform.rotation = Quaternion.Euler(netY, netX, 0);
         player.transform.rotation = Quaternion.Euler(player.transform.eulerAngles.x,
             transform.eulerAngles.y, player.transform.eulerAngles.z);
 
@@ -55,7 +63,9 @@ public class PlayerCamera : MonoBehaviour
         }
         else cameraState = CameraState.ThirdPerson;
 
-        transform.position = centrePos + (thirdPersonRadius *
-            (Quaternion.Euler(netY, netX, 0) * -Vector3.forward));
+        cinemachinePositionComposer.CameraDistance = thirdPersonRadius;
+
+        // transform.position = centrePos + (thirdPersonRadius *
+        //     (Quaternion.Euler(netY, netX, 0) * -Vector3.forward));
     }
 }
