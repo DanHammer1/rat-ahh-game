@@ -14,7 +14,7 @@ public class Movement : NetworkBehaviour
 
     // ground movement
     private Rigidbody rb;
-    public float moveSpeed = 5f;
+    public float moveSpeed = 2f;
     private float moveHorizontal;
     private float moveForward;
 
@@ -30,6 +30,9 @@ public class Movement : NetworkBehaviour
     public float playerHeight;
     public float raycastDistance;
 
+    Animator animator;
+
+
 
     void Start()
     {
@@ -40,6 +43,9 @@ public class Movement : NetworkBehaviour
         // Set the raycast to be slightly beneath the player's feet
         playerHeight = GetComponent<Collider>().bounds.size.y / 2 * transform.localScale.y;
         raycastDistance = (playerHeight / 2) + 0.2f;
+
+
+        animator = GetComponent<Animator>();
     }
 
     void FixedUpdate()
@@ -69,6 +75,10 @@ public class Movement : NetworkBehaviour
             isGrounded = Physics.Raycast(rayOrigin, Vector3.down, raycastDistance, groundLayer);
         }
         else groundCheckTimer -= Time.deltaTime;
+
+
+        float speed = rb.linearVelocity.magnitude;
+        animator.SetFloat("Speed", speed);
     }
     void MovePlayer()
     {
