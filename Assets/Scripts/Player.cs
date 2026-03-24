@@ -15,6 +15,7 @@ public class Player : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (IsServer) {
+            maxHealth.Value = 100;
             health.Value = maxHealth.Value;
         }
 
