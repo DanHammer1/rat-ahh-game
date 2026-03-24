@@ -14,36 +14,21 @@ public class MainMenu : NetworkBehaviour
 
     public TextMeshProUGUI lobbyText;
 
-    public NetworkList<ulong> clientIds = new NetworkList<ulong>();
-    public NetworkList<FixedString32Bytes> clientNames = new NetworkList<FixedString32Bytes>();
-
     bool joined = false;
 
     private int updateCount;
 
-    public override void OnNetworkSpawn()
-    {
-        if (clientIds != null)
-            clientIds.OnListChanged -= ClientIdsChanged;
+    GameManager.PlayerRole preference;
+    bool hasPreference = false;
 
-        if (clientNames != null)
-            clientNames.OnListChanged -= ClientNamesChanged;
-
-        clientIds.OnListChanged += ClientIdsChanged;
-
-        clientNames.OnListChanged += ClientNamesChanged;
-        
-        NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
-
-    }
     public void Host()
     {
         if (joined) return;
 
         NetworkManager.Singleton.StartHost();
 
-        if (clientIds == null) clientIds = new NetworkList<ulong>();
-        if (clientNames == null) clientNames = new NetworkList<FixedString32Bytes>();
+        if (GameManager.Instance.clientIds == null) GameManager.Instance.clientIds = new NetworkList<ulong>();
+        if (GameManager.Instance.clientNames == null) GameManager.Instance.clientNames = new NetworkList<FixedString32Bytes>();
 
         AddSelfToLobby();
     }
@@ -60,6 +45,37 @@ public class MainMenu : NetworkBehaviour
         NetworkManager.Singleton.StartClient();
 
         AddSelfToLobby();
+    }
+
+    public void BecomeHider() {
+        preference = GameManager.PlayerRole.Hider;
+        hasPreference = true;
+
+        if (joined) {
+            ulong clientId = NetworkManager.Singleton.LocalClientId;
+            EditClientRoleServerRpc(clientId, preference);
+        }
+    }
+
+    public void BecomeHunter() {
+        preference = GameManager.PlayerRole.Hunter;
+        hasPreference = true;
+
+        if (joined) {
+            ulong clientId = NetworkManager.Singleton.LocalClientId;
+            EditClientRoleServerRpc(clientId, preference);
+        }
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    void EditClientRoleServerRpc(ulong clientId, GameManager.PlayerRole preference) {
+        GameManager.Instance.clientRoles[GameManager.Instance.clientIds.IndexOf(clientId)]
+                = (int)(preference);
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
     }
 
     public void StartGame()
@@ -100,31 +116,24 @@ public class MainMenu : NetworkBehaviour
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     void AddNameToLobbyListServerRpc(ulong clientId, FixedString32Bytes name)
     {
-        clientIds.Add(clientId);
-        clientNames.Add(name);
-    }
+        GameManager.Instance.clientIds.Add(clientId);
+        GameManager.Instance.clientNames.Add(name);
+        if (!hasPreference) GameManager.Instance.clientRoles.Add(-1);
+        else GameManager.Instance.clientRoles.Add((int)preference);
+    }   
 
-    private void ClientIdsChanged(NetworkListEvent<ulong> changeEvent)
-    {
-        updateCount++;
-    }
-
-    private void ClientNamesChanged(NetworkListEvent<FixedString32Bytes> changeEvent)
-    {
-        updateCount++;
-    }
     void UpdateLobbyText()
     {
-        string wantedLobbyText = $@"Host: {clientNames[
-            clientIds.IndexOf(NetworkManager.ServerClientId)]}
+        string wantedLobbyText = $@"Host: {GameManager.Instance.clientNames[
+            GameManager.Instance.clientIds.IndexOf(NetworkManager.ServerClientId)]}
                                  Clients: ";
 
         int i = 0;
-        foreach (FixedString32Bytes name in clientNames)
+        foreach (FixedString32Bytes name in GameManager.Instance.clientNames)
         {
-            if (clientIds[clientNames.IndexOf(name)] != NetworkManager.ServerClientId) {
+            if (GameManager.Instance.clientIds[GameManager.Instance.clientNames.IndexOf(name)] != NetworkManager.ServerClientId) {
                 wantedLobbyText += name;
-                if (i + 1 < clientNames.Count) wantedLobbyText += ", ";
+                if (i + 1 < GameManager.Instance.clientNames.Count) wantedLobbyText += ", ";
             }
             i++;
         }
@@ -134,7 +143,6 @@ public class MainMenu : NetworkBehaviour
     void OnClientDisconnected(ulong clientId)
     {
         if (!joined) return;
-
 
         if (clientId == NetworkManager.Singleton.LocalClientId) {
             lobbyText.text = "Disconnected.";
@@ -148,8 +156,9 @@ public class MainMenu : NetworkBehaviour
 
         if (!IsServer) return;
         
-        clientNames.RemoveAt(clientIds.IndexOf(clientId));
-        clientIds.Remove(clientId);
+        GameManager.Instance.clientNames.RemoveAt(GameManager.Instance.clientIds.IndexOf(clientId));
+        GameManager.Instance.clientRoles.RemoveAt(GameManager.Instance.clientIds.IndexOf(clientId));
+        GameManager.Instance.clientIds.Remove(clientId);
     }
 
     public void Disconnect()
@@ -164,17 +173,17 @@ public class MainMenu : NetworkBehaviour
 
         if (!IsServer) return;
 
-        clientIds.Clear();
-        clientNames.Clear();
+        GameManager.Instance.clientIds.Clear();
+        GameManager.Instance.clientNames.Clear();
     }
 
     void Update()
     {
-        if (updateCount == 2 && joined) {
+        if (GameManager.updateCount == 3 && joined) {
             UpdateLobbyText();
-            updateCount = 0;
+            GameManager.updateCount = 0;
         }
-        // If statement will be satisfied every 2 times one of the clientId or clientName
+        // If statement will be satisfied every 3 times one of the clientId or clientName or clientRole
         // Lists gets updated and as they both get updated at the same time with the rest of the code
         // They should be synced. 
     }
