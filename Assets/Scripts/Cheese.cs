@@ -1,15 +1,18 @@
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using Unity.Netcode;
 
-public class Cheese : MonoBehaviour
+public class Cheese : NetworkBehaviour
 {
     private bool playerInRange = false;
     public GameObject promptUI;
     public int score;
     public TextMeshProUGUI scoreText;
     public ObjectiveScores objectiveScores;
-    void Start()
+
+
+    public override void OnNetworkSpawn()
     {
         score = 0;
     }
@@ -22,8 +25,15 @@ public class Cheese : MonoBehaviour
             score += objectiveScores.cheeseScore;
             scoreText.text = $"Score: {score.ToString()}";
             promptUI.SetActive(false);
-            Destroy(gameObject);
+            // Destroy(gameObject);
+            DestroyNetworkObjectServerRpc();
         }
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    void DestroyNetworkObjectServerRpc()
+    {
+        GetComponent<NetworkObject>().Despawn();
     }
 
     private void OnTriggerEnter(Collider other)
