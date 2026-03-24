@@ -8,8 +8,17 @@ public class Player : NetworkBehaviour
     CinemachineCamera cam;
     PlayerCamera playerCamera;
     public Transform cameraTarget;
+
+    public NetworkVariable<float> maxHealth = new NetworkVariable<float>(100);
+    public NetworkVariable<float> health = new NetworkVariable<float>();
+
     public override void OnNetworkSpawn()
     {
+        if (IsServer) {
+            maxHealth.Value = 100;
+            health.Value = maxHealth.Value;
+        }
+
         if (!IsOwner) return;
         localPlayer = this;
 
@@ -37,11 +46,5 @@ public class Player : NetworkBehaviour
 
         cam.Follow = cameraTarget;
         cam.LookAt = cameraTarget;
-    }
-
-
-    void Update()
-    {
-
     }
 }
