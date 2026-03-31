@@ -30,7 +30,7 @@ public class Movement : NetworkBehaviour
     public float playerHeight;
     public float raycastDistance;
 
-    Animator animator;
+    public Animator animator;
 
 
 
@@ -54,10 +54,7 @@ public class Movement : NetworkBehaviour
 
         MovePlayer();
         ApplyJumpPhysics();
-    }
 
-    void Update()
-    {
         if (!IsOwner) return;
 
         moveHorizontal = Input.GetAxisRaw("Horizontal");
@@ -80,6 +77,8 @@ public class Movement : NetworkBehaviour
         float speed = rb.linearVelocity.magnitude;
         animator.SetFloat("Speed", speed);
     }
+
+
     void MovePlayer()
     {
         Vector3 movement = (transform.right * moveHorizontal + transform.forward * moveForward).normalized;

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6620e73619841534497c71debdc51c25
+guid: 65381c1a8cabac44aa0d7d43c87335a8
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -48,6 +48,35 @@ ModelImporter:
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Twerk
+      takeName: Armature|Twerk
+      internalID: -5805118097589455152
+      firstFrame: 0
+      lastFrame: 32
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
@@ -259,13 +288,13 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: Mannequin 1(Clone)
+    - name: Mannequin(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Armature
-      parentName: Mannequin 1(Clone)
+      parentName: Mannequin(Clone)
       position: {x: -0, y: 0.046862107, z: 0}
       rotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
       scale: {x: 40.76134, y: 40.76134, z: 40.76134}
@@ -293,17 +322,17 @@ ModelImporter:
       parentName: Spine
       position: {x: -0.0013617214, y: 0.0028500843, z: -0.00027646124}
       rotation: {x: -0.000000059604645, y: -0, z: 0.7062962, w: 0.70791644}
-      scale: {x: 0.99999994, y: 0.9999998, z: 1}
+      scale: {x: 0.99999994, y: 0.9999998, z: 0.99999994}
     - name: Lower Arm.L
       parentName: Upper Arm.L
-      position: {x: -1.8524587e-10, y: 0.0028407066, z: 2.0592824e-11}
+      position: {x: -3.3425748e-10, y: 0.0028407054, z: 5.784571e-11}
       rotation: {x: 0.00000004142788, y: -0.00000008504721, z: 0.019187093, w: 0.99981594}
-      scale: {x: 0.99999994, y: 0.9999998, z: 0.9999998}
+      scale: {x: 0.99999994, y: 0.9999998, z: 0.99999976}
     - name: Hand.L
       parentName: Lower Arm.L
-      position: {x: -1.5541445e-10, y: 0.0029781896, z: -1.8183215e-11}
+      position: {x: -1.181661e-10, y: 0.0029781896, z: -1.8183215e-11}
       rotation: {x: 0.000000020636266, y: -0.000000021449269, z: -0.0012703614, w: 0.9999992}
-      scale: {x: 0.99999976, y: 1.0000001, z: 1.0000002}
+      scale: {x: 0.99999964, y: 1, z: 1.0000002}
     - name: Hand.L_end
       parentName: Hand.L
       position: {x: -0, y: 0.001601845, z: 0}
@@ -312,18 +341,18 @@ ModelImporter:
     - name: Upper Arm.R
       parentName: Spine
       position: {x: 0.0013617214, y: 0.0028500843, z: -0.00027646104}
-      rotation: {x: -0.000000014901161, y: 0.0000000022992026, z: -0.7062962, w: 0.7079165}
-      scale: {x: 1.0000001, y: 0.99999994, z: 1}
+      rotation: {x: -0.000000014901161, y: 0.0000000018335413, z: -0.7062962, w: 0.7079165}
+      scale: {x: 1.0000004, y: 1.0000001, z: 1}
     - name: Lower Arm.R
       parentName: Upper Arm.R
-      position: {x: -3.4400727e-10, y: 0.0028407024, z: 2.2816877e-11}
-      rotation: {x: -0.000000025363708, y: 0.00000010975376, z: 0.019187212, w: -0.99981594}
-      scale: {x: 0.9999999, y: 0.99999994, z: 0.99999994}
+      position: {x: -4.598405e-11, y: 0.002840704, z: -1.5264802e-11}
+      rotation: {x: -0.000000025028552, y: 0.00000010943049, z: 0.019187212, w: -0.99981594}
+      scale: {x: 0.99999994, y: 0.9999999, z: 0.99999994}
     - name: Hand.R
       parentName: Lower Arm.R
-      position: {x: 1.1830707e-10, y: 0.0029781903, z: -2.6227713e-11}
-      rotation: {x: 1.5070258e-10, y: 1.97673e-11, z: 0.0012704806, w: 0.9999992}
-      scale: {x: 0.9999998, y: 0.9999996, z: 0.99999976}
+      position: {x: 3.0431693e-10, y: 0.0029781917, z: -5.3357308e-11}
+      rotation: {x: 1.506937e-10, y: 1.97673e-11, z: 0.0012704806, w: 0.9999992}
+      scale: {x: 0.99999964, y: 0.9999996, z: 0.99999976}
     - name: Hand.R_end
       parentName: Hand.R
       position: {x: -0, y: 0.001601845, z: 0}
@@ -410,27 +439,27 @@ ModelImporter:
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Camera
-      parentName: Mannequin 1(Clone)
+      parentName: Mannequin(Clone)
       position: {x: -7.3588915, y: 4.958309, z: 6.925791}
       rotation: {x: 0.09062847, y: 0.89379627, z: -0.20997298, w: 0.3857799}
       scale: {x: 100, y: 100.00001, z: 99.99999}
     - name: Cube
-      parentName: Mannequin 1(Clone)
+      parentName: Mannequin(Clone)
       position: {x: -0, y: 0.000000007450581, z: 0}
       rotation: {x: 0.5, y: 0.49999997, z: 0.5, w: -0.5}
       scale: {x: 100, y: 100, z: 100}
     - name: Empty
-      parentName: Mannequin 1(Clone)
+      parentName: Mannequin(Clone)
       position: {x: 2.3999996, y: 0, z: 0}
       rotation: {x: 0.000000015454313, y: -0.70710677, z: 0.000000015454312, w: 0.7071068}
       scale: {x: 100, y: 100, z: 100}
     - name: Empty.001
-      parentName: Mannequin 1(Clone)
+      parentName: Mannequin(Clone)
       position: {x: -0, y: 0, z: 2.3999999}
       rotation: {x: 6.2113167e-15, y: 1, z: -0.000000081460335, w: 0.0000000754979}
       scale: {x: 100, y: 100, z: 100}
     - name: Light
-      parentName: Mannequin 1(Clone)
+      parentName: Mannequin(Clone)
       position: {x: -4.0762453, y: 5.903862, z: -1.005454}
       rotation: {x: 0.52327543, y: -0.34203392, z: 0.72694236, w: 0.28416622}
       scale: {x: 100.00001, y: 100, z: 100}
