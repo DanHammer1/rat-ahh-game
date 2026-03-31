@@ -54,11 +54,6 @@ public class Movement : NetworkBehaviour
 
         MovePlayer();
         ApplyJumpPhysics();
-    }
-
-    void Update()
-    {
-        if (!IsOwner) return;
 
         moveHorizontal = Input.GetAxisRaw("Horizontal");
         moveForward = Input.GetAxisRaw("Vertical");
@@ -79,7 +74,15 @@ public class Movement : NetworkBehaviour
 
         float speed = rb.linearVelocity.magnitude;
         animator.SetFloat("Speed", speed);
+
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            animator.CrossFade("Twerk", 0.3f);
+        }
     }
+
+
     void MovePlayer()
     {
         Vector3 movement = (transform.right * moveHorizontal + transform.forward * moveForward).normalized;
