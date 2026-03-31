@@ -1054,6 +1054,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   cameraTarget: {fileID: 7071036363382739218}
+  promptUI: {fileID: 0}
+  score: 0
+  scoreText: {fileID: 0}
   maxHealth:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0
@@ -1090,6 +1093,7 @@ MonoBehaviour:
   groundCheckDelay: 0.3
   playerHeight: 0
   raycastDistance: 0
+  animator: {fileID: 0}
 --- !u!95 &2306450048612317703
 Animator:
   serializedVersion: 7
