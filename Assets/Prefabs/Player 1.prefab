@@ -1011,9 +1011,9 @@ GameObject:
   m_Component:
   - component: {fileID: 785355238756736901}
   - component: {fileID: 2588931726614771536}
-  - component: {fileID: -4988741029931579102}
   - component: {fileID: 7075066448039958190}
   - component: {fileID: 3554162618360092705}
+  - component: {fileID: -4988741029931579102}
   - component: {fileID: 2306450048612317703}
   - component: {fileID: 555457032786538030}
   - component: {fileID: 7957373780361175662}
@@ -1070,33 +1070,6 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &-4988741029931579102
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8956695940269091181}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66556fb924449c945ae050a725a25b3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
-  mouseSensitivity: 0
-  moveSpeed: 2
-  jumpforce: 10
-  fallMultiplier: 2.5
-  ascendMultiplier: 2
-  isGrounded: 1
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  groundCheckTimer: 0
-  groundCheckDelay: 0.3
-  playerHeight: 0
-  raycastDistance: 0
-  animator: {fileID: 0}
 --- !u!114 &7075066448039958190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1121,6 +1094,9 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
+  promptUI: {fileID: 0}
+  score: 0
+  scoreText: {fileID: 0}
 --- !u!114 &3554162618360092705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1135,6 +1111,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   mouseSensitivity: 10
+  moveSpeed: 2
+  jumpforce: 10
+  fallMultiplier: 2.5
+  ascendMultiplier: 2
+  isGrounded: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  groundCheckTimer: 0
+  groundCheckDelay: 0.3
+  playerHeight: 0
+  raycastDistance: 0
+  animator: {fileID: 0}
+--- !u!114 &-4988741029931579102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8956695940269091181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66556fb924449c945ae050a725a25b3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  mouseSensitivity: 0
   moveSpeed: 2
   jumpforce: 10
   fallMultiplier: 2.5

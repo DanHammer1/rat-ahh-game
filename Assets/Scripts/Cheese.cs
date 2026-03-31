@@ -1,28 +1,25 @@
 using TMPro;
+using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Cheese : MonoBehaviour
+public class Cheese : NetworkBehaviour
 {
-    private bool playerInRange = false;
-    public GameObject promptUI;
-    public int score;
-    public TextMeshProUGUI scoreText;
-    public ObjectiveScores objectiveScores;
-    void Start()
-    {
-        score = 0;
-    }
 
     // Update is called once per frame
+
+    public bool playerInRange = false;
+    private Player localPlayerInRange;
+
+
     void Update()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
+        if (playerInRange && Input.GetKeyDown(KeyCode.E) && localPlayerInRange != null)
         {
-            score += objectiveScores.cheeseScore;
-            scoreText.text = $"Score: {score.ToString()}";
-            promptUI.SetActive(false);
-            Destroy(gameObject);
+            localPlayerInRange.promptUI.SetActive(false);
+            localPlayerInRange.score += ObjectiveScores.cheeseScore;
+            localPlayerInRange.scoreText.text = $"Score: {localPlayerInRange.score}";
+            DespawnServerRpc();
         }
     }
 
@@ -30,8 +27,13 @@ public class Cheese : MonoBehaviour
     {
         if (other.CompareTag("PlayerMouse"))
         {
+            Player player = other.GetComponentInParent<Player>();
+            localPlayerInRange = player;
+
+            if (player != Player.localPlayer) return;
+
             playerInRange = true;
-            promptUI.SetActive(true);
+            localPlayerInRange.promptUI.SetActive(true);
         }
     }
 
@@ -39,8 +41,31 @@ public class Cheese : MonoBehaviour
     {
         if (other.CompareTag("PlayerMouse"))
         {
+            Player player = other.GetComponentInParent<Player>();
+            localPlayerInRange = player;
+
+            if (player != Player.localPlayer) return;
+
             playerInRange = false;
-            promptUI.SetActive(false);
+            localPlayerInRange.promptUI.SetActive(false);
+
+            localPlayerInRange = null;
+        }
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    private void DespawnServerRpc()
+    {
+        if (NetworkObject != null && NetworkObject.IsSpawned)
+        {
+            NetworkObject.Despawn();
         }
     }
 }
+
+
+
+
+
+
+

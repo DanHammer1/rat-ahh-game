@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UIElements;
 using System.Net.NetworkInformation;
 using Unity.Netcode;
+using TMPro;
 public class Movement : NetworkBehaviour
 {
     // camera rotation
@@ -31,6 +32,7 @@ public class Movement : NetworkBehaviour
     public float raycastDistance;
 
     public Animator animator;
+
 
 
 

@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
 using Unity.Cinemachine;
+using TMPro;
 
 public class Player : NetworkBehaviour
 {
@@ -12,9 +13,17 @@ public class Player : NetworkBehaviour
     public NetworkVariable<float> maxHealth = new NetworkVariable<float>(100);
     public NetworkVariable<float> health = new NetworkVariable<float>();
 
+
+
+    // Cheese/score info
+    public GameObject promptUI;
+    public int score;
+    public TextMeshProUGUI scoreText;
+
     public override void OnNetworkSpawn()
     {
-        if (IsServer) {
+        if (IsServer)
+        {
             maxHealth.Value = 100;
             health.Value = maxHealth.Value;
         }
@@ -26,6 +35,12 @@ public class Player : NetworkBehaviour
         Cursor.visible = false;
 
         SetupCamera();
+
+        score = 0;
+
+        promptUI = GameObject.FindWithTag("Interact Prompt");
+        scoreText = GameObject.FindWithTag("Score").GetComponent<TextMeshProUGUI>();
+        promptUI.SetActive(false);
     }
 
     void SetupCamera()
