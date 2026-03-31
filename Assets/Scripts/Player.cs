@@ -69,4 +69,10 @@ public class Player : NetworkBehaviour
         cam.Follow = cameraTarget;
         cam.LookAt = cameraTarget;
     }
+
+
+    void Update()
+    {
+
+    }
 }
