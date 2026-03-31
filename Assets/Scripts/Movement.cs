@@ -16,6 +16,7 @@ public class Movement : NetworkBehaviour
     // ground movement
     private Rigidbody rb;
     public float moveSpeed = 2f;
+    public float speed;
     private float moveHorizontal;
     private float moveForward;
 
@@ -31,11 +32,6 @@ public class Movement : NetworkBehaviour
     public float playerHeight;
     public float raycastDistance;
 
-    public Animator animator;
-
-
-
-
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -45,9 +41,6 @@ public class Movement : NetworkBehaviour
         // Set the raycast to be slightly beneath the player's feet
         playerHeight = GetComponent<Collider>().bounds.size.y / 2 * transform.localScale.y;
         raycastDistance = (playerHeight / 2) + 0.2f;
-
-
-        animator = GetComponent<Animator>();
     }
 
     void FixedUpdate()
@@ -75,9 +68,7 @@ public class Movement : NetworkBehaviour
         }
         else groundCheckTimer -= Time.deltaTime;
 
-
-        float speed = rb.linearVelocity.magnitude;
-        animator.SetFloat("Speed", speed);
+        speed = rb.linearVelocity.magnitude; // Do not delete PlayerAnimator script uses this.
     }
 
 
