@@ -32,7 +32,7 @@ public class MainMenu : NetworkBehaviour
         clientIds.OnListChanged += ClientIdsChanged;
 
         clientNames.OnListChanged += ClientNamesChanged;
-
+        
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
 
     }
@@ -65,7 +65,7 @@ public class MainMenu : NetworkBehaviour
     public void StartGame()
     {
         if (!joined) return;
-
+        
         NetworkManager.Singleton.SceneManager.LoadScene(
         "LoadingScreen",
         LoadSceneMode.Single);
@@ -73,8 +73,7 @@ public class MainMenu : NetworkBehaviour
 
     void AddSelfToLobby()
     {
-        StartCoroutine(ExecuteWhenConnected(() =>
-        {
+        StartCoroutine(ExecuteWhenConnected(() => {
 
             joined = true;
 
@@ -89,14 +88,15 @@ public class MainMenu : NetworkBehaviour
 
     IEnumerator ExecuteWhenConnected(System.Action function)
     {
-        while (NetworkManager.Singleton == null ||
+        while (NetworkManager.Singleton == null || 
             !NetworkManager.Singleton.IsListening ||
             !NetworkManager.Singleton.IsConnectedClient ||
-            !NetworkManager.Singleton.IsClient)
+            !NetworkManager.Singleton.IsClient) 
             yield return null;
 
         function();
     }
+
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     void AddNameToLobbyListServerRpc(ulong clientId, FixedString32Bytes name)
     {
@@ -122,8 +122,7 @@ public class MainMenu : NetworkBehaviour
         int i = 0;
         foreach (FixedString32Bytes name in clientNames)
         {
-            if (clientIds[clientNames.IndexOf(name)] != NetworkManager.ServerClientId)
-            {
+            if (clientIds[clientNames.IndexOf(name)] != NetworkManager.ServerClientId) {
                 wantedLobbyText += name;
                 if (i + 1 < clientNames.Count) wantedLobbyText += ", ";
             }
@@ -137,20 +136,18 @@ public class MainMenu : NetworkBehaviour
         if (!joined) return;
 
 
-        if (clientId == NetworkManager.Singleton.LocalClientId)
-        {
+        if (clientId == NetworkManager.Singleton.LocalClientId) {
             lobbyText.text = "Disconnected.";
             joined = false;
             return;
         }
-        else if (clientId == NetworkManager.ServerClientId)
-        {
+        else if (clientId == NetworkManager.ServerClientId) {
             lobbyText.text = "Server/Host Disconnected.";
             joined = false;
         }
 
         if (!IsServer) return;
-
+        
         clientNames.RemoveAt(clientIds.IndexOf(clientId));
         clientIds.Remove(clientId);
     }
@@ -173,8 +170,7 @@ public class MainMenu : NetworkBehaviour
 
     void Update()
     {
-        if (updateCount == 2 && joined)
-        {
+        if (updateCount == 2 && joined) {
             UpdateLobbyText();
             updateCount = 0;
         }

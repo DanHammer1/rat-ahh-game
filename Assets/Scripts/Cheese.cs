@@ -2,9 +2,8 @@ using TMPro;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
-using Unity.Netcode;
 
-public class Cheese : NetworkBehaviour
+public class Cheese : MonoBehaviour
 {
 <<<<<<< Updated upstream
     private bool playerInRange = false;
@@ -12,14 +11,7 @@ public class Cheese : NetworkBehaviour
     public int score;
     public TextMeshProUGUI scoreText;
     public ObjectiveScores objectiveScores;
-
-
-    public override void OnNetworkSpawn()
-=======
-    public bool playerInRange = false;
-    private Player localPlayerInRange;
     void Start()
->>>>>>> Stashed changes
     {
 
     }
