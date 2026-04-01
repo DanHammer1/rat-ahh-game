@@ -17,8 +17,8 @@ public class Movement : NetworkBehaviour
     private Rigidbody rb;
     public float moveSpeed = 2f;
     public float speed;
-    private float moveHorizontal;
-    private float moveForward;
+    public float moveHorizontal;
+    public float moveForward;
 
 
     // jumping
@@ -68,7 +68,9 @@ public class Movement : NetworkBehaviour
         }
         else groundCheckTimer -= Time.deltaTime;
 
-        speed = rb.linearVelocity.magnitude; // Do not delete PlayerAnimator script uses this.
+
+        speed = new Vector2(moveForward, moveHorizontal).magnitude; // replaced below line with this cause moving camera was triggering walk animation
+        // speed = rb.linearVelocity.magnitude; // Do not delete PlayerAnimator script uses this.
     }
 
 

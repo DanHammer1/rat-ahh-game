@@ -5,19 +5,27 @@ public class PlayerAnimator : NetworkBehaviour
 {
     Movement movement;
     Animator animator;
+    bool isTwerking;
 
-    public override void OnNetworkSpawn() {
+    public override void OnNetworkSpawn()
+    {
         movement = GetComponent<Movement>();
         animator = GetComponent<Animator>();
     }
 
     void Update()
     {
+        if (!IsOwner) return;
         animator.SetFloat("Speed", movement.speed);
+
+        animator.SetFloat("Forward", movement.moveForward);
+        animator.SetFloat("Right", movement.moveHorizontal);
 
         if (Input.GetKeyDown(KeyCode.C))
         {
+            animator.SetBool("isTwerking", true);
             animator.CrossFade("Twerk", 0.3f);
+            animator.SetBool("isTwerking", false);
         }
     }
 }
