@@ -26,11 +26,13 @@ public class Movement : NetworkBehaviour
     public float fallMultiplier = 2.5f; //reset in Start cause changing values here doesn't do anything for some reason
     public float ascendMultiplier = 2f; //reset in Start cause changing values here doesn't do anything for some reason
     public bool isGrounded = true;
+    public bool pressedSpace = false;
     public LayerMask groundLayer;
     public float groundCheckTimer = 0f;
     public float groundCheckDelay = 0.3f;
     public float playerHeight;
     public float raycastDistance;
+
 
     public override void OnNetworkSpawn()
     {
@@ -67,6 +69,8 @@ public class Movement : NetworkBehaviour
 
         if (!IsOwner) return;
 
+        Debug.Log(pressedSpace);
+
         moveHorizontal = Input.GetAxisRaw("Horizontal");
         moveForward = Input.GetAxisRaw("Vertical");
 
@@ -80,6 +84,7 @@ public class Movement : NetworkBehaviour
         {
             Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;
             isGrounded = Physics.Raycast(rayOrigin, Vector3.down, raycastDistance, groundLayer);
+            if (isGrounded) pressedSpace = false;
         }
         else groundCheckTimer -= Time.deltaTime;
 
@@ -109,6 +114,7 @@ public class Movement : NetworkBehaviour
 
     void Jump()
     {
+        pressedSpace = true;
         isGrounded = false;
         groundCheckTimer = groundCheckDelay;
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpforce, rb.linearVelocity.z); // initial burst for the jump

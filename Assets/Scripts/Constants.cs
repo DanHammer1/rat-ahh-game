@@ -4,9 +4,9 @@ public class Constants : MonoBehaviour
 {
     # region "Rat"
     public static float ratMoveSpeed = 1.5f;
-    public static float ratJumpForce = 3f;
-    public static float ratFallMultiplier = 0.6f;
-    public static float ratAscendMultiplier = 0.6f;
+    public static float ratJumpForce = 4f;
+    public static float ratFallMultiplier = 0.4f;
+    public static float ratAscendMultiplier = 0.4f;
     # endregion
 
     # region "Human"
