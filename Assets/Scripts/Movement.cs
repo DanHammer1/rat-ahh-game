@@ -22,9 +22,9 @@ public class Movement : NetworkBehaviour
 
 
     // jumping
-    public float jumpforce = 10f;
-    public float fallMultiplier = 2.5f;
-    public float ascendMultiplier = 2f;
+    public float jumpforce = 5f;
+    public float fallMultiplier = 2.5f; //reset in Start cause changing values here doesn't do anything for some reason
+    public float ascendMultiplier = 2f; //reset in Start cause changing values here doesn't do anything for some reason
     public bool isGrounded = true;
     public LayerMask groundLayer;
     public float groundCheckTimer = 0f;
@@ -32,7 +32,7 @@ public class Movement : NetworkBehaviour
     public float playerHeight;
     public float raycastDistance;
 
-    void Start()
+    public override void OnNetworkSpawn()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
@@ -41,6 +41,21 @@ public class Movement : NetworkBehaviour
         // Set the raycast to be slightly beneath the player's feet
         playerHeight = GetComponent<Collider>().bounds.size.y / 2 * transform.localScale.y;
         raycastDistance = (playerHeight / 2) + 0.2f;
+
+        if (transform.tag == "PlayerMouse")
+        {
+            moveSpeed = Constants.ratMoveSpeed;
+            jumpforce = Constants.ratJumpForce;
+            fallMultiplier = Constants.ratFallMultiplier;
+            ascendMultiplier = Constants.ratAscendMultiplier;
+        }
+        if (transform.tag == "PlayerHuman")
+        {
+            moveSpeed = Constants.humanMoveSpeed;
+            jumpforce = Constants.humanJumpForce;
+            fallMultiplier = Constants.humanFallMultiplier;
+            ascendMultiplier = Constants.humanAscendMultiplier;
+        }
     }
 
     void FixedUpdate()
