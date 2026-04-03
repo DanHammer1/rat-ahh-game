@@ -16,7 +16,7 @@ public class Cheese : NetworkBehaviour
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E) && localPlayerInRange != null)
         {
-            localPlayerInRange.promptUI.SetActive(false);
+            localPlayerInRange.eatCheesePrompt.SetActive(false);
             localPlayerInRange.score += ObjectiveScores.cheeseScore;
             localPlayerInRange.scoreText.text = $"Score: {localPlayerInRange.score}";
             DespawnServerRpc();
@@ -33,7 +33,7 @@ public class Cheese : NetworkBehaviour
             if (player != Player.localPlayer) return;
 
             playerInRange = true;
-            localPlayerInRange.promptUI.SetActive(true);
+            localPlayerInRange.eatCheesePrompt.SetActive(true);
         }
     }
 
@@ -47,7 +47,7 @@ public class Cheese : NetworkBehaviour
             if (player != Player.localPlayer) return;
 
             playerInRange = false;
-            localPlayerInRange.promptUI.SetActive(false);
+            localPlayerInRange.eatCheesePrompt.SetActive(false);
 
             localPlayerInRange = null;
         }

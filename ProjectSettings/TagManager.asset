@@ -8,6 +8,9 @@ TagManager:
   - PlayerHuman
   - Interact Prompt
   - Score
+  - Rat Stun Hitbox
+  - Eat Cheese Prompt
+  - Activate Rat Ability Prompt
   layers:
   - Default
   - TransparentFX

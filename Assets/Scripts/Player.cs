@@ -16,9 +16,15 @@ public class Player : NetworkBehaviour
 
 
     // Cheese/score info
-    public GameObject promptUI;
+    public GameObject eatCheesePrompt;
     public int score;
     public TextMeshProUGUI scoreText;
+
+
+
+    // Rat info
+    public bool ratAbilityInRange;
+    public GameObject activateRatAbilityPrompt;
 
     public override void OnNetworkSpawn()
     {
@@ -36,11 +42,16 @@ public class Player : NetworkBehaviour
 
         SetupCamera();
 
-        score = 0;
 
-        promptUI = GameObject.FindWithTag("Interact Prompt");
+        eatCheesePrompt = GameObject.FindWithTag("Eat Cheese Prompt");
+        eatCheesePrompt.SetActive(false);
+
+        score = 0;
         scoreText = GameObject.FindWithTag("Score").GetComponent<TextMeshProUGUI>();
-        promptUI.SetActive(false);
+
+        activateRatAbilityPrompt = GameObject.FindWithTag("Activate Rat Ability Prompt");
+        activateRatAbilityPrompt.SetActive(false);
+        ratAbilityInRange = false;
     }
 
     void SetupCamera()
@@ -61,5 +72,24 @@ public class Player : NetworkBehaviour
 
         cam.Follow = cameraTarget;
         cam.LookAt = cameraTarget;
+    }
+
+
+    void OnTriggerStay(Collider other)
+    {
+        if (transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
+        {
+            ratAbilityInRange = true;
+            activateRatAbilityPrompt.SetActive(true);
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
+        {
+            ratAbilityInRange = false;
+            activateRatAbilityPrompt.SetActive(false);
+        }
     }
 }
