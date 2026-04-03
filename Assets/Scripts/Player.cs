@@ -25,6 +25,7 @@ public class Player : NetworkBehaviour
     // Rat info
     public bool ratAbilityInRange;
     public GameObject activateRatAbilityPrompt;
+    private Player localHumanInRange;
 
     public override void OnNetworkSpawn()
     {
@@ -79,6 +80,9 @@ public class Player : NetworkBehaviour
     {
         if (transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
         {
+            Player player = other.GetComponentInParent<Player>();
+            localHumanInRange = player;
+
             ratAbilityInRange = true;
             activateRatAbilityPrompt.SetActive(true);
         }
@@ -90,6 +94,19 @@ public class Player : NetworkBehaviour
         {
             ratAbilityInRange = false;
             activateRatAbilityPrompt.SetActive(false);
+        }
+    }
+
+    void ActivateRatAbility()
+    {
+
+    }
+
+    void Update()
+    {
+        if (ratAbilityInRange && Input.GetKeyDown(KeyCode.T))
+        {
+            ActivateRatAbility();
         }
     }
 }
