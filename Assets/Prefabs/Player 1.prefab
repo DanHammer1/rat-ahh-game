@@ -1181,6 +1181,7 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
+  viewPosition: {fileID: 6386831360713167238}
   eatCheesePrompt: {fileID: 0}
   score: 0
   scoreText: {fileID: 0}

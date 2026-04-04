@@ -1001,9 +1001,12 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
-  promptUI: {fileID: 0}
+  viewPosition: {fileID: 6386831360713167238}
+  eatCheesePrompt: {fileID: 0}
   score: 0
   scoreText: {fileID: 0}
+  ratAbilityInRange: 0
+  activateRatAbilityPrompt: {fileID: 0}
 --- !u!114 &3554162618360092705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1022,6 +1025,7 @@ MonoBehaviour:
   speed: 0
   moveHorizontal: 0
   moveForward: 0
+  isPerformingAbility: 0
   jumpforce: 10
   fallMultiplier: 2.5
   ascendMultiplier: 2

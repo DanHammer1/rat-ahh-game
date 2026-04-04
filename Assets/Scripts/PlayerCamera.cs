@@ -10,6 +10,7 @@ public class PlayerCamera : MonoBehaviour
     CinemachinePositionComposer cinemachinePositionComposer;
 
     float thirdPersonRadius; // If 0 then first person.
+    public bool isCameraLocked = false;
 
     public float thirdPersonScrollSensitivity;
     private float xMovement;
@@ -46,14 +47,22 @@ public class PlayerCamera : MonoBehaviour
 
         thirdPersonRadius -= Input.GetAxis("Mouse ScrollWheel") * thirdPersonScrollSensitivity;
 
-        netX += xMovement;
-        netY -= yMovement;
+        if (!isCameraLocked)
+        {
+            netX += xMovement;
+            netY -= yMovement;
+        }
 
         netY = Mathf.Clamp(netY, -90, 90);
 
         // transform.rotation = Quaternion.Euler(netY, netX, 0);
-        player.transform.rotation = Quaternion.Euler(player.transform.eulerAngles.x,
+        // Only sync player rotation when camera is not locked (i.e., not during ability)
+        if (!isCameraLocked)
+        {
+            player.transform.rotation = Quaternion.Euler(player.transform.eulerAngles.x,
             transform.eulerAngles.y, player.transform.eulerAngles.z);
+        }
+
 
         thirdPersonRadius = Mathf.Clamp(thirdPersonRadius, 0, 10);
 
@@ -67,5 +76,26 @@ public class PlayerCamera : MonoBehaviour
 
         // transform.position = centrePos + (thirdPersonRadius *
         //     (Quaternion.Euler(netY, netX, 0) * -Vector3.forward));
+    }
+
+    public void ForceLookAt(Vector3 targetPosition, Vector3 originalPosition)
+    {
+        Vector3 dir = (targetPosition - originalPosition).normalized;
+
+        float targetYaw = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
+        float targetPitch = -Mathf.Asin(dir.y) * Mathf.Rad2Deg;
+
+        netX = targetYaw;
+        netY = targetPitch;
+
+        if (Player.localPlayer != null)
+        {
+            Player.localPlayer.transform.rotation = Quaternion.Euler(0, targetYaw, 0);
+        }
+    }
+
+    public void SetCameraYaw(float yaw)
+    {
+        netX = yaw;
     }
 }

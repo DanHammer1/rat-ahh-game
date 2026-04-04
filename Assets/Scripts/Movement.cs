@@ -19,6 +19,7 @@ public class Movement : NetworkBehaviour
     public float speed;
     public float moveHorizontal;
     public float moveForward;
+    public bool isPerformingAbility = false;
 
 
     // jumping
@@ -64,19 +65,20 @@ public class Movement : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        MovePlayer();
-        ApplyJumpPhysics();
+        if (!isPerformingAbility)
+        {
+            MovePlayer(moveSpeed);
+        }
+        ApplyJumpPhysics(fallMultiplier, ascendMultiplier);
 
         if (!IsOwner) return;
-
-        Debug.Log(pressedSpace);
 
         moveHorizontal = Input.GetAxisRaw("Horizontal");
         moveForward = Input.GetAxisRaw("Vertical");
 
         if (Input.GetButton("Jump") && isGrounded)
         {
-            Jump();
+            Jump(jumpforce, ascendMultiplier);
         }
 
         // Checking when we're on the ground and keeping track of our ground check delay
@@ -94,7 +96,7 @@ public class Movement : NetworkBehaviour
     }
 
 
-    void MovePlayer()
+    public void MovePlayer(float moveSpeed)
     {
         Vector3 movement = (transform.right * moveHorizontal + transform.forward * moveForward).normalized;
         Vector3 targetVelocity = movement * moveSpeed;
@@ -112,25 +114,40 @@ public class Movement : NetworkBehaviour
         }
     }
 
-    void Jump()
+    public void MovePlayer(Vector3 direction, float moveSpeed) // Used for rat ability in Player script
+    {
+        Vector3 movement = direction.normalized;
+        Vector3 targetVelocity = movement * moveSpeed;
+
+        Vector3 velocity = rb.linearVelocity;
+        velocity.x = targetVelocity.x;
+        velocity.z = targetVelocity.z;
+        rb.linearVelocity = velocity;
+    }
+
+    public void Jump(float jumpHeight, float ascendMultiplier)
     {
         pressedSpace = true;
         isGrounded = false;
         groundCheckTimer = groundCheckDelay;
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpforce, rb.linearVelocity.z); // initial burst for the jump
+
+        float gravity = Mathf.Abs(Physics.gravity.y) * ascendMultiplier;
+        float jumpVelocity = Mathf.Sqrt(2f * gravity * jumpHeight);
+
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpVelocity, rb.linearVelocity.z); // initial burst for the jump
     }
 
-    void ApplyJumpPhysics()
+    void ApplyJumpPhysics(float fallMultiplier, float ascendMultiplier)
     {
         if (rb.linearVelocity.y < 0)
         {
             // Falling: Apply fall multiplier to make descent faster
-            rb.linearVelocity += Vector3.up * Physics.gravity.y * fallMultiplier * Time.fixedDeltaTime;
+            rb.linearVelocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1f) * Time.fixedDeltaTime;
         }
         else if (rb.linearVelocity.y > 0)
         {
             // Asending: Apply ascend multiplier to make ascent faster
-            rb.linearVelocity += Vector3.up * Physics.gravity.y * ascendMultiplier * Time.fixedDeltaTime;
+            rb.linearVelocity += Vector3.up * Physics.gravity.y * (ascendMultiplier - 1f) * Time.fixedDeltaTime;
         }
     }
 }
