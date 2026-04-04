@@ -6,11 +6,18 @@ using Unity.Cinemachine;
 
 public class PlayerCamera : MonoBehaviour
 {
+    public static PlayerCamera instance;
     public GameObject player;
     CinemachinePositionComposer cinemachinePositionComposer;
 
     float thirdPersonRadius; // If 0 then first person.
-    public bool isCameraLocked = false;
+    public bool isCameraLocked;
+
+    void Awake()
+    {
+        instance = this;
+        isCameraLocked = false;
+    }
 
     public float thirdPersonScrollSensitivity;
     private float xMovement;
@@ -47,18 +54,20 @@ public class PlayerCamera : MonoBehaviour
 
         thirdPersonRadius -= Input.GetAxis("Mouse ScrollWheel") * thirdPersonScrollSensitivity;
 
+        Debug.Log(isCameraLocked);
         if (!isCameraLocked)
         {
+            Debug.Log("activated");
             netX += xMovement;
             netY -= yMovement;
+            netY = Mathf.Clamp(netY, -90, 90);
         }
-
-        netY = Mathf.Clamp(netY, -90, 90);
 
         // transform.rotation = Quaternion.Euler(netY, netX, 0);
         // Only sync player rotation when camera is not locked (i.e., not during ability)
         if (!isCameraLocked)
         {
+            Debug.Log("activated");
             player.transform.rotation = Quaternion.Euler(player.transform.eulerAngles.x,
             transform.eulerAngles.y, player.transform.eulerAngles.z);
         }

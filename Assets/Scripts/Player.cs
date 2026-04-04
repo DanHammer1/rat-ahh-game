@@ -42,7 +42,7 @@ public class Player : NetworkBehaviour
         if (!IsOwner) return;
         localPlayer = this;
 
-        playerCamera = FindFirstObjectByType<PlayerCamera>();
+        playerCamera = PlayerCamera.instance;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -168,6 +168,15 @@ public class Player : NetworkBehaviour
         if (ratAbilityInRange && Input.GetKeyDown(KeyCode.T))
         {
             ActivateRatAbility();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            playerCamera.isCameraLocked = true;
+            float newYaw = transform.eulerAngles.y + 100;
+            playerCamera.SetCameraYaw(newYaw);
+            transform.rotation = Quaternion.Euler(transform.eulerAngles.x, newYaw, transform.eulerAngles.z);
+            // playerCamera.isCameraLocked = false;
         }
     }
 }
