@@ -23,7 +23,6 @@ public class CameraPostProcessing : MonoBehaviour
     {
         if (!Player.localPlayer) return;
 
-
         healthRatio = Player.localPlayer.health.Value / Player.localPlayer.maxHealth.Value;
 
         Vignette vignette;

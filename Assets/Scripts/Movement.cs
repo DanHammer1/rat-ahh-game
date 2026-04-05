@@ -34,12 +34,15 @@ public class Movement : NetworkBehaviour
     public float playerHeight;
     public float raycastDistance;
 
+    public Vector3 movement;
+    public float yaw;
+
 
     public override void OnNetworkSpawn()
     {
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true;
-        // cameraTransform = Camera.main.transform;
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        cameraTransform = FindFirstObjectByType<Camera>().transform;
 
         // Set the raycast to be slightly beneath the player's feet
         playerHeight = GetComponent<Collider>().bounds.size.y / 2 * transform.localScale.y;
@@ -64,23 +67,18 @@ public class Movement : NetworkBehaviour
     void FixedUpdate()
     {
         if (!IsOwner) return;
-
+        moveHorizontal = Input.GetAxisRaw("Horizontal");
+        moveForward = Input.GetAxisRaw("Vertical");
         if (!isPerformingAbility)
         {
             MovePlayer(moveSpeed);
         }
+
         ApplyJumpPhysics(fallMultiplier, ascendMultiplier);
-
-        if (!IsOwner) return;
-
-        moveHorizontal = Input.GetAxisRaw("Horizontal");
-        moveForward = Input.GetAxisRaw("Vertical");
-
         if (Input.GetButton("Jump") && isGrounded)
         {
             Jump(jumpforce, ascendMultiplier);
         }
-
         // Checking when we're on the ground and keeping track of our ground check delay
         if (!isGrounded && groundCheckTimer <= 0f)
         {
@@ -89,25 +87,36 @@ public class Movement : NetworkBehaviour
             if (isGrounded) pressedSpace = false;
         }
         else groundCheckTimer -= Time.deltaTime;
-
-
         speed = new Vector2(moveForward, moveHorizontal).magnitude; // replaced below line with this cause moving camera was triggering walk animation
         // speed = rb.linearVelocity.magnitude; // Do not delete PlayerAnimator script uses this.
     }
 
-
     public void MovePlayer(float moveSpeed)
     {
-        Vector3 movement = (transform.right * moveHorizontal + transform.forward * moveForward).normalized;
-        Vector3 targetVelocity = movement * moveSpeed;
+        Vector3 camForward = cameraTransform.forward;
+        Vector3 camRight = cameraTransform.right;
+        camForward.y = 0;
+        camRight.y = 0;
+        camForward.Normalize();
+        camRight.Normalize();
+        movement = (camForward * moveForward + camRight * moveHorizontal).normalized;
 
-        // Apply movement to Rigidbody
+        if (movement != Vector3.zero)
+        {
+            yaw = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;
+        }
+
+        // Apply rotation
+        Quaternion targetRotation = Quaternion.Euler(0, yaw, 0);
+        rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, 10f * Time.fixedDeltaTime));
+
+        // Movement
+        Vector3 targetVelocity = movement * moveSpeed;
         Vector3 velocity = rb.linearVelocity;
         velocity.x = targetVelocity.x;
         velocity.z = targetVelocity.z;
         rb.linearVelocity = velocity;
 
-        // If we aren't moving and are on the ground, stop velocity so we don't slide
         if (isGrounded && moveHorizontal == 0 && moveForward == 0)
         {
             rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);

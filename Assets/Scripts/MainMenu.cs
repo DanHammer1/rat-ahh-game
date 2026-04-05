@@ -47,28 +47,33 @@ public class MainMenu : NetworkBehaviour
         AddSelfToLobby();
     }
 
-    public void BecomeHider() {
+    public void BecomeHider()
+    {
         preference = GameManager.PlayerRole.Hider;
         hasPreference = true;
 
-        if (joined) {
+        if (joined)
+        {
             ulong clientId = NetworkManager.Singleton.LocalClientId;
             EditClientRoleServerRpc(clientId, preference);
         }
     }
 
-    public void BecomeHunter() {
+    public void BecomeHunter()
+    {
         preference = GameManager.PlayerRole.Hunter;
         hasPreference = true;
 
-        if (joined) {
+        if (joined)
+        {
             ulong clientId = NetworkManager.Singleton.LocalClientId;
             EditClientRoleServerRpc(clientId, preference);
         }
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    void EditClientRoleServerRpc(ulong clientId, GameManager.PlayerRole preference) {
+    void EditClientRoleServerRpc(ulong clientId, GameManager.PlayerRole preference)
+    {
         GameManager.Instance.clientRoles[GameManager.Instance.clientIds.IndexOf(clientId)]
                 = (int)(preference);
     }
@@ -81,7 +86,7 @@ public class MainMenu : NetworkBehaviour
     public void StartGame()
     {
         if (!joined) return;
-        
+
         NetworkManager.Singleton.SceneManager.LoadScene(
         "LoadingScreen",
         LoadSceneMode.Single);
@@ -89,7 +94,8 @@ public class MainMenu : NetworkBehaviour
 
     void AddSelfToLobby()
     {
-        StartCoroutine(ExecuteWhenConnected(() => {
+        StartCoroutine(ExecuteWhenConnected(() =>
+        {
 
             joined = true;
 
@@ -104,10 +110,10 @@ public class MainMenu : NetworkBehaviour
 
     IEnumerator ExecuteWhenConnected(System.Action function)
     {
-        while (NetworkManager.Singleton == null || 
+        while (NetworkManager.Singleton == null ||
             !NetworkManager.Singleton.IsListening ||
             !NetworkManager.Singleton.IsConnectedClient ||
-            !NetworkManager.Singleton.IsClient) 
+            !NetworkManager.Singleton.IsClient)
             yield return null;
 
         function();
@@ -120,7 +126,7 @@ public class MainMenu : NetworkBehaviour
         GameManager.Instance.clientNames.Add(name);
         if (!hasPreference) GameManager.Instance.clientRoles.Add(-1);
         else GameManager.Instance.clientRoles.Add((int)preference);
-    }   
+    }
 
     void UpdateLobbyText()
     {
@@ -131,7 +137,8 @@ public class MainMenu : NetworkBehaviour
         int i = 0;
         foreach (FixedString32Bytes name in GameManager.Instance.clientNames)
         {
-            if (GameManager.Instance.clientIds[GameManager.Instance.clientNames.IndexOf(name)] != NetworkManager.ServerClientId) {
+            if (GameManager.Instance.clientIds[GameManager.Instance.clientNames.IndexOf(name)] != NetworkManager.ServerClientId)
+            {
                 wantedLobbyText += name;
                 if (i + 1 < GameManager.Instance.clientNames.Count) wantedLobbyText += ", ";
             }
@@ -144,18 +151,20 @@ public class MainMenu : NetworkBehaviour
     {
         if (!joined) return;
 
-        if (clientId == NetworkManager.Singleton.LocalClientId) {
+        if (clientId == NetworkManager.Singleton.LocalClientId)
+        {
             lobbyText.text = "Disconnected.";
             joined = false;
             return;
         }
-        else if (clientId == NetworkManager.ServerClientId) {
+        else if (clientId == NetworkManager.ServerClientId)
+        {
             lobbyText.text = "Server/Host Disconnected.";
             joined = false;
         }
 
         if (!IsServer) return;
-        
+
         GameManager.Instance.clientNames.RemoveAt(GameManager.Instance.clientIds.IndexOf(clientId));
         GameManager.Instance.clientRoles.RemoveAt(GameManager.Instance.clientIds.IndexOf(clientId));
         GameManager.Instance.clientIds.Remove(clientId);
@@ -179,7 +188,8 @@ public class MainMenu : NetworkBehaviour
 
     void Update()
     {
-        if (GameManager.updateCount == 3 && joined) {
+        if (GameManager.updateCount == 3 && joined)
+        {
             UpdateLobbyText();
             GameManager.updateCount = 0;
         }

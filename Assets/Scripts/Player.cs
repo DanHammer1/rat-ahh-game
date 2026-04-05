@@ -7,6 +7,7 @@ using System.Collections;
 public class Player : NetworkBehaviour
 {
     public static Player localPlayer;
+
     CinemachineCamera cam;
     public Transform cameraTarget;
 
@@ -124,6 +125,7 @@ public class Player : NetworkBehaviour
         dirToViewPos.y = 0;
         dirToViewPos.Normalize();
         float targetYaw = Mathf.Atan2(dirToViewPos.x, dirToViewPos.z) * Mathf.Rad2Deg;
+        movement.yaw = targetYaw;
         playerCamera.SetCameraYaw(targetYaw);
 
         float ratAbilityJumpHeight = localHumanViewPosition.y - transform.position.y;
@@ -172,11 +174,7 @@ public class Player : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            playerCamera.isCameraLocked = true;
-            float newYaw = transform.eulerAngles.y + 100;
-            playerCamera.SetCameraYaw(newYaw);
-            transform.rotation = Quaternion.Euler(transform.eulerAngles.x, newYaw, transform.eulerAngles.z);
-            // playerCamera.isCameraLocked = false;
+
         }
     }
 }
