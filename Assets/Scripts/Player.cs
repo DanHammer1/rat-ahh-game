@@ -146,7 +146,7 @@ public class Player : NetworkBehaviour
         movement.Jump(ratAbilityJumpHeight, movement.ascendMultiplier);
 
         // Get the Cube (visual mesh) child to rotate
-        Transform cubeVisual = transform.Find("Cube");
+        Transform cubeVisual = transform.Find("Renderer");
         Debug.Log($"cubeVisual is null: {cubeVisual == null}");
 
         float elapsed = 0f;

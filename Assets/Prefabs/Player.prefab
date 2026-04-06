@@ -332,7 +332,7 @@ GameObject:
   - component: {fileID: 8119588103157203016}
   - component: {fileID: 4000872382775441752}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1038,6 +1038,8 @@ MonoBehaviour:
   groundCheckDelay: 0.3
   playerHeight: 0
   raycastDistance: 0
+  movement: {x: 0, y: 0, z: 0}
+  yaw: 0
 --- !u!95 &2306450048612317703
 Animator:
   serializedVersion: 7
@@ -1079,8 +1081,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.61888856, y: 0.83288527, z: 1.9542341}
-  m_Center: {x: 0.009185284, y: 0.39, z: 0.88}
+  m_Size: {x: 0.61888856, y: 0.83288527, z: 2.0395422}
+  m_Center: {x: 0.009185281, y: 0.39000002, z: 0.98704815}
 --- !u!114 &7957373780361175662
 MonoBehaviour:
   m_ObjectHideFlags: 0

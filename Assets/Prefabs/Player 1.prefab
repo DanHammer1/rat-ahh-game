@@ -833,7 +833,7 @@ GameObject:
   - component: {fileID: 5306489894497023309}
   - component: {fileID: 1049081504256068701}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1205,6 +1205,7 @@ MonoBehaviour:
   speed: 0
   moveHorizontal: 0
   moveForward: 0
+  isPerformingAbility: 0
   jumpforce: 10
   fallMultiplier: 2.5
   ascendMultiplier: 2
@@ -1217,6 +1218,8 @@ MonoBehaviour:
   groundCheckDelay: 0.3
   playerHeight: 0
   raycastDistance: 0
+  movement: {x: 0, y: 0, z: 0}
+  yaw: 0
 --- !u!114 &-4988741029931579102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1271,8 +1274,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.12892002, y: 0.81707597, z: 0.13}
-  m_Center: {x: -0.0027273595, y: 0.4120648, z: -0.00057280064}
+  m_Size: {x: 0.10345578, y: 0.79606366, z: 0.06671238}
+  m_Center: {x: 0.0013902187, y: 0.40155864, z: -0.00577116}
 --- !u!114 &7957373780361175662
 MonoBehaviour:
   m_ObjectHideFlags: 0

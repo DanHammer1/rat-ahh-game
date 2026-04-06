@@ -9,6 +9,8 @@ public class PlayerCamera : MonoBehaviour
     public static PlayerCamera instance;
     public GameObject player;
     CinemachinePositionComposer cinemachinePositionComposer;
+    Movement movement;
+    SkinnedMeshRenderer playerRenderer;
 
     float thirdPersonRadius; // If 0 then first person.
     public bool isCameraLocked;
@@ -44,6 +46,8 @@ public class PlayerCamera : MonoBehaviour
         if (Player.localPlayer != null)
         {
             player = Player.localPlayer.gameObject;
+            movement = player.GetComponent<Movement>();
+            playerRenderer = player.transform.Find("Renderer").GetComponent<SkinnedMeshRenderer>();
         }
         else return;
 
@@ -61,8 +65,9 @@ public class PlayerCamera : MonoBehaviour
             netY = Mathf.Clamp(netY, -90, 90);
 
             // Only sync player rotation when camera is not locked (i.e., not during ability)
-            //player.transform.rotation = Quaternion.Euler(player.transform.eulerAngles.x,
-            //transform.eulerAngles.y, player.transform.eulerAngles.z);
+
+            if (cameraState == CameraState.FirstPerson) 
+                movement.yaw = transform.eulerAngles.y;
         }
 
         thirdPersonRadius = Mathf.Clamp(thirdPersonRadius, 0, 10);
@@ -75,8 +80,16 @@ public class PlayerCamera : MonoBehaviour
 
         cinemachinePositionComposer.CameraDistance = thirdPersonRadius;
 
-        // transform.position = centrePos + (thirdPersonRadius *
-        //     (Quaternion.Euler(netY, netX, 0) * -Vector3.forward));
+        // Make rat invisible in first person.
+        if (cameraState == CameraState.FirstPerson) {
+            playerRenderer.shadowCastingMode = 
+                UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+                cinemachinePositionComposer.Damping = new Vector3(0.05f, 0.05f, 0.05f);
+        }
+        else {
+            playerRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+            cinemachinePositionComposer.Damping = new Vector3(0.4f, 0.4f, 0.4f);
+        }
     }
 
     public void ForceLookAt(Vector3 targetPosition, Vector3 originalPosition)
