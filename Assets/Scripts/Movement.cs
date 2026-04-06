@@ -29,7 +29,7 @@ public class Movement : NetworkBehaviour
     public bool isGrounded = true;
     public bool pressedSpace = false;
     public LayerMask groundLayer;
-    public float groundCheckTimer = 0f;
+    public float timeAirborne = 0f;
     public float groundCheckDelay = 0.3f;
     public float playerHeight;
     public float raycastDistance;
@@ -77,16 +77,24 @@ public class Movement : NetworkBehaviour
         ApplyJumpPhysics(fallMultiplier, ascendMultiplier);
         if (Input.GetButton("Jump") && isGrounded)
         {
-            Jump(jumpforce, ascendMultiplier);
+            Jump(jumpforce, ascendMultiplier, fallMultiplier);
         }
         // Checking when we're on the ground and keeping track of our ground check delay
-        if (!isGrounded && groundCheckTimer <= 0f)
+        if (!isGrounded)
         {
+            timeAirborne += Time.deltaTime;
             Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;
-            isGrounded = Physics.Raycast(rayOrigin, Vector3.down, raycastDistance, groundLayer);
-            if (isGrounded) pressedSpace = false;
+            if (timeAirborne >= 0.5f)
+            {
+                isGrounded = Physics.Raycast(rayOrigin, Vector3.down, raycastDistance, groundLayer);
+                if (isGrounded)
+                {
+                    pressedSpace = false;
+                    timeAirborne = 0f;
+                }
+            }
         }
-        else groundCheckTimer -= Time.deltaTime;
+
         speed = new Vector2(moveForward, moveHorizontal).magnitude; // replaced below line with this cause moving camera was triggering walk animation
         // speed = rb.linearVelocity.magnitude; // Do not delete PlayerAnimator script uses this.
     }
@@ -108,7 +116,7 @@ public class Movement : NetworkBehaviour
 
         // Apply rotation
         Quaternion targetRotation = Quaternion.Euler(0, yaw, 0);
-        rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, 10f * Time.fixedDeltaTime));
+        rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, 8f * Time.fixedDeltaTime));
 
         // Movement
         Vector3 targetVelocity = movement * moveSpeed;
@@ -134,11 +142,11 @@ public class Movement : NetworkBehaviour
         rb.linearVelocity = velocity;
     }
 
-    public void Jump(float jumpHeight, float ascendMultiplier)
+    public void Jump(float jumpHeight, float ascendMultiplier, float fallMultiplier)
     {
         pressedSpace = true;
         isGrounded = false;
-        groundCheckTimer = groundCheckDelay;
+        timeAirborne = groundCheckDelay;
 
         float gravity = Mathf.Abs(Physics.gravity.y) * ascendMultiplier;
         float jumpVelocity = Mathf.Sqrt(2f * gravity * jumpHeight);

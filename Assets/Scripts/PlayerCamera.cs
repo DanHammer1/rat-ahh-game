@@ -66,7 +66,7 @@ public class PlayerCamera : MonoBehaviour
 
             // Only sync player rotation when camera is not locked (i.e., not during ability)
 
-            if (cameraState == CameraState.FirstPerson) 
+            if (cameraState == CameraState.FirstPerson)
                 movement.yaw = transform.eulerAngles.y;
         }
 
@@ -81,12 +81,14 @@ public class PlayerCamera : MonoBehaviour
         cinemachinePositionComposer.CameraDistance = thirdPersonRadius;
 
         // Make rat invisible in first person.
-        if (cameraState == CameraState.FirstPerson) {
-            playerRenderer.shadowCastingMode = 
+        if (cameraState == CameraState.FirstPerson)
+        {
+            playerRenderer.shadowCastingMode =
                 UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
-                cinemachinePositionComposer.Damping = new Vector3(0.05f, 0.05f, 0.05f);
+            cinemachinePositionComposer.Damping = new Vector3(0.05f, 0.05f, 0.05f);
         }
-        else {
+        else
+        {
             playerRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
             cinemachinePositionComposer.Damping = new Vector3(0.4f, 0.4f, 0.4f);
         }

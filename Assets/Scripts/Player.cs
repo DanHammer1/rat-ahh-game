@@ -31,6 +31,7 @@ public class Player : NetworkBehaviour
     public bool ratAbilityInRange;
     public GameObject activateRatAbilityPrompt;
     private Player localHumanInRange;
+    Animator animator;
 
     public override void OnNetworkSpawn()
     {
@@ -42,6 +43,8 @@ public class Player : NetworkBehaviour
 
         if (!IsOwner) return;
         localPlayer = this;
+
+        animator = GetComponent<Animator>();
 
         playerCamera = PlayerCamera.instance;
 
@@ -116,54 +119,118 @@ public class Player : NetworkBehaviour
         StartCoroutine(RatAbilityCoroutine());
     }
 
+    // IEnumerator RatAbilityCoroutine()
+    // {
+    //     Vector3 localHumanViewPosition = localHumanInRange.viewPosition.transform.position;
+
+    //     // Calculate target yaw to face the view position and set camera immediately
+    //     Vector3 dirToViewPos = (localHumanViewPosition - transform.position);
+    //     dirToViewPos.y = 0;
+    //     dirToViewPos.Normalize();
+    //     float targetYaw = Mathf.Atan2(dirToViewPos.x, dirToViewPos.z) * Mathf.Rad2Deg;
+    //     movement.yaw = targetYaw;
+    //     playerCamera.SetCameraYaw(targetYaw);
+
+    //     float ratAbilityJumpHeight = localHumanViewPosition.y - transform.position.y;
+    //     if (ratAbilityJumpHeight < 0.3f) ratAbilityJumpHeight = 0.3f; //Clamp height at minimum of 0.3
+
+    //     // if jumpheignt > (localHumanViewPosition.y - transform.position.y), the rat will have to ascend and fall before reaching view position. Recalculate tempAscendMultiplier and tempFallMultiplier to make the whole ability last abilityDuration seconds regardless of where it is activated from.
+
+    //     Vector3 tempRatVector3 = new Vector3(transform.position.x, 0, transform.position.z);
+    //     Vector3 tempLocalHumanVector3 = new Vector3(localHumanViewPosition.x, 0, localHumanViewPosition.z);
+    //     float differenceMagnitude = Vector3.Distance(tempRatVector3, tempLocalHumanVector3);
+    //     float abilityDuration = 1f; //How long jump animation lasts
+    //     float tempMoveSpeed = differenceMagnitude / abilityDuration;
+    //     Vector3 direction = localHumanViewPosition - transform.position;
+    //     direction.y = 0;
+    //     direction.Normalize();
+
+    //     movement.isPerformingAbility = true;
+    //     playerCamera.isCameraLocked = true;
+    //     playerCamera.ForceLookAt(localHumanViewPosition, transform.position);
+    //     float tempAscendMultiplier = movement.ascendMultiplier;
+    //     float tempFallMultiplier = movement.fallMultiplier;
+    //     movement.Jump(ratAbilityJumpHeight, tempAscendMultiplier, tempFallMultiplier);
+
+    //     float elapsed = 0f;
+    //     while (elapsed < abilityDuration)
+    //     {
+    //         movement.MovePlayer(direction, tempMoveSpeed);
+    //         elapsed += Time.fixedDeltaTime;
+    //         yield return new WaitForFixedUpdate();
+    //     }
+    //     movement.isPerformingAbility = false;
+    //     playerCamera.isCameraLocked = false;
+    // }
+
     IEnumerator RatAbilityCoroutine()
     {
-        Vector3 localHumanViewPosition = localHumanInRange.viewPosition.transform.position;
+        Vector3 startPos = transform.position;
+        Vector3 targetPos = localHumanInRange.viewPosition.transform.position;
 
-        // Calculate target yaw to face the view position and set camera immediately
-        Vector3 dirToViewPos = (localHumanViewPosition - transform.position);
+        float abilityDuration = 0.5f;
+        float elapsed = 0;
+
+        // Face target immediately
+        Vector3 dirToViewPos = targetPos - startPos;
         dirToViewPos.y = 0;
         dirToViewPos.Normalize();
         float targetYaw = Mathf.Atan2(dirToViewPos.x, dirToViewPos.z) * Mathf.Rad2Deg;
         movement.yaw = targetYaw;
         playerCamera.SetCameraYaw(targetYaw);
 
-        float ratAbilityJumpHeight = localHumanViewPosition.y - transform.position.y;
-        if (ratAbilityJumpHeight < 0.3f) ratAbilityJumpHeight = 0.3f; //Clamp height at minimum of 0.3
-
-        Vector3 tempRatVector3 = new Vector3(transform.position.x, 0, transform.position.z);
-        Vector3 tempLocalHumanVector3 = new Vector3(localHumanViewPosition.x, 0, localHumanViewPosition.z);
-        float differenceMagnitude = Vector3.Distance(tempRatVector3, tempLocalHumanVector3);
-        float abilityDuration = 0.5f; //How long jump animation lasts
-        float tempMoveSpeed = differenceMagnitude / abilityDuration;
-        Vector3 direction = localHumanViewPosition - transform.position;
-        direction.y = 0;
-        direction.Normalize();
+        // Ambiguity between setting camera yaw and ForceLookAt()?
 
         movement.isPerformingAbility = true;
         playerCamera.isCameraLocked = true;
-        playerCamera.ForceLookAt(localHumanViewPosition, transform.position);
-        movement.Jump(ratAbilityJumpHeight, movement.ascendMultiplier);
+        playerCamera.ForceLookAt(targetPos, startPos);
 
-        // Get the Cube (visual mesh) child to rotate
-        Transform cubeVisual = transform.Find("Renderer");
-        Debug.Log($"cubeVisual is null: {cubeVisual == null}");
+        Rigidbody rb = movement.GetComponent<Rigidbody>();
+        rb.linearVelocity = Vector3.zero;
+        rb.useGravity = false;
 
-        float elapsed = 0f;
+
+        movement.isGrounded = false;
+        movement.pressedSpace = true;
+
         while (elapsed < abilityDuration)
         {
-            movement.MovePlayer(direction, tempMoveSpeed);
+            float t = elapsed / abilityDuration;
+
+            // Horizontal movement
+            Vector3 horizonatal = Vector3.Lerp(startPos, targetPos, t);
+
+            // Vertical movement
+            float heightDifference = targetPos.y - startPos.y;
+            float minJumpHeight = 0.3f;
+            float jumpHeight = Mathf.Max(minJumpHeight, heightDifference);
+
+            // Decide where peak happens
+            float normalized = Mathf.InverseLerp(minJumpHeight, 2f, heightDifference); // What is 2 doing here, and what is InverseLerp
+            float peakT = Mathf.Lerp(0.9f, 0.5f, normalized); // wtf is this
+
+            // Shifted parabola
+            float x = (t - peakT) / peakT;
+            float arc = jumpHeight * (t / peakT) * (1 - t);
+            arc = Mathf.Max(0f, arc);
+
+            // Combine base height + arc
+            float y = Mathf.Lerp(startPos.y, targetPos.y, t) + arc;
+            Vector3 newPos = new Vector3(horizonatal.x, y, horizonatal.z);
+            rb.MovePosition(newPos);
+
             elapsed += Time.fixedDeltaTime;
-            // Force the Cube visual's rotation every frame
-            if (cubeVisual != null)
-            {
-                cubeVisual.rotation = Quaternion.Euler(0, targetYaw, 0);
-            }
             yield return new WaitForFixedUpdate();
         }
+
+        rb.MovePosition(targetPos);
+        rb.linearVelocity = Vector3.zero;
+        rb.useGravity = true;
         movement.isPerformingAbility = false;
         playerCamera.isCameraLocked = false;
     }
+
+
 
     void Update()
     {

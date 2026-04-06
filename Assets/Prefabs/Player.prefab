@@ -151,7 +151,7 @@ Transform:
   m_GameObject: {fileID: 2517560355514597881}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 0, y: 0.2826035, z: -0.050001144}
+  m_LocalPosition: {x: 0, y: 0.2826035, z: -0.05}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -926,7 +926,7 @@ GameObject:
   - component: {fileID: 2423679837172513963}
   - component: {fileID: 6822310308092016609}
   - component: {fileID: -8691735906933520912}
-  - component: {fileID: 8725485972959811447}
+  - component: {fileID: 1581395147416929184}
   m_Layer: 0
   m_Name: Player
   m_TagString: PlayerMouse
@@ -1205,7 +1205,7 @@ MonoBehaviour:
       Synchronize: 1
       ParameterType: 4
   AnimatorParametersExpanded: 0
---- !u!114 &8725485972959811447
+--- !u!114 &1581395147416929184
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1214,7 +1214,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8956695940269091181}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b56f9d4e88bd0d345a21f4379e46bbe2, type: 3}
+  m_Script: {fileID: 11500000, guid: b5e6e5075f2108d4997715f9a2c42c3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1

@@ -19,5 +19,6 @@ public class RatAnimator : NetworkBehaviour
 
         animator.SetBool("isGrounded", movement.isGrounded);
         animator.SetBool("pressedSpace", movement.pressedSpace);
+        Debug.Log(movement.isGrounded);
     }
 }
