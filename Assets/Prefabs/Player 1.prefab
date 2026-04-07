@@ -1214,7 +1214,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 1024
-  groundCheckTimer: 0
+  timeAirborne: 0
   groundCheckDelay: 0.3
   playerHeight: 0
   raycastDistance: 0
@@ -1331,7 +1331,7 @@ Rigidbody:
   m_GameObject: {fileID: 8956695940269091181}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 2
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}

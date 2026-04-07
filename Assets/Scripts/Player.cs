@@ -92,7 +92,7 @@ public class Player : NetworkBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
+        if (IsOwner && transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
         {
             Player player = other.GetComponentInParent<Player>();
             localHumanInRange = player;
@@ -104,7 +104,7 @@ public class Player : NetworkBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
+        if (IsOwner && transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
         {
             ratAbilityInRange = false;
             activateRatAbilityPrompt.SetActive(false);
@@ -119,57 +119,14 @@ public class Player : NetworkBehaviour
         StartCoroutine(RatAbilityCoroutine());
     }
 
-    // IEnumerator RatAbilityCoroutine()
-    // {
-    //     Vector3 localHumanViewPosition = localHumanInRange.viewPosition.transform.position;
-
-    //     // Calculate target yaw to face the view position and set camera immediately
-    //     Vector3 dirToViewPos = (localHumanViewPosition - transform.position);
-    //     dirToViewPos.y = 0;
-    //     dirToViewPos.Normalize();
-    //     float targetYaw = Mathf.Atan2(dirToViewPos.x, dirToViewPos.z) * Mathf.Rad2Deg;
-    //     movement.yaw = targetYaw;
-    //     playerCamera.SetCameraYaw(targetYaw);
-
-    //     float ratAbilityJumpHeight = localHumanViewPosition.y - transform.position.y;
-    //     if (ratAbilityJumpHeight < 0.3f) ratAbilityJumpHeight = 0.3f; //Clamp height at minimum of 0.3
-
-    //     // if jumpheignt > (localHumanViewPosition.y - transform.position.y), the rat will have to ascend and fall before reaching view position. Recalculate tempAscendMultiplier and tempFallMultiplier to make the whole ability last abilityDuration seconds regardless of where it is activated from.
-
-    //     Vector3 tempRatVector3 = new Vector3(transform.position.x, 0, transform.position.z);
-    //     Vector3 tempLocalHumanVector3 = new Vector3(localHumanViewPosition.x, 0, localHumanViewPosition.z);
-    //     float differenceMagnitude = Vector3.Distance(tempRatVector3, tempLocalHumanVector3);
-    //     float abilityDuration = 1f; //How long jump animation lasts
-    //     float tempMoveSpeed = differenceMagnitude / abilityDuration;
-    //     Vector3 direction = localHumanViewPosition - transform.position;
-    //     direction.y = 0;
-    //     direction.Normalize();
-
-    //     movement.isPerformingAbility = true;
-    //     playerCamera.isCameraLocked = true;
-    //     playerCamera.ForceLookAt(localHumanViewPosition, transform.position);
-    //     float tempAscendMultiplier = movement.ascendMultiplier;
-    //     float tempFallMultiplier = movement.fallMultiplier;
-    //     movement.Jump(ratAbilityJumpHeight, tempAscendMultiplier, tempFallMultiplier);
-
-    //     float elapsed = 0f;
-    //     while (elapsed < abilityDuration)
-    //     {
-    //         movement.MovePlayer(direction, tempMoveSpeed);
-    //         elapsed += Time.fixedDeltaTime;
-    //         yield return new WaitForFixedUpdate();
-    //     }
-    //     movement.isPerformingAbility = false;
-    //     playerCamera.isCameraLocked = false;
-    // }
-
     IEnumerator RatAbilityCoroutine()
     {
         Vector3 startPos = transform.position;
         Vector3 targetPos = localHumanInRange.viewPosition.transform.position;
 
-        float abilityDuration = 0.5f;
+        float abilityDuration = 0.25f;
         float elapsed = 0;
+        bool forceApplied = false;
 
         // Face target immediately
         Vector3 dirToViewPos = targetPos - startPos;
@@ -187,17 +144,27 @@ public class Player : NetworkBehaviour
 
         Rigidbody rb = movement.GetComponent<Rigidbody>();
         rb.linearVelocity = Vector3.zero;
-        rb.useGravity = false;
-
 
         movement.isGrounded = false;
         movement.pressedSpace = true;
+        
+        Vector3 forceToAdd = Vector3.zero;
+        forceToAdd.x = (targetPos.x - startPos.x)/abilityDuration;
+        forceToAdd.y = ((targetPos.y - startPos.y) - Physics.gravity.y/2 * Mathf.Pow(abilityDuration, 2)) / abilityDuration;
+        forceToAdd.z = (targetPos.z - startPos.z)/abilityDuration;
+
+        if (!forceApplied) {
+            rb.AddForce(forceToAdd * rb.mass, ForceMode.Impulse);
+            forceApplied = true;
+        }
 
         while (elapsed < abilityDuration)
         {
             float t = elapsed / abilityDuration;
 
-            // Horizontal movement
+            
+            
+            /*// Horizontal movement
             Vector3 horizonatal = Vector3.Lerp(startPos, targetPos, t);
 
             // Vertical movement
@@ -217,15 +184,13 @@ public class Player : NetworkBehaviour
             // Combine base height + arc
             float y = Mathf.Lerp(startPos.y, targetPos.y, t) + arc;
             Vector3 newPos = new Vector3(horizonatal.x, y, horizonatal.z);
-            rb.MovePosition(newPos);
+            rb.MovePosition(newPos);*/
 
             elapsed += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
 
-        rb.MovePosition(targetPos);
         rb.linearVelocity = Vector3.zero;
-        rb.useGravity = true;
         movement.isPerformingAbility = false;
         playerCamera.isCameraLocked = false;
     }
