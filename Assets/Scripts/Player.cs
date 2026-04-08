@@ -124,9 +124,11 @@ public class Player : NetworkBehaviour
         Vector3 startPos = transform.position;
         Vector3 targetPos = localHumanInRange.viewPosition.transform.position;
 
-        float abilityDuration = 0.25f;
+        float abilityDuration = 1f;
         float elapsed = 0;
+        
         bool forceApplied = false;
+
 
         // Face target immediately
         Vector3 dirToViewPos = targetPos - startPos;
@@ -144,6 +146,7 @@ public class Player : NetworkBehaviour
 
         Rigidbody rb = movement.GetComponent<Rigidbody>();
         rb.linearVelocity = Vector3.zero;
+        float originalDrag = rb.linearDamping;
 
         movement.isGrounded = false;
         movement.pressedSpace = true;
@@ -154,6 +157,7 @@ public class Player : NetworkBehaviour
         forceToAdd.z = (targetPos.z - startPos.z)/abilityDuration;
 
         if (!forceApplied) {
+            rb.linearDamping = 0;
             rb.AddForce(forceToAdd * rb.mass, ForceMode.Impulse);
             forceApplied = true;
         }
@@ -191,6 +195,7 @@ public class Player : NetworkBehaviour
         }
 
         rb.linearVelocity = Vector3.zero;
+        rb.linearDamping = originalDrag;
         movement.isPerformingAbility = false;
         playerCamera.isCameraLocked = false;
     }
