@@ -6,6 +6,7 @@ public class PlayerAnimator : NetworkBehaviour
     Movement movement;
     Animator animator;
     bool isTwerking;
+    bool isARAT;
 
     public override void OnNetworkSpawn()
     {
@@ -26,6 +27,13 @@ public class PlayerAnimator : NetworkBehaviour
             animator.SetBool("isTwerking", true);
             animator.CrossFade("Twerk", 0.3f);
             animator.SetBool("isTwerking", false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            animator.SetBool("isARAT", true);
+            animator.CrossFade("ARAT", 0.3f);
+            animator.SetBool("isARAT", false);
         }
     }
 }
