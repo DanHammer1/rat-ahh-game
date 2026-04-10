@@ -1107,7 +1107,7 @@ GameObject:
   - component: {fileID: 6822310308092016609}
   - component: {fileID: 3291802266231638397}
   m_Layer: 0
-  m_Name: Player 1
+  m_Name: HumanPlayer
   m_TagString: PlayerHuman
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1211,9 +1211,6 @@ MonoBehaviour:
   ascendMultiplier: 2
   isGrounded: 1
   pressedSpace: 0
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 1024
   timeAirborne: 0
   groundCheckDelay: 0.3
   playerHeight: 0
@@ -1274,8 +1271,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.10345578, y: 0.79606366, z: 0.06671238}
-  m_Center: {x: 0.0013902187, y: 0.40155864, z: -0.00577116}
+  m_Size: {x: 0.10345578, y: 0.79606366, z: 0.05}
+  m_Center: {x: 0.0013902187, y: 0.40155864, z: 0.02}
 --- !u!114 &7957373780361175662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1399,6 +1396,10 @@ MonoBehaviour:
       ParameterType: 1
     - name: isTwerking
       NameHash: -1487424388
+      Synchronize: 1
+      ParameterType: 4
+    - name: isARAT
+      NameHash: -373339391
       Synchronize: 1
       ParameterType: 4
   AnimatorParametersExpanded: 0

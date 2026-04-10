@@ -121,12 +121,12 @@ public class Player : NetworkBehaviour
 
     IEnumerator RatAbilityCoroutine()
     {
-        Vector3 startPos = transform.position;
+        Vector3 startPos = transform.Find("View Position").position;
         Vector3 targetPos = localHumanInRange.viewPosition.transform.position;
 
-        float abilityDuration = 1f;
+        float abilityDuration = 0.4f; // move to constants
         float elapsed = 0;
-        
+
         bool forceApplied = false;
 
 
@@ -150,13 +150,14 @@ public class Player : NetworkBehaviour
 
         movement.isGrounded = false;
         movement.pressedSpace = true;
-        
-        Vector3 forceToAdd = Vector3.zero;
-        forceToAdd.x = (targetPos.x - startPos.x)/abilityDuration;
-        forceToAdd.y = ((targetPos.y - startPos.y) - Physics.gravity.y/2 * Mathf.Pow(abilityDuration, 2)) / abilityDuration;
-        forceToAdd.z = (targetPos.z - startPos.z)/abilityDuration;
 
-        if (!forceApplied) {
+        Vector3 forceToAdd = Vector3.zero;
+        forceToAdd.x = (targetPos.x - startPos.x) / abilityDuration;
+        forceToAdd.y = ((targetPos.y - startPos.y) - Physics.gravity.y / 2 * Mathf.Pow(abilityDuration, 2)) / abilityDuration;
+        forceToAdd.z = (targetPos.z - startPos.z) / abilityDuration;
+
+        if (!forceApplied)
+        {
             rb.linearDamping = 0;
             rb.AddForce(forceToAdd * rb.mass, ForceMode.Impulse);
             forceApplied = true;
@@ -166,8 +167,8 @@ public class Player : NetworkBehaviour
         {
             float t = elapsed / abilityDuration;
 
-            
-            
+
+
             /*// Horizontal movement
             Vector3 horizonatal = Vector3.Lerp(startPos, targetPos, t);
 
