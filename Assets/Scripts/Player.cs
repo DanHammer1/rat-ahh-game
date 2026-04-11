@@ -124,18 +124,19 @@ public class Player : NetworkBehaviour
         Vector3 startPos = transform.Find("View Position").position;
         Vector3 targetPos = localHumanInRange.viewPosition.transform.position;
 
-        float abilityDuration = 0.4f; // move to constants
+        float ratAbilityDuration = Constants.ratAbilityDuration; // move to constants
         float elapsed = 0;
 
         bool forceApplied = false;
-
 
         // Face target immediately
         Vector3 dirToViewPos = targetPos - startPos;
         dirToViewPos.y = 0;
         dirToViewPos.Normalize();
         float targetYaw = Mathf.Atan2(dirToViewPos.x, dirToViewPos.z) * Mathf.Rad2Deg;
+        Debug.Log(movement.yaw);
         movement.yaw = targetYaw;
+        Debug.Log(targetYaw);
         playerCamera.SetCameraYaw(targetYaw);
 
         // Ambiguity between setting camera yaw and ForceLookAt()?
@@ -152,9 +153,9 @@ public class Player : NetworkBehaviour
         movement.pressedSpace = true;
 
         Vector3 forceToAdd = Vector3.zero;
-        forceToAdd.x = (targetPos.x - startPos.x) / abilityDuration;
-        forceToAdd.y = ((targetPos.y - startPos.y) - Physics.gravity.y / 2 * Mathf.Pow(abilityDuration, 2)) / abilityDuration;
-        forceToAdd.z = (targetPos.z - startPos.z) / abilityDuration;
+        forceToAdd.x = (targetPos.x - startPos.x) / ratAbilityDuration;
+        forceToAdd.y = ((targetPos.y - startPos.y) - Physics.gravity.y / 2 * Mathf.Pow(ratAbilityDuration, 2)) / ratAbilityDuration;
+        forceToAdd.z = (targetPos.z - startPos.z) / ratAbilityDuration;
 
         if (!forceApplied)
         {
@@ -163,34 +164,9 @@ public class Player : NetworkBehaviour
             forceApplied = true;
         }
 
-        while (elapsed < abilityDuration)
+        while (elapsed < ratAbilityDuration)
         {
-            float t = elapsed / abilityDuration;
-
-
-
-            /*// Horizontal movement
-            Vector3 horizonatal = Vector3.Lerp(startPos, targetPos, t);
-
-            // Vertical movement
-            float heightDifference = targetPos.y - startPos.y;
-            float minJumpHeight = 0.3f;
-            float jumpHeight = Mathf.Max(minJumpHeight, heightDifference);
-
-            // Decide where peak happens
-            float normalized = Mathf.InverseLerp(minJumpHeight, 2f, heightDifference); // What is 2 doing here, and what is InverseLerp
-            float peakT = Mathf.Lerp(0.9f, 0.5f, normalized); // wtf is this
-
-            // Shifted parabola
-            float x = (t - peakT) / peakT;
-            float arc = jumpHeight * (t / peakT) * (1 - t);
-            arc = Mathf.Max(0f, arc);
-
-            // Combine base height + arc
-            float y = Mathf.Lerp(startPos.y, targetPos.y, t) + arc;
-            Vector3 newPos = new Vector3(horizonatal.x, y, horizonatal.z);
-            rb.MovePosition(newPos);*/
-
+            float t = elapsed / ratAbilityDuration;
             elapsed += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
@@ -201,18 +177,11 @@ public class Player : NetworkBehaviour
         playerCamera.isCameraLocked = false;
     }
 
-
-
     void Update()
     {
         if (ratAbilityInRange && Input.GetKeyDown(KeyCode.T))
         {
             ActivateRatAbility();
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-
         }
     }
 }

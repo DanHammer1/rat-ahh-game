@@ -7,6 +7,7 @@ public static class Constants
     public static float ratJumpForce = 0.2f;
     public static float ratFallMultiplier = 0.8f;
     public static float ratAscendMultiplier = 0.8f;
+    public static float ratAbilityDuration = 0.4f;
     # endregion
 
     # region "Human"
