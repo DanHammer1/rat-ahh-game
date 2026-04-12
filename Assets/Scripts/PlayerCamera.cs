@@ -92,6 +92,12 @@ public class PlayerCamera : MonoBehaviour
             playerRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
             cinemachinePositionComposer.Damping = new Vector3(0.4f, 0.4f, 0.4f);
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            Time.timeScale = 0.2f;
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            Time.timeScale = 1f;
     }
 
     public void ForceLookAt(Vector3 targetPosition, Vector3 originalPosition)
@@ -106,7 +112,8 @@ public class PlayerCamera : MonoBehaviour
 
         if (Player.localPlayer != null)
         {
-            Player.localPlayer.transform.rotation = Quaternion.Euler(0, targetYaw, 0);
+            Rigidbody rb = Player.localPlayer.GetComponent<Rigidbody>();
+            rb.rotation = Quaternion.Euler(0, targetYaw, 0);
         }
     }
 

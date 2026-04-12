@@ -7,6 +7,8 @@ using Unity.Netcode;
 using TMPro;
 public class Movement : NetworkBehaviour
 {
+    Animator animator;
+
     // camera rotation
     public float mouseSensitivity;
     private float verticalRotation;
@@ -20,7 +22,7 @@ public class Movement : NetworkBehaviour
     public float moveHorizontal;
     public float moveForward;
     public bool isPerformingAbility = false;
-    public readonly float forceMultiplier = 10; 
+    public readonly float forceMultiplier = 10;
     public readonly float jumpForceMultiplier = 0.2f;
 
 
@@ -47,7 +49,7 @@ public class Movement : NetworkBehaviour
         cameraTransform = FindFirstObjectByType<Camera>().transform;
 
         // Set the raycast to be slightly beneath the player's feet
-        playerHeight = GetComponent<Collider>().bounds.size.y / 2 * transform.localScale.y;
+        playerHeight = GetComponent<Collider>().bounds.size.y; //  / 2 * transform.localScale.y removed
         raycastDistance = (playerHeight / 2) + 0.2f;
 
         GROUNDLAYER = LayerMask.GetMask("groundLayer");
@@ -66,14 +68,42 @@ public class Movement : NetworkBehaviour
             fallMultiplier = Constants.humanFallMultiplier;
             ascendMultiplier = Constants.humanAscendMultiplier;
         }
+
+        animator = GetComponent<Animator>();
+    }
+
+
+    void Update()
+    {
+        // if (!IsOwner) return;
+        // moveHorizontal = Input.GetAxisRaw("Horizontal");
+        // moveForward = Input.GetAxisRaw("Vertical");
     }
 
     void FixedUpdate()
     {
+        isGrounded = CheckGrounded();
+        // Debug.Log(isGrounded);
+        Debug.DrawRay(
+            transform.position + Vector3.up * 0.05f,
+            Vector3.down * 0.075f,
+            Color.red
+        );
+        RaycastHit hit;
+        bool grounded = Physics.Raycast(
+            transform.position + Vector3.up * 0.05f,
+            Vector3.down,
+            out hit,
+            0.075f,
+            GROUNDLAYER
+        );
+
+        // Debug.Log(hit.collider ? hit.collider.name : "Nothing");
+
+
         if (!IsOwner) return;
         moveHorizontal = Input.GetAxisRaw("Horizontal");
         moveForward = Input.GetAxisRaw("Vertical");
-        isGrounded = CheckGrounded();
         if (!isPerformingAbility)
         {
             MovePlayer(moveSpeed);
@@ -88,19 +118,11 @@ public class Movement : NetworkBehaviour
         if (!isGrounded)
         {
             rb.useGravity = true;
-            timeAirborne += Time.deltaTime;
-            Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;
-            if (timeAirborne >= 0.5f)
-            {
-                isGrounded = Physics.Raycast(rayOrigin, Vector3.down, raycastDistance, GROUNDLAYER);
-                if (isGrounded)
-                {
-                    pressedSpace = false;
-                    timeAirborne = 0f;
-                }
-            }
+            // timeAirborne += Time.deltaTime;
+            // Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;
         }
-        else {
+        else
+        {
             rb.useGravity = false;
         }
 
@@ -108,10 +130,15 @@ public class Movement : NetworkBehaviour
         // speed = rb.linearVelocity.magnitude; // Do not delete PlayerAnimator script uses this.
     }
 
+
     bool CheckGrounded()
     {
         RaycastHit hit;
         bool grounded = Physics.Raycast(transform.position + Vector3.up * 0.05f, Vector3.down, out hit, 0.075f, GROUNDLAYER);
+        if (grounded)
+        {
+            pressedSpace = false;
+        }
         return grounded;
     }
 
@@ -150,7 +177,8 @@ public class Movement : NetworkBehaviour
         }
     }
 
-    void LimitSpeed(float maxSpeed) {
+    void LimitSpeed(float maxSpeed)
+    {
         if (rb == null) return;
 
         Vector3 surfaceVelocity = rb.linearVelocity;
@@ -166,18 +194,6 @@ public class Movement : NetworkBehaviour
         rb.linearVelocity = surfaceVelocity;
     }
 
-    public void MovePlayer(Vector3 direction, float moveSpeed) // Used for rat ability in Player script
-    {
-        Vector3 movement = direction.normalized;
-        Vector3 targetVelocity = movement * moveSpeed;
-
-        Vector3 velocity = rb.linearVelocity;
-        velocity.x = targetVelocity.x;
-        velocity.z = targetVelocity.z;
-        rb.linearVelocity = velocity;
-        Debug.Log("Poo");
-    }
-
     public void Jump(float jumpHeight, float ascendMultiplier, float fallMultiplier)
     {
         pressedSpace = true;
@@ -188,7 +204,7 @@ public class Movement : NetworkBehaviour
         float jumpVelocity = Mathf.Sqrt(2f * gravity * jumpHeight);
 
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
-        rb.AddForce(new Vector3(rb.linearVelocity.x, jumpVelocity, rb.linearVelocity.z) * 
+        rb.AddForce(new Vector3(rb.linearVelocity.x, jumpVelocity, rb.linearVelocity.z) *
             forceMultiplier * jumpForceMultiplier, ForceMode.Impulse); // initial burst for the jump
     }
 

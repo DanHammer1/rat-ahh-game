@@ -124,6 +124,8 @@ public class Player : NetworkBehaviour
         Vector3 startPos = transform.Find("View Position").position;
         Vector3 targetPos = localHumanInRange.viewPosition.transform.position;
 
+        movement.isPerformingAbility = true;
+
         float ratAbilityDuration = Constants.ratAbilityDuration; // move to constants
         float elapsed = 0;
 
@@ -137,12 +139,10 @@ public class Player : NetworkBehaviour
         Debug.Log(movement.yaw);
         movement.yaw = targetYaw;
         Debug.Log(targetYaw);
-        playerCamera.SetCameraYaw(targetYaw);
+        // playerCamera.SetCameraYaw(targetYaw); For forcing the camera to look somewhere, perhaps not needed for this ability
 
         // Ambiguity between setting camera yaw and ForceLookAt()?
 
-        movement.isPerformingAbility = true;
-        playerCamera.isCameraLocked = true;
         playerCamera.ForceLookAt(targetPos, startPos);
 
         Rigidbody rb = movement.GetComponent<Rigidbody>();
