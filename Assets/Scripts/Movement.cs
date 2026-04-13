@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 using System.Net.NetworkInformation;
 using Unity.Netcode;
 using TMPro;
+using NUnit.Framework.Constraints;
 public class Movement : NetworkBehaviour
 {
     Animator animator;
@@ -78,12 +79,16 @@ public class Movement : NetworkBehaviour
         // if (!IsOwner) return;
         // moveHorizontal = Input.GetAxisRaw("Horizontal");
         // moveForward = Input.GetAxisRaw("Vertical");
+        if (transform.tag == "PlayerMouse") Debug.Log(isGrounded);
     }
 
     void FixedUpdate()
     {
-        isGrounded = CheckGrounded();
-        // Debug.Log(isGrounded);
+        if (!isPerformingAbility)
+        {
+            isGrounded = CheckGrounded();
+        }
+
         Debug.DrawRay(
             transform.position + Vector3.up * 0.05f,
             Vector3.down * 0.075f,
@@ -98,7 +103,6 @@ public class Movement : NetworkBehaviour
             GROUNDLAYER
         );
 
-        // Debug.Log(hit.collider ? hit.collider.name : "Nothing");
 
 
         if (!IsOwner) return;

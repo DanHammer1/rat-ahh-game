@@ -94,9 +94,12 @@ public class PlayerCamera : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
-            Time.timeScale = 0.2f;
+            Time.timeScale = 0.05f;
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
+            Time.timeScale = 0.2f;
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
             Time.timeScale = 1f;
     }
 

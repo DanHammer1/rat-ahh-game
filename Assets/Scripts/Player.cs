@@ -124,25 +124,22 @@ public class Player : NetworkBehaviour
         Vector3 startPos = transform.Find("View Position").position;
         Vector3 targetPos = localHumanInRange.viewPosition.transform.position;
 
-        movement.isPerformingAbility = true;
+        movement.isPerformingAbility = true; // prevents movement during ability
 
-        float ratAbilityDuration = Constants.ratAbilityDuration; // move to constants
+        float ratAbilityDuration = Constants.ratAbilityDuration;
         float elapsed = 0;
 
         bool forceApplied = false;
 
-        // Face target immediately
-        Vector3 dirToViewPos = targetPos - startPos;
-        dirToViewPos.y = 0;
-        dirToViewPos.Normalize();
-        float targetYaw = Mathf.Atan2(dirToViewPos.x, dirToViewPos.z) * Mathf.Rad2Deg;
-        Debug.Log(movement.yaw);
-        movement.yaw = targetYaw;
-        Debug.Log(targetYaw);
-        // playerCamera.SetCameraYaw(targetYaw); For forcing the camera to look somewhere, perhaps not needed for this ability
+        // Force camera to look at human (possibly not needed)
+        // Vector3 dirToViewPos = targetPos - startPos;
+        // dirToViewPos.y = 0;
+        // dirToViewPos.Normalize();
+        // float targetYaw = Mathf.Atan2(dirToViewPos.x, dirToViewPos.z) * Mathf.Rad2Deg;
+        // movement.yaw = targetYaw;
+        // playerCamera.SetCameraYaw(targetYaw);
 
-        // Ambiguity between setting camera yaw and ForceLookAt()?
-
+        // Force rat to rotate towards human
         playerCamera.ForceLookAt(targetPos, startPos);
 
         Rigidbody rb = movement.GetComponent<Rigidbody>();
