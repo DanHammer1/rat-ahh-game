@@ -3,6 +3,11 @@ using Unity.Netcode;
 using Unity.Cinemachine;
 using TMPro;
 using System.Collections;
+using UnityEditor;
+
+#if UNITY_EDITOR
+using System.Reflection;
+#endif
 
 public class Player : NetworkBehaviour
 {
@@ -31,6 +36,8 @@ public class Player : NetworkBehaviour
     public bool ratAbilityInRange;
     public GameObject activateRatAbilityPrompt;
     private Player localHumanInRange;
+    public bool isClinging;
+    public bool isSlapping;
     Animator animator;
 
     public override void OnNetworkSpawn()
@@ -121,7 +128,12 @@ public class Player : NetworkBehaviour
 
     IEnumerator RatAbilityCoroutine()
     {
-        Vector3 startPos = transform.Find("View Position").position;
+        ClearConsole();
+
+        isSlapping = false;
+        isClinging = false;
+
+        Vector3 startPos = transform.position;
         Vector3 targetPos = localHumanInRange.viewPosition.transform.position;
 
         movement.isPerformingAbility = true; // prevents movement during ability
@@ -151,7 +163,7 @@ public class Player : NetworkBehaviour
 
         Vector3 forceToAdd = Vector3.zero;
         forceToAdd.x = (targetPos.x - startPos.x) / ratAbilityDuration;
-        forceToAdd.y = ((targetPos.y - startPos.y) - Physics.gravity.y / 2 * Mathf.Pow(ratAbilityDuration, 2)) / ratAbilityDuration;
+        forceToAdd.y = (((targetPos.y - startPos.y) - Physics.gravity.y / 2 * Mathf.Pow(ratAbilityDuration, 2)) / ratAbilityDuration) / 1.18f;
         forceToAdd.z = (targetPos.z - startPos.z) / ratAbilityDuration;
 
         if (!forceApplied)
@@ -165,13 +177,34 @@ public class Player : NetworkBehaviour
         {
             float t = elapsed / ratAbilityDuration;
             elapsed += Time.fixedDeltaTime;
+
+            // Debug.DrawLine(transform.position, targetPos, Color.red, 0.02f);
+            // if (Vector3.Distance(transform.position, targetPos) <= Constants.ratAbilityClingRange)
+            // {
+            //     Debug.Log(Vector3.Distance(transform.position, targetPos));
+            // }
+
+            if (Vector3.Distance(transform.position, targetPos) <= Constants.ratAbilityClingRange)
+            {
+                rb.linearVelocity = Vector3.zero;
+                rb.useGravity = false;
+                movement.toggleGravity = false;
+
+                Transform humanHead = localHumanInRange.animator.GetBoneTransform(HumanBodyBones.Head);
+                transform.SetParent(humanHead);
+
+                rb.constraints = RigidbodyConstraints.FreezeAll;
+                isClinging = true;
+                break;
+            }
             yield return new WaitForFixedUpdate();
         }
 
         rb.linearVelocity = Vector3.zero;
         rb.linearDamping = originalDrag;
-        movement.isPerformingAbility = false;
-        playerCamera.isCameraLocked = false;
+        // movement.isPerformingAbility = false;
+        Debug.DrawLine(transform.position, targetPos, Color.red, 3f);
+        // playerCamera.isCameraLocked = false;
     }
 
     void Update()
@@ -180,5 +213,30 @@ public class Player : NetworkBehaviour
         {
             ActivateRatAbility();
         }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log("test");
+        }
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            ClearConsole();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q) && isClinging)
+        {
+            isSlapping = !isSlapping;
+        }
     }
+
+#if UNITY_EDITOR
+    public void ClearConsole()
+    {
+        var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));
+        var type = assembly.GetType("UnityEditor.LogEntries");
+        var method = type.GetMethod("Clear");
+        method.Invoke(new object(), null);
+    }
+#endif
 }

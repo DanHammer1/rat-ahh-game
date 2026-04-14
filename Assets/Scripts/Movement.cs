@@ -9,11 +9,13 @@ using NUnit.Framework.Constraints;
 public class Movement : NetworkBehaviour
 {
     Animator animator;
+    Transform headBone;
 
     // camera rotation
     public float mouseSensitivity;
     private float verticalRotation;
     private Transform cameraTransform;
+    public GameObject lookTarget;
 
 
     // ground movement
@@ -32,6 +34,7 @@ public class Movement : NetworkBehaviour
     public float fallMultiplier = 2.5f; //reset in Start cause changing values here doesn't do anything for some reason
     public float ascendMultiplier = 2f; //reset in Start cause changing values here doesn't do anything for some reason
     public bool isGrounded = true;
+    public bool toggleGravity = true;
     public bool pressedSpace = false;
     LayerMask GROUNDLAYER;
     public float timeAirborne = 0f;
@@ -68,8 +71,10 @@ public class Movement : NetworkBehaviour
             jumpforce = Constants.humanJumpForce;
             fallMultiplier = Constants.humanFallMultiplier;
             ascendMultiplier = Constants.humanAscendMultiplier;
+            headBone = animator.GetBoneTransform(HumanBodyBones.Head);
         }
-
+        Debug.Log("Avatar: " + animator.avatar);
+        mouseSensitivity = Constants.mouseSensitivity;
         animator = GetComponent<Animator>();
     }
 
@@ -79,7 +84,6 @@ public class Movement : NetworkBehaviour
         // if (!IsOwner) return;
         // moveHorizontal = Input.GetAxisRaw("Horizontal");
         // moveForward = Input.GetAxisRaw("Vertical");
-        if (transform.tag == "PlayerMouse") Debug.Log(isGrounded);
     }
 
     void FixedUpdate()
@@ -103,8 +107,6 @@ public class Movement : NetworkBehaviour
             GROUNDLAYER
         );
 
-
-
         if (!IsOwner) return;
         moveHorizontal = Input.GetAxisRaw("Horizontal");
         moveForward = Input.GetAxisRaw("Vertical");
@@ -119,19 +121,44 @@ public class Movement : NetworkBehaviour
             Jump(jumpforce, ascendMultiplier, fallMultiplier);
         }
         // Checking when we're on the ground and keeping track of our ground check delay
-        if (!isGrounded)
+        if (!isGrounded && toggleGravity)
         {
             rb.useGravity = true;
             // timeAirborne += Time.deltaTime;
             // Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;
         }
-        else
+        else if (toggleGravity)
         {
             rb.useGravity = false;
         }
 
         speed = new Vector2(moveForward, moveHorizontal).magnitude; // replaced below line with this cause moving camera was triggering walk animation
         // speed = rb.linearVelocity.magnitude; // Do not delete PlayerAnimator script uses this.
+
+        lookTarget.transform.position = cameraTransform.position + cameraTransform.forward * 1f;
+
+        verticalRotation -= Input.GetAxis("Mouse Y") * mouseSensitivity;
+        // verticalRotation = Mathf.Clamp(verticalRotation, -60f, 60f);
+    }
+
+    void LateUpdate()
+    {
+        if (!IsOwner) return;
+
+        ApplyHeadTilt();
+    }
+
+    void ApplyHeadTilt()
+    {
+        if (headBone == null) return;
+
+        Vector3 currentEuler = headBone.localEulerAngles;
+        currentEuler.x = verticalRotation;
+        headBone.localEulerAngles = currentEuler;
+
+        // Quaternion animRotation = headBone.localRotation;
+        // Quaternion pitchRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
+        // headBone.localRotation = animRotation * pitchRotation;
     }
 
 
