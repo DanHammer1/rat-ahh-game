@@ -17,33 +17,18 @@ public class Player : NetworkBehaviour
 
     CinemachineCamera cam;
     public Transform cameraTarget;
-    Transform clingHead; // ratplayer
 
     public NetworkVariable<float> maxHealth = new NetworkVariable<float>(100);
     public NetworkVariable<float> health = new NetworkVariable<float>();
-    public GameObject ratAbilityTarget; // ratplayer
-    public GameObject viewPosition; // humanplayer
     public Movement movement;
     BoxCollider boxCollider;
     private Rigidbody rb;
     public PlayerCamera playerCamera;
 
-
-
-
     // Cheese/score info
-    public GameObject eatCheesePrompt;
     public int score;
     public TextMeshProUGUI scoreText;
 
-
-
-    // Rat info
-    public bool ratAbilityInRange; // ratplayer
-    public GameObject activateRatAbilityPrompt; // ratplayer
-    private Player localHumanInRange; // ratplayer
-    public bool isClinging; // ratplayer
-    public bool isSlapping; // ratplayer
     Animator animator;
 
     public override void OnNetworkSpawn()
@@ -69,15 +54,8 @@ public class Player : NetworkBehaviour
         SetupCamera();
         rb = GetComponent<Rigidbody>();
 
-        eatCheesePrompt = GameObject.FindWithTag("Eat Cheese Prompt"); // ratplayer
-        eatCheesePrompt.SetActive(false); // ratplayer
-
         score = 0;
         scoreText = GameObject.FindWithTag("Score").GetComponent<TextMeshProUGUI>();
-
-        activateRatAbilityPrompt = GameObject.FindWithTag("Activate Rat Ability Prompt"); // ratplayer
-        activateRatAbilityPrompt.SetActive(false); // ratplayer
-        ratAbilityInRange = false; // ratplayer
     }
 
     void SetupCamera()
@@ -100,120 +78,6 @@ public class Player : NetworkBehaviour
         cam.LookAt = cameraTarget;
     }
 
-
-    void OnTriggerStay(Collider other) // whole ratplayer
-    {
-        if (IsOwner && transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
-        {
-            Player player = other.GetComponentInParent<Player>();
-            localHumanInRange = player;
-
-            ratAbilityInRange = true;
-            activateRatAbilityPrompt.SetActive(true);
-        }
-    }
-
-    void OnTriggerExit(Collider other) // whole ratplayer
-    {
-        if (IsOwner && transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
-        {
-            ratAbilityInRange = false;
-            activateRatAbilityPrompt.SetActive(false);
-
-            if (!movement.isPerformingAbility)
-            {
-                localHumanInRange = null;
-            }
-        }
-    }
-
-    void ActivateRatAbility() // whole ratplayer
-    {
-        if (localHumanInRange == null) return; //safety check
-        StartCoroutine(RatAbilityCoroutine());
-    }
-
-    IEnumerator RatAbilityCoroutine() // whole ratplayer
-    {
-        ClearConsole();
-
-
-        isSlapping = false;
-        isClinging = false;
-
-        Vector3 startPos = transform.position;
-        Vector3 targetPos = localHumanInRange.ratAbilityTarget.transform.position;
-
-        movement.isPerformingAbility = true; // prevents movement during ability
-
-        float ratAbilityDuration = Constants.ratAbilityDuration;
-        float elapsed = 0;
-
-        bool forceApplied = false;
-
-        // Force camera to look at human (possibly not needed)
-        // Vector3 dirToViewPos = targetPos - startPos;
-        // dirToViewPos.y = 0;
-        // dirToViewPos.Normalize();
-        // float targetYaw = Mathf.Atan2(dirToViewPos.x, dirToViewPos.z) * Mathf.Rad2Deg;
-        // movement.yaw = targetYaw;
-        // playerCamera.SetCameraYaw(targetYaw);
-
-        // Force rat to rotate towards human
-        playerCamera.ForceLookAt(targetPos, startPos);
-
-        Rigidbody rb = movement.GetComponent<Rigidbody>();
-        rb.linearVelocity = Vector3.zero;
-        float originalDrag = rb.linearDamping;
-
-        movement.isGrounded = false;
-        movement.pressedSpace = true;
-
-        Vector3 forceToAdd = Vector3.zero;
-        forceToAdd.x = (targetPos.x - startPos.x) / ratAbilityDuration;
-        forceToAdd.y = (((targetPos.y - startPos.y) - Physics.gravity.y / 2 * Mathf.Pow(ratAbilityDuration, 2)) / ratAbilityDuration) / 1.18f;
-        forceToAdd.z = (targetPos.z - startPos.z) / ratAbilityDuration;
-
-        if (!forceApplied)
-        {
-            rb.linearDamping = 0;
-            rb.AddForce(forceToAdd * rb.mass, ForceMode.Impulse);
-            forceApplied = true;
-        }
-
-        while (elapsed < ratAbilityDuration)
-        {
-            float t = elapsed / ratAbilityDuration;
-            elapsed += Time.fixedDeltaTime;
-
-            // Debug.DrawLine(transform.position, targetPos, Color.red, 0.02f);
-            // if (Vector3.Distance(transform.position, targetPos) <= Constants.ratAbilityClingRange)
-            // {
-            //     Debug.Log(Vector3.Distance(transform.position, targetPos));
-            // }
-
-            if (Vector3.Distance(transform.position, targetPos) <= Constants.ratAbilityClingRange)
-            {
-                SetColliderStateServerRpc(false);
-                rb.linearVelocity = Vector3.zero;
-                rb.useGravity = false;
-                movement.toggleGravity = false;
-                clingHead = localHumanInRange.movement.headBone;
-
-                rb.constraints = RigidbodyConstraints.FreezeAll;
-                isClinging = true;
-                break;
-            }
-            yield return new WaitForFixedUpdate();
-        }
-
-        rb.linearVelocity = Vector3.zero;
-        rb.linearDamping = originalDrag;
-        // movement.isPerformingAbility = false;
-        Debug.DrawLine(transform.position, targetPos, Color.red, 3f);
-        // playerCamera.isCameraLocked = false;
-    }
-
     [ServerRpc]
     public void SetColliderStateServerRpc(bool state)
     {
@@ -222,11 +86,6 @@ public class Player : NetworkBehaviour
 
     protected virtual void Update()
     {
-        if (ratAbilityInRange && Input.GetKeyDown(KeyCode.T)) // whole ratplayer
-        {
-            ActivateRatAbility();
-        }
-
         if (Input.GetKeyDown(KeyCode.P))
         {
             Debug.Log("test");
@@ -235,23 +94,6 @@ public class Player : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.O))
         {
             ClearConsole();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Q) && isClinging)  // whole ratplayer
-        {
-            isSlapping = !isSlapping;
-        }
-
-        if (isClinging)  // whole ratplayer
-        {
-            transform.position = clingHead.position + clingHead.TransformDirection(Vector3.forward * 0.05f);
-            viewPosition.transform.position = ratAbilityTarget.transform.position;
-
-            Quaternion flip = Quaternion.Euler(0, 180f, 0);
-            transform.rotation = clingHead.rotation * flip;
-            Debug.DrawRay(clingHead.position, clingHead.forward * 0.5f, Color.blue);
-            Debug.DrawRay(clingHead.position, clingHead.up * 0.5f, Color.green);
-            Debug.DrawRay(clingHead.position, clingHead.right * 0.5f, Color.red);
         }
     }
 

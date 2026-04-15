@@ -9,4 +9,5 @@ using UnityEngine.SocialPlatforms;
 public class HumanPlayer : Player
 {
     public GameObject viewPosition;
+    public GameObject ratAbilityTarget;
 }

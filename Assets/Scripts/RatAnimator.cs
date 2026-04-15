@@ -4,13 +4,13 @@ using Unity.Netcode;
 public class RatAnimator : NetworkBehaviour
 {
     Movement movement;
-    Player player;
+    RatPlayer ratPlayer;
     Animator animator;
 
     public override void OnNetworkSpawn()
     {
         movement = GetComponent<Movement>();
-        player = GetComponent<Player>();
+        ratPlayer = GetComponent<RatPlayer>();
         animator = GetComponent<Animator>();
     }
 
@@ -22,8 +22,8 @@ public class RatAnimator : NetworkBehaviour
         animator.SetBool("isGrounded", movement.isGrounded);
         animator.SetBool("pressedSpace", movement.pressedSpace);
 
-        animator.SetBool("isClinging", player.isClinging);
-        animator.SetBool("isSlapping", player.isSlapping);
+        animator.SetBool("isClinging", ratPlayer.isClinging);
+        animator.SetBool("isSlapping", ratPlayer.isSlapping);
 
     }
 }

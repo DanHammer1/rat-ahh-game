@@ -9,7 +9,7 @@ public class Cheese : NetworkBehaviour
     // Update is called once per frame
 
     public bool playerInRange = false;
-    private Player localPlayerInRange;
+    private RatPlayer localPlayerInRange;
 
 
     void Update()
@@ -27,7 +27,7 @@ public class Cheese : NetworkBehaviour
     {
         if (other.CompareTag("PlayerMouse"))
         {
-            Player player = other.GetComponentInParent<Player>();
+            RatPlayer player = other.GetComponentInParent<RatPlayer>();
             localPlayerInRange = player;
 
             if (player != Player.localPlayer) return;
@@ -41,7 +41,7 @@ public class Cheese : NetworkBehaviour
     {
         if (other.CompareTag("PlayerMouse"))
         {
-            Player player = other.GetComponentInParent<Player>();
+            RatPlayer player = other.GetComponentInParent<RatPlayer>();
             localPlayerInRange = player;
 
             if (player != Player.localPlayer) return;

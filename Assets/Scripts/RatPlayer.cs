@@ -10,14 +10,14 @@ public class RatPlayer : Player
 {
     Transform clingHead;
 
-    public GameObject ratAbilityTarget;
-
 
     public bool ratAbilityInRange;
     public GameObject activateRatAbilityPrompt;
-    private Player localHumanInRange;
+    private HumanPlayer localHumanInRange;
     public bool isClinging;
     public bool isSlapping;
+
+    public GameObject eatCheesePrompt;
 
 
     public override void OnNetworkSpawn()
@@ -36,7 +36,7 @@ public class RatPlayer : Player
     {
         if (IsOwner && transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
         {
-            Player player = other.GetComponentInParent<Player>();
+            HumanPlayer player = other.GetComponentInParent<HumanPlayer>();
             localHumanInRange = player;
 
             ratAbilityInRange = true;
@@ -162,7 +162,7 @@ public class RatPlayer : Player
         if (isClinging)  // whole ratplayer
         {
             transform.position = clingHead.position + clingHead.TransformDirection(Vector3.forward * 0.05f);
-            viewPosition.transform.position = ratAbilityTarget.transform.position;
+            localHumanInRange.viewPosition.transform.position = localHumanInRange.ratAbilityTarget.transform.position;
 
             Quaternion flip = Quaternion.Euler(0, 180f, 0);
             transform.rotation = clingHead.rotation * flip;

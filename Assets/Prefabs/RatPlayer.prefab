@@ -982,7 +982,7 @@ GameObject:
   m_Component:
   - component: {fileID: 785355238756736901}
   - component: {fileID: 2588931726614771536}
-  - component: {fileID: 7075066448039958190}
+  - component: {fileID: -4236754629211622639}
   - component: {fileID: 3554162618360092705}
   - component: {fileID: 2306450048612317703}
   - component: {fileID: 555457032786538030}
@@ -1041,7 +1041,7 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &7075066448039958190
+--- !u!114 &-4236754629211622639
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1050,7 +1050,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8956695940269091181}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 487283cacc1e4d34abf97e7f09c41c78, type: 3}
+  m_Script: {fileID: 11500000, guid: bef8f09720b69864d9aa314c6298d674, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
@@ -1065,12 +1065,22 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
+  ratAbilityTarget: {fileID: 0}
   viewPosition: {fileID: 6386831360713167238}
+  movement: {fileID: 0}
+  playerCamera: {fileID: 0}
   eatCheesePrompt: {fileID: 0}
   score: 0
   scoreText: {fileID: 0}
   ratAbilityInRange: 0
   activateRatAbilityPrompt: {fileID: 0}
+  isClinging: 0
+  isSlapping: 0
+  ratAbilityTarget: {fileID: 0}
+  ratAbilityInRange: 0
+  activateRatAbilityPrompt: {fileID: 0}
+  isClinging: 0
+  isSlapping: 0
 --- !u!114 &3554162618360092705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1084,7 +1094,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  headBone: {fileID: 0}
   mouseSensitivity: 10
+  lookTarget: {fileID: 0}
   moveSpeed: 2
   speed: 0
   moveHorizontal: 0
@@ -1094,6 +1106,7 @@ MonoBehaviour:
   fallMultiplier: 2.5
   ascendMultiplier: 2
   isGrounded: 1
+  toggleGravity: 1
   pressedSpace: 0
   timeAirborne: 0
   groundCheckDelay: 0.3
@@ -1263,6 +1276,14 @@ MonoBehaviour:
       ParameterType: 4
     - name: isGrounded
       NameHash: 1360771445
+      Synchronize: 1
+      ParameterType: 4
+    - name: isClinging
+      NameHash: 754204986
+      Synchronize: 1
+      ParameterType: 4
+    - name: isSlapping
+      NameHash: -1375554375
       Synchronize: 1
       ParameterType: 4
   AnimatorParametersExpanded: 0

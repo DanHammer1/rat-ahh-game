@@ -88,7 +88,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1861100698331374466}
   - component: {fileID: 8835541053476802396}
-  - component: {fileID: 4374036614544149237}
+  - component: {fileID: 3109746884636578306}
   - component: {fileID: 6867819731970602610}
   - component: {fileID: 1192673047784221271}
   - component: {fileID: 5707144768937015800}
@@ -152,7 +152,7 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &4374036614544149237
+--- !u!114 &3109746884636578306
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -161,7 +161,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1339862214881163576}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 487283cacc1e4d34abf97e7f09c41c78, type: 3}
+  m_Script: {fileID: 11500000, guid: b58cb3afb5f29a2409395de3e17ad41d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
@@ -178,6 +178,8 @@ MonoBehaviour:
     m_InternalValue: 0
   ratAbilityTarget: {fileID: 4573799804320505065}
   viewPosition: {fileID: 1487555311236963020}
+  movement: {fileID: 0}
+  playerCamera: {fileID: 0}
   eatCheesePrompt: {fileID: 0}
   score: 0
   scoreText: {fileID: 0}
@@ -185,6 +187,7 @@ MonoBehaviour:
   activateRatAbilityPrompt: {fileID: 0}
   isClinging: 0
   isSlapping: 0
+  viewPosition: {fileID: 0}
 --- !u!114 &6867819731970602610
 MonoBehaviour:
   m_ObjectHideFlags: 0
