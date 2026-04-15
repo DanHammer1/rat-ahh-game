@@ -36,8 +36,8 @@ public class RatPlayer : Player
     {
         if (IsOwner && transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
         {
-            HumanPlayer player = other.GetComponentInParent<HumanPlayer>();
-            localHumanInRange = player;
+            HumanPlayer humanPlayer = other.GetComponentInParent<HumanPlayer>();
+            localHumanInRange = humanPlayer;
 
             ratAbilityInRange = true;
             activateRatAbilityPrompt.SetActive(true);
@@ -149,26 +149,55 @@ public class RatPlayer : Player
     {
         base.Update();
 
-        if (ratAbilityInRange && Input.GetKeyDown(KeyCode.T)) // whole ratplayer
+        if (ratAbilityInRange && Input.GetKeyDown(KeyCode.T))
         {
             ActivateRatAbility();
         }
 
-        if (Input.GetKeyDown(KeyCode.Q) && isClinging)  // whole ratplayer
+        if (Input.GetKeyDown(KeyCode.Q) && isClinging)
         {
             isSlapping = !isSlapping;
         }
 
-        if (isClinging)  // whole ratplayer
+        if (isClinging)
         {
-            transform.position = clingHead.position + clingHead.TransformDirection(Vector3.forward * 0.05f);
-            localHumanInRange.viewPosition.transform.position = localHumanInRange.ratAbilityTarget.transform.position;
+            transform.position = clingHead.position + clingHead.TransformDirection(Vector3.forward * 0.1f) + clingHead.TransformDirection(Vector3.down * 0.02f);
+            SetViewPositionServerRpc(localHumanInRange.NetworkObjectId, localHumanInRange.ratAbilityTarget.transform.position);
 
             Quaternion flip = Quaternion.Euler(0, 180f, 0);
             transform.rotation = clingHead.rotation * flip;
             Debug.DrawRay(clingHead.position, clingHead.forward * 0.5f, Color.blue);
             Debug.DrawRay(clingHead.position, clingHead.up * 0.5f, Color.green);
             Debug.DrawRay(clingHead.position, clingHead.right * 0.5f, Color.red);
+        }
+    }
+
+    [ServerRpc]
+    void SetViewPositionServerRpc(ulong humanNetworkId, Vector3 pos)
+    {
+        if (!NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanNetworkId, out NetworkObject netObj))
+        {
+            Debug.Log("Human not found on server");
+            return;
+        }
+
+        HumanPlayer human = netObj.GetComponent<HumanPlayer>();
+
+        if (human == null || human.viewPosition == null)
+        {
+            Debug.Log("Human or viewPosition missing");
+            return;
+        }
+
+        human.viewPosition.transform.position = pos;
+    }
+
+    void OnDrawGizmos()
+    {
+        if (transform.position != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(transform.position, 0.01f);
         }
     }
 }

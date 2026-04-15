@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  cameraTarget: {fileID: 1460116653346028812}
+  cameraTarget: {fileID: 6546728714361510390}
   maxHealth:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0
@@ -176,18 +176,12 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
-  ratAbilityTarget: {fileID: 4573799804320505065}
-  viewPosition: {fileID: 1487555311236963020}
   movement: {fileID: 0}
   playerCamera: {fileID: 0}
-  eatCheesePrompt: {fileID: 0}
   score: 0
   scoreText: {fileID: 0}
-  ratAbilityInRange: 0
-  activateRatAbilityPrompt: {fileID: 0}
-  isClinging: 0
-  isSlapping: 0
-  viewPosition: {fileID: 0}
+  viewPosition: {fileID: 1487555311236963020}
+  ratAbilityTarget: {fileID: 4573799804320505065}
 --- !u!114 &6867819731970602610
 MonoBehaviour:
   m_ObjectHideFlags: 0
