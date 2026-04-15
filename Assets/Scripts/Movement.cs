@@ -9,7 +9,7 @@ using NUnit.Framework.Constraints;
 public class Movement : NetworkBehaviour
 {
     Animator animator;
-    Transform headBone;
+    public Transform headBone;
 
     // camera rotation
     public float mouseSensitivity;
@@ -57,6 +57,7 @@ public class Movement : NetworkBehaviour
         raycastDistance = (playerHeight / 2) + 0.2f;
 
         GROUNDLAYER = LayerMask.GetMask("groundLayer");
+        animator = GetComponent<Animator>();
 
         if (transform.tag == "PlayerMouse")
         {
@@ -73,9 +74,7 @@ public class Movement : NetworkBehaviour
             ascendMultiplier = Constants.humanAscendMultiplier;
             headBone = animator.GetBoneTransform(HumanBodyBones.Head);
         }
-        Debug.Log("Avatar: " + animator.avatar);
         mouseSensitivity = Constants.mouseSensitivity;
-        animator = GetComponent<Animator>();
     }
 
 
@@ -135,32 +134,15 @@ public class Movement : NetworkBehaviour
         speed = new Vector2(moveForward, moveHorizontal).magnitude; // replaced below line with this cause moving camera was triggering walk animation
         // speed = rb.linearVelocity.magnitude; // Do not delete PlayerAnimator script uses this.
 
-        lookTarget.transform.position = cameraTransform.position + cameraTransform.forward * 1f;
+        if (transform.tag == "PlayerHuman")
+        {
+            lookTarget.transform.position = cameraTransform.position + cameraTransform.forward * 1f;
+        }
+
 
         verticalRotation -= Input.GetAxis("Mouse Y") * mouseSensitivity;
         // verticalRotation = Mathf.Clamp(verticalRotation, -60f, 60f);
     }
-
-    void LateUpdate()
-    {
-        if (!IsOwner) return;
-
-        ApplyHeadTilt();
-    }
-
-    void ApplyHeadTilt()
-    {
-        if (headBone == null) return;
-
-        Vector3 currentEuler = headBone.localEulerAngles;
-        currentEuler.x = verticalRotation;
-        headBone.localEulerAngles = currentEuler;
-
-        // Quaternion animRotation = headBone.localRotation;
-        // Quaternion pitchRotation = Quaternion.Euler(verticalRotation, 0f, 0f);
-        // headBone.localRotation = animRotation * pitchRotation;
-    }
-
 
     bool CheckGrounded()
     {

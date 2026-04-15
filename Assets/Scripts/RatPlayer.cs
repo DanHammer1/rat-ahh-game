@@ -6,102 +6,33 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine.SocialPlatforms;
 
-
-#if UNITY_EDITOR
-using System.Reflection;
-#endif
-
-public class Player : NetworkBehaviour
+public class RatPlayer : Player
 {
-    public static Player localPlayer;
+    Transform clingHead;
 
-    CinemachineCamera cam;
-    public Transform cameraTarget;
-    Transform clingHead; // ratplayer
-
-    public NetworkVariable<float> maxHealth = new NetworkVariable<float>(100);
-    public NetworkVariable<float> health = new NetworkVariable<float>();
-    public GameObject ratAbilityTarget; // ratplayer
-    public GameObject viewPosition; // humanplayer
-    public Movement movement;
-    BoxCollider boxCollider;
-    private Rigidbody rb;
-    public PlayerCamera playerCamera;
+    public GameObject ratAbilityTarget;
 
 
+    public bool ratAbilityInRange;
+    public GameObject activateRatAbilityPrompt;
+    private Player localHumanInRange;
+    public bool isClinging;
+    public bool isSlapping;
 
-
-    // Cheese/score info
-    public GameObject eatCheesePrompt;
-    public int score;
-    public TextMeshProUGUI scoreText;
-
-
-
-    // Rat info
-    public bool ratAbilityInRange; // ratplayer
-    public GameObject activateRatAbilityPrompt; // ratplayer
-    private Player localHumanInRange; // ratplayer
-    public bool isClinging; // ratplayer
-    public bool isSlapping; // ratplayer
-    Animator animator;
 
     public override void OnNetworkSpawn()
     {
-        animator = GetComponent<Animator>();
-        movement = GetComponentInParent<Movement>();
-        boxCollider = GetComponentInParent<BoxCollider>();
+        base.OnNetworkSpawn();
 
-        if (IsServer)
-        {
-            maxHealth.Value = 100;
-            health.Value = maxHealth.Value;
-        }
+        eatCheesePrompt = GameObject.FindWithTag("Eat Cheese Prompt");
+        eatCheesePrompt.SetActive(false);
 
-        if (!IsOwner) return;
-        localPlayer = this;
-
-        playerCamera = PlayerCamera.instance;
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        SetupCamera();
-        rb = GetComponent<Rigidbody>();
-
-        eatCheesePrompt = GameObject.FindWithTag("Eat Cheese Prompt"); // ratplayer
-        eatCheesePrompt.SetActive(false); // ratplayer
-
-        score = 0;
-        scoreText = GameObject.FindWithTag("Score").GetComponent<TextMeshProUGUI>();
-
-        activateRatAbilityPrompt = GameObject.FindWithTag("Activate Rat Ability Prompt"); // ratplayer
-        activateRatAbilityPrompt.SetActive(false); // ratplayer
-        ratAbilityInRange = false; // ratplayer
+        activateRatAbilityPrompt = GameObject.FindWithTag("Activate Rat Ability Prompt");
+        activateRatAbilityPrompt.SetActive(false);
+        ratAbilityInRange = false;
     }
 
-    void SetupCamera()
-    {
-        CinemachineCamera cam = FindFirstObjectByType<CinemachineCamera>();
-
-        if (cam == null)
-        {
-            Debug.LogError("CinemachineCamera not found in scene!");
-            return;
-        }
-
-        if (cameraTarget == null)
-        {
-            Debug.LogError("CameraTarget not assigned on Player!");
-            return;
-        }
-
-        cam.Follow = cameraTarget;
-        cam.LookAt = cameraTarget;
-    }
-
-
-    void OnTriggerStay(Collider other) // whole ratplayer
+    void OnTriggerStay(Collider other)
     {
         if (IsOwner && transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
         {
@@ -113,7 +44,7 @@ public class Player : NetworkBehaviour
         }
     }
 
-    void OnTriggerExit(Collider other) // whole ratplayer
+    void OnTriggerExit(Collider other)
     {
         if (IsOwner && transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
         {
@@ -127,13 +58,13 @@ public class Player : NetworkBehaviour
         }
     }
 
-    void ActivateRatAbility() // whole ratplayer
+    void ActivateRatAbility()
     {
         if (localHumanInRange == null) return; //safety check
         StartCoroutine(RatAbilityCoroutine());
     }
 
-    IEnumerator RatAbilityCoroutine() // whole ratplayer
+    IEnumerator RatAbilityCoroutine()
     {
         ClearConsole();
 
@@ -214,27 +145,13 @@ public class Player : NetworkBehaviour
         // playerCamera.isCameraLocked = false;
     }
 
-    [ServerRpc]
-    public void SetColliderStateServerRpc(bool state)
+    protected override void Update()
     {
-        boxCollider.enabled = state;
-    }
+        base.Update();
 
-    protected virtual void Update()
-    {
         if (ratAbilityInRange && Input.GetKeyDown(KeyCode.T)) // whole ratplayer
         {
             ActivateRatAbility();
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Debug.Log("test");
-        }
-
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            ClearConsole();
         }
 
         if (Input.GetKeyDown(KeyCode.Q) && isClinging)  // whole ratplayer
@@ -254,14 +171,4 @@ public class Player : NetworkBehaviour
             Debug.DrawRay(clingHead.position, clingHead.right * 0.5f, Color.red);
         }
     }
-
-#if UNITY_EDITOR
-    public void ClearConsole()
-    {
-        var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));
-        var type = assembly.GetType("UnityEditor.LogEntries");
-        var method = type.GetMethod("Clear");
-        method.Invoke(new object(), null);
-    }
-#endif
 }
