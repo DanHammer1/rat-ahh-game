@@ -18,10 +18,8 @@ public class RatPlayer : Player
     public bool isSlapping;
     public int slapCount;
     public float ratAbilityCooldown;
-
-
-
-    public GameObject eatCheesePrompt;
+    public float ratAbilityHumanStunDuration;
+    public float ratAbilityHumanShakeMeter;
 
 
     public override void OnNetworkSpawn()
@@ -29,8 +27,6 @@ public class RatPlayer : Player
         base.OnNetworkSpawn();
 
         if (!IsOwner) return;
-        eatCheesePrompt = GameObject.FindWithTag("Eat Cheese Prompt");
-        eatCheesePrompt.SetActive(false);
         ratAbilityInRange = false;
 
 
@@ -84,6 +80,7 @@ public class RatPlayer : Player
 
         isSlapping = false;
         isClinging = false;
+        ratAbilityHumanShakeMeter = 0f;
 
         Vector3 startPos = transform.position;
         Vector3 targetPos = localHumanInRange.ratAbilityTarget.transform.position;
@@ -169,7 +166,7 @@ public class RatPlayer : Player
 
         isClinging = false;
         movement.isPerformingAbility = false;
-        ratAbilityCooldown = 10f;
+        ratAbilityCooldown = Constants.maxRatAbilityCooldown;
     }
     protected override void Update()
     {
@@ -194,6 +191,7 @@ public class RatPlayer : Player
         {
             abilityTText.color = Color.gray;
         }
+        abilityIconBackgroundImage.fillAmount = Mathf.Clamp01((Constants.maxRatAbilityCooldown - ratAbilityCooldown) / Constants.maxRatAbilityCooldown);
 
         if (ratAbilityInRange && Input.GetKeyDown(KeyCode.T) && ratAbilityCooldown == 0)
         {
@@ -223,6 +221,14 @@ public class RatPlayer : Player
             Debug.DrawRay(clingHead.position, clingHead.forward * 0.5f, Color.blue);
             Debug.DrawRay(clingHead.position, clingHead.up * 0.5f, Color.green);
             Debug.DrawRay(clingHead.position, clingHead.right * 0.5f, Color.red);
+
+            ratAbilityHumanShakeMeter += Time.deltaTime;
+        }
+
+        if (ratAbilityHumanShakeMeter >= Constants.maxRatAbilityHumanShakeMeter)
+        {
+            ratAbilityHumanShakeMeter = Constants.maxRatAbilityHumanShakeMeter;
+            UnCling();
         }
     }
 

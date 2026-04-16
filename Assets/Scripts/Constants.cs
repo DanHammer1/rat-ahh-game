@@ -12,6 +12,8 @@ public static class Constants
     public static float ratAscendMultiplier = 0.8f;
     public static float ratAbilityDuration = 0.4f;
     public static float ratAbilityClingRange = 0.19f;
+    public static float maxRatAbilityCooldown = 10f;
+    public static float maxRatAbilityHumanShakeMeter = 10f;
     # endregion
 
     # region "Human"

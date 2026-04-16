@@ -27,18 +27,26 @@ public class Player : NetworkBehaviour
     public PlayerCamera playerCamera;
     public ClientNetworkTransform clientNetworkTransform;
 
+    // Ability Icon
     public GameObject abilityIcon;
     public GameObject abilityIconBackgroundOutline;
     public Image abilityIconBackgroundOutlineImage;
     public GameObject abilityT;
     public TextMeshProUGUI abilityTText;
     public GameObject abilityIconBackground;
+    public Image abilityIconBackgroundImage;
+
+    // Rat Ability Shake Meter
+    public GameObject ratAbilityShakeUI;
+    public GameObject shakeProgressBar;
 
     // Cheese/score info
     public int score;
     public TextMeshProUGUI scoreText;
 
     Animator animator;
+
+    public GameObject eatCheesePrompt;
 
     public override void OnNetworkSpawn()
     {
@@ -69,12 +77,20 @@ public class Player : NetworkBehaviour
 
         abilityIcon = GameObject.FindWithTag("Ability Icon");
         abilityIconBackground = GameObject.FindWithTag("Ability Icon Background");
+        abilityIconBackgroundImage = abilityIconBackground.GetComponent<Image>();
         abilityIconBackgroundOutline = GameObject.FindWithTag("Ability Icon Background Outline");
         abilityIconBackgroundOutlineImage = abilityIconBackgroundOutline.GetComponent<Image>();
         abilityT = GameObject.FindWithTag("Ability T");
         abilityTText = abilityT.GetComponent<TextMeshProUGUI>();
 
         abilityIcon.SetActive(false);
+
+        eatCheesePrompt = GameObject.FindWithTag("Eat Cheese Prompt");
+        eatCheesePrompt.SetActive(false);
+
+        ratAbilityShakeUI = GameObject.FindWithTag("Rat Ability Shake UI");
+        ratAbilityShakeUI.SetActive(false);
+        shakeProgressBar = GameObject.FindWithTag("Shake Progress Bar");
     }
 
     void SetupCamera()
