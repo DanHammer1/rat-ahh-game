@@ -5,6 +5,7 @@ using TMPro;
 using System.Collections;
 using UnityEditor;
 using UnityEngine.SocialPlatforms;
+using UnityEngine.UI;
 
 public class RatPlayer : Player
 {
@@ -12,10 +13,13 @@ public class RatPlayer : Player
 
 
     public bool ratAbilityInRange;
-    public GameObject activateRatAbilityPrompt;
     private HumanPlayer localHumanInRange;
     public bool isClinging;
     public bool isSlapping;
+    public int slapCount;
+    public float ratAbilityCooldown;
+
+
 
     public GameObject eatCheesePrompt;
 
@@ -24,23 +28,34 @@ public class RatPlayer : Player
     {
         base.OnNetworkSpawn();
 
+        if (!IsOwner) return;
         eatCheesePrompt = GameObject.FindWithTag("Eat Cheese Prompt");
         eatCheesePrompt.SetActive(false);
-
-        activateRatAbilityPrompt = GameObject.FindWithTag("Activate Rat Ability Prompt");
-        activateRatAbilityPrompt.SetActive(false);
         ratAbilityInRange = false;
+
+
+        slapCount = 0;
+        ratAbilityCooldown = 0;
+
+        Debug.Log("Outline GO: " + abilityIconBackgroundOutline);
+        Debug.Log("Outline Image: " + abilityIconBackgroundOutlineImage);
+        Debug.Log("Ability T: " + abilityT);
+        Debug.Log("Ability T Text: " + abilityTText);
+
+        abilityIcon.SetActive(true);
     }
 
     void OnTriggerStay(Collider other)
     {
-        if (IsOwner && transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
+        if (transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
         {
             HumanPlayer humanPlayer = other.GetComponentInParent<HumanPlayer>();
             localHumanInRange = humanPlayer;
 
-            ratAbilityInRange = true;
-            activateRatAbilityPrompt.SetActive(true);
+            if (IsOwner)
+            {
+                ratAbilityInRange = true;
+            }
         }
     }
 
@@ -49,7 +64,6 @@ public class RatPlayer : Player
         if (IsOwner && transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
         {
             ratAbilityInRange = false;
-            activateRatAbilityPrompt.SetActive(false);
 
             if (!movement.isPerformingAbility)
             {
@@ -67,7 +81,6 @@ public class RatPlayer : Player
     IEnumerator RatAbilityCoroutine()
     {
         ClearConsole();
-
 
         isSlapping = false;
         isClinging = false;
@@ -127,41 +140,82 @@ public class RatPlayer : Player
             {
                 SetColliderStateServerRpc(false);
                 rb.linearVelocity = Vector3.zero;
-                rb.useGravity = false;
+                rb.angularVelocity = Vector3.zero;
+                rb.linearDamping = originalDrag;
                 movement.toggleGravity = false;
                 clingHead = localHumanInRange.movement.headBone;
 
-                rb.constraints = RigidbodyConstraints.FreezeAll;
+                rb.useGravity = false;
+                rb.detectCollisions = false;
+                slapCount = 0;
+
                 isClinging = true;
                 break;
             }
             yield return new WaitForFixedUpdate();
         }
-
-        rb.linearVelocity = Vector3.zero;
-        rb.linearDamping = originalDrag;
         // movement.isPerformingAbility = false;
         Debug.DrawLine(transform.position, targetPos, Color.red, 3f);
         // playerCamera.isCameraLocked = false;
     }
 
+    void UnCling()
+    {
+        SetColliderStateServerRpc(true);
+        movement.toggleGravity = true;
+
+        rb.useGravity = true;
+        rb.detectCollisions = true;
+
+        isClinging = false;
+        movement.isPerformingAbility = false;
+        ratAbilityCooldown = 10f;
+    }
     protected override void Update()
     {
         base.Update();
 
-        if (ratAbilityInRange && Input.GetKeyDown(KeyCode.T))
+        if (!IsOwner) return;
+        if (ratAbilityCooldown > 0)
+        {
+            ratAbilityCooldown -= Time.deltaTime;
+            abilityIconBackgroundOutlineImage.color = new Color(0.4264151f, 0.4264151f, 0.4264151f); // dark gray
+        }
+        if (ratAbilityCooldown < 0) ratAbilityCooldown = 0;
+        if (ratAbilityCooldown == 0)
+        {
+            abilityIconBackgroundOutlineImage.color = new Color(0f, 1f, 0.03321505f);
+        }
+        if (ratAbilityInRange && ratAbilityCooldown == 0)
+        {
+            abilityTText.color = Color.white;
+        }
+        else
+        {
+            abilityTText.color = Color.gray;
+        }
+
+        if (ratAbilityInRange && Input.GetKeyDown(KeyCode.T) && ratAbilityCooldown == 0)
         {
             ActivateRatAbility();
         }
-
         if (Input.GetKeyDown(KeyCode.Q) && isClinging)
         {
             isSlapping = !isSlapping;
+            slapCount += 1;
+        }
+        if (Input.GetKeyDown(KeyCode.U) && isClinging)
+        {
+            UnCling();
         }
 
-        if (isClinging)
+        if (isClinging && IsOwner)
         {
-            transform.position = clingHead.position + clingHead.TransformDirection(Vector3.forward * 0.1f) + clingHead.TransformDirection(Vector3.down * 0.02f);
+            clingHead = localHumanInRange.movement.headBone;
+            transform.position =
+                clingHead.position +
+                clingHead.TransformDirection(Vector3.forward * 0.1f) +
+                clingHead.TransformDirection(Vector3.down * 0.02f);
             SetViewPositionServerRpc(localHumanInRange.NetworkObjectId, localHumanInRange.ratAbilityTarget.transform.position);
 
             Quaternion flip = Quaternion.Euler(0, 180f, 0);

@@ -5,6 +5,7 @@ using TMPro;
 using System.Collections;
 using UnityEditor;
 using UnityEngine.SocialPlatforms;
+using UnityEngine.UI;
 
 
 #if UNITY_EDITOR
@@ -22,8 +23,16 @@ public class Player : NetworkBehaviour
     public NetworkVariable<float> health = new NetworkVariable<float>();
     public Movement movement;
     BoxCollider boxCollider;
-    private Rigidbody rb;
+    public Rigidbody rb;
     public PlayerCamera playerCamera;
+    public ClientNetworkTransform clientNetworkTransform;
+
+    public GameObject abilityIcon;
+    public GameObject abilityIconBackgroundOutline;
+    public Image abilityIconBackgroundOutlineImage;
+    public GameObject abilityT;
+    public TextMeshProUGUI abilityTText;
+    public GameObject abilityIconBackground;
 
     // Cheese/score info
     public int score;
@@ -34,8 +43,10 @@ public class Player : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         animator = GetComponent<Animator>();
-        movement = GetComponentInParent<Movement>();
-        boxCollider = GetComponentInParent<BoxCollider>();
+        movement = GetComponent<Movement>();
+        boxCollider = GetComponent<BoxCollider>();
+        rb = GetComponent<Rigidbody>();
+        clientNetworkTransform = GetComponent<ClientNetworkTransform>();
 
         if (IsServer)
         {
@@ -52,10 +63,18 @@ public class Player : NetworkBehaviour
         Cursor.visible = false;
 
         SetupCamera();
-        rb = GetComponent<Rigidbody>();
 
         score = 0;
         scoreText = GameObject.FindWithTag("Score").GetComponent<TextMeshProUGUI>();
+
+        abilityIcon = GameObject.FindWithTag("Ability Icon");
+        abilityIconBackground = GameObject.FindWithTag("Ability Icon Background");
+        abilityIconBackgroundOutline = GameObject.FindWithTag("Ability Icon Background Outline");
+        abilityIconBackgroundOutlineImage = abilityIconBackgroundOutline.GetComponent<Image>();
+        abilityT = GameObject.FindWithTag("Ability T");
+        abilityTText = abilityT.GetComponent<TextMeshProUGUI>();
+
+        abilityIcon.SetActive(false);
     }
 
     void SetupCamera()

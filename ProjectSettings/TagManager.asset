@@ -11,6 +11,10 @@ TagManager:
   - Rat Stun Hitbox
   - Eat Cheese Prompt
   - Activate Rat Ability Prompt
+  - Ability Icon
+  - Ability Icon Background Outline
+  - Ability T
+  - Ability Icon Background
   layers:
   - Default
   - TransparentFX

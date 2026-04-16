@@ -177,6 +177,7 @@ MonoBehaviour:
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
   movement: {fileID: 0}
+  rb: {fileID: 0}
   playerCamera: {fileID: 0}
   score: 0
   scoreText: {fileID: 0}

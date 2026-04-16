@@ -1065,22 +1065,21 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
-  ratAbilityTarget: {fileID: 0}
-  viewPosition: {fileID: 6386831360713167238}
   movement: {fileID: 0}
+  rb: {fileID: 0}
   playerCamera: {fileID: 0}
-  eatCheesePrompt: {fileID: 0}
+  clientNetworkTransform: {fileID: 0}
   score: 0
   scoreText: {fileID: 0}
   ratAbilityInRange: 0
   activateRatAbilityPrompt: {fileID: 0}
-  isClinging: 0
+  isClinging:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 1
   isSlapping: 0
-  ratAbilityTarget: {fileID: 0}
-  ratAbilityInRange: 0
-  activateRatAbilityPrompt: {fileID: 0}
-  isClinging: 0
-  isSlapping: 0
+  eatCheesePrompt: {fileID: 0}
 --- !u!114 &3554162618360092705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1170,7 +1169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  NetworkTransformExpanded: 0
+  NetworkTransformExpanded: 1
   AutoOwnerAuthorityTickOffset: 1
   PositionInterpolationType: 0
   RotationInterpolationType: 0
@@ -1190,9 +1189,9 @@ MonoBehaviour:
   SyncRotAngleX: 1
   SyncRotAngleY: 1
   SyncRotAngleZ: 1
-  SyncScaleX: 1
-  SyncScaleY: 1
-  SyncScaleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
   PositionThreshold: 0.001
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
