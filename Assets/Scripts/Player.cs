@@ -39,6 +39,7 @@ public class Player : NetworkBehaviour
     // Rat Ability Shake Meter
     public GameObject ratAbilityShakeUI;
     public GameObject shakeProgressBar;
+    public Image shakeProgressBarImage;
 
     // Cheese/score info
     public int score;
@@ -83,14 +84,16 @@ public class Player : NetworkBehaviour
         abilityT = GameObject.FindWithTag("Ability T");
         abilityTText = abilityT.GetComponent<TextMeshProUGUI>();
 
-        abilityIcon.SetActive(false);
-
         eatCheesePrompt = GameObject.FindWithTag("Eat Cheese Prompt");
-        eatCheesePrompt.SetActive(false);
 
         ratAbilityShakeUI = GameObject.FindWithTag("Rat Ability Shake UI");
-        ratAbilityShakeUI.SetActive(false);
         shakeProgressBar = GameObject.FindWithTag("Shake Progress Bar");
+        shakeProgressBarImage = shakeProgressBar.GetComponent<Image>();
+
+
+        ratAbilityShakeUI.SetActive(false);
+        eatCheesePrompt.SetActive(false);
+        abilityIcon.SetActive(false);
     }
 
     void SetupCamera()

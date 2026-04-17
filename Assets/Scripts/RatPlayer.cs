@@ -6,6 +6,8 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
+using ParrelSync.NonCore;
+using UnityEditor.Search;
 
 public class RatPlayer : Player
 {
@@ -16,7 +18,6 @@ public class RatPlayer : Player
     private HumanPlayer localHumanInRange;
     public bool isClinging;
     public bool isSlapping;
-    public int slapCount;
     public float ratAbilityCooldown;
     public float ratAbilityHumanStunDuration;
     public float ratAbilityHumanShakeMeter;
@@ -29,14 +30,7 @@ public class RatPlayer : Player
         if (!IsOwner) return;
         ratAbilityInRange = false;
 
-
-        slapCount = 0;
         ratAbilityCooldown = 0;
-
-        Debug.Log("Outline GO: " + abilityIconBackgroundOutline);
-        Debug.Log("Outline Image: " + abilityIconBackgroundOutlineImage);
-        Debug.Log("Ability T: " + abilityT);
-        Debug.Log("Ability T Text: " + abilityTText);
 
         abilityIcon.SetActive(true);
     }
@@ -80,7 +74,7 @@ public class RatPlayer : Player
 
         isSlapping = false;
         isClinging = false;
-        ratAbilityHumanShakeMeter = 0f;
+        SetHumanShakeMeterValueServerRpc(localHumanInRange.NetworkObjectId, 0f);
 
         Vector3 startPos = transform.position;
         Vector3 targetPos = localHumanInRange.ratAbilityTarget.transform.position;
@@ -127,12 +121,6 @@ public class RatPlayer : Player
             float t = elapsed / ratAbilityDuration;
             elapsed += Time.fixedDeltaTime;
 
-            // Debug.DrawLine(transform.position, targetPos, Color.red, 0.02f);
-            // if (Vector3.Distance(transform.position, targetPos) <= Constants.ratAbilityClingRange)
-            // {
-            //     Debug.Log(Vector3.Distance(transform.position, targetPos));
-            // }
-
             if (Vector3.Distance(transform.position, targetPos) <= Constants.ratAbilityClingRange)
             {
                 SetColliderStateServerRpc(false);
@@ -144,7 +132,7 @@ public class RatPlayer : Player
 
                 rb.useGravity = false;
                 rb.detectCollisions = false;
-                slapCount = 0;
+                UpdateHumanSlapCountServerRpc(localHumanInRange.NetworkObjectId, 0, "Set");
 
                 isClinging = true;
                 break;
@@ -167,6 +155,8 @@ public class RatPlayer : Player
         isClinging = false;
         movement.isPerformingAbility = false;
         ratAbilityCooldown = Constants.maxRatAbilityCooldown;
+
+        SetHumanClingStateServerRpc(localHumanInRange.NetworkObjectId, false);
     }
     protected override void Update()
     {
@@ -200,7 +190,7 @@ public class RatPlayer : Player
         if (Input.GetKeyDown(KeyCode.Q) && isClinging)
         {
             isSlapping = !isSlapping;
-            slapCount += 1;
+            UpdateHumanSlapCountServerRpc(localHumanInRange.NetworkObjectId, 1, "Add");
         }
         if (Input.GetKeyDown(KeyCode.U) && isClinging)
         {
@@ -210,26 +200,27 @@ public class RatPlayer : Player
         if (isClinging && IsOwner)
         {
             clingHead = localHumanInRange.movement.headBone;
+            HumanPlayer humanPlayer = localHumanInRange.GetComponent<HumanPlayer>();
+            IncreaseHumanShakeMeterValueServerRpc(localHumanInRange.NetworkObjectId, Time.deltaTime);
+            SetHumanClingStateServerRpc(localHumanInRange.NetworkObjectId, true);
             transform.position =
                 clingHead.position +
                 clingHead.TransformDirection(Vector3.forward * 0.1f) +
                 clingHead.TransformDirection(Vector3.down * 0.02f);
             SetViewPositionServerRpc(localHumanInRange.NetworkObjectId, localHumanInRange.ratAbilityTarget.transform.position);
 
+
             Quaternion flip = Quaternion.Euler(0, 180f, 0);
             transform.rotation = clingHead.rotation * flip;
             Debug.DrawRay(clingHead.position, clingHead.forward * 0.5f, Color.blue);
             Debug.DrawRay(clingHead.position, clingHead.up * 0.5f, Color.green);
             Debug.DrawRay(clingHead.position, clingHead.right * 0.5f, Color.red);
-
-            ratAbilityHumanShakeMeter += Time.deltaTime;
+            if (humanPlayer.ratAbilityHumanShakeMeter.Value >= Constants.maxRatAbilityHumanShakeMeter)
+            {
+                UnCling();
+            }
         }
 
-        if (ratAbilityHumanShakeMeter >= Constants.maxRatAbilityHumanShakeMeter)
-        {
-            ratAbilityHumanShakeMeter = Constants.maxRatAbilityHumanShakeMeter;
-            UnCling();
-        }
     }
 
     [ServerRpc]
@@ -250,6 +241,65 @@ public class RatPlayer : Player
         }
 
         human.viewPosition.transform.position = pos;
+    }
+
+    [ServerRpc]
+    void SetHumanClingStateServerRpc(ulong humanId, bool state)
+    {
+        if (NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanId, out NetworkObject netObj))
+        {
+            HumanPlayer human = netObj.GetComponent<HumanPlayer>();
+            if (human != null)
+            {
+                human.isBeingClung.Value = state;
+            }
+        }
+    }
+
+    [ServerRpc]
+    void IncreaseHumanShakeMeterValueServerRpc(ulong humanId, float value)
+    {
+        if (NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanId, out NetworkObject netObj))
+        {
+            HumanPlayer human = netObj.GetComponent<HumanPlayer>();
+            if (human != null)
+            {
+                human.ratAbilityHumanShakeMeter.Value += value;
+            }
+        }
+    }
+
+    [ServerRpc]
+    void SetHumanShakeMeterValueServerRpc(ulong humanId, float value)
+    {
+        if (NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanId, out NetworkObject netObj))
+        {
+            HumanPlayer human = netObj.GetComponent<HumanPlayer>();
+            if (human != null)
+            {
+                human.ratAbilityHumanShakeMeter.Value = value;
+            }
+        }
+    }
+
+    [ServerRpc]
+    void UpdateHumanSlapCountServerRpc(ulong humanId, int value, string addOrSet)
+    {
+        if (NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanId, out NetworkObject netObj))
+        {
+            HumanPlayer human = netObj.GetComponent<HumanPlayer>();
+            if (human != null)
+            {
+                if (addOrSet == "Add")
+                {
+                    human.slapCount.Value += value;
+                }
+                if (addOrSet == "Set")
+                {
+                    human.slapCount.Value = value;
+                }
+            }
+        }
     }
 
     void OnDrawGizmos()

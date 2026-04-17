@@ -25,6 +25,7 @@ public class Movement : NetworkBehaviour
     public float moveHorizontal;
     public float moveForward;
     public bool isPerformingAbility = false;
+    public bool isMovementLocked = false;
     public readonly float forceMultiplier = 10;
     public readonly float jumpForceMultiplier = 0.2f;
 
@@ -107,8 +108,20 @@ public class Movement : NetworkBehaviour
         );
 
         if (!IsOwner) return;
-        moveHorizontal = Input.GetAxisRaw("Horizontal");
-        moveForward = Input.GetAxisRaw("Vertical");
+        if (!isMovementLocked)
+        {
+            moveHorizontal = Input.GetAxisRaw("Horizontal");
+            moveForward = Input.GetAxisRaw("Vertical");
+        }
+        else
+        {
+            moveHorizontal = 0f;
+            moveForward = 0f;
+        }
+        if (isMovementLocked)
+        {
+            rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
+        }
         if (!isPerformingAbility)
         {
             MovePlayer(moveSpeed);
@@ -131,8 +144,8 @@ public class Movement : NetworkBehaviour
             rb.useGravity = false;
         }
 
-        speed = new Vector2(moveForward, moveHorizontal).magnitude; // replaced below line with this cause moving camera was triggering walk animation
-        // speed = rb.linearVelocity.magnitude; // Do not delete PlayerAnimator script uses this.
+        speed = new Vector2(moveForward, moveHorizontal).magnitude;
+
 
         if (transform.tag == "PlayerHuman")
         {
@@ -174,20 +187,24 @@ public class Movement : NetworkBehaviour
         Quaternion targetRotation = Quaternion.Euler(0, yaw, 0);
         rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, 8f * Time.fixedDeltaTime));
 
-        // Movement
-        Vector3 targetVelocity = movement * moveSpeed;
-        Vector3 velocity = rb.linearVelocity;
-        velocity.x = targetVelocity.x;
-        velocity.y = 0;
-        velocity.z = targetVelocity.z;
-        rb.AddForce(velocity * forceMultiplier);
-
-        LimitSpeed(moveSpeed);
-
-        if (isGrounded && moveHorizontal == 0 && moveForward == 0)
+        if (!isMovementLocked)
         {
-            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+            // Movement
+            Vector3 targetVelocity = movement * moveSpeed;
+            Vector3 velocity = rb.linearVelocity;
+            velocity.x = targetVelocity.x;
+            velocity.y = 0;
+            velocity.z = targetVelocity.z;
+            rb.AddForce(velocity * forceMultiplier);
+
+            LimitSpeed(moveSpeed);
+
+            if (isGrounded && moveHorizontal == 0 && moveForward == 0)
+            {
+                rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+            }
         }
+
     }
 
     void LimitSpeed(float maxSpeed)

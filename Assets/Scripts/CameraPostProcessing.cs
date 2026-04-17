@@ -22,11 +22,24 @@ public class CameraPostProcessing : MonoBehaviour
     void Update()
     {
         if (!Player.localPlayer) return;
+        HumanPlayer human = Player.localPlayer as HumanPlayer;
 
         healthRatio = Player.localPlayer.health.Value / Player.localPlayer.maxHealth.Value;
-
         Vignette vignette;
         postProcessingSettings.Profile.TryGet(out vignette);
-        vignette.intensity.value = minVignetteIntensity + (maxVignetteIntensity - minVignetteIntensity) * (1 - healthRatio);
+
+
+
+        if (human != null && human.isBeingClung.Value)
+        {
+            Debug.Log(human);
+            vignette.color.value = new Color(1f, 0.2f, 0.2f); // softer red
+            vignette.intensity.value = (float)human.slapCount.Value / 50;
+        }
+        else
+        {
+            vignette.color.value = Color.red;
+            vignette.intensity.value = minVignetteIntensity + (maxVignetteIntensity - minVignetteIntensity) * (1 - healthRatio);
+        }
     }
 }
