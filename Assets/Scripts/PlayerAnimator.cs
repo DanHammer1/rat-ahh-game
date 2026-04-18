@@ -4,14 +4,21 @@ using Unity.Netcode;
 public class PlayerAnimator : NetworkBehaviour
 {
     Movement movement;
-    Animator animator;
+    static Animator animator;
     bool isTwerking;
     bool isARAT;
 
     public override void OnNetworkSpawn()
     {
+        if (!IsOwner) return;
         movement = GetComponent<Movement>();
         animator = GetComponent<Animator>();
+    }
+
+    public static void PlayAnimation(string animationName, string animationBool, float length) {
+            animator.SetBool(animationBool, true);
+            animator.CrossFade(animationName, length);
+            animator.SetBool(animationBool, false);
     }
 
     void Update()
@@ -24,16 +31,12 @@ public class PlayerAnimator : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            animator.SetBool("isTwerking", true);
-            animator.CrossFade("Twerk", 0.3f);
-            animator.SetBool("isTwerking", false);
+            PlayAnimation("Twerk", "isTwerking", 0.3f);
         }
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            animator.SetBool("isARAT", true);
-            animator.CrossFade("ARAT", 0.3f);
-            animator.SetBool("isARAT", false);
+            PlayAnimation("ARAT", "isARAT", 0.3f);
         }
     }
 }

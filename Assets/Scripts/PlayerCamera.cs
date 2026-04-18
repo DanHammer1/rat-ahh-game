@@ -7,6 +7,7 @@ using Unity.Cinemachine;
 public class PlayerCamera : MonoBehaviour
 {
     public static PlayerCamera instance;
+    public static GameObject mainCamera;
     public GameObject player;
     CinemachinePositionComposer cinemachinePositionComposer;
     Movement movement;
@@ -19,6 +20,7 @@ public class PlayerCamera : MonoBehaviour
     {
         instance = this;
         isCameraLocked = false;
+        mainCamera = this.gameObject;
     }
 
     public float thirdPersonScrollSensitivity;
@@ -85,7 +87,7 @@ public class PlayerCamera : MonoBehaviour
         {
             playerRenderer.shadowCastingMode =
                 UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
-            cinemachinePositionComposer.Damping = new Vector3(0.05f, 0.05f, 0.05f);
+            cinemachinePositionComposer.Damping = new Vector3(0.00f, 0.00f, 0.00f);
         }
         else
         {

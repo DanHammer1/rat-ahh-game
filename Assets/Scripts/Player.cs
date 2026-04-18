@@ -122,6 +122,11 @@ public class Player : NetworkBehaviour
         boxCollider.enabled = state;
     }
 
+    [ServerRpc]
+    public void EditHealthServerRpc(float newHealth) {
+        health.Value = newHealth;
+    }
+
     protected virtual void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
