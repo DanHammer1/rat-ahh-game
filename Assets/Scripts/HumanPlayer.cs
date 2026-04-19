@@ -13,6 +13,8 @@ public class HumanPlayer : Player
     public NetworkVariable<bool> isBeingClung = new NetworkVariable<bool>(false);
     public NetworkVariable<float> ratAbilityHumanShakeMeter = new NetworkVariable<float>();
     public NetworkVariable<int> slapCount = new NetworkVariable<int>();
+    public NetworkVariable<bool> isDizzy = new NetworkVariable<bool>(false);
+    public float dizzyDuration;
 
 
     void OnDrawGizmos()
@@ -47,7 +49,7 @@ public class HumanPlayer : Player
         if (!IsOwner) return;
         if (isBeingClung.Value)
         {
-            movement.isMovementLocked = true;
+            movement.movementRecoveryMultiplier = Mathf.Exp(-0.1f * slapCount.Value);
             ratAbilityShakeUI.SetActive(true);
             float mouseMovement = Mathf.Sqrt(Mathf.Pow(Input.GetAxis("Mouse X"), 2f) + Mathf.Pow(Input.GetAxis("Mouse Y"), 2));
             ratAbilityHumanShakeMeter.Value += mouseMovement / 100;
@@ -58,12 +60,23 @@ public class HumanPlayer : Player
 
             shakeProgressBarImage.fillAmount = Mathf.Clamp01(ratAbilityHumanShakeMeter.Value / Constants.maxRatAbilityHumanShakeMeter);
         }
+        else if (isDizzy.Value)
+        {
+            ratAbilityShakeUI.SetActive(false);
+            ratAbilityHumanShakeMeter.Value = 0f;
+        }
         else
         {
             ratAbilityShakeUI.SetActive(false);
             ratAbilityHumanShakeMeter.Value = 0f;
             movement.isMovementLocked = false;
         }
-
     }
+
+    public void UpdateDizzyDuration()
+    {
+        dizzyDuration = slapCount.Value * 0.2f;
+    }
+
+
 }

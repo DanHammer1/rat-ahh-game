@@ -12,8 +12,6 @@ public class Movement : NetworkBehaviour
     public Transform headBone;
 
     // camera rotation
-    public float mouseSensitivity;
-    private float verticalRotation;
     private Transform cameraTransform;
     public GameObject lookTarget;
 
@@ -26,8 +24,10 @@ public class Movement : NetworkBehaviour
     public float moveForward;
     public bool isPerformingAbility = false;
     public bool isMovementLocked = false;
+    public bool isRotationLocked = false;
     public readonly float forceMultiplier = 10;
     public readonly float jumpForceMultiplier = 0.2f;
+    public float movementRecoveryMultiplier;
 
 
     // jumping
@@ -75,7 +75,7 @@ public class Movement : NetworkBehaviour
             ascendMultiplier = Constants.humanAscendMultiplier;
             headBone = animator.GetBoneTransform(HumanBodyBones.Head);
         }
-        mouseSensitivity = Constants.mouseSensitivity;
+        movementRecoveryMultiplier = 1;
     }
 
 
@@ -128,7 +128,7 @@ public class Movement : NetworkBehaviour
         }
 
         // ApplyJumpPhysics(fallMultiplier, ascendMultiplier);
-        if (Input.GetButton("Jump") && isGrounded)
+        if (Input.GetButton("Jump") && isGrounded && !isMovementLocked)
         {
             Jump(jumpforce, ascendMultiplier, fallMultiplier);
         }
@@ -151,10 +151,6 @@ public class Movement : NetworkBehaviour
         {
             lookTarget.transform.position = cameraTransform.position + cameraTransform.forward * 1f;
         }
-
-
-        verticalRotation -= Input.GetAxis("Mouse Y") * mouseSensitivity;
-        // verticalRotation = Mathf.Clamp(verticalRotation, -60f, 60f);
     }
 
     bool CheckGrounded()
@@ -184,13 +180,16 @@ public class Movement : NetworkBehaviour
         }
 
         // Apply rotation
-        Quaternion targetRotation = Quaternion.Euler(0, yaw, 0);
-        rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, 8f * Time.fixedDeltaTime));
+        if (!isRotationLocked)
+        {
+            Quaternion targetRotation = Quaternion.Euler(0, yaw, 0);
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, 8f * Time.fixedDeltaTime));
+        }
 
         if (!isMovementLocked)
         {
             // Movement
-            Vector3 targetVelocity = movement * moveSpeed;
+            Vector3 targetVelocity = movement * moveSpeed * movementRecoveryMultiplier;
             Vector3 velocity = rb.linearVelocity;
             velocity.x = targetVelocity.x;
             velocity.y = 0;

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.InputSystem;
 using Unity.Cinemachine;
+using Unity.Netcode;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class PlayerCamera : MonoBehaviour
     public static GameObject mainCamera;
     public GameObject player;
     CinemachinePositionComposer cinemachinePositionComposer;
+    CinemachineInputAxisController cinemachineInputAxisController;
     Movement movement;
     SkinnedMeshRenderer playerRenderer;
 
@@ -28,6 +30,7 @@ public class PlayerCamera : MonoBehaviour
     private float yMovement;
     private float netY;
     private float netX;
+    public float mouseSensitivity;
 
     public enum CameraState
     {
@@ -41,6 +44,8 @@ public class PlayerCamera : MonoBehaviour
     void Start()
     {
         cinemachinePositionComposer = this.GetComponent<CinemachinePositionComposer>();
+        cinemachineInputAxisController = this.GetComponent<CinemachineInputAxisController>();
+        mouseSensitivity = Constants.mouseSensitivity;
     }
 
     void Update()
@@ -55,10 +60,21 @@ public class PlayerCamera : MonoBehaviour
 
         Vector3 centrePos = player.transform.GetChild(1).position;
 
-        xMovement = Input.GetAxis("Mouse X");
-        yMovement = Input.GetAxis("Mouse Y");
+        if (!isCameraLocked)
+        {
+            xMovement = Input.GetAxis("Mouse X");
+            yMovement = Input.GetAxis("Mouse Y");
+        }
+        else
+        {
+            xMovement = 0;
+            yMovement = 0;
+        }
+
 
         thirdPersonRadius -= Input.GetAxis("Mouse ScrollWheel") * thirdPersonScrollSensitivity;
+
+        HumanPlayer human = Player.localPlayer as HumanPlayer;
 
         if (!isCameraLocked)
         {
@@ -103,6 +119,9 @@ public class PlayerCamera : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
             Time.timeScale = 1f;
+
+        cinemachineInputAxisController.Controllers[0].Input.Gain = mouseSensitivity * movement.movementRecoveryMultiplier;
+        cinemachineInputAxisController.Controllers[1].Input.Gain = -mouseSensitivity * movement.movementRecoveryMultiplier;
     }
 
     public void ForceLookAt(Vector3 targetPosition, Vector3 originalPosition)

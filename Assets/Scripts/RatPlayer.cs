@@ -139,9 +139,7 @@ public class RatPlayer : Player
             }
             yield return new WaitForFixedUpdate();
         }
-        // movement.isPerformingAbility = false;
         Debug.DrawLine(transform.position, targetPos, Color.red, 3f);
-        // playerCamera.isCameraLocked = false;
     }
 
     void UnCling()
@@ -157,6 +155,7 @@ public class RatPlayer : Player
         ratAbilityCooldown = Constants.maxRatAbilityCooldown;
 
         SetHumanClingStateServerRpc(localHumanInRange.NetworkObjectId, false);
+        SetHumanDizzyStateServerRpc(localHumanInRange.NetworkObjectId, true);
     }
     protected override void Update()
     {
@@ -298,6 +297,19 @@ public class RatPlayer : Player
                 {
                     human.slapCount.Value = value;
                 }
+            }
+        }
+    }
+
+    [ServerRpc]
+    void SetHumanDizzyStateServerRpc(ulong humanId, bool state)
+    {
+        if (NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanId, out NetworkObject netObj))
+        {
+            HumanPlayer human = netObj.GetComponent<HumanPlayer>();
+            if (human != null)
+            {
+                human.isDizzy.Value = state;
             }
         }
     }
