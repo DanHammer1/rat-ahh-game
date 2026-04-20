@@ -15,6 +15,7 @@ public class HumanPlayer : Player
     public NetworkVariable<int> slapCount = new NetworkVariable<int>();
     public NetworkVariable<bool> isDizzy = new NetworkVariable<bool>(false);
     public float dizzyDuration;
+    public int currentSlapCount;
 
 
     void OnDrawGizmos()
@@ -71,6 +72,12 @@ public class HumanPlayer : Player
             ratAbilityHumanShakeMeter.Value = 0f;
             movement.isMovementLocked = false;
         }
+
+        if (slapCount.Value > currentSlapCount)
+        {
+            CameraShakeManager.instance.CameraShake(impulseSource);
+        }
+        currentSlapCount = slapCount.Value;
     }
 
     public void UpdateDizzyDuration()

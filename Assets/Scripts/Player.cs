@@ -46,6 +46,7 @@ public class Player : NetworkBehaviour
     public TextMeshProUGUI scoreText;
 
     Animator animator;
+    public CinemachineImpulseSource impulseSource;
 
     public GameObject eatCheesePrompt;
 
@@ -94,6 +95,8 @@ public class Player : NetworkBehaviour
         ratAbilityShakeUI.SetActive(false);
         eatCheesePrompt.SetActive(false);
         abilityIcon.SetActive(false);
+
+        impulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
     void SetupCamera()
@@ -123,7 +126,8 @@ public class Player : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void EditHealthServerRpc(float newHealth) {
+    public void EditHealthServerRpc(float newHealth)
+    {
         health.Value = newHealth;
     }
 

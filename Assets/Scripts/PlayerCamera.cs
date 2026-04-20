@@ -12,6 +12,8 @@ public class PlayerCamera : MonoBehaviour
     public GameObject player;
     CinemachinePositionComposer cinemachinePositionComposer;
     CinemachineInputAxisController cinemachineInputAxisController;
+    CinemachineCamera cinemachineCamera;
+    CinemachineBasicMultiChannelPerlin cinemachineNoise;
     Movement movement;
     SkinnedMeshRenderer playerRenderer;
 
@@ -45,11 +47,19 @@ public class PlayerCamera : MonoBehaviour
     {
         cinemachinePositionComposer = this.GetComponent<CinemachinePositionComposer>();
         cinemachineInputAxisController = this.GetComponent<CinemachineInputAxisController>();
+        cinemachineCamera = this.GetComponent<CinemachineCamera>();
+        cinemachineNoise = this.GetComponent<CinemachineBasicMultiChannelPerlin>();
         mouseSensitivity = Constants.mouseSensitivity;
     }
 
     void Update()
     {
+        // Test screen shake - press K
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            TestScreenShake();
+        }
+
         if (Player.localPlayer != null)
         {
             player = Player.localPlayer.gameObject;
@@ -144,5 +154,50 @@ public class PlayerCamera : MonoBehaviour
     public void SetCameraYaw(float yaw)
     {
         netX = yaw;
+    }
+
+    // Test method - press K to trigger screen shake
+    public void TestScreenShake()
+    {
+        if (cinemachineNoise != null)
+        {
+            Debug.Log($"Noise component found!");
+            TriggerScreenShake(100f, 50f, 0.5f);  // Extreme shake for 0.5 seconds
+        }
+        else
+        {
+            Debug.LogError("CinemachineBasicMultiChannelPerlin component not found!");
+        }
+    }
+
+    /// <summary>
+    /// Triggers a screen shake effect
+    /// </summary>
+    public void TriggerScreenShake(float amplitude, float frequency, float duration)
+    {
+        if (cinemachineNoise == null)
+            return;
+
+        StartCoroutine(ScreenShakeCoroutine(amplitude, frequency, duration));
+    }
+
+    private System.Collections.IEnumerator ScreenShakeCoroutine(float amplitude, float frequency, float duration)
+    {
+        // Store original values
+        float originalAmplitude = cinemachineNoise.AmplitudeGain;
+        float originalFrequency = cinemachineNoise.FrequencyGain;
+        bool wasEnabled = cinemachineNoise.enabled;
+
+        // Enable and set shake values
+        cinemachineNoise.enabled = true;
+        cinemachineNoise.AmplitudeGain = amplitude;
+        cinemachineNoise.FrequencyGain = frequency;
+
+        yield return new WaitForSeconds(duration);
+
+        // Restore original values
+        cinemachineNoise.AmplitudeGain = originalAmplitude;
+        cinemachineNoise.FrequencyGain = originalFrequency;
+        cinemachineNoise.enabled = wasEnabled;
     }
 }

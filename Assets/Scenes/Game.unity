@@ -914,6 +914,7 @@ MonoBehaviour:
   player: {fileID: 0}
   isCameraLocked: 0
   thirdPersonScrollSensitivity: 10
+  mouseSensitivity: 0
   cameraState: 0
 --- !u!114 &330585549
 MonoBehaviour:
@@ -3329,6 +3330,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1990268541
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1990268543}
+  - component: {fileID: 1990268542}
+  m_Layer: 0
+  m_Name: Camera Shake Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1990268542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990268541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 814b2348f880d5f42ae531d5211ceb21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  globalShakeForce: 1
+--- !u!4 &1990268543
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990268541}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 451.8099, y: 303.19592, z: -337.29657}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2045982349
 GameObject:
   m_ObjectHideFlags: 0
@@ -3345,6 +3391,7 @@ GameObject:
   - component: {fileID: 2045982350}
   - component: {fileID: 2045982354}
   - component: {fileID: 2045982357}
+  - component: {fileID: 2045982359}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -3504,6 +3551,7 @@ MonoBehaviour:
   player: {fileID: 0}
   isCameraLocked: 0
   thirdPersonScrollSensitivity: 2
+  mouseSensitivity: 0
   cameraState: 0
 --- !u!114 &2045982355
 MonoBehaviour:
@@ -3567,6 +3615,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxVignetteIntensity: 0.5
   minVignetteIntensity: 0
+  maxAperture: 27
+  recoveryTimer: 0
+  startVignetteIntensity: 0
+  startDepthOfFieldAperture: 0
+  startMovementRecoveryMultiplier: 0
+  startedRecovery: 0
+--- !u!114 &2045982359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045982349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ApplyAfter: 2
+  ChannelMask: 1
+  Gain: 1
+  Use2DDistance: 0
+  UseCameraSpace: 1
+  SignalCombinationMode: 0
+  ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    AmplitudeGain: 1
+    FrequencyGain: 1
+    Duration: 1
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -3593,3 +3671,4 @@ SceneRoots:
   - {fileID: 152198282}
   - {fileID: 1025520399}
   - {fileID: 1852970928}
+  - {fileID: 1990268543}
