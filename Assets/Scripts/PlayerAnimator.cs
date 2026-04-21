@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.Animations.Rigging;
 
 public class PlayerAnimator : NetworkBehaviour
 {
@@ -15,10 +16,11 @@ public class PlayerAnimator : NetworkBehaviour
         animator = GetComponent<Animator>();
     }
 
-    public static void PlayAnimation(string animationName, string animationBool, float length) {
-            animator.SetBool(animationBool, true);
-            animator.CrossFade(animationName, length);
-            animator.SetBool(animationBool, false);
+    public static void PlayAnimation(string animationName, string animationBool, float length)
+    {
+        animator.SetBool(animationBool, true);
+        animator.CrossFade(animationName, length);
+        animator.SetBool(animationBool, false);
     }
 
     void Update()

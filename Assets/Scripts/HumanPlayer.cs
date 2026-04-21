@@ -5,6 +5,7 @@ using TMPro;
 using System.Collections;
 using UnityEditor;
 using UnityEngine.SocialPlatforms;
+using UnityEngine.Animations.Rigging;
 
 public class HumanPlayer : Player
 {
@@ -14,6 +15,7 @@ public class HumanPlayer : Player
     public NetworkVariable<float> ratAbilityHumanShakeMeter = new NetworkVariable<float>();
     public NetworkVariable<int> slapCount = new NetworkVariable<int>();
     public NetworkVariable<bool> isDizzy = new NetworkVariable<bool>(false);
+    public RigBuilder rigBuilder;
     public float dizzyDuration;
     public int currentSlapCount;
 
@@ -42,6 +44,16 @@ public class HumanPlayer : Player
         }
         if (!IsOwner) return;
         slapCount.Value = 0;
+        rigBuilder = GetComponent<RigBuilder>();
+    }
+
+    public void DisableRigBuilder()
+    {
+        rigBuilder.layers[0].active = false;
+    }
+    public void EnableRigBuilder()
+    {
+        rigBuilder.layers[0].active = true;
     }
 
     protected override void Update()
