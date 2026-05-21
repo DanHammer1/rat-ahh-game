@@ -125,7 +125,7 @@ public class Player : NetworkBehaviour
         boxCollider.enabled = state;
     }
 
-    [ServerRpc]
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void EditHealthServerRpc(float newHealth)
     {
         health.Value = newHealth;

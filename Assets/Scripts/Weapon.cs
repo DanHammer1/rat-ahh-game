@@ -36,9 +36,16 @@ public class Weapon : NetworkBehaviour
     public void CheckPlayerCollision() {
         GameObject mainCamera = PlayerCamera.mainCamera;
         Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
+        LayerMask ignoreMask = ~LayerMask.GetMask("Hunter", "groundLayer");
 
-        if (Physics.SphereCast(ray, rayRadius, out RaycastHit hit, attackRange)) {
-            if (hit.collider.gameObject.tag == "Rat") {
+        Debug.DrawRay(ray.origin, ray.direction * attackRange, Color.red, 5f);
+
+        if (Physics.SphereCast(ray, rayRadius, out RaycastHit hit, attackRange)) Debug.Log(hit.collider.gameObject.name + ", " + hit.collider.gameObject.tag);
+        if (Physics.SphereCast(ray, rayRadius, out hit, attackRange, ignoreMask)) {
+
+            Debug.Log(hit.collider.gameObject.name + ", " + hit.collider.gameObject.tag);
+
+            if (hit.collider.gameObject.tag == "PlayerMouse") {
                 RatPlayer colliderRatScript = hit.collider.gameObject.GetComponent<RatPlayer>();
                 colliderRatScript.EditHealthServerRpc(colliderRatScript.health.Value - damage);
             }
