@@ -231,7 +231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  cameraTarget: {fileID: 0}
+  cameraTarget: {fileID: 6442123484353839855}
   maxHealth:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0
@@ -298,7 +298,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  headBone: {fileID: 0}
+  headBone: {fileID: 575662163989904282}
   lookTarget: {fileID: 7927201847556250970}
   moveSpeed: 2
   speed: 0
