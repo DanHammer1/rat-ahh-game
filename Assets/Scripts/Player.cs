@@ -19,6 +19,7 @@ public class Player : NetworkBehaviour
     CinemachineCamera cam;
     public Transform cameraTarget;
 
+    public NetworkVariable<ulong> clientId = new NetworkVariable<ulong>();
     public NetworkVariable<float> maxHealth = new NetworkVariable<float>(100);
     public NetworkVariable<float> health = new NetworkVariable<float>();
     public Movement movement;

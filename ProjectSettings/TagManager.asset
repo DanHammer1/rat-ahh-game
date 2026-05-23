@@ -17,6 +17,10 @@ TagManager:
   - Ability Icon Background
   - Shake Progress Bar
   - Rat Ability Shake UI
+  - Cheese
+  - PlayerListUI
+  - ObjectivesUI
+  - TimerUI
   layers:
   - Default
   - TransparentFX

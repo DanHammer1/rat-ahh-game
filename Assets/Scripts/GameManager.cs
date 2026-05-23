@@ -46,6 +46,42 @@ public class GameManager : NetworkBehaviour
         clientRoles.OnListChanged += ClientRolesChanged;
     }
 
+    private List<ulong> GetIds(int role) {
+        List<ulong> newList = new List<ulong>();
+
+        for (int i = 0; i < clientRoles.Count; i++) {
+            if (clientRoles[i] == role) newList.Add(clientIds[i]);
+        }
+
+        return newList;
+    }
+
+    private List<int> GetIndexs(int role) {
+        List<int> newList = new List<int>();
+
+        for (int i = 0; i < clientRoles.Count; i++) {
+            if (clientRoles[i] == role) newList.Add(i);
+        }
+
+        return newList;
+    }
+
+    public List<ulong> GetHunterIds() {
+        return GetIds((int)PlayerRole.Hunter);
+    }
+
+    public List<ulong> GetHiderIds() {
+        return GetIds((int)PlayerRole.Hider);
+    }
+
+    public List<int> GetHunterIndexs() {
+        return GetIndexs((int)PlayerRole.Hunter);
+    }
+
+    public List<int> GetHiderIndexs() {
+        return GetIndexs((int)PlayerRole.Hider);
+    }
+
     private void ClientIdsChanged(NetworkListEvent<ulong> changeEvent)
     {
         updateCount++;
@@ -87,6 +123,7 @@ public class GameManager : NetworkBehaviour
         }
         NetworkObject netObj = playerInstance.GetComponent<NetworkObject>();
         netObj.SpawnAsPlayerObject(clientId, true);
+        netObj.GetComponent<Player>().clientId.Value = clientId;
         //targetGroup.AddMember(playerInstance.transform.GetChild(1), 1f, 5f);
     }
 
@@ -100,5 +137,11 @@ public class GameManager : NetworkBehaviour
         }
 
         playersSpawned = true;
+    }
+
+    [ClientRpc]
+    public void OnGameStartClientRpc() {
+        gameObject.GetComponent<ProgressManager>().enabled = true;
+        gameObject.GetComponent<ProgressManager>().OnActivate();
     }
 }

@@ -33,6 +33,7 @@ public class Loading : NetworkBehaviour
         {
             if (NetworkManager.Singleton.IsServer) {
                 GameManager.Instance.SpawnAllPlayers();
+                GameManager.Instance.OnGameStartClientRpc();
             }
         };
     }
