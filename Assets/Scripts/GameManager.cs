@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
 using System.Collections.Generic;
+using System;
 using System.Collections;
 using Unity.Collections;
 
@@ -21,6 +22,10 @@ public class GameManager : NetworkBehaviour
     public NetworkList<ulong> clientIds = new NetworkList<ulong>();
     public NetworkList<FixedString32Bytes> clientNames = new NetworkList<FixedString32Bytes>();
     public NetworkList<int> clientRoles = new NetworkList<int>();
+    
+    private NetworkList<ulong>.OnListChangedDelegate onIdsChanged = (x) => updateCount++;
+    private NetworkList<FixedString32Bytes>.OnListChangedDelegate onNamesChanged = (x) => updateCount++;
+    private NetworkList<int>.OnListChangedDelegate onRolesChanged = (x) => updateCount++;
 
     void Awake()
     {
@@ -31,19 +36,19 @@ public class GameManager : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (clientIds != null)
-            clientIds.OnListChanged -= ClientIdsChanged;
+            clientIds.OnListChanged -= onIdsChanged;
 
         if (clientNames != null)
-            clientNames.OnListChanged -= ClientNamesChanged;
+            clientNames.OnListChanged -= onNamesChanged;
 
         if (clientRoles != null)
-            clientRoles.OnListChanged -= ClientRolesChanged;
+            clientRoles.OnListChanged -= onRolesChanged;
 
-        clientIds.OnListChanged += ClientIdsChanged;
+        clientIds.OnListChanged += onIdsChanged;
 
-        clientNames.OnListChanged += ClientNamesChanged;
+        clientNames.OnListChanged += onNamesChanged;
 
-        clientRoles.OnListChanged += ClientRolesChanged;
+        clientRoles.OnListChanged += onRolesChanged;
     }
 
     private List<ulong> GetIds(int role) {
@@ -82,20 +87,6 @@ public class GameManager : NetworkBehaviour
         return GetIndexs((int)PlayerRole.Hider);
     }
 
-    private void ClientIdsChanged(NetworkListEvent<ulong> changeEvent)
-    {
-        updateCount++;
-    }
-
-    private void ClientNamesChanged(NetworkListEvent<FixedString32Bytes> changeEvent)
-    {
-        updateCount++;
-    }
-
-    private void ClientRolesChanged(NetworkListEvent<int> changeEvent) {
-        updateCount++;
-    }
-
     public void AssignPlayerRoles() {
         for (int i = 0; i < clientIds.Count; i++) {
             PlayerRole randRole = GetRandomEnumType<PlayerRole>();
@@ -105,7 +96,7 @@ public class GameManager : NetworkBehaviour
 
     public static T GetRandomEnumType<T>() {
         System.Array values = System.Enum.GetValues(typeof(T));
-        int index = Random.Range(0, values.Length);
+        int index = UnityEngine.Random.Range(0, values.Length);
         return (T)values.GetValue(index);
     }
 
