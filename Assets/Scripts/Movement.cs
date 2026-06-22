@@ -86,6 +86,38 @@ public class Movement : NetworkBehaviour
         // moveForward = Input.GetAxisRaw("Vertical");
     }
 
+    // Shoot 4 spherecasts at each corner of player at ground.
+    bool CheckPlayerGrounded() {
+        BoxCollider boxCollider = GetComponent<BoxCollider>();
+
+        float xScale = boxCollider.size.x * gameObject.transform.lossyScale.x * 1.02f;
+        float zScale = boxCollider.size.z * gameObject.transform.lossyScale.z * 1.02f;
+
+        List<Vector3> cornerPositions = new List<Vector3>();
+
+        cornerPositions.Add(transform.position + new Vector3(-xScale/2, 0, zScale/2));
+        cornerPositions.Add(transform.position + new Vector3(xScale/2, 0, zScale/2));
+        cornerPositions.Add(transform.position + new Vector3(-xScale/2, 0, -zScale/2));
+        cornerPositions.Add(transform.position + new Vector3(xScale/2, 0, -zScale/2));
+
+
+        foreach (Vector3 corner in cornerPositions) {
+            Debug.DrawRay(
+                corner + Vector3.up * 0.05f,
+                Vector3.down * 0.075f,
+                Color.red
+            );
+
+            if (Physics.Raycast(
+                corner + Vector3.up * 0.05f,
+                Vector3.down,
+                out RaycastHit hit,
+                0.075f, GROUNDLAYER))
+                return true;
+        }
+        return false;
+    }
+
     void FixedUpdate()
     {
         if (!isPerformingAbility)
@@ -93,19 +125,7 @@ public class Movement : NetworkBehaviour
             isGrounded = CheckGrounded();
         }
 
-        Debug.DrawRay(
-            transform.position + Vector3.up * 0.05f,
-            Vector3.down * 0.075f,
-            Color.red
-        );
-        RaycastHit hit;
-        bool grounded = Physics.Raycast(
-            transform.position + Vector3.up * 0.05f,
-            Vector3.down,
-            out hit,
-            0.075f,
-            GROUNDLAYER
-        );
+        Debug.Log(isGrounded);
 
         if (!IsOwner) return;
         if (!isMovementLocked)
@@ -155,8 +175,7 @@ public class Movement : NetworkBehaviour
 
     bool CheckGrounded()
     {
-        RaycastHit hit;
-        bool grounded = Physics.Raycast(transform.position + Vector3.up * 0.05f, Vector3.down, out hit, 0.075f, GROUNDLAYER);
+        bool grounded = CheckPlayerGrounded();
         if (grounded)
         {
             pressedSpace = false;

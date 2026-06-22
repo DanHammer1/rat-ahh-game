@@ -115,6 +115,6 @@ public class GameManager : NetworkBehaviour
     [ClientRpc]
     public void OnGameStartClientRpc() {
         gameObject.GetComponent<ProgressManager>().enabled = true;
-        gameObject.GetComponent<ProgressManager>().OnActivate();
+        StartCoroutine(gameObject.GetComponent<ProgressManager>().OnActivate());
     }
 }

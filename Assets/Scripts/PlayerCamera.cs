@@ -4,6 +4,7 @@ using UnityEngine.Rendering;
 using UnityEngine.InputSystem;
 using Unity.Cinemachine;
 using Unity.Netcode;
+using System;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -33,6 +34,9 @@ public class PlayerCamera : MonoBehaviour
     private float netY;
     private float netX;
     public float mouseSensitivity;
+
+    public Action onThirdPersonEnter;
+    public Action onFirstPersonEnter;
 
     public enum CameraState
     {
@@ -102,10 +106,19 @@ public class PlayerCamera : MonoBehaviour
 
         if (thirdPersonRadius == 0)
         {
+            if (cameraState != CameraState.FirstPerson)
+                onFirstPersonEnter?.Invoke();
+            
             cameraState = CameraState.FirstPerson;
+            
         }
-        else cameraState = CameraState.ThirdPerson;
+        else {
+            if (cameraState != CameraState.ThirdPerson) {
+                onThirdPersonEnter?.Invoke();
+            }
 
+            cameraState = CameraState.ThirdPerson;
+        }
         cinemachinePositionComposer.CameraDistance = thirdPersonRadius;
 
         // Make rat invisible in first person.

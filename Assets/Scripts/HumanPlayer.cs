@@ -45,6 +45,9 @@ public class HumanPlayer : Player
         if (!IsOwner) return;
         slapCount.Value = 0;
         rigBuilder = GetComponent<RigBuilder>();
+
+        PlayerCamera.instance.onFirstPersonEnter += EnableRigBuilder;
+        PlayerCamera.instance.onThirdPersonEnter += DisableRigBuilder;
     }
 
     public void DisableRigBuilder()
@@ -58,7 +61,6 @@ public class HumanPlayer : Player
 
     protected override void Update()
     {
-        base.Update();
         if (!IsOwner) return;
         if (isBeingClung.Value)
         {

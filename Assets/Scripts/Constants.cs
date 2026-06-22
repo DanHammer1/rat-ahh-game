@@ -4,7 +4,6 @@ public static class Constants
 {
     public static float mouseSensitivity = 1f;
 
-
     #region "Rat"
     public static float ratMoveSpeed = 1.3f;
     public static float ratJumpForce = 0.2f;

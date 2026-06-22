@@ -157,6 +157,7 @@ public class RatPlayer : Player
         SetHumanClingStateServerRpc(localHumanInRange.NetworkObjectId, false);
         SetHumanDizzyStateServerRpc(localHumanInRange.NetworkObjectId, true);
     }
+    
     protected override void Update()
     {
         base.Update();

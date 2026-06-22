@@ -72,7 +72,6 @@ public class CameraPostProcessing : MonoBehaviour
 
             recoveryTimer += Time.deltaTime;
         }
-
         else
         {
             vignette.color.value = Color.red;

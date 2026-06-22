@@ -15,14 +15,21 @@ public class ProgressManager : NetworkBehaviour
 
     private bool IsActive = false;
     
-    public void OnActivate() {
+    public IEnumerator OnActivate() {
         objectives = new List<Objective>();
-
-        timer = GameObject.FindWithTag("TimerUI").GetComponent<TextMeshProUGUI>();
-        objectivesUI = GameObject.FindWithTag("ObjectivesUI").GetComponent<TextMeshProUGUI>();
-        playersUIList = GameObject.FindWithTag("PlayerListUI").GetComponent<TextMeshProUGUI>();
-
         objectives.Add(new CheeseObjective());
+
+        GameObject timerGameObject = GameObject.FindWithTag("TimerUI");
+        GameObject objectivesUIGameObject = GameObject.FindWithTag("ObjectivesUI");
+        GameObject playersUIListGameObject = GameObject.FindWithTag("PlayerListUI");
+
+        while (timerGameObject == null || objectivesUIGameObject == null || playersUIListGameObject == null) {
+            yield return null;
+        }
+        
+        timer = timerGameObject.GetComponent<TextMeshProUGUI>();
+        objectivesUI = objectivesUIGameObject.GetComponent<TextMeshProUGUI>();
+        playersUIList = playersUIListGameObject.GetComponent<TextMeshProUGUI>();
 
         IsActive = true;
     }
