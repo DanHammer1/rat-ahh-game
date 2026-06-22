@@ -14,7 +14,6 @@ public class GameManager : NetworkBehaviour
 
     public static GameManager Instance;
     public static bool playersSpawned = false;
-    public static int updateCount;
 
     public GameObject ratPrefab;
     public GameObject hunterPrefab;
@@ -22,10 +21,6 @@ public class GameManager : NetworkBehaviour
     public NetworkList<ulong> clientIds = new NetworkList<ulong>();
     public NetworkList<FixedString32Bytes> clientNames = new NetworkList<FixedString32Bytes>();
     public NetworkList<int> clientRoles = new NetworkList<int>();
-    
-    private NetworkList<ulong>.OnListChangedDelegate onIdsChanged = (x) => updateCount++;
-    private NetworkList<FixedString32Bytes>.OnListChangedDelegate onNamesChanged = (x) => updateCount++;
-    private NetworkList<int>.OnListChangedDelegate onRolesChanged = (x) => updateCount++;
 
     void Awake()
     {
@@ -35,20 +30,7 @@ public class GameManager : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (clientIds != null)
-            clientIds.OnListChanged -= onIdsChanged;
-
-        if (clientNames != null)
-            clientNames.OnListChanged -= onNamesChanged;
-
-        if (clientRoles != null)
-            clientRoles.OnListChanged -= onRolesChanged;
-
-        clientIds.OnListChanged += onIdsChanged;
-
-        clientNames.OnListChanged += onNamesChanged;
-
-        clientRoles.OnListChanged += onRolesChanged;
+        
     }
 
     private List<ulong> GetIds(int role) {

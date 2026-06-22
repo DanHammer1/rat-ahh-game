@@ -10,5 +10,4 @@ public abstract class Objective
     }
 
     public abstract bool CheckConditionCleared();
-
 }

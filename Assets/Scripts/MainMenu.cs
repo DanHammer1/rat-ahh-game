@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using Unity.Netcode.Transports.UTP;
 using System.Collections.Generic;
 using System.Collections;
+using System;
 
 public class MainMenu : NetworkBehaviour
 {
@@ -15,8 +16,6 @@ public class MainMenu : NetworkBehaviour
     public TextMeshProUGUI lobbyText;
 
     bool joined = false;
-
-    private int updateCount;
 
     GameManager.PlayerRole preference;
     bool hasPreference = false;
@@ -124,29 +123,40 @@ public class MainMenu : NetworkBehaviour
     {
         GameManager.Instance.clientIds.Add(clientId);
         GameManager.Instance.clientNames.Add(name);
-        if (!hasPreference) GameManager.Instance.clientRoles.Add(-1);
+        if (!hasPreference) GameManager.Instance.clientRoles.Add(1);
         else GameManager.Instance.clientRoles.Add((int)preference);
+    }
+
+    public string GetClientInfo(ulong clientId) {
+        FixedString32Bytes clientName = GameManager.Instance.clientNames[
+            GameManager.Instance.clientIds.IndexOf(clientId)];
+        
+        int clientRoleIndex = GameManager.Instance.clientRoles[
+            GameManager.Instance.clientIds.IndexOf(clientId)];
+        
+        string clientRole = ((GameManager.PlayerRole[])Enum.GetValues(typeof(GameManager.PlayerRole)))[clientRoleIndex].ToString();
+
+        return $@"{clientId} - {clientName} - {clientRole}\n";
     }
 
     void UpdateLobbyText()
     {
-        string wantedLobbyText = $@"Host: {GameManager.Instance.clientNames[
-            GameManager.Instance.clientIds.IndexOf(NetworkManager.ServerClientId)]}
-                                 Clients: ";
+        string wantedLobbyText = $@"Host: {GetClientInfo(NetworkManager.ServerClientId)}Clients:\n";
 
         int i = 0;
-        foreach (FixedString32Bytes name in GameManager.Instance.clientNames)
+        foreach (ulong clientId in GameManager.Instance.clientIds)
         {
-            if (GameManager.Instance.clientIds[GameManager.Instance.clientNames.IndexOf(name)] != NetworkManager.ServerClientId)
+            if (clientId != NetworkManager.ServerClientId)
             {
-                wantedLobbyText += name;
-                if (i + 1 < GameManager.Instance.clientNames.Count) wantedLobbyText += ", ";
+                wantedLobbyText += GetClientInfo(clientId);
+                // if (i + 1 < GameManager.Instance.clientNames.Count) wantedLobbyText += ", ";
             }
             i++;
         }
 
         lobbyText.text = wantedLobbyText;
     }
+
     void OnClientDisconnected(ulong clientId)
     {
         if (!joined) return;
@@ -165,9 +175,13 @@ public class MainMenu : NetworkBehaviour
 
         if (!IsServer) return;
 
-        GameManager.Instance.clientNames.RemoveAt(GameManager.Instance.clientIds.IndexOf(clientId));
-        GameManager.Instance.clientRoles.RemoveAt(GameManager.Instance.clientIds.IndexOf(clientId));
-        GameManager.Instance.clientIds.Remove(clientId);
+        int indexToRemove = GameManager.Instance.clientIds.IndexOf(clientId);
+        
+        if (indexToRemove < 0) return;
+        
+        GameManager.Instance.clientNames.RemoveAt(indexToRemove);
+        GameManager.Instance.clientRoles.RemoveAt(indexToRemove);
+        GameManager.Instance.clientIds.RemoveAt(indexToRemove);
     }
 
     public void Disconnect()
@@ -188,13 +202,9 @@ public class MainMenu : NetworkBehaviour
 
     void Update()
     {
-        if (GameManager.updateCount == 3 && joined)
+        if (joined)
         {
             UpdateLobbyText();
-            GameManager.updateCount = 0;
         }
-        // If statement will be satisfied every 3 times one of the clientId or clientName or clientRole
-        // Lists gets updated and as they both get updated at the same time with the rest of the code
-        // They should be synced. 
     }
 }
