@@ -78,19 +78,20 @@ public class Movement : NetworkBehaviour
         movementRecoveryMultiplier = 1;
     }
 
-    // Shoot 4 spherecasts at each corner of player at ground.
     bool CheckPlayerGrounded() {
         BoxCollider boxCollider = GetComponent<BoxCollider>();
 
         float xScale = boxCollider.size.x * gameObject.transform.lossyScale.x * 1.05f;
         float zScale = boxCollider.size.z * gameObject.transform.lossyScale.z * 1.05f;
 
-        List<Vector3> cornerPositions = new List<Vector3>();
+        Vector3[] cornerPositions = new Vector3[4];
 
-        cornerPositions.Add(transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(-xScale/2, 0, zScale/2));
-        cornerPositions.Add(transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(xScale/2, 0, zScale/2));
-        cornerPositions.Add(transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(-xScale/2, 0, -zScale/2));
-        cornerPositions.Add(transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(xScale/2, 0, -zScale/2));
+        cornerPositions[0] = (transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(-xScale/2, 0, zScale/2));
+        cornerPositions[1] = (transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(xScale/2, 0, zScale/2));
+        cornerPositions[2] = (transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(-xScale/2, 0, -zScale/2));
+        cornerPositions[3] = (transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(xScale/2, 0, -zScale/2));
+
+        int hits = 0;
 
         foreach (Vector3 corner in cornerPositions) {
             Debug.DrawRay(
@@ -103,48 +104,45 @@ public class Movement : NetworkBehaviour
                 corner + Vector3.up * 0.05f,
                 Vector3.down,
                 out RaycastHit hit,
-                0.1f, GROUNDLAYER))
-                return true;
+                0.075f, GROUNDLAYER))
+                hits++;
         }
-        return false;
+        return (hits >= 1);
     }
 
     void FixedUpdate()
     {
         if (!isPerformingAbility)
         {
-            isGrounded = CheckGrounded();
+            isGrounded = CheckPlayerGrounded();
+            if (isGrounded)
+            {
+                pressedSpace = false;
+            }
         }
 
         if (!IsOwner) return;
 
-        if (!isMovementLocked)
-        {
+        if (!isMovementLocked) {
             moveHorizontal = Input.GetAxisRaw("Horizontal");
             moveForward = Input.GetAxisRaw("Vertical");
-        }
-        else
-        {
+        } else {
             moveHorizontal = 0f;
             moveForward = 0f;
         }
-        if (isMovementLocked)
-        {
+
+        if (isMovementLocked) {
             rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
         }
-        if (!isPerformingAbility)
-        {
+        if (!isPerformingAbility) {
             MovePlayer(moveSpeed);
         }
 
-        // ApplyJumpPhysics(fallMultiplier, ascendMultiplier);
-        if (Input.GetButton("Jump") && isGrounded && !isMovementLocked)
-        {
+        if (Input.GetButton("Jump") && isGrounded && !isMovementLocked) {
             Jump(jumpforce, ascendMultiplier, fallMultiplier);
         }
         // Checking when we're on the ground and keeping track of our ground check delay
-        if (!isGrounded && toggleGravity)
-        {
+        if (!isGrounded && toggleGravity) {
             rb.useGravity = true;
             // timeAirborne += Time.deltaTime;
             // Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;
@@ -161,17 +159,6 @@ public class Movement : NetworkBehaviour
         {
             lookTarget.transform.position = cameraTransform.position + cameraTransform.forward * 1f;
         }
-    }
-
-    bool CheckGrounded()
-    {
-        bool grounded = CheckPlayerGrounded();
-        if (grounded)
-        {
-            pressedSpace = false;
-        }
-
-        return grounded;
     }
 
     public void MovePlayer(float moveSpeed)
@@ -201,17 +188,17 @@ public class Movement : NetworkBehaviour
             // Movement
             Vector3 targetVelocity = movement * moveSpeed * movementRecoveryMultiplier;
             Vector3 velocity = rb.linearVelocity;
-            velocity.x = targetVelocity.x;
             velocity.y = 0;
-            velocity.z = targetVelocity.z;
-            rb.AddForce(velocity * forceMultiplier);
+
+            Vector3 velocityChange = targetVelocity - velocity;
+            rb.AddForce(velocityChange * forceMultiplier, ForceMode.Acceleration);
 
             LimitSpeed(moveSpeed);
 
-            if (isGrounded && moveHorizontal == 0 && moveForward == 0)
+            /*if (isGrounded && moveHorizontal == 0 && moveForward == 0)
             {
                 rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
-            }
+            }*/
         }
     }
 
@@ -245,19 +232,5 @@ public class Movement : NetworkBehaviour
 
         rb.AddForce(new Vector3(0, jumpVelocity, 0) *
             forceMultiplier * jumpForceMultiplier, ForceMode.Impulse);
-    }
-
-    void ApplyJumpPhysics(float fallMultiplier, float ascendMultiplier)
-    {
-        if (rb.linearVelocity.y < 0)
-        {
-            // Falling: Apply fall multiplier to make descent faster
-            rb.linearVelocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1f) * Time.fixedDeltaTime;
-        }
-        else if (rb.linearVelocity.y > 0)
-        {
-            // Asending: Apply ascend multiplier to make ascent faster
-            rb.linearVelocity += Vector3.up * Physics.gravity.y * (ascendMultiplier - 1f) * Time.fixedDeltaTime;
-        }
     }
 }
