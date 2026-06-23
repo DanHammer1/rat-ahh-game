@@ -78,28 +78,19 @@ public class Movement : NetworkBehaviour
         movementRecoveryMultiplier = 1;
     }
 
-
-    void Update()
-    {
-        // if (!IsOwner) return;
-        // moveHorizontal = Input.GetAxisRaw("Horizontal");
-        // moveForward = Input.GetAxisRaw("Vertical");
-    }
-
     // Shoot 4 spherecasts at each corner of player at ground.
     bool CheckPlayerGrounded() {
         BoxCollider boxCollider = GetComponent<BoxCollider>();
 
-        float xScale = boxCollider.size.x * gameObject.transform.lossyScale.x * 1.02f;
-        float zScale = boxCollider.size.z * gameObject.transform.lossyScale.z * 1.02f;
+        float xScale = boxCollider.size.x * gameObject.transform.lossyScale.x * 1.05f;
+        float zScale = boxCollider.size.z * gameObject.transform.lossyScale.z * 1.05f;
 
         List<Vector3> cornerPositions = new List<Vector3>();
 
-        cornerPositions.Add(transform.position + new Vector3(-xScale/2, 0, zScale/2));
-        cornerPositions.Add(transform.position + new Vector3(xScale/2, 0, zScale/2));
-        cornerPositions.Add(transform.position + new Vector3(-xScale/2, 0, -zScale/2));
-        cornerPositions.Add(transform.position + new Vector3(xScale/2, 0, -zScale/2));
-
+        cornerPositions.Add(transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(-xScale/2, 0, zScale/2));
+        cornerPositions.Add(transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(xScale/2, 0, zScale/2));
+        cornerPositions.Add(transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(-xScale/2, 0, -zScale/2));
+        cornerPositions.Add(transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(xScale/2, 0, -zScale/2));
 
         foreach (Vector3 corner in cornerPositions) {
             Debug.DrawRay(
@@ -112,7 +103,7 @@ public class Movement : NetworkBehaviour
                 corner + Vector3.up * 0.05f,
                 Vector3.down,
                 out RaycastHit hit,
-                0.075f, GROUNDLAYER))
+                0.1f, GROUNDLAYER))
                 return true;
         }
         return false;
@@ -125,9 +116,8 @@ public class Movement : NetworkBehaviour
             isGrounded = CheckGrounded();
         }
 
-        Debug.Log(isGrounded);
-
         if (!IsOwner) return;
+
         if (!isMovementLocked)
         {
             moveHorizontal = Input.GetAxisRaw("Horizontal");
@@ -180,6 +170,7 @@ public class Movement : NetworkBehaviour
         {
             pressedSpace = false;
         }
+
         return grounded;
     }
 
@@ -222,7 +213,6 @@ public class Movement : NetworkBehaviour
                 rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
             }
         }
-
     }
 
     void LimitSpeed(float maxSpeed)
@@ -252,8 +242,9 @@ public class Movement : NetworkBehaviour
         float jumpVelocity = Mathf.Sqrt(2f * gravity * jumpHeight);
 
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
-        rb.AddForce(new Vector3(rb.linearVelocity.x, jumpVelocity, rb.linearVelocity.z) *
-            forceMultiplier * jumpForceMultiplier, ForceMode.Impulse); // initial burst for the jump
+
+        rb.AddForce(new Vector3(0, jumpVelocity, 0) *
+            forceMultiplier * jumpForceMultiplier, ForceMode.Impulse);
     }
 
     void ApplyJumpPhysics(float fallMultiplier, float ascendMultiplier)

@@ -136,20 +136,19 @@ public class MainMenu : NetworkBehaviour
         
         string clientRole = ((GameManager.PlayerRole[])Enum.GetValues(typeof(GameManager.PlayerRole)))[clientRoleIndex].ToString();
 
-        return $@"{clientId} - {clientName} - {clientRole}\n";
+        return $@"{clientId} - {clientName} - {clientRole}";
     }
 
     void UpdateLobbyText()
     {
-        string wantedLobbyText = $@"Host: {GetClientInfo(NetworkManager.ServerClientId)}Clients:\n";
+        string wantedLobbyText = $@"<u>Players</u>\n{GetClientInfo(NetworkManager.ServerClientId)} <i>(Host)</i>\n";
 
         int i = 0;
         foreach (ulong clientId in GameManager.Instance.clientIds)
         {
             if (clientId != NetworkManager.ServerClientId)
             {
-                wantedLobbyText += GetClientInfo(clientId);
-                // if (i + 1 < GameManager.Instance.clientNames.Count) wantedLobbyText += ", ";
+                wantedLobbyText += GetClientInfo(clientId) + "\n";
             }
             i++;
         }
