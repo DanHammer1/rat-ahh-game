@@ -41,10 +41,12 @@ public class HumanPlayer : Player
         if (IsServer)
         {
             ratAbilityHumanShakeMeter.Value = 0f;
+            slapCount.Value = 0;
         }
-        if (!IsOwner) return;
-        slapCount.Value = 0;
+
         rigBuilder = GetComponent<RigBuilder>();
+
+        if (!IsOwner) return;
 
         PlayerCamera.instance.onFirstPersonEnter += EnableRigBuilder;
         PlayerCamera.instance.onThirdPersonEnter += DisableRigBuilder;
@@ -59,6 +61,11 @@ public class HumanPlayer : Player
         rigBuilder.layers[0].active = true;
     }
 
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void UpdateRatAbilityShakeMeterRpc(float newValue) {
+        ratAbilityHumanShakeMeter.Value = newValue;
+    }
+
     protected override void Update()
     {
         if (!IsOwner) return;
@@ -67,10 +74,10 @@ public class HumanPlayer : Player
             movement.movementRecoveryMultiplier = Mathf.Exp(-0.1f * slapCount.Value);
             ratAbilityShakeUI.SetActive(true);
             float mouseMovement = Mathf.Sqrt(Mathf.Pow(Input.GetAxis("Mouse X"), 2f) + Mathf.Pow(Input.GetAxis("Mouse Y"), 2));
-            ratAbilityHumanShakeMeter.Value += mouseMovement / 100;
+            UpdateRatAbilityShakeMeterRpc(ratAbilityHumanShakeMeter.Value + mouseMovement / 100);
             if (ratAbilityHumanShakeMeter.Value > Constants.maxRatAbilityHumanShakeMeter)
             {
-                ratAbilityHumanShakeMeter.Value = Constants.maxRatAbilityHumanShakeMeter;
+                UpdateRatAbilityShakeMeterRpc(Constants.maxRatAbilityHumanShakeMeter);
             }
 
             shakeProgressBarImage.fillAmount = Mathf.Clamp01(ratAbilityHumanShakeMeter.Value / Constants.maxRatAbilityHumanShakeMeter);
@@ -78,12 +85,12 @@ public class HumanPlayer : Player
         else if (isDizzy.Value)
         {
             ratAbilityShakeUI.SetActive(false);
-            ratAbilityHumanShakeMeter.Value = 0f;
+            UpdateRatAbilityShakeMeterRpc(0);
         }
         else
         {
             ratAbilityShakeUI.SetActive(false);
-            ratAbilityHumanShakeMeter.Value = 0f;
+            UpdateRatAbilityShakeMeterRpc(0);
             movement.isMovementLocked = false;
         }
 
