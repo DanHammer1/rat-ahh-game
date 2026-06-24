@@ -28,44 +28,39 @@ public class GameManager : NetworkBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public override void OnNetworkSpawn()
-    {
-        
-    }
-
-    private List<ulong> GetIds(int role) {
+    private static List<ulong> GetIds(int role) {
         List<ulong> newList = new List<ulong>();
 
-        for (int i = 0; i < clientRoles.Count; i++) {
-            if (clientRoles[i] == role) newList.Add(clientIds[i]);
+        for (int i = 0; i < Instance.clientRoles.Count; i++) {
+            if (Instance.clientRoles[i] == role) newList.Add(Instance.clientIds[i]);
         }
 
         return newList;
     }
 
-    private List<int> GetIndexs(int role) {
+    private static List<int> GetIndexs(int role) {
         List<int> newList = new List<int>();
 
-        for (int i = 0; i < clientRoles.Count; i++) {
-            if (clientRoles[i] == role) newList.Add(i);
+        for (int i = 0; i < Instance.clientRoles.Count; i++) {
+            if (Instance.clientRoles[i] == role) newList.Add(i);
         }
 
         return newList;
     }
 
-    public List<ulong> GetHunterIds() {
+    public static List<ulong> GetHunterIds() {
         return GetIds((int)PlayerRole.Hunter);
     }
 
-    public List<ulong> GetHiderIds() {
+    public static List<ulong> GetHiderIds() {
         return GetIds((int)PlayerRole.Hider);
     }
 
-    public List<int> GetHunterIndexs() {
+    public static List<int> GetHunterIndexs() {
         return GetIndexs((int)PlayerRole.Hunter);
     }
 
-    public List<int> GetHiderIndexs() {
+    public static List<int> GetHiderIndexs() {
         return GetIndexs((int)PlayerRole.Hider);
     }
 
@@ -82,8 +77,8 @@ public class GameManager : NetworkBehaviour
         return (T)values.GetValue(index);
     }
 
-    public PlayerRole GetRole(ulong clientId) {
-        return (PlayerRole)clientRoles[clientIds.IndexOf(clientId)];
+    public static PlayerRole GetRole(ulong clientId) {
+        return (PlayerRole)Instance.clientRoles[Instance.clientIds.IndexOf(clientId)];
     }
 
     void SpawnPlayer(GameManager.PlayerRole role, ulong clientId) {
@@ -116,5 +111,17 @@ public class GameManager : NetworkBehaviour
     public void OnGameStartClientRpc() {
         gameObject.GetComponent<ProgressManager>().enabled = true;
         StartCoroutine(gameObject.GetComponent<ProgressManager>().OnActivate());
+    }
+
+    public static ulong GetLocalId() {
+        return NetworkManager.Singleton.LocalClientId;
+    }
+
+    public static PlayerRole GetLocalRole() {
+        return (PlayerRole)Instance.clientRoles[Instance.clientIds.IndexOf(GetLocalId())];
+    }
+
+    public static FixedString32Bytes GetLocalName() {
+        return Instance.clientNames[Instance.clientIds.IndexOf(GetLocalId())];
     }
 }

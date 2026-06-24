@@ -59,14 +59,14 @@ public class ProgressManager : NetworkBehaviour
 
         string text = $"Hunters:\n";
 
-        foreach (int i in GameManager.Instance.GetHunterIndexs()) {
+        foreach (int i in GameManager.GetHunterIndexs()) {
             string name = GameManager.Instance.clientNames[i].Value;
             text += $"{name}\n";
         }
         
         text += $"Hiders:\n";
 
-        foreach (int i in GameManager.Instance.GetHiderIndexs()) {
+        foreach (int i in GameManager.GetHiderIndexs()) {
             string name = GameManager.Instance.clientNames[i].Value;
             text += $"{name}\n";
         }

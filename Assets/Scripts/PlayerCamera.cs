@@ -46,7 +46,6 @@ public class PlayerCamera : MonoBehaviour
 
     public CameraState cameraState = CameraState.FirstPerson;
 
-
     void Start()
     {
         cinemachinePositionComposer = this.GetComponent<CinemachinePositionComposer>();
@@ -54,6 +53,13 @@ public class PlayerCamera : MonoBehaviour
         cinemachineCamera = this.GetComponent<CinemachineCamera>();
         cinemachineNoise = this.GetComponent<CinemachineBasicMultiChannelPerlin>();
         mouseSensitivity = Constants.mouseSensitivity;
+
+        if (GameManager.GetLocalRole() == GameManager.PlayerRole.Hunter) {
+            cinemachineCamera.Lens.FieldOfView = Constants.humanCameraFOV;
+        }
+        else if (GameManager.GetLocalRole() == GameManager.PlayerRole.Hider) {
+            cinemachineCamera.Lens.FieldOfView = Constants.ratCameraFOV;
+        }
     }
 
     void Update()
@@ -102,7 +108,12 @@ public class PlayerCamera : MonoBehaviour
                 movement.yaw = transform.eulerAngles.y;
         }
 
-        thirdPersonRadius = Mathf.Clamp(thirdPersonRadius, 0, 10);
+        thirdPersonRadius = GameManager.GetLocalRole() switch {
+            GameManager.PlayerRole.Hunter => Mathf.Clamp(thirdPersonRadius, 0, Constants.humanMaxCameraThirdPersonRadius),
+            GameManager.PlayerRole.Hider => Mathf.Clamp(thirdPersonRadius, 0, Constants.ratMaxCameraThirdPersonRadius),
+            _ => thirdPersonRadius
+        };
+
 
         if (thirdPersonRadius == 0)
         {
