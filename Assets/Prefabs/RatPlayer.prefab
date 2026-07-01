@@ -1090,7 +1090,11 @@ MonoBehaviour:
   impulseSource: {fileID: 0}
   eatCheesePrompt: {fileID: 0}
   ratAbilityInRange: 0
-  isClinging: 0
+  isClinging:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
   isSlapping: 0
   ratAbilityCooldown: 0
   ratAbilityHumanStunDuration: 0
@@ -1244,7 +1248,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &6822310308092016609
 MonoBehaviour:

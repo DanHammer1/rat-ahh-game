@@ -51,7 +51,6 @@ public class Movement : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         rb = GetComponent<Rigidbody>();
-        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         cameraTransform = FindFirstObjectByType<Camera>().transform;
 
         // Set the raycast to be slightly beneath the player's feet
