@@ -22,8 +22,7 @@ public class RatAnimator : NetworkBehaviour
         animator.SetBool("isGrounded", movement.isGrounded);
         animator.SetBool("pressedSpace", movement.pressedSpace);
 
-        animator.SetBool("isClinging", ratPlayer.isClinging);
+        animator.SetBool("isClinging", ratPlayer.isClinging.Value);
         animator.SetBool("isSlapping", ratPlayer.isSlapping);
-
     }
 }

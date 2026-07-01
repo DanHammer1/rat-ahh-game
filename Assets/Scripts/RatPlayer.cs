@@ -16,7 +16,7 @@ public class RatPlayer : Player
 
     public bool ratAbilityInRange;
     private HumanPlayer localHumanInRange;
-    public bool isClinging;
+    public NetworkVariable<bool> isClinging;
     public bool isSlapping;
     public float ratAbilityCooldown;
     public float ratAbilityHumanStunDuration;
@@ -68,12 +68,17 @@ public class RatPlayer : Player
         StartCoroutine(RatAbilityCoroutine());
     }
 
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    void SetClingingStateRpc(bool state) {
+        isClinging.Value = state;
+    }
+
     IEnumerator RatAbilityCoroutine()
     {
         ClearConsole();
 
         isSlapping = false;
-        isClinging = false;
+        SetClingingStateRpc(false);
         SetHumanShakeMeterValueServerRpc(localHumanInRange.NetworkObjectId, 0f);
 
         Vector3 startPos = transform.position;
@@ -134,7 +139,7 @@ public class RatPlayer : Player
                 rb.detectCollisions = false;
                 UpdateHumanSlapCountServerRpc(localHumanInRange.NetworkObjectId, 0, "Set");
 
-                isClinging = true;
+                SetClingingStateRpc(true);
                 break;
             }
             yield return new WaitForFixedUpdate();
@@ -150,7 +155,7 @@ public class RatPlayer : Player
         rb.useGravity = true;
         rb.detectCollisions = true;
 
-        isClinging = false;
+        SetClingingStateRpc(false);
         movement.isPerformingAbility = false;
         ratAbilityCooldown = Constants.maxRatAbilityCooldown;
 
@@ -187,17 +192,17 @@ public class RatPlayer : Player
         {
             ActivateRatAbility();
         }
-        if (Input.GetKeyDown(KeyCode.Q) && isClinging)
+        if (Input.GetKeyDown(KeyCode.Q) && isClinging.Value)
         {
             isSlapping = !isSlapping;
             UpdateHumanSlapCountServerRpc(localHumanInRange.NetworkObjectId, 1, "Add");
         }
-        if (Input.GetKeyDown(KeyCode.U) && isClinging)
+        if (Input.GetKeyDown(KeyCode.U) && isClinging.Value)
         {
             UnCling();
         }
 
-        if (isClinging && IsOwner)
+        if (isClinging.Value && IsOwner)
         {
             clingHead = localHumanInRange.movement.headBone;
             HumanPlayer humanPlayer = localHumanInRange.GetComponent<HumanPlayer>();
@@ -220,11 +225,11 @@ public class RatPlayer : Player
                 UnCling();
             }
         }
-
     }
+
     public void FixedUpdate()
     {
-        if (isClinging && IsServer)
+        if (isClinging.Value && IsServer)
         {
             HumanPlayer humanPlayer = localHumanInRange.GetComponent<HumanPlayer>();
             IncreaseHumanShakeMeterValue(localHumanInRange.NetworkObjectId);
