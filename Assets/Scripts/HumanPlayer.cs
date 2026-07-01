@@ -81,6 +81,7 @@ public class HumanPlayer : Player
             }
 
             shakeProgressBarImage.fillAmount = Mathf.Clamp01(ratAbilityHumanShakeMeter.Value / Constants.maxRatAbilityHumanShakeMeter);
+            Debug.Log(ratAbilityHumanShakeMeter.Value);
         }
         else if (isDizzy.Value)
         {
@@ -103,7 +104,7 @@ public class HumanPlayer : Player
 
     public void UpdateDizzyDuration()
     {
-        dizzyDuration = slapCount.Value * 0.2f;
+        dizzyDuration = 1 + (slapCount.Value * 0.2f);
     }
 
 

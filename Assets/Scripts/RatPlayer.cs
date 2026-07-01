@@ -157,7 +157,7 @@ public class RatPlayer : Player
         SetHumanClingStateServerRpc(localHumanInRange.NetworkObjectId, false);
         SetHumanDizzyStateServerRpc(localHumanInRange.NetworkObjectId, true);
     }
-    
+
     protected override void Update()
     {
         base.Update();
@@ -201,7 +201,7 @@ public class RatPlayer : Player
         {
             clingHead = localHumanInRange.movement.headBone;
             HumanPlayer humanPlayer = localHumanInRange.GetComponent<HumanPlayer>();
-            IncreaseHumanShakeMeterValueServerRpc(localHumanInRange.NetworkObjectId, Time.deltaTime);
+            // IncreaseHumanShakeMeterValue(localHumanInRange.NetworkObjectId, Time.deltaTime);
             SetHumanClingStateServerRpc(localHumanInRange.NetworkObjectId, true);
             transform.position =
                 clingHead.position +
@@ -219,6 +219,15 @@ public class RatPlayer : Player
             {
                 UnCling();
             }
+        }
+
+    }
+    public void FixedUpdate()
+    {
+        if (isClinging && IsServer)
+        {
+            HumanPlayer humanPlayer = localHumanInRange.GetComponent<HumanPlayer>();
+            IncreaseHumanShakeMeterValue(localHumanInRange.NetworkObjectId);
         }
 
     }
@@ -256,15 +265,14 @@ public class RatPlayer : Player
         }
     }
 
-    [ServerRpc]
-    void IncreaseHumanShakeMeterValueServerRpc(ulong humanId, float value)
+    void IncreaseHumanShakeMeterValue(ulong humanId)
     {
         if (NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanId, out NetworkObject netObj))
         {
             HumanPlayer human = netObj.GetComponent<HumanPlayer>();
             if (human != null)
             {
-                human.ratAbilityHumanShakeMeter.Value += value;
+                human.ratAbilityHumanShakeMeter.Value += Time.fixedDeltaTime;
             }
         }
     }
