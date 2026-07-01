@@ -1056,6 +1056,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   cameraTarget: {fileID: 7071036363382739218}
+  clientId:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
   maxHealth:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0
@@ -1154,7 +1159,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8956695940269091181}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 1c8c0868f719a614f8c0a09a40360611, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

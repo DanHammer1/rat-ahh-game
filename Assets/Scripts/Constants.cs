@@ -22,7 +22,7 @@ public static class Constants
     public static float humanJumpForce = 0.3f;
     public static float humanFallMultiplier = 0.7f;
     public static float humanAscendMultiplier = 0.7f;
-    public static float humanCameraFOV = 90f;
+    public static float humanCameraFOV = 60f;
     public static float humanMaxCameraThirdPersonRadius = 1.5f;
     # endregion
 }

@@ -6,6 +6,7 @@ using System.Net.NetworkInformation;
 using Unity.Netcode;
 using TMPro;
 using NUnit.Framework.Constraints;
+
 public class Movement : NetworkBehaviour
 {
     Animator animator;
@@ -171,10 +172,16 @@ public class Movement : NetworkBehaviour
         camRight.Normalize();
         movement = (camForward * moveForward + camRight * moveHorizontal).normalized;
 
-        if (movement != Vector3.zero)
-        {
-            yaw = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;
-        }
+        switch(PlayerCamera.instance.cameraState) {
+            case PlayerCamera.CameraState.FirstPerson:
+                yaw = Mathf.Atan2(camForward.x, camForward.z) * Mathf.Rad2Deg;
+                break;
+
+            case PlayerCamera.CameraState.ThirdPerson:
+                if (movement != Vector3.zero)
+                    yaw = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;
+                break;
+        };
 
         // Apply rotation
         if (!isRotationLocked)

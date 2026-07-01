@@ -94,8 +94,6 @@ public class PlayerCamera : MonoBehaviour
 
         thirdPersonRadius -= Input.GetAxis("Mouse ScrollWheel") * thirdPersonScrollSensitivity;
 
-        HumanPlayer human = Player.localPlayer as HumanPlayer;
-
         if (!isCameraLocked)
         {
             netX += xMovement;
