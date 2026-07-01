@@ -119,7 +119,6 @@ public class PlayerCamera : MonoBehaviour
                 onFirstPersonEnter?.Invoke();
             
             cameraState = CameraState.FirstPerson;
-            
         }
         else {
             if (cameraState != CameraState.ThirdPerson) {
@@ -130,7 +129,7 @@ public class PlayerCamera : MonoBehaviour
         }
         cinemachinePositionComposer.CameraDistance = thirdPersonRadius;
 
-        // Make rat invisible in first person.
+        // Make player invisible in first person.
         if (cameraState == CameraState.FirstPerson)
         {
             playerRenderer.shadowCastingMode =
@@ -143,14 +142,14 @@ public class PlayerCamera : MonoBehaviour
             cinemachinePositionComposer.Damping = new Vector3(0.4f, 0.4f, 0.4f);
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        /*if (Input.GetKeyDown(KeyCode.Alpha1))
             Time.timeScale = 0.05f;
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
             Time.timeScale = 0.2f;
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
-            Time.timeScale = 1f;
+            Time.timeScale = 1f;*/
 
         cinemachineInputAxisController.Controllers[0].Input.Gain = mouseSensitivity * movement.movementRecoveryMultiplier;
         cinemachineInputAxisController.Controllers[1].Input.Gain = -mouseSensitivity * movement.movementRecoveryMultiplier;

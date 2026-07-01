@@ -38,6 +38,7 @@ public class Movement : NetworkBehaviour
     public bool isGrounded = true;
     public bool toggleGravity = true;
     public bool pressedSpace = false;
+    public Transform eyePosition;
     LayerMask GROUNDLAYER;
     public float timeAirborne = 0f;
     public float groundCheckDelay = 0.3f;
@@ -112,6 +113,9 @@ public class Movement : NetworkBehaviour
 
     void FixedUpdate()
     {
+        if (Player.localPlayer != null) {
+            eyePosition = Player.localPlayer.gameObject.transform.Find("EyePosition");
+        }
         if (!isPerformingAbility)
         {
             isGrounded = CheckPlayerGrounded();
