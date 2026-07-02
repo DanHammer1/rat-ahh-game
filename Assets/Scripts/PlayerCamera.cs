@@ -13,6 +13,7 @@ public class PlayerCamera : MonoBehaviour
     public GameObject player;
     CinemachinePositionComposer cinemachinePositionComposer;
     CinemachineInputAxisController cinemachineInputAxisController;
+    CinemachineDecollider cinemachineDecollider;
     CinemachineCamera cinemachineCamera;
     CinemachineBasicMultiChannelPerlin cinemachineNoise;
     Movement movement;
@@ -50,6 +51,7 @@ public class PlayerCamera : MonoBehaviour
     {
         cinemachinePositionComposer = this.GetComponent<CinemachinePositionComposer>();
         cinemachineInputAxisController = this.GetComponent<CinemachineInputAxisController>();
+        cinemachineDecollider = this.GetComponent<CinemachineDecollider>();
         cinemachineCamera = this.GetComponent<CinemachineCamera>();
         cinemachineNoise = this.GetComponent<CinemachineBasicMultiChannelPerlin>();
         mouseSensitivity = Constants.mouseSensitivity;
@@ -60,6 +62,11 @@ public class PlayerCamera : MonoBehaviour
         else if (GameManager.GetLocalRole() == GameManager.PlayerRole.Hider) {
             cinemachineCamera.Lens.FieldOfView = Constants.ratCameraFOV;
         }
+
+        onFirstPersonEnter += disableCameraCollision;
+        onThirdPersonEnter += enableCameraCollision;
+
+        disableCameraCollision();
     }
 
     void Update()
@@ -153,6 +160,14 @@ public class PlayerCamera : MonoBehaviour
 
         cinemachineInputAxisController.Controllers[0].Input.Gain = mouseSensitivity * movement.movementRecoveryMultiplier;
         cinemachineInputAxisController.Controllers[1].Input.Gain = -mouseSensitivity * movement.movementRecoveryMultiplier;
+    }
+
+    public void enableCameraCollision() {
+        cinemachineDecollider.CameraRadius = Constants.cameraCollisionRadius;
+    }
+
+    public void disableCameraCollision() {
+        cinemachineDecollider.CameraRadius = 0;
     }
 
     public void ForceLookAt(Vector3 targetPosition, Vector3 originalPosition)
