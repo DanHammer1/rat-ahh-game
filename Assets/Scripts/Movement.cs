@@ -83,8 +83,8 @@ public class Movement : NetworkBehaviour
     {
         BoxCollider boxCollider = GetComponent<BoxCollider>();
 
-        float xScale = boxCollider.size.x * gameObject.transform.lossyScale.x * 1.05f;
-        float zScale = boxCollider.size.z * gameObject.transform.lossyScale.z * 1.05f;
+        float xScale = boxCollider.size.x * gameObject.transform.lossyScale.x * 1.01f;
+        float zScale = boxCollider.size.z * gameObject.transform.lossyScale.z * 1.01f;
 
         Vector3[] cornerPositions = new Vector3[4];
 
@@ -110,7 +110,7 @@ public class Movement : NetworkBehaviour
                 0.075f, GROUNDLAYER))
                 hits++;
         }
-        return (hits >= 1);
+        return (hits >= 2);
     }
 
     void FixedUpdate()
