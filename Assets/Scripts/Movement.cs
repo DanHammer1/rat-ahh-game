@@ -79,7 +79,8 @@ public class Movement : NetworkBehaviour
         movementRecoveryMultiplier = 1;
     }
 
-    bool CheckPlayerGrounded() {
+    bool CheckPlayerGrounded()
+    {
         BoxCollider boxCollider = GetComponent<BoxCollider>();
 
         float xScale = boxCollider.size.x * gameObject.transform.lossyScale.x * 1.05f;
@@ -87,14 +88,15 @@ public class Movement : NetworkBehaviour
 
         Vector3[] cornerPositions = new Vector3[4];
 
-        cornerPositions[0] = (transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(-xScale/2, 0, zScale/2));
-        cornerPositions[1] = (transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(xScale/2, 0, zScale/2));
-        cornerPositions[2] = (transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(-xScale/2, 0, -zScale/2));
-        cornerPositions[3] = (transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(xScale/2, 0, -zScale/2));
+        cornerPositions[0] = (transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(-xScale / 2, 0, zScale / 2));
+        cornerPositions[1] = (transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(xScale / 2, 0, zScale / 2));
+        cornerPositions[2] = (transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(-xScale / 2, 0, -zScale / 2));
+        cornerPositions[3] = (transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(xScale / 2, 0, -zScale / 2));
 
         int hits = 0;
 
-        foreach (Vector3 corner in cornerPositions) {
+        foreach (Vector3 corner in cornerPositions)
+        {
             Debug.DrawRay(
                 corner + Vector3.up * 0.05f,
                 Vector3.down * 0.075f,
@@ -113,7 +115,8 @@ public class Movement : NetworkBehaviour
 
     void FixedUpdate()
     {
-        if (Player.localPlayer != null) {
+        if (Player.localPlayer != null)
+        {
             eyePosition = Player.localPlayer.gameObject.transform.Find("EyePosition");
         }
         if (!isPerformingAbility)
@@ -127,26 +130,33 @@ public class Movement : NetworkBehaviour
 
         if (!IsOwner) return;
 
-        if (!isMovementLocked) {
+        if (!isMovementLocked)
+        {
             moveHorizontal = Input.GetAxisRaw("Horizontal");
             moveForward = Input.GetAxisRaw("Vertical");
-        } else {
+        }
+        else
+        {
             moveHorizontal = 0f;
             moveForward = 0f;
         }
 
-        if (isMovementLocked) {
+        if (isMovementLocked)
+        {
             rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
         }
-        if (!isPerformingAbility) {
+        if (!isPerformingAbility)
+        {
             MovePlayer(moveSpeed);
         }
 
-        if (Input.GetButton("Jump") && isGrounded && !isMovementLocked) {
+        if (Input.GetButton("Jump") && isGrounded && !isMovementLocked)
+        {
             Jump(jumpforce, ascendMultiplier, fallMultiplier);
         }
         // Checking when we're on the ground and keeping track of our ground check delay
-        if (!isGrounded && toggleGravity) {
+        if (!isGrounded && toggleGravity)
+        {
             rb.useGravity = true;
             // timeAirborne += Time.deltaTime;
             // Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;
@@ -157,6 +167,7 @@ public class Movement : NetworkBehaviour
         }
 
         speed = new Vector2(moveForward, moveHorizontal).magnitude;
+        Debug.Log("speed: " + speed + ", moveForwards: " + moveForward + ", moveHorizontal: " + moveHorizontal);
 
 
         if (transform.tag == "PlayerHuman")
@@ -175,7 +186,8 @@ public class Movement : NetworkBehaviour
         camRight.Normalize();
         movement = (camForward * moveForward + camRight * moveHorizontal).normalized;
 
-        switch(PlayerCamera.instance.cameraState) {
+        switch (PlayerCamera.instance.cameraState)
+        {
             case PlayerCamera.CameraState.FirstPerson:
                 yaw = Mathf.Atan2(camForward.x, camForward.z) * Mathf.Rad2Deg;
                 break;
@@ -184,7 +196,8 @@ public class Movement : NetworkBehaviour
                 if (movement != Vector3.zero)
                     yaw = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;
                 break;
-        };
+        }
+        ;
 
         // Apply rotation
         if (!isRotationLocked)
