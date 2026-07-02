@@ -39,7 +39,8 @@ public class PlayerAnimator : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        if (instance == null) {
+        if (instance == null)
+        {
             instance = this;
         }
 
