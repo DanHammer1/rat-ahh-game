@@ -29,7 +29,7 @@ public class Weapon : NetworkBehaviour
     }
 
     public void Attack() {
-        PlayerAnimator.PlayAnimation("Swing", "isSwinging", 0.15f);
+        PlayerAnimator.instance.PlayAnimation("Swing", "isSwinging", 0.15f);
         Invoke("CheckPlayerCollision", attackDuration);
     }
 
