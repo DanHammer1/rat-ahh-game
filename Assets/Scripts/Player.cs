@@ -50,6 +50,7 @@ public class Player : NetworkBehaviour
     public CinemachineImpulseSource impulseSource;
 
     public GameObject eatCheesePrompt;
+    public GameObject pickUpCoinPrompt;
 
     public override void OnNetworkSpawn()
     {
@@ -87,6 +88,8 @@ public class Player : NetworkBehaviour
         abilityTText = abilityT.GetComponent<TextMeshProUGUI>();
 
         eatCheesePrompt = GameObject.FindWithTag("Eat Cheese Prompt");
+        Debug.Log(eatCheesePrompt);
+        pickUpCoinPrompt = GameObject.FindWithTag("Pick Up Coin Prompt");
 
         ratAbilityShakeUI = GameObject.FindWithTag("Rat Ability Shake UI");
         shakeProgressBar = GameObject.FindWithTag("Shake Progress Bar");
@@ -94,6 +97,7 @@ public class Player : NetworkBehaviour
 
         ratAbilityShakeUI.SetActive(false);
         eatCheesePrompt.SetActive(false);
+        pickUpCoinPrompt.SetActive(false);
         abilityIcon.SetActive(false);
 
         impulseSource = GetComponent<CinemachineImpulseSource>();

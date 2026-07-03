@@ -21,6 +21,8 @@ TagManager:
   - PlayerListUI
   - ObjectivesUI
   - TimerUI
+  - Coin
+  - Pick Up Coin Prompt
   layers:
   - Default
   - TransparentFX
