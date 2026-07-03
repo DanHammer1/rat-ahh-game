@@ -5,6 +5,7 @@ using System;
 public class Door : NetworkBehaviour, IInteractable
 {
     public Collider doorCollider;
+    private Animator animator;
 
     public enum State {
         OPEN,
@@ -38,22 +39,26 @@ public class Door : NetworkBehaviour, IInteractable
     [ClientRpc]
     public void InteractDoorClientRpc() {
         if (doorState == State.OPEN) {
-            GetComponent<Animator>().CrossFade("CLOSE", 0);
+            animator.CrossFade("CLOSE", 0.15f);
             Debug.Log("Closing.");
         } else {
-            GetComponent<Animator>().CrossFade("OPEN", 0);
+            animator.CrossFade("OPEN", 0.15f);
             Debug.Log("Opening");
         }
         SwitchDoorState();
     }
 
+    public override void OnNetworkSpawn()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     void Start() {
-        doorCollider = this.GetComponent<BoxCollider>();
         onDoorClosed += () => {
-            GetComponent<Collider>().enabled = true;
+            GetComponent<BoxCollider>().isTrigger = false;
         };
         onDoorOpened += () => {
-            GetComponent<Collider>().enabled = false;
+            GetComponent<BoxCollider>().isTrigger = true;
         };
     }
 

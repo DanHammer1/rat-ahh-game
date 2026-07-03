@@ -97,7 +97,7 @@ public class Player : NetworkBehaviour
         shakeProgressBarImage = shakeProgressBar.GetComponent<Image>();
 
         ratAbilityShakeUI.SetActive(false);
-        eatCheesePrompt.SetActive(false);
+        //eatCheesePrompt.SetActive(false);
         pickUpCoinPrompt.SetActive(false);
         abilityIcon.SetActive(false);
 

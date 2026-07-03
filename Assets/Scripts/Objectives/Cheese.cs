@@ -3,7 +3,7 @@ using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Cheese : NetworkBehaviour
+public class Cheese2 : NetworkBehaviour
 {
 
     // Update is called once per frame
