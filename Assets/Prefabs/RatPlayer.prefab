@@ -1075,6 +1075,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   playerCamera: {fileID: 0}
   clientNetworkTransform: {fileID: 0}
+  viewPosition: {fileID: 6386831360713167238}
   abilityIcon: {fileID: 0}
   abilityIconBackgroundOutline: {fileID: 0}
   abilityIconBackgroundOutlineImage: {fileID: 0}

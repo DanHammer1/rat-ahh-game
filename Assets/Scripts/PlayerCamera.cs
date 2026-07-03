@@ -26,7 +26,7 @@ public class PlayerCamera : MonoBehaviour
     {
         instance = this;
         isCameraLocked = false;
-        mainCamera = this.gameObject;
+        mainCamera = GameObject.FindWithTag("MainCamera");
     }
 
     public float thirdPersonScrollSensitivity;
@@ -49,11 +49,11 @@ public class PlayerCamera : MonoBehaviour
 
     void Start()
     {
-        cinemachinePositionComposer = this.GetComponent<CinemachinePositionComposer>();
-        cinemachineInputAxisController = this.GetComponent<CinemachineInputAxisController>();
-        cinemachineDecollider = this.GetComponent<CinemachineDecollider>();
-        cinemachineCamera = this.GetComponent<CinemachineCamera>();
-        cinemachineNoise = this.GetComponent<CinemachineBasicMultiChannelPerlin>();
+        cinemachinePositionComposer = instance.GetComponent<CinemachinePositionComposer>();
+        cinemachineInputAxisController = instance.GetComponent<CinemachineInputAxisController>();
+        cinemachineDecollider = instance.GetComponent<CinemachineDecollider>();
+        cinemachineCamera = instance.GetComponent<CinemachineCamera>();
+        cinemachineNoise = instance.GetComponent<CinemachineBasicMultiChannelPerlin>();
         mouseSensitivity = Constants.mouseSensitivity;
 
         if (GameManager.GetLocalRole() == GameManager.PlayerRole.Hunter) {
@@ -160,6 +160,13 @@ public class PlayerCamera : MonoBehaviour
 
         cinemachineInputAxisController.Controllers[0].Input.Gain = mouseSensitivity * movement.movementRecoveryMultiplier;
         cinemachineInputAxisController.Controllers[1].Input.Gain = -mouseSensitivity * movement.movementRecoveryMultiplier;
+    }
+
+    void LateUpdate() {
+        cinemachineDecollider.enabled = true;
+        if ((mainCamera.transform.position - cinemachineCamera.transform.position).magnitude > 0.05f) {
+            cinemachineDecollider.enabled = false;
+        }
     }
 
     public void enableCameraCollision() {

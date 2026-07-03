@@ -21,6 +21,9 @@ TagManager:
   - PlayerListUI
   - ObjectivesUI
   - TimerUI
+  - SimulatedCamera
+  - InteractionPrompt
+  - Interactable
   layers:
   - Default
   - TransparentFX
@@ -31,7 +34,7 @@ TagManager:
   - Rat
   - OutlinedObjects
   - 
-  - 
+  - InteractableObject
   - groundLayer
   - 
   - 

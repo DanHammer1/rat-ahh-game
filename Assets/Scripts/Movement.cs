@@ -167,7 +167,7 @@ public class Movement : NetworkBehaviour
         }
 
         speed = new Vector2(moveForward, moveHorizontal).magnitude;
-        Debug.Log("speed: " + speed + ", moveForwards: " + moveForward + ", moveHorizontal: " + moveHorizontal);
+        //Debug.Log("speed: " + speed + ", moveForwards: " + moveForward + ", moveHorizontal: " + moveHorizontal);
 
 
         if (transform.tag == "PlayerHuman")

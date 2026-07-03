@@ -27,6 +27,7 @@ public class Player : NetworkBehaviour
     public Rigidbody rb;
     public PlayerCamera playerCamera;
     public ClientNetworkTransform clientNetworkTransform;
+    public GameObject viewPosition;
 
     // Ability Icon
     public GameObject abilityIcon;
@@ -49,7 +50,6 @@ public class Player : NetworkBehaviour
     Animator animator;
     public CinemachineImpulseSource impulseSource;
 
-    public GameObject eatCheesePrompt;
 
     public override void OnNetworkSpawn()
     {
@@ -86,14 +86,12 @@ public class Player : NetworkBehaviour
         abilityT = GameObject.FindWithTag("Ability T");
         abilityTText = abilityT.GetComponent<TextMeshProUGUI>();
 
-        eatCheesePrompt = GameObject.FindWithTag("Eat Cheese Prompt");
 
         ratAbilityShakeUI = GameObject.FindWithTag("Rat Ability Shake UI");
         shakeProgressBar = GameObject.FindWithTag("Shake Progress Bar");
         shakeProgressBarImage = shakeProgressBar.GetComponent<Image>();
 
         ratAbilityShakeUI.SetActive(false);
-        eatCheesePrompt.SetActive(false);
         abilityIcon.SetActive(false);
 
         impulseSource = GetComponent<CinemachineImpulseSource>();

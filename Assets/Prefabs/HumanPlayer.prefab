@@ -253,6 +253,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   playerCamera: {fileID: 0}
   clientNetworkTransform: {fileID: 0}
+  viewPosition: {fileID: 4496285853245265043}
   abilityIcon: {fileID: 0}
   abilityIconBackgroundOutline: {fileID: 0}
   abilityIconBackgroundOutlineImage: {fileID: 0}
@@ -266,8 +267,6 @@ MonoBehaviour:
   score: 0
   scoreText: {fileID: 0}
   impulseSource: {fileID: 0}
-  eatCheesePrompt: {fileID: 0}
-  viewPosition: {fileID: 4496285853245265043}
   ratAbilityTarget: {fileID: 4496285853245265043}
   isBeingClung:
     UpdateTraits:

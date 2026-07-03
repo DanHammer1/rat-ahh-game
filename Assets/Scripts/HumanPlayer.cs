@@ -9,7 +9,6 @@ using UnityEngine.Animations.Rigging;
 
 public class HumanPlayer : Player
 {
-    public GameObject viewPosition;
     public GameObject ratAbilityTarget;
     public NetworkVariable<bool> isBeingClung = new NetworkVariable<bool>(false);
     public NetworkVariable<float> ratAbilityHumanShakeMeter = new NetworkVariable<float>();
@@ -55,12 +54,10 @@ public class HumanPlayer : Player
     public void DisableRigBuilder()
     {
         rigBuilder.layers[0].active = false;
-        Debug.Log("Disabled.");
     }
     public void EnableRigBuilder()
     {
         rigBuilder.layers[0].active = true;
-        Debug.Log("Enabled.");
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
