@@ -24,6 +24,8 @@ TagManager:
   - SimulatedCamera
   - InteractionPrompt
   - Interactable
+  - Coin
+  - Pick Up Coin Prompt
   layers:
   - Default
   - TransparentFX
