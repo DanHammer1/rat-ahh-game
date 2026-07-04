@@ -88,17 +88,11 @@ public class Player : NetworkBehaviour
         abilityT = GameObject.FindWithTag("Ability T");
         abilityTText = abilityT.GetComponent<TextMeshProUGUI>();
 
-        eatCheesePrompt = GameObject.FindWithTag("Eat Cheese Prompt");
-        Debug.Log(eatCheesePrompt);
-        pickUpCoinPrompt = GameObject.FindWithTag("Pick Up Coin Prompt");
-
         ratAbilityShakeUI = GameObject.FindWithTag("Rat Ability Shake UI");
         shakeProgressBar = GameObject.FindWithTag("Shake Progress Bar");
         shakeProgressBarImage = shakeProgressBar.GetComponent<Image>();
 
         ratAbilityShakeUI.SetActive(false);
-        //eatCheesePrompt.SetActive(false);
-        pickUpCoinPrompt.SetActive(false);
         abilityIcon.SetActive(false);
 
         impulseSource = GetComponent<CinemachineImpulseSource>();

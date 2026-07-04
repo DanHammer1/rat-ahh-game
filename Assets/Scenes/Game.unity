@@ -167,7 +167,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &21914321
 RectTransform:
   m_ObjectHideFlags: 0
@@ -742,7 +742,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 118130790}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 1c8c0868f719a614f8c0a09a40360611, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1132,7 +1132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0f97c1125a5f0584ab80148e01656ca0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.52
+      value: 0.09
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0f97c1125a5f0584ab80148e01656ca0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2007,8 +2007,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000029564, y: -345}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 0.0023651, y: -342}
+  m_SizeDelta: {x: 571.407, y: 42.775}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &795426202
 MonoBehaviour:
@@ -2057,8 +2057,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2360,7 +2360,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 853799760}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 1c8c0868f719a614f8c0a09a40360611, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2580,7 +2580,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 937814419}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 1c8c0868f719a614f8c0a09a40360611, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2737,7 +2737,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 984141905}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 1c8c0868f719a614f8c0a09a40360611, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -3239,7 +3239,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1223868507}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 1c8c0868f719a614f8c0a09a40360611, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -3265,7 +3265,7 @@ GameObject:
   - component: {fileID: 1227320364}
   - component: {fileID: 1227320363}
   - component: {fileID: 1227320366}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Coin
   m_TagString: Coin
   m_Icon: {fileID: 0}
@@ -3316,8 +3316,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 5, y: 5, z: 5}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.9278789, y: 0.3225617, z: 1.9616604}
+  m_Center: {x: 0.069031715, y: 0.04608374, z: -0.05500436}
 --- !u!4 &1227320365
 Transform:
   m_ObjectHideFlags: 0
@@ -3327,7 +3327,7 @@ Transform:
   m_GameObject: {fileID: 1227320361}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.998, y: 0.033, z: -1.985}
+  m_LocalPosition: {x: -1.317, y: -0.048, z: -1.996}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3343,11 +3343,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1227320361}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9b9bf3d31d07a14e814f15ac5ad7cb2, type: 3}
+  m_Script: {fileID: 11500000, guid: 02f4c437f3160eb4b9d2a8e2c5b55bd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  playerInRange: 0
 --- !u!1 &1233083686
 GameObject:
   m_ObjectHideFlags: 0
@@ -3495,8 +3494,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 11.45, y: 11.1, z: 16.18}
-  m_Center: {x: 0, y: 0, z: -1.2}
+  m_Size: {x: 1.8941056, y: 1.8596119, z: 4.3047113}
+  m_Center: {x: -1.547435, y: 0.13812481, z: -1.4568172}
 --- !u!114 &1319245004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3529,7 +3528,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 836456433833793846}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 1c8c0868f719a614f8c0a09a40360611, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

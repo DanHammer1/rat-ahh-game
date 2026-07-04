@@ -3,27 +3,20 @@ using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Cheese : NetworkBehaviour, IInteractable
+public class Coin : NetworkBehaviour, IInteractable
 {
-    // Update is called once per frame
-
-    public bool playerInRange = false;
-    private RatPlayer localPlayerInRange;
-
-
-    void Update()
-    {
-        ((IInteractable)this).TryInteract();
-    }
-
     public string GetInteractionPromptText() {
-        return "Press E to eat Cheese.";
+        return "Press E to pick up coin";
     }
 
     public void Interact() {
-        Player.localPlayer.score += ObjectiveScores.cheeseScore;
+        Player.localPlayer.score += ObjectiveScores.deliveryScore;
         Player.localPlayer.scoreText.text = $"Score: {Player.localPlayer.score}";
         DespawnServerRpc();
+    }
+
+    public void Update() {
+        ((IInteractable)this).TryInteract();
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -35,3 +28,10 @@ public class Cheese : NetworkBehaviour, IInteractable
         }
     }
 }
+
+
+
+
+
+
+

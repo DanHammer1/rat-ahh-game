@@ -17,6 +17,16 @@ public class Door : NetworkBehaviour, IInteractable
     public Action onDoorClosed;
     public Action onDoorOpened;
 
+    public String GetInteractionPromptText() {
+        switch(doorState) {
+            case State.OPEN:
+                return "Press E to close Door";
+            case State.CLOSED:
+                return "Press E to open Door";
+            default:
+                return "Door has no state.";
+        }
+    }
     public void Interact() {
         InteractDoorRpc();
     }
@@ -40,10 +50,8 @@ public class Door : NetworkBehaviour, IInteractable
     public void InteractDoorClientRpc() {
         if (doorState == State.OPEN) {
             animator.CrossFade("CLOSE", 0.15f);
-            Debug.Log("Closing.");
         } else {
             animator.CrossFade("OPEN", 0.15f);
-            Debug.Log("Opening");
         }
         SwitchDoorState();
     }

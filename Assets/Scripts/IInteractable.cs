@@ -5,6 +5,8 @@ public interface IInteractable
 {
     public void Interact();
 
+    public string GetInteractionPromptText();
+
     public void TryInteract() {
         if (CheckInteractionShouldTrigger()) Interact();
     }
@@ -15,8 +17,13 @@ public interface IInteractable
             Player.localPlayer.viewPosition.transform.position,
             PlayerCamera.mainCamera.transform.forward,
             out hit,
-            1f, LayerMask.GetMask("InteractableObject")))
+            1f, LayerMask.GetMask("InteractableObject"))) {
+
+            GameObject interactPrompt = GameObject.FindWithTag("InteractionPrompt");
+            string newInteractText = hit.collider.gameObject.GetComponent<IInteractable>().GetInteractionPromptText();
+            interactPrompt.GetComponent<TextMeshProUGUI>().text = newInteractText;
             return true;
+            }
         
         return false;
     }
