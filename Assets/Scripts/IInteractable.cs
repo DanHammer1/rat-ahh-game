@@ -30,11 +30,20 @@ public interface IInteractable
 
     public bool CheckPlayerInRange() {
         RaycastHit hit;
+        if (Player.localPlayer.viewPosition == null) {
+            Debug.LogError("viewPosition is gone.");
+            return false;
+        }
+        else if (PlayerCamera.mainCamera == null) {
+            Debug.LogError("mainCamera is gone.");
+        }
         if (Physics.Raycast(
             Player.localPlayer.viewPosition.transform.position,
             PlayerCamera.mainCamera.transform.forward,
             out hit,
             1f, LayerMask.GetMask("InteractableObject"))) {
+                if (hit.collider.gameObject == null) return false;
+
                 GameObject hitObject = hit.collider.gameObject;
                 if (hitObject.GetComponent<IInteractable>() == this) {
                     return true;
