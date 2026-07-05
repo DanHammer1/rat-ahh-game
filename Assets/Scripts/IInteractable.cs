@@ -12,6 +12,8 @@ public interface IInteractable
     }
 
     public static bool CheckPlayerFacingInteractableObject() {
+        if (Player.localPlayer == null) return false;
+
         RaycastHit hit;
         if (Physics.Raycast(
             Player.localPlayer.viewPosition.transform.position,
@@ -29,6 +31,8 @@ public interface IInteractable
     }
 
     public bool CheckPlayerInRange() {
+        if (Player.localPlayer == null) return false;
+
         RaycastHit hit;
         if (Player.localPlayer.viewPosition == null) {
             Debug.LogError("viewPosition is gone.");

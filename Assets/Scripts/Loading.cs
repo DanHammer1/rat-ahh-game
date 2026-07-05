@@ -13,6 +13,8 @@ public class Loading : NetworkBehaviour
     PlayerCamera playerCamera;
     void Start()
     {
+        DontDestroyOnLoad(gameObject);
+
         playerCamera = FindFirstObjectByType<PlayerCamera>();
 
         if (NetworkManager.Singleton.IsServer)
@@ -21,20 +23,21 @@ public class Loading : NetworkBehaviour
         }
     }
 
-
     private void LoadGameScene()
     {
+        if (NetworkManager.Singleton.IsServer) {
+            NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += (clientId, sceneName, loadMode, fourthArg) =>
+            {
+                if (!NetworkManager.Singleton.IsServer) return;
+
+                StartCoroutine(GameManager.Instance.SpawnAllPlayers());
+                GameManager.Instance.OnGameStartClientRpc();
+            };
+        }
+
         NetworkManager.Singleton.SceneManager.LoadScene(
             "Game",
             LoadSceneMode.Single
         );
-
-        NetworkManager.Singleton.SceneManager.OnLoadComplete += (clientId, sceneName, loadMode) =>
-        {
-            if (NetworkManager.Singleton.IsServer) {
-                GameManager.Instance.SpawnAllPlayers();
-                GameManager.Instance.OnGameStartClientRpc();
-            }
-        };
     }
 }

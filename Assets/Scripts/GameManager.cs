@@ -17,6 +17,7 @@ public class GameManager : NetworkBehaviour
 
     public GameObject ratPrefab;
     public GameObject hunterPrefab;
+    public bool sceneReady = false;
 
     public NetworkList<ulong> clientIds = new NetworkList<ulong>();
     public NetworkList<FixedString32Bytes> clientNames = new NetworkList<FixedString32Bytes>();
@@ -82,6 +83,8 @@ public class GameManager : NetworkBehaviour
     }
 
     void SpawnPlayer(GameManager.PlayerRole role, ulong clientId) {
+        if (!IsServer) return;
+
         GameObject playerInstance;
         if (role == GameManager.PlayerRole.Hunter) {
             playerInstance = Instantiate(hunterPrefab);
@@ -90,13 +93,19 @@ public class GameManager : NetworkBehaviour
             playerInstance = Instantiate(ratPrefab);
         }
         NetworkObject netObj = playerInstance.GetComponent<NetworkObject>();
+        
         netObj.SpawnAsPlayerObject(clientId, true);
         netObj.GetComponent<Player>().clientId.Value = clientId;
+        
         //targetGroup.AddMember(playerInstance.transform.GetChild(1), 1f, 5f);
     }
 
-    public void SpawnAllPlayers() {
-        if (!IsServer || playersSpawned) return;
+    public IEnumerator SpawnAllPlayers() {
+        if (!IsServer || playersSpawned) yield break;
+        
+        while (!sceneReady) {
+            yield return null;
+        }
 
         AssignPlayerRoles();
         foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
