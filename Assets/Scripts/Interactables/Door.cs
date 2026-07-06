@@ -7,7 +7,8 @@ public class Door : NetworkBehaviour, IInteractable
     public Collider doorCollider;
     private Animator animator;
 
-    public enum State {
+    public enum State
+    {
         OPEN,
         CLOSED
     }
@@ -17,8 +18,10 @@ public class Door : NetworkBehaviour, IInteractable
     public Action onDoorClosed;
     public Action onDoorOpened;
 
-    public String GetInteractionPromptText() {
-        switch(doorState) {
+    public String GetInteractionPromptText()
+    {
+        switch (doorState)
+        {
             case State.OPEN:
                 return "Press E to close Door";
             case State.CLOSED:
@@ -27,30 +30,40 @@ public class Door : NetworkBehaviour, IInteractable
                 return "Door has no state.";
         }
     }
-    public void Interact() {
+    public void Interact()
+    {
         InteractDoorRpc();
     }
 
-    public void SwitchDoorState() {
-        if (doorState == State.OPEN) {
+    public void SwitchDoorState()
+    {
+        if (doorState == State.OPEN)
+        {
             doorState = State.CLOSED;
             onDoorClosed?.Invoke();
-        } else {
+        }
+        else
+        {
             doorState = State.OPEN;
             onDoorOpened?.Invoke();
         }
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void InteractDoorRpc() {
+    public void InteractDoorRpc()
+    {
         InteractDoorClientRpc();
     }
 
     [ClientRpc]
-    public void InteractDoorClientRpc() {
-        if (doorState == State.OPEN) {
+    public void InteractDoorClientRpc()
+    {
+        if (doorState == State.OPEN)
+        {
             animator.CrossFade("CLOSE", 0.15f);
-        } else {
+        }
+        else
+        {
             animator.CrossFade("OPEN", 0.15f);
         }
         SwitchDoorState();
@@ -61,16 +74,20 @@ public class Door : NetworkBehaviour, IInteractable
         animator = GetComponent<Animator>();
     }
 
-    void Start() {
-        onDoorClosed += () => {
+    void Start()
+    {
+        onDoorClosed += () =>
+        {
             GetComponent<BoxCollider>().isTrigger = false;
         };
-        onDoorOpened += () => {
+        onDoorOpened += () =>
+        {
             GetComponent<BoxCollider>().isTrigger = true;
         };
     }
 
-    void Update() {
+    void Update()
+    {
         ((IInteractable)this).TryInteract();
     }
 }
