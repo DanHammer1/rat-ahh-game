@@ -7,7 +7,7 @@ public class CheeseObjective : Objective
 
     public CheeseObjective() : base("Get Cheese.")
     {
-        this.cheese = GameObject.FindWithTag("Cheese");
+        this.cheese = CheeseSpawner.instance.ForceObtainRandomCheese();
     }
 
     public override bool CheckConditionCleared()

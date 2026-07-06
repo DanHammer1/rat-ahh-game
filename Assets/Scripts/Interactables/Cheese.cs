@@ -2,6 +2,7 @@ using TMPro;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using System;
 
 public class Cheese : NetworkBehaviour, IInteractable
 {
@@ -10,6 +11,7 @@ public class Cheese : NetworkBehaviour, IInteractable
     public bool playerInRange = false;
     private RatPlayer localPlayerInRange;
 
+    public Action onDestroyed;
 
     void Update()
     {
@@ -31,6 +33,7 @@ public class Cheese : NetworkBehaviour, IInteractable
     {
         if (NetworkObject != null && NetworkObject.IsSpawned)
         {
+            onDestroyed?.Invoke();
             NetworkObject.Despawn();
         }
     }
