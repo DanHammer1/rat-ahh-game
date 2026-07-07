@@ -56,10 +56,10 @@ public class PlayerCamera : MonoBehaviour
         cinemachineNoise = instance.GetComponent<CinemachineBasicMultiChannelPerlin>();
         mouseSensitivity = Constants.mouseSensitivity;
 
-        if (GameManager.GetLocalRole() == GameManager.PlayerRole.Hunter) {
+        if (GameManager.GetLocalRole() == GameManager.PlayerRole.HUNTER) {
             cinemachineCamera.Lens.FieldOfView = Constants.humanCameraFOV;
         }
-        else if (GameManager.GetLocalRole() == GameManager.PlayerRole.Hider) {
+        else if (GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER) {
             cinemachineCamera.Lens.FieldOfView = Constants.ratCameraFOV;
         }
 
@@ -114,8 +114,8 @@ public class PlayerCamera : MonoBehaviour
         }
 
         thirdPersonRadius = GameManager.GetLocalRole() switch {
-            GameManager.PlayerRole.Hunter => Mathf.Clamp(thirdPersonRadius, 0, Constants.humanMaxCameraThirdPersonRadius),
-            GameManager.PlayerRole.Hider => Mathf.Clamp(thirdPersonRadius, 0, Constants.ratMaxCameraThirdPersonRadius),
+            GameManager.PlayerRole.HUNTER => Mathf.Clamp(thirdPersonRadius, 0, Constants.humanMaxCameraThirdPersonRadius),
+            GameManager.PlayerRole.HIDER => Mathf.Clamp(thirdPersonRadius, 0, Constants.ratMaxCameraThirdPersonRadius),
             _ => thirdPersonRadius
         };
 

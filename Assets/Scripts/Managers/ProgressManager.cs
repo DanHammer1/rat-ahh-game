@@ -14,25 +14,39 @@ public class ProgressManager : NetworkBehaviour
     public List<Objective> objectives = new List<Objective>();
 
     private bool IsActive = false;
+    private bool onActivateExecuted = false;
 
     public IEnumerator OnActivate()
     {
-        objectives = new List<Objective>();
-        objectives.Add(new CheeseObjective());
-        objectives.Add(new DeliveryObjective());
+        if (onActivateExecuted) yield break;
+        onActivateExecuted = true;
 
         GameObject timerGameObject = GameObject.FindWithTag("TimerUI");
         GameObject objectivesUIGameObject = GameObject.FindWithTag("ObjectivesUI");
         GameObject playersUIListGameObject = GameObject.FindWithTag("PlayerListUI");
 
-        while (timerGameObject == null || objectivesUIGameObject == null || playersUIListGameObject == null)
-        {
+        while (timerGameObject == null || 
+            objectivesUIGameObject == null || 
+            playersUIListGameObject == null ||
+            CheeseSpawner.instance == null) {
+            
+            timerGameObject = GameObject.FindWithTag("TimerUI");
+            objectivesUIGameObject = GameObject.FindWithTag("ObjectivesUI");
+            playersUIListGameObject = GameObject.FindWithTag("PlayerListUI");
+
             yield return null;
         }
 
         timer = timerGameObject.GetComponent<TextMeshProUGUI>();
         objectivesUI = objectivesUIGameObject.GetComponent<TextMeshProUGUI>();
         playersUIList = playersUIListGameObject.GetComponent<TextMeshProUGUI>();
+
+        objectives = new List<Objective>();
+
+        if (GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER) {
+            objectives.Add(new CheeseObjective());
+            objectives.Add(new DeliveryObjective());
+        }
 
         IsActive = true;
     }

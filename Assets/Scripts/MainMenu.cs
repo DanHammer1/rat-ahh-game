@@ -48,7 +48,7 @@ public class MainMenu : NetworkBehaviour
 
     public void BecomeHider()
     {
-        preference = GameManager.PlayerRole.Hider;
+        preference = GameManager.PlayerRole.HIDER;
         hasPreference = true;
 
         if (joined)
@@ -60,7 +60,7 @@ public class MainMenu : NetworkBehaviour
 
     public void BecomeHunter()
     {
-        preference = GameManager.PlayerRole.Hunter;
+        preference = GameManager.PlayerRole.HUNTER;
         hasPreference = true;
 
         if (joined)

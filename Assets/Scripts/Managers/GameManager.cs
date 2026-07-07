@@ -8,8 +8,8 @@ using Unity.Collections;
 public class GameManager : NetworkBehaviour
 {
     public enum PlayerRole {
-        Hunter,
-        Hider
+        HUNTER,
+        HIDER
     };
 
     public static GameManager Instance;
@@ -50,19 +50,19 @@ public class GameManager : NetworkBehaviour
     }
 
     public static List<ulong> GetHunterIds() {
-        return GetIds((int)PlayerRole.Hunter);
+        return GetIds((int)PlayerRole.HUNTER);
     }
 
     public static List<ulong> GetHiderIds() {
-        return GetIds((int)PlayerRole.Hider);
+        return GetIds((int)PlayerRole.HIDER);
     }
 
     public static List<int> GetHunterIndexs() {
-        return GetIndexs((int)PlayerRole.Hunter);
+        return GetIndexs((int)PlayerRole.HUNTER);
     }
 
     public static List<int> GetHiderIndexs() {
-        return GetIndexs((int)PlayerRole.Hider);
+        return GetIndexs((int)PlayerRole.HIDER);
     }
 
     public void AssignPlayerRoles() {
@@ -86,7 +86,7 @@ public class GameManager : NetworkBehaviour
         if (!IsServer) return;
 
         GameObject playerInstance;
-        if (role == GameManager.PlayerRole.Hunter) {
+        if (role == GameManager.PlayerRole.HUNTER) {
             playerInstance = Instantiate(hunterPrefab);
         }
         else {

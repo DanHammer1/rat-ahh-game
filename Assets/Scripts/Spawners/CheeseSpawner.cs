@@ -3,13 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
+using System;
 
 public class CheeseSpawner : NetworkBehaviour
 {
     public static CheeseSpawner instance;
     public GameObject cheesePrefab;
     public List<GameObject> cheeseSpawnLocations;
-    public List<GameObject> takenSpawnLocations;
+    public NetworkList<NetworkObjectReference> takenSpawnLocations;
+
+    public Action onCheeseObtained;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake() {
@@ -21,13 +24,7 @@ public class CheeseSpawner : NetworkBehaviour
         foreach (Transform spawnLocation in cheeseSpawnLocationParent.transform) {
             cheeseSpawnLocations.Add(spawnLocation.gameObject);
         }
-        takenSpawnLocations = new List<GameObject>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        takenSpawnLocations = new NetworkList<NetworkObjectReference>();
     }
 
     List<GameObject> GetVacantCheeseSpots() {
@@ -49,29 +46,41 @@ public class CheeseSpawner : NetworkBehaviour
 
         if (vacantSpots.Count == 0) return Vector3.zero;
 
-        GameObject randVacantSpot = vacantSpots[Random.Range(0, vacantSpots.Count)];
+        GameObject randVacantSpot = vacantSpots[UnityEngine.Random.Range(0, vacantSpots.Count)];
         return randVacantSpot.transform.position;
     }
 
-    public void SpawnRandomCheese() {
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SpawnRandomCheeseRpc() {
         Vector3 vacantSpot = GetVacantCheeseSpot();
 
         if (vacantSpot == Vector3.zero) {
             return;
         }
+
         GameObject cheese = Instantiate(cheesePrefab, vacantSpot, Quaternion.identity);
         cheese.GetComponent<NetworkObject>().Spawn();
 
         takenSpawnLocations.Add(cheese);
         cheese.GetComponent<Cheese>().onDestroyed += () => takenSpawnLocations.Remove(cheese);
+
+        Debug.Log("A");
     }
 
-    public GameObject ForceObtainRandomCheese() {
+    public IEnumerator ForceObtainRandomCheeseOverTime() {
         if (takenSpawnLocations.Count == 0) {
-            SpawnRandomCheese();
+            SpawnRandomCheeseRpc();
         }
 
-        return GetRandomCheese();
+        while (takenSpawnLocations.Count == 0) {
+            yield return null;
+        }
+
+        onCheeseObtained?.Invoke();
+    }
+
+    public void ForceObtainRandomCheese() {
+        StartCoroutine(ForceObtainRandomCheeseOverTime());
     }
 
     public GameObject GetRandomCheese() {
@@ -79,6 +88,6 @@ public class CheeseSpawner : NetworkBehaviour
             return null;
         }
 
-        return takenSpawnLocations[Random.Range(0, takenSpawnLocations.Count)];
+        return takenSpawnLocations[UnityEngine.Random.Range(0, takenSpawnLocations.Count)];
     }
 }

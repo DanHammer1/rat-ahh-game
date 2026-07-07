@@ -6,8 +6,6 @@ using System;
 
 public class Cheese : NetworkBehaviour, IInteractable
 {
-    // Update is called once per frame
-
     public bool playerInRange = false;
     private RatPlayer localPlayerInRange;
 
@@ -17,12 +15,11 @@ public class Cheese : NetworkBehaviour, IInteractable
 
     public override void OnNetworkSpawn() {
         onSpawned += () => ObjectManager.MakeObjectSpectral(transform.Find("Renderer").gameObject);
-        onSpawned += () => Timer.CreateTimer(5, Timer.OnFinish.DESTROY, () => 
+        onSpawned += () => Timer.CreateTimer(1000, Timer.OnFinish.DESTROY, () => 
             ObjectManager.TakeAwaySpectral(transform.Find("Renderer").gameObject),
             "Spectral Effect removal for cheese timer.");
 
         onPlayerSeesObject += () => ObjectManager.TakeAwaySpectral(transform.Find("Renderer").gameObject);
-        onPlayerSeesObject += () => Debug.Log("Eye see you!");
         onSpawned?.Invoke();
     }
 

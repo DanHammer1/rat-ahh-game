@@ -1,5 +1,9 @@
 using UnityEngine;
 using Unity.Netcode;
+using System.Collections.Generic;
+using System;
+using Unity.Collections;
+using System.Collections;
 
 public class CheeseObjective : Objective
 {
@@ -7,7 +11,8 @@ public class CheeseObjective : Objective
 
     public CheeseObjective() : base("Get Cheese.")
     {
-        this.cheese = CheeseSpawner.instance.ForceObtainRandomCheese();
+        CheeseSpawner.instance.onCheeseObtained += () => cheese = CheeseSpawner.instance.GetRandomCheese();
+        CheeseSpawner.instance.ForceObtainRandomCheese();
     }
 
     public override bool CheckConditionCleared()
