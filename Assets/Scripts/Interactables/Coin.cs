@@ -7,6 +7,29 @@ public class Coin : NetworkBehaviour, IInteractable
 {
     bool isBeingCarried = false;
     bool hasBeenDelivered = false;
+
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SetCoinParentRpc(NetworkObjectReference parentRef)
+    {
+        if (parentRef.TryGet(out NetworkObject parent))
+        {
+            NetworkObject.TrySetParent(parent);
+        }
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void DropCoinRpc()
+    {
+        isBeingCarried = false;
+        Player.localPlayer.isCarryingCoin = false;
+        transform.position = Player.localPlayer.transform.TransformPoint(new Vector3(0, 2f, 3f));
+        SetCoinParentRpc(GameObject.Find("Coin Container").GetComponent<NetworkObject>());
+        this.GetComponent<BoxCollider>().enabled = true;
+        this.GetComponent<Rigidbody>().useGravity = true;
+    }
+
+
     public void Update()
     {
         ((IInteractable)this).TryInteract();
@@ -22,12 +45,7 @@ public class Coin : NetworkBehaviour, IInteractable
             // Drop coin
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                isBeingCarried = false;
-                Player.localPlayer.isCarryingCoin = false;
-                transform.position = Player.localPlayer.transform.TransformPoint(new Vector3(0, 2f, 3f));
-                transform.SetParent(GameObject.Find("Coin Container").transform);
-                this.GetComponent<BoxCollider>().enabled = true;
-                this.GetComponent<Rigidbody>().useGravity = true;
+                DropCoinRpc();
             }
         }
     }
@@ -40,7 +58,7 @@ public class Coin : NetworkBehaviour, IInteractable
     {
         if (!Player.localPlayer.isCarryingCoin)
         {
-            transform.SetParent(Player.localPlayer.transform);
+            SetCoinParentRpc(Player.localPlayer.GetComponent<NetworkObject>());
             Player.localPlayer.isCarryingCoin = true;
             this.GetComponent<BoxCollider>().enabled = false;
             this.GetComponent<Rigidbody>().useGravity = false;
