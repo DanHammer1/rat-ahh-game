@@ -20,7 +20,6 @@ public class CheeseSpawner : NetworkBehaviour
 
         foreach (Transform spawnLocation in cheeseSpawnLocationParent.transform) {
             cheeseSpawnLocations.Add(spawnLocation.gameObject);
-            Debug.Log(cheeseSpawnLocations.Count + "AAAA");
         }
         takenSpawnLocations = new List<GameObject>();
     }
@@ -33,7 +32,6 @@ public class CheeseSpawner : NetworkBehaviour
 
     List<GameObject> GetVacantCheeseSpots() {
         List<GameObject> vacantSpots = new List<GameObject>();
-        Debug.Log(cheeseSpawnLocations.Count);
         foreach (GameObject spawnLocation in cheeseSpawnLocations) {
             bool taken = false;
             foreach (GameObject cheese in takenSpawnLocations) {

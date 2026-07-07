@@ -27,6 +27,7 @@ TagManager:
   - Coin
   - Pick Up Coin Prompt
   - CheeseSpawnParent
+  - TimerParent
   layers:
   - Default
   - TransparentFX

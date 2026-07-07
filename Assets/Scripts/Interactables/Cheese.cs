@@ -12,10 +12,27 @@ public class Cheese : NetworkBehaviour, IInteractable
     private RatPlayer localPlayerInRange;
 
     public Action onDestroyed;
+    public Action onSpawned;
+    public Action onPlayerSeesObject;
+
+    public override void OnNetworkSpawn() {
+        onSpawned += () => ObjectManager.MakeObjectSpectral(transform.Find("Renderer").gameObject);
+        onSpawned += () => Timer.CreateTimer(5, Timer.OnFinish.DESTROY, () => 
+            ObjectManager.TakeAwaySpectral(transform.Find("Renderer").gameObject),
+            "Spectral Effect removal for cheese timer.");
+
+        onPlayerSeesObject += () => ObjectManager.TakeAwaySpectral(transform.Find("Renderer").gameObject);
+        onPlayerSeesObject += () => Debug.Log("Eye see you!");
+        onSpawned?.Invoke();
+    }
 
     void Update()
     {
         ((IInteractable)this).TryInteract();
+
+        if (ObjectManager.CheckPlayerSeesObject(this.gameObject)) {
+            onPlayerSeesObject?.Invoke();
+        };
     }
 
     public string GetInteractionPromptText() {
