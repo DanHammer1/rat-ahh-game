@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3740378733483080493}
   - component: {fileID: 5963779122683215106}
   - component: {fileID: 5620819120515192203}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3632131532
+  GlobalObjectIdHash: 148451681
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1

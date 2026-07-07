@@ -267,6 +267,8 @@ MonoBehaviour:
   score: 0
   scoreText: {fileID: 0}
   impulseSource: {fileID: 0}
+  eatCheesePrompt: {fileID: 0}
+  pickUpCoinPrompt: {fileID: 0}
   ratAbilityTarget: {fileID: 4496285853245265043}
   isBeingClung:
     UpdateTraits:
