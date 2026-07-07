@@ -42,6 +42,7 @@ public class Player : NetworkBehaviour
     public GameObject ratAbilityShakeUI;
     public GameObject shakeProgressBar;
     public Image shakeProgressBarImage;
+    public bool isCarryingCoin;
 
     // Cheese/score info
     public int score;

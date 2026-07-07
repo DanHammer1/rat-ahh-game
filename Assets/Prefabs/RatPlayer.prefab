@@ -1090,6 +1090,7 @@ MonoBehaviour:
   scoreText: {fileID: 0}
   impulseSource: {fileID: 0}
   eatCheesePrompt: {fileID: 0}
+  pickUpCoinPrompt: {fileID: 0}
   ratAbilityInRange: 0
   isClinging:
     UpdateTraits:

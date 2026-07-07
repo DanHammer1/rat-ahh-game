@@ -69,7 +69,8 @@ public class RatPlayer : Player
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    void SetClingingStateRpc(bool state) {
+    void SetClingingStateRpc(bool state)
+    {
         isClinging.Value = state;
     }
 

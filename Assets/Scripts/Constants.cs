@@ -14,7 +14,7 @@ public static class Constants
     public static float maxRatAbilityCooldown = 10f;
     public static float maxRatAbilityHumanShakeMeter = 20f;
     public static float ratCameraFOV = 60f;
-    public static float ratMaxCameraThirdPersonRadius = 0.3f;
+    public static float ratMaxCameraThirdPersonRadius = 0.8f;
     # endregion
 
     # region "Human"
