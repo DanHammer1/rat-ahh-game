@@ -6,6 +6,7 @@ using UnityEngine;
 public class Coin : NetworkBehaviour, IInteractable
 {
     bool isBeingCarried = false;
+    bool hasBeenDelivered = false;
     public void Update()
     {
         ((IInteractable)this).TryInteract();
@@ -39,8 +40,6 @@ public class Coin : NetworkBehaviour, IInteractable
     {
         if (!Player.localPlayer.isCarryingCoin)
         {
-            Player.localPlayer.score += ObjectiveScores.deliveryScore;
-            Player.localPlayer.scoreText.text = $"Score: {Player.localPlayer.score}";
             transform.SetParent(Player.localPlayer.transform);
             Player.localPlayer.isCarryingCoin = true;
             this.GetComponent<BoxCollider>().enabled = false;
@@ -56,6 +55,16 @@ public class Coin : NetworkBehaviour, IInteractable
         if (NetworkObject != null && NetworkObject.IsSpawned)
         {
             NetworkObject.Despawn();
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("CoinDeliveryLocation"))
+        {
+            Player.localPlayer.score += ObjectiveScores.deliveryScore;
+            Player.localPlayer.scoreText.text = $"Score: {Player.localPlayer.score}";
+            Debug.Log("Coin delivered");
         }
     }
 }

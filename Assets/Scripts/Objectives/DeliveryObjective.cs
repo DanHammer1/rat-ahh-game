@@ -5,10 +5,8 @@ public class DeliveryObjective : Objective
 {
     public GameObject cheese;
 
-    public DeliveryObjective() : base("Deliver gold to the well")
+    public DeliveryObjective() : base("Deliver one coin to the garbage container")
     {
-        // this.coin = GameObject.FindWithTag("Coin");
-        // this.well = GameObject.FindWithTag("Well");
     }
 
     public override bool CheckConditionCleared()
