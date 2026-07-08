@@ -13,6 +13,9 @@ public class Cheese : NetworkBehaviour, IInteractable
     public Action onSpawned;
     public Action onPlayerSeesObject;
 
+    private float eatProgress = 0;
+    private float totalInteractionTime = 5f;
+
     public override void OnNetworkSpawn() {
         onSpawned += () => ObjectManager.MakeObjectSpectral(transform.Find("Renderer").gameObject);
         onSpawned += () => Timer.CreateTimer(1000, Timer.OnFinish.DESTROY, () => 
@@ -33,13 +36,21 @@ public class Cheese : NetworkBehaviour, IInteractable
     }
 
     public string GetInteractionPromptText() {
-        return "Press E to eat Cheese.";
+        return "Hold E to eat Cheese.";
     }
 
     public void Interact() {
         Player.localPlayer.score += ObjectiveScores.cheeseScore;
         Player.localPlayer.scoreText.text = $"Score: {Player.localPlayer.score}";
         DespawnServerRpc();
+    }
+
+    public void UpdateProgress() {
+        eatProgress += Time.deltaTime / totalInteractionTime;
+    }
+
+    public float GetProgress() {
+        return eatProgress;
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]

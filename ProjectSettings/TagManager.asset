@@ -30,6 +30,9 @@ TagManager:
   - TimerParent
   - CoinDeliveryLocation
   - ObjectiveSuccessPrompt
+  - ProgressFillBar
+  - InteractionPromptParent
+  - InteractionPromptBackground
   layers:
   - Default
   - TransparentFX

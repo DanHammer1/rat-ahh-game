@@ -7,6 +7,10 @@ public class Door : NetworkBehaviour, IInteractable
     public Collider doorCollider;
     private Animator animator;
 
+    private float interactionProgress = 0;
+    private float interactionCompletionTime = 0f;
+    private bool interactable = true;
+
     public enum State
     {
         OPEN,
@@ -33,6 +37,25 @@ public class Door : NetworkBehaviour, IInteractable
     public void Interact()
     {
         InteractDoorRpc();
+        interactionProgress = 0;
+        interactable = false;
+        Timer.CreateTimer(0.1f, Timer.OnFinish.DESTROY, () => interactable = true, 
+            "Door interaction cooldown Timer", () => Input.GetKeyUp(KeyCode.E));
+    }
+
+    public void OnInteractingExit() {
+        interactionProgress = 0;
+    }
+
+    public void UpdateProgress() {
+        if (!interactable) return;
+
+        if (interactionCompletionTime == 0) interactionProgress = 1;
+        else interactionProgress += Time.deltaTime / interactionCompletionTime;
+    }
+
+    public float GetProgress() {
+        return interactionProgress;
     }
 
     public void SwitchDoorState()

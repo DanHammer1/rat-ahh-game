@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public interface IInteractable
 {
@@ -7,8 +8,13 @@ public interface IInteractable
 
     public string GetInteractionPromptText();
 
+    public float GetProgress();
+
+    public void UpdateProgress();
+
     public void TryInteract() {
         if (CheckInteractionShouldTrigger()) Interact();
+        TryUpdateProgress();
     }
 
     public static bool CheckPlayerFacingInteractableObject() {
@@ -22,8 +28,10 @@ public interface IInteractable
             1f, LayerMask.GetMask("InteractableObject"))) {
 
             GameObject interactPrompt = GameObject.FindWithTag("InteractionPrompt");
-            string newInteractText = hit.collider.gameObject.GetComponent<IInteractable>().GetInteractionPromptText();
+            IInteractable implementationScript = hit.collider.gameObject.GetComponent<IInteractable>();
+            string newInteractText = implementationScript.GetInteractionPromptText();
             interactPrompt.GetComponent<TextMeshProUGUI>().text = newInteractText;
+            implementationScript.UpdateProgressBar(implementationScript.GetProgress());
             return true;
             }
         
@@ -58,11 +66,27 @@ public interface IInteractable
     }
 
     public bool CheckInteractionShouldTrigger() {
-        return (CheckPlayerInRange() && Input.GetKeyDown(KeyCode.E));
+        return (CheckPlayerInRange() && Input.GetKey(KeyCode.E) && GetProgress() >= 1);
+    }
+
+    public void TryUpdateProgress() {
+        if (CheckPlayerInRange() && Input.GetKey(KeyCode.E)) {
+            UpdateProgress();
+        } else {
+            OnInteractingExit();
+        }
+    }
+
+    public void OnInteractingExit() {}
+
+    public void UpdateProgressBar(float progress) {
+        GameObject.FindWithTag("ProgressFillBar").GetComponent<Image>().fillAmount = progress;
     }
 
     public static void TryDisplayInteractionText() {
         GameObject interactPrompt = GameObject.FindWithTag("InteractionPrompt");
+        GameObject interactBackground = GameObject.FindWithTag("InteractionPromptBackground");
+        GameObject interactFillBar = GameObject.FindWithTag("ProgressFillBar");
 
         if (interactPrompt == null) {
             Debug.LogError("No prompt found.");
@@ -71,9 +95,13 @@ public interface IInteractable
 
         if (!CheckPlayerFacingInteractableObject()) {
             interactPrompt.GetComponent<TextMeshProUGUI>().enabled = false;
+            interactBackground.GetComponent<Image>().enabled = false;
+            interactFillBar.GetComponent<Image>().enabled = false;
             return;
         }
 
         interactPrompt.GetComponent<TextMeshProUGUI>().enabled = true;
+        interactBackground.GetComponent<Image>().enabled = true;
+        interactFillBar.GetComponent<Image>().enabled = true;
     }
 }

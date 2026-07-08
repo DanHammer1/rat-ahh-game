@@ -6,6 +6,9 @@ public class Timer : MonoBehaviour
     private float duration;
     private float timer;
 
+    private bool canFinish;
+    private Func<bool> extraConditionsComplete;
+
     private Action onFinish;
 
     public enum OnFinish
@@ -17,7 +20,9 @@ public class Timer : MonoBehaviour
 
     private OnFinish finishState;
 
-    public static GameObject CreateTimer(float length, OnFinish finishState, Action finishAction, string name) {
+    public static GameObject CreateTimer(float length, OnFinish finishState, 
+        Action finishAction, string name, Func<bool> extraConditionsComplete = null) {
+        
         GameObject newGameObject = new GameObject(name);
         newGameObject.transform.SetParent(GameObject.FindWithTag("TimerParent").transform);
 
@@ -25,6 +30,12 @@ public class Timer : MonoBehaviour
         newTimer.duration = length;
         newTimer.timer = length;
         
+        if (extraConditionsComplete == null) {
+            newTimer.extraConditionsComplete = () => true;
+        } else {
+            newTimer.extraConditionsComplete = extraConditionsComplete;
+        }
+
         newTimer.onFinish += finishAction;
         switch(finishState) {
             case OnFinish.DESTROY:
@@ -58,7 +69,8 @@ public class Timer : MonoBehaviour
     {
         timer -= Time.deltaTime;
 
-        if (timer <= 0) {
+        canFinish = (extraConditionsComplete() || canFinish);
+        if (timer <= 0 && canFinish) {
             onFinish?.Invoke();
         }
     }

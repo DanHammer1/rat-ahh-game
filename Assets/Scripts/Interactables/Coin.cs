@@ -8,6 +8,8 @@ public class Coin : NetworkBehaviour, IInteractable
     bool isBeingCarried = false;
     bool hasBeenDelivered = false;
 
+    private float pickUpProgress = 0;
+    private float totalInteractionTime = 0.8f;
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void SetCoinParentRpc(NetworkObjectReference parentRef)
@@ -27,8 +29,13 @@ public class Coin : NetworkBehaviour, IInteractable
         SetCoinParentRpc(GameObject.Find("Coin Container").GetComponent<NetworkObject>());
         this.GetComponent<BoxCollider>().enabled = true;
         this.GetComponent<Rigidbody>().useGravity = true;
+
+        pickUpProgress = 0;
     }
 
+    public void OnInteractingExit() {
+        pickUpProgress = 0;
+    }
 
     public void Update()
     {
@@ -51,7 +58,7 @@ public class Coin : NetworkBehaviour, IInteractable
     }
     public string GetInteractionPromptText()
     {
-        return Player.localPlayer.isCarryingCoin ? "Already carrying coin" : "Press E to pick up coin";
+        return Player.localPlayer.isCarryingCoin ? "Already carrying coin" : "Hold E to pick up coin";
     }
 
     public void Interact()
@@ -64,6 +71,14 @@ public class Coin : NetworkBehaviour, IInteractable
             this.GetComponent<Rigidbody>().useGravity = false;
             isBeingCarried = true;
         }
+    }
+
+    public void UpdateProgress() {
+        if (!Player.localPlayer.isCarryingCoin) pickUpProgress += Time.deltaTime / totalInteractionTime;
+    }
+
+    public float GetProgress() {
+        return pickUpProgress;
     }
 
 
