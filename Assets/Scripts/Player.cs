@@ -42,7 +42,7 @@ public class Player : NetworkBehaviour
     public GameObject ratAbilityShakeUI;
     public GameObject shakeProgressBar;
     public Image shakeProgressBarImage;
-    public bool isCarryingCoin;
+    public NetworkVariable<bool> isCarryingCoin = new NetworkVariable<bool>(false);
 
     // Cheese/score info
     public int score;
@@ -53,6 +53,12 @@ public class Player : NetworkBehaviour
 
     public GameObject eatCheesePrompt;
     public GameObject pickUpCoinPrompt;
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void ToggleIsCarryingCoinRpc()
+    {
+        isCarryingCoin.Value = !isCarryingCoin.Value;
+    }
 
     public override void OnNetworkSpawn()
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Coin : NetworkBehaviour, IInteractable
 {
-    bool isBeingCarried = false;
+    public NetworkVariable<bool> isBeingCarried = new NetworkVariable<bool>(false);
     bool hasBeenDelivered = false;
 
     private float pickUpProgress = 0;
@@ -21,19 +21,27 @@ public class Coin : NetworkBehaviour, IInteractable
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void ToggleIsBeingCarriedRpc()
+    {
+        isBeingCarried.Value = !isBeingCarried.Value;
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void DropCoinRpc()
     {
-        isBeingCarried = false;
-        Player.localPlayer.isCarryingCoin = false;
+        ToggleIsBeingCarriedRpc();
+        Player.localPlayer.ToggleIsCarryingCoinRpc();
         transform.position = Player.localPlayer.transform.TransformPoint(new Vector3(0, 2f, 3f));
         SetCoinParentRpc(GameObject.Find("Coin Container").GetComponent<NetworkObject>());
         this.GetComponent<BoxCollider>().enabled = true;
         this.GetComponent<Rigidbody>().useGravity = true;
+        Player.localPlayer.transform.GetComponent<Movement>().MultiplyMoveSpeedRpc(1 / Constants.carryingCoinMoveSpeedMultiplier);
 
         pickUpProgress = 0;
     }
 
-    public void OnInteractingExit() {
+    public void OnInteractingExit()
+    {
         pickUpProgress = 0;
     }
 
@@ -46,12 +54,15 @@ public class Coin : NetworkBehaviour, IInteractable
         ((IInteractable)this).TryInteract();
 
         // If coin is being carried:
-        if (Player.localPlayer && Player.localPlayer.isCarryingCoin && isBeingCarried)
+        if (Player.localPlayer && Player.localPlayer.isCarryingCoin.Value && isBeingCarried.Value)
         {
             // Lock position to rats spine
-            Transform spine = Player.localPlayer.transform.Find("Armature/Hip/Spine");
-            transform.position = spine.TransformPoint(new Vector3(0.005f, 0, 0));
-            transform.rotation = spine.rotation * Quaternion.Euler(0, 0, 90);
+            if (IsServer)
+            {
+                Transform spine = Player.localPlayer.transform.Find("Armature/Hip/Spine");
+                transform.position = spine.TransformPoint(new Vector3(0.005f, 0, 0));
+                transform.rotation = spine.rotation * Quaternion.Euler(0, 0, 90);
+            }
 
             // Drop coin
             if (Input.GetKeyDown(KeyCode.Q))
@@ -62,26 +73,29 @@ public class Coin : NetworkBehaviour, IInteractable
     }
     public string GetInteractionPromptText()
     {
-        return Player.localPlayer.isCarryingCoin ? "Already carrying coin" : "Hold E to pick up coin";
+        return Player.localPlayer.isCarryingCoin.Value ? "Already carrying coin" : "Hold E to pick up coin";
     }
 
     public void Interact()
     {
-        if (!Player.localPlayer.isCarryingCoin)
+        if (!Player.localPlayer.isCarryingCoin.Value)
         {
             SetCoinParentRpc(Player.localPlayer.GetComponent<NetworkObject>());
-            Player.localPlayer.isCarryingCoin = true;
+            Player.localPlayer.ToggleIsCarryingCoinRpc();
             this.GetComponent<BoxCollider>().enabled = false;
             this.GetComponent<Rigidbody>().useGravity = false;
-            isBeingCarried = true;
+            ToggleIsBeingCarriedRpc();
+            Player.localPlayer.transform.GetComponent<Movement>().MultiplyMoveSpeedRpc(Constants.carryingCoinMoveSpeedMultiplier);
         }
     }
 
-    public void UpdateProgress() {
-        if (!Player.localPlayer.isCarryingCoin) pickUpProgress += Time.deltaTime / totalInteractionTime;
+    public void UpdateProgress()
+    {
+        if (!Player.localPlayer.isCarryingCoin.Value) pickUpProgress += Time.deltaTime / totalInteractionTime;
     }
 
-    public float GetProgress() {
+    public float GetProgress()
+    {
         return pickUpProgress;
     }
 

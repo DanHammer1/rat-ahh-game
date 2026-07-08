@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public static class Constants
@@ -6,6 +7,7 @@ public static class Constants
 
     #region "Rat"
     public static float ratMoveSpeed = 1.3f;
+    public static float carryingCoinMoveSpeedMultiplier = 0.8f;
     public static float ratJumpForce = 0.2f;
     public static float ratFallMultiplier = 0.8f;
     public static float ratAscendMultiplier = 0.8f;
