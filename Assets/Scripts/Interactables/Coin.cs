@@ -62,24 +62,21 @@ public class Coin : NetworkBehaviour, IInteractable
         ((IInteractable)this).TryInteract();
 
         // If coin is being carried:
-        if (Player.localPlayer && isBeingCarried.Value)
-        {
-            // Lock position to rats spine
-            if (IsServer)
-            {
-                playerCarryingCoin.Value.TryGet(out NetworkObject player);
-                Transform spine = player.transform.Find("Armature/Hip/Spine");
-                player.transform.position = spine.TransformPoint(new Vector3(0.005f, 0, 0));
-                player.transform.rotation = spine.rotation * Quaternion.Euler(0, 0, 90);
-            }
+        if (!(Player.localPlayer && isBeingCarried.Value)) return;
+        
+        NetworkObject player;
+        playerCarryingCoin.Value.TryGet(out player);
+        
+        Transform spine = player.transform.Find("Armature/Hip/Spine");
+        transform.position = spine.TransformPoint(new Vector3(0.005f, 0, 0));
+        transform.rotation = spine.rotation * Quaternion.Euler(0, 0, 90);
 
-            // Drop coin
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                DropCoinRpc();
-            }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            DropCoinRpc();
         }
     }
+
     public string GetInteractionPromptText()
     {
         return Player.localPlayer.isCarryingCoin.Value ? "Already carrying coin" : "Hold E to pick up coin";

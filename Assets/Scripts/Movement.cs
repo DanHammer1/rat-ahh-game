@@ -179,7 +179,6 @@ public class Movement : NetworkBehaviour
         {
             lookTarget.transform.position = cameraTransform.position + cameraTransform.forward * 1f;
         }
-        Debug.Log(moveSpeed);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
