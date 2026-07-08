@@ -12,6 +12,10 @@ public interface IInteractable
 
     public void UpdateProgress();
 
+    public bool CheckExtraInteractionConditions() {
+        return true;
+    }
+
     public void TryInteract() {
         if (CheckInteractionShouldTrigger()) Interact();
         TryUpdateProgress();
@@ -32,7 +36,8 @@ public interface IInteractable
             string newInteractText = implementationScript.GetInteractionPromptText();
             interactPrompt.GetComponent<TextMeshProUGUI>().text = newInteractText;
             implementationScript.UpdateProgressBar(implementationScript.GetProgress());
-            return true;
+            
+            return implementationScript.CheckExtraInteractionConditions();
             }
         
         return false;

@@ -25,6 +25,8 @@ public class CheeseSpawner : NetworkBehaviour
             cheeseSpawnLocations.Add(spawnLocation.gameObject);
         }
         takenSpawnLocations = new NetworkList<NetworkObjectReference>();
+
+        Timer.CreateTimer(30, Timer.OnFinish.REPEAT, () => SpawnRandomCheeseRpc(), "Cheese spawn repeating timer");
     }
 
     List<GameObject> GetVacantCheeseSpots() {
@@ -63,8 +65,6 @@ public class CheeseSpawner : NetworkBehaviour
 
         takenSpawnLocations.Add(cheese);
         cheese.GetComponent<Cheese>().onDestroyed += () => takenSpawnLocations.Remove(cheese);
-
-        Debug.Log("A");
     }
 
     public IEnumerator ForceObtainRandomCheeseOverTime() {

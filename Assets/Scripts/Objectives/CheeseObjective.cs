@@ -11,7 +11,10 @@ public class CheeseObjective : Objective
 
     public CheeseObjective() : base("Get Cheese.")
     {
-        CheeseSpawner.instance.onCheeseObtained += () => cheese = CheeseSpawner.instance.GetRandomCheese();
+        CheeseSpawner.instance.onCheeseObtained += () => {
+            cheese = CheeseSpawner.instance.GetRandomCheese();
+            ObjectManager.MakeObjectSpectral(cheese.transform.Find("Renderer").gameObject);
+        };
         CheeseSpawner.instance.ForceObtainRandomCheese();
     }
 

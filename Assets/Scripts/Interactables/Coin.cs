@@ -37,6 +37,10 @@ public class Coin : NetworkBehaviour, IInteractable
         pickUpProgress = 0;
     }
 
+    public bool CheckExtraInteractionConditions() {
+        return (GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER);;
+    }
+
     public void Update()
     {
         ((IInteractable)this).TryInteract();
