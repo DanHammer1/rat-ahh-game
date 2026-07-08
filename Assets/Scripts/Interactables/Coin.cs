@@ -6,6 +6,7 @@ using UnityEngine;
 public class Coin : NetworkBehaviour, IInteractable
 {
     public NetworkVariable<bool> isBeingCarried = new NetworkVariable<bool>(false);
+    public NetworkVariable<NetworkObjectReference> playerCarryingCoin = new NetworkVariable<NetworkObjectReference>();
     bool hasBeenDelivered = false;
 
     private float pickUpProgress = 0;
@@ -27,6 +28,12 @@ public class Coin : NetworkBehaviour, IInteractable
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SetPlayerCarryingCoinRpc(NetworkObjectReference playerReference)
+    {
+        playerCarryingCoin.Value = playerReference;
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void DropCoinRpc()
     {
         ToggleIsBeingCarriedRpc();
@@ -45,8 +52,9 @@ public class Coin : NetworkBehaviour, IInteractable
         pickUpProgress = 0;
     }
 
-    public bool CheckExtraInteractionConditions() {
-        return (GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER);;
+    public bool CheckExtraInteractionConditions()
+    {
+        return (GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER);
     }
 
     public void Update()
@@ -54,14 +62,15 @@ public class Coin : NetworkBehaviour, IInteractable
         ((IInteractable)this).TryInteract();
 
         // If coin is being carried:
-        if (Player.localPlayer && Player.localPlayer.isCarryingCoin.Value && isBeingCarried.Value)
+        if (Player.localPlayer && isBeingCarried.Value)
         {
             // Lock position to rats spine
             if (IsServer)
             {
-                Transform spine = Player.localPlayer.transform.Find("Armature/Hip/Spine");
-                transform.position = spine.TransformPoint(new Vector3(0.005f, 0, 0));
-                transform.rotation = spine.rotation * Quaternion.Euler(0, 0, 90);
+                playerCarryingCoin.Value.TryGet(out NetworkObject player);
+                Transform spine = player.transform.Find("Armature/Hip/Spine");
+                player.transform.position = spine.TransformPoint(new Vector3(0.005f, 0, 0));
+                player.transform.rotation = spine.rotation * Quaternion.Euler(0, 0, 90);
             }
 
             // Drop coin
@@ -78,6 +87,7 @@ public class Coin : NetworkBehaviour, IInteractable
 
     public void Interact()
     {
+        // Pickup coin
         if (!Player.localPlayer.isCarryingCoin.Value)
         {
             SetCoinParentRpc(Player.localPlayer.GetComponent<NetworkObject>());
@@ -85,6 +95,7 @@ public class Coin : NetworkBehaviour, IInteractable
             this.GetComponent<BoxCollider>().enabled = false;
             this.GetComponent<Rigidbody>().useGravity = false;
             ToggleIsBeingCarriedRpc();
+            SetPlayerCarryingCoinRpc(Player.localPlayer.gameObject);
             Player.localPlayer.transform.GetComponent<Movement>().MultiplyMoveSpeedRpc(Constants.carryingCoinMoveSpeedMultiplier);
         }
     }
