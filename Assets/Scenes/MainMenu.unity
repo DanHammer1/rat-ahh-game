@@ -815,6 +815,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   ratPrefab: {fileID: 8956695940269091181, guid: 5ecf7c30b7c095d4a8811adc1311f6d7, type: 3}
   hunterPrefab: {fileID: 1339862214881163576, guid: fdaa39fe96a60c5479931bf793ffb6b2, type: 3}
+  sceneReady: 0
   clientIds:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0
@@ -1405,8 +1406,8 @@ Camera:
   m_GameObject: {fileID: 982766891}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
