@@ -62,6 +62,11 @@ public class Player : NetworkBehaviour
     {
         isCarryingCoin.Value = !isCarryingCoin.Value;
     }
+    [ClientRpc]
+    public void ToggleIsCarryingCoinClientRpc()
+    {
+        isCarryingCoin.Value = !isCarryingCoin.Value;
+    }
 
     public override void OnNetworkSpawn()
     {

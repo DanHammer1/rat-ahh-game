@@ -38,6 +38,7 @@ public class Coin : NetworkBehaviour, IInteractable
     {
         ToggleIsBeingCarriedRpc();
         Player.localPlayer.ToggleIsCarryingCoinRpc();
+        Player.localPlayer.ToggleIsCarryingCoinClientRpc();
         transform.position = Player.localPlayer.transform.TransformPoint(new Vector3(0, 2f, 3f));
         SetCoinParentRpc(GameObject.Find("Coin Container").GetComponent<NetworkObject>());
         this.GetComponent<BoxCollider>().enabled = true;
@@ -63,10 +64,10 @@ public class Coin : NetworkBehaviour, IInteractable
 
         // If coin is being carried:
         if (!(Player.localPlayer && isBeingCarried.Value)) return;
-        
+
         NetworkObject player;
         playerCarryingCoin.Value.TryGet(out player);
-        
+
         Transform spine = player.transform.Find("Armature/Hip/Spine");
         transform.position = spine.TransformPoint(new Vector3(0.005f, 0, 0));
         transform.rotation = spine.rotation * Quaternion.Euler(0, 0, 90);
@@ -89,6 +90,7 @@ public class Coin : NetworkBehaviour, IInteractable
         {
             SetCoinParentRpc(Player.localPlayer.GetComponent<NetworkObject>());
             Player.localPlayer.ToggleIsCarryingCoinRpc();
+            Player.localPlayer.ToggleIsCarryingCoinClientRpc();
             this.GetComponent<BoxCollider>().enabled = false;
             this.GetComponent<Rigidbody>().useGravity = false;
             ToggleIsBeingCarriedRpc();
