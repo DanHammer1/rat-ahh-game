@@ -19,7 +19,7 @@ public class Movement : NetworkBehaviour
 
     // ground movement
     private Rigidbody rb;
-    public float moveSpeed = 2f;
+    public float moveSpeed;
     public float speed;
     public float moveHorizontal;
     public float moveForward;
@@ -108,7 +108,7 @@ public class Movement : NetworkBehaviour
 
             if (Physics.BoxCast(
                 corner + Vector3.up * 0.05f,
-                new Vector3(xScale/2, 0, zScale/2),
+                new Vector3(xScale / 2, 0, zScale / 2),
                 Vector3.down,
                 out RaycastHit hit,
                 Quaternion.Euler(0, transform.eulerAngles.y, 0),
@@ -179,6 +179,13 @@ public class Movement : NetworkBehaviour
         {
             lookTarget.transform.position = cameraTransform.position + cameraTransform.forward * 1f;
         }
+        Debug.Log(moveSpeed);
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void MultiplyMoveSpeedRpc(float multiplier)
+    {
+        moveSpeed *= multiplier;
     }
 
     public void MovePlayer(float moveSpeed)
