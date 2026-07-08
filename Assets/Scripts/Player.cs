@@ -6,7 +6,7 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
-
+using System;
 
 #if UNITY_EDITOR
 using System.Reflection;
@@ -22,6 +22,9 @@ public class Player : NetworkBehaviour
     public NetworkVariable<ulong> clientId = new NetworkVariable<ulong>();
     public NetworkVariable<float> maxHealth = new NetworkVariable<float>(100);
     public NetworkVariable<float> health = new NetworkVariable<float>();
+
+    public Action onDeath;
+
     public Movement movement;
     BoxCollider boxCollider;
     public Rigidbody rb;
