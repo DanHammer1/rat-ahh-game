@@ -14,7 +14,6 @@ public class CheeseSpawner : NetworkBehaviour
 
     public Action onCheeseObtained;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake() {
         instance = this;
 
@@ -25,6 +24,10 @@ public class CheeseSpawner : NetworkBehaviour
             cheeseSpawnLocations.Add(spawnLocation.gameObject);
         }
         takenSpawnLocations = new NetworkList<NetworkObjectReference>();
+    }
+
+    void Start() {
+        if (!IsServer) return;
 
         Timer.CreateTimer(30, Timer.OnFinish.REPEAT, () => SpawnRandomCheeseRpc(), "Cheese spawn repeating timer");
     }

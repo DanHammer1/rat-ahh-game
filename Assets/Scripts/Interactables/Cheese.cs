@@ -17,10 +17,6 @@ public class Cheese : NetworkBehaviour, IInteractable
     private float totalInteractionTime = 5f;
 
     public override void OnNetworkSpawn() {
-        onSpawned += () => Timer.CreateTimer(30, Timer.OnFinish.DESTROY, () => 
-            ObjectManager.TakeAwaySpectral(transform.Find("Renderer").gameObject),
-            "Spectral Effect removal for cheese timer.");
-
         onPlayerSeesObject += () => ObjectManager.TakeAwaySpectral(transform.Find("Renderer").gameObject);
         onSpawned?.Invoke();
     }
