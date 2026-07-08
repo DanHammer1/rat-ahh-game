@@ -249,6 +249,7 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
+  dead: 0
   movement: {fileID: 0}
   rb: {fileID: 0}
   playerCamera: {fileID: 0}
@@ -264,6 +265,11 @@ MonoBehaviour:
   ratAbilityShakeUI: {fileID: 0}
   shakeProgressBar: {fileID: 0}
   shakeProgressBarImage: {fileID: 0}
+  isCarryingCoin:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
   score: 0
   scoreText: {fileID: 0}
   impulseSource: {fileID: 0}
@@ -940,9 +946,9 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   cooldown: 1
   attackDuration: 0.5
-  damage: 20
-  rayRadius: 0.2
-  attackRange: 10
+  damage: 10
+  rayRadius: 0.12
+  attackRange: 2.7
   SFXSource: {fileID: 2364690912907855011}
   swingHit: {fileID: 8300000, guid: 6fa705728cff43d4e9873b9afcd04676, type: 3}
   swingMiss: {fileID: 8300000, guid: 82689117a58c13c42920d4e1164d4c7d, type: 3}

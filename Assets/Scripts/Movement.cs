@@ -77,6 +77,8 @@ public class Movement : NetworkBehaviour
             headBone = animator.GetBoneTransform(HumanBodyBones.Head);
         }
         movementRecoveryMultiplier = 1;
+
+        GetComponent<Player>().onDeath += () => isMovementLocked = true;
     }
 
     bool CheckPlayerGrounded()
@@ -133,7 +135,7 @@ public class Movement : NetworkBehaviour
             }
         }
 
-        if (!IsOwner) return;
+        if (!IsOwner || Player.localPlayer.dead) return;
 
         if (!isMovementLocked)
         {

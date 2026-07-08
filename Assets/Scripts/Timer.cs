@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 public class Timer : MonoBehaviour
 {
@@ -11,6 +13,8 @@ public class Timer : MonoBehaviour
 
     private Action onFinish;
 
+    private List<GameObject> subscribedObjects;
+
     public enum OnFinish
     {
         DESTROY,
@@ -20,8 +24,15 @@ public class Timer : MonoBehaviour
 
     private OnFinish finishState;
 
+    public void Subscribe(GameObject objectRef) {
+        subscribedObjects.Add(objectRef);
+    }
+
     public static GameObject CreateTimer(float length, OnFinish finishState, 
-        Action finishAction, string name, Func<bool> extraConditionsComplete = null) {
+        Action finishAction, string name,
+        Func<bool> extraConditionsComplete = null,
+        params GameObject[] objectsToSubscribe) {
+        
         
         GameObject newGameObject = new GameObject(name);
         newGameObject.transform.SetParent(GameObject.FindWithTag("TimerParent").transform);
@@ -29,6 +40,12 @@ public class Timer : MonoBehaviour
         Timer newTimer = newGameObject.AddComponent<Timer>();
         newTimer.duration = length;
         newTimer.timer = length;
+
+        newTimer.subscribedObjects = new List<GameObject>();
+        
+        foreach (GameObject objectRef in objectsToSubscribe) {
+            newTimer.Subscribe(objectRef);
+        }
         
         if (extraConditionsComplete == null) {
             newTimer.extraConditionsComplete = () => true;
@@ -67,6 +84,10 @@ public class Timer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        foreach (GameObject objectRef in subscribedObjects) {
+            if (objectRef == null) Destroy(this.gameObject);
+        }
+
         timer -= Time.deltaTime;
 
         canFinish = (extraConditionsComplete() || canFinish);

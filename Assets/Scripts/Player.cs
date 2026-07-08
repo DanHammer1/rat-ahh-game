@@ -23,7 +23,10 @@ public class Player : NetworkBehaviour
     public NetworkVariable<float> maxHealth = new NetworkVariable<float>(100);
     public NetworkVariable<float> health = new NetworkVariable<float>();
 
+    public Action onSpawn;
+    private bool spawned = false;
     public Action onDeath;
+    public bool dead = false;
 
     public Movement movement;
     BoxCollider boxCollider;
@@ -83,6 +86,7 @@ public class Player : NetworkBehaviour
         }
 
         if (!IsOwner) return;
+
         localPlayer = this;
 
         playerCamera = PlayerCamera.instance;
@@ -147,6 +151,11 @@ public class Player : NetworkBehaviour
 
     protected virtual void Update()
     {
+        if (!spawned) {
+            onSpawn?.Invoke();
+            spawned = true;
+        }
+
         if (Input.GetKeyDown(KeyCode.P))
         {
             Debug.Log("test");
@@ -155,6 +164,11 @@ public class Player : NetworkBehaviour
         if (Input.GetKeyDown(KeyCode.O))
         {
             ClearConsole();
+        }
+
+        if (health.Value <= 0 && !dead) {
+            dead = true;
+            onDeath?.Invoke();
         }
     }
 

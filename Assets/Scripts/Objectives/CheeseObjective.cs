@@ -16,7 +16,7 @@ public class CheeseObjective : Objective
             ObjectManager.MakeObjectSpectral(cheese.transform.Find("Renderer").gameObject);
             Timer.CreateTimer(30, Timer.OnFinish.DESTROY, () => 
                 {if (this == null) return; ObjectManager.TakeAwaySpectral(cheese.transform.Find("Renderer").gameObject); },
-                "Spectral Effect removal for cheese timer.");
+                "Spectral Effect removal for cheese timer.", null, cheese);
         };
         CheeseSpawner.instance.ForceObtainRandomCheese();
     }

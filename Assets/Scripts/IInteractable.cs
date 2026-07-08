@@ -37,7 +37,7 @@ public interface IInteractable
             interactPrompt.GetComponent<TextMeshProUGUI>().text = newInteractText;
             implementationScript.UpdateProgressBar(implementationScript.GetProgress());
             
-            return implementationScript.CheckExtraInteractionConditions();
+            return (!Player.localPlayer.dead && implementationScript.CheckExtraInteractionConditions());
             }
         
         return false;

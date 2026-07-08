@@ -163,10 +163,10 @@ public class PlayerCamera : MonoBehaviour
     }
 
     void LateUpdate() {
-        cinemachineDecollider.enabled = true;
-        if ((mainCamera.transform.position - cinemachineCamera.transform.position).magnitude > 0.05f) {
-            cinemachineDecollider.enabled = false;
-        }
+        //cinemachineDecollider.enabled = true;
+        //if ((mainCamera.transform.position - cinemachineCamera.transform.position).magnitude > 0.05f) {
+        //    cinemachineDecollider.enabled = false;
+        //}
     }
 
     public void enableCameraCollision() {
