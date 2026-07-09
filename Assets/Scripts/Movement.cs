@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UIElements;
 using System.Net.NetworkInformation;
+using System;
 using Unity.Netcode;
 using TMPro;
 using NUnit.Framework.Constraints;
@@ -47,6 +48,7 @@ public class Movement : NetworkBehaviour
 
     public Vector3 movement;
     public float yaw;
+    Crawl crawl;
 
 
     public override void OnNetworkSpawn()
@@ -75,11 +77,15 @@ public class Movement : NetworkBehaviour
             fallMultiplier = Constants.humanFallMultiplier;
             ascendMultiplier = Constants.humanAscendMultiplier;
             headBone = animator.GetBoneTransform(HumanBodyBones.Head);
+            crawl = GetComponent<Crawl>();
+            crawl.onCrawlStart += () => moveSpeed *= Constants.crawlSpeedMultiplier;
+            crawl.onCrawlEnd += () => moveSpeed *= 1 / Constants.crawlSpeedMultiplier;
         }
         movementRecoveryMultiplier = 1;
 
         GetComponent<Player>().onDeath += () => isMovementLocked = true;
         GetComponent<Player>().onRevive += () => isMovementLocked = false;
+
     }
 
     bool CheckPlayerGrounded()
@@ -97,7 +103,7 @@ public class Movement : NetworkBehaviour
             Quaternion.Euler(0, transform.eulerAngles.y, 0),
             0.075f, GROUNDLAYER))
             return true;
-        
+
         return false;
     }
 
@@ -115,6 +121,7 @@ public class Movement : NetworkBehaviour
                 pressedSpace = false;
             }
         }
+        Debug.Log(moveSpeed);
 
         if (!IsOwner || Player.localPlayer.dead) return;
 

@@ -168,6 +168,7 @@ GameObject:
   - component: {fileID: -7728888997446986805}
   - component: {fileID: 756063668528639239}
   - component: {fileID: 4579207920249263434}
+  - component: {fileID: 8643121179215462194}
   m_Layer: 7
   m_Name: HumanPlayer
   m_TagString: PlayerHuman
@@ -271,7 +272,11 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
-  score: 0
+  score:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
   scoreText: {fileID: 0}
   impulseSource: {fileID: 0}
   eatCheesePrompt: {fileID: 0}
@@ -366,7 +371,12 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'Upper Leg.L'\n\tTransform 'Upper Arm.R'\n\tTransform
+    'Lower Arm.R'\n\tTransform 'Lower Leg.R'\n\tTransform 'Lower Arm.L'\n\tTransform
+    'Hand.R'\n\tTransform 'Hand.L'\n\tTransform 'Lower Leg.L'\n\tTransform 'Upper
+    Arm.L'\n\tTransform 'Upper Leg.R'\n\tand more ...\n\tFrom animation clip 'Armature|Crawl'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -695,6 +705,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2b80169566458244a7f8aa42ffac0c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8643121179215462194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339862214881163576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e42f0c571fa60247b39fe342bf331c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1429462584268190609
