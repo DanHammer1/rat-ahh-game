@@ -44,8 +44,8 @@ public class Coin : NetworkBehaviour, IInteractable
         // player.transform.GetComponent<Player>().ToggleIsCarryingCoinClientRpc();
         transform.position = player.transform.TransformPoint(new Vector3(0, 2f, 3f));
         SetCoinParentRpc(GameObject.Find("Coin Container").GetComponent<NetworkObject>());
-        ToggleBoxColliderClientRpc();
-        ToggleRigidbodyGravityClientRpc();
+        ToggleBoxColliderRpc();
+        ToggleRigidbodyGravityRpc();
         player.transform.GetComponent<Movement>().MultiplyMoveSpeedRpc(1 / Constants.carryingCoinMoveSpeedMultiplier);
 
         Debug.Log(Player.localPlayer.isCarryingCoin.Value);
@@ -95,8 +95,8 @@ public class Coin : NetworkBehaviour, IInteractable
             SetCoinParentRpc(Player.localPlayer.GetComponent<NetworkObject>());
             Player.localPlayer.ToggleIsCarryingCoinRpc();
             // Player.localPlayer.ToggleIsCarryingCoinClientRpc();
-            ToggleBoxColliderClientRpc();
-            ToggleRigidbodyGravityClientRpc();
+            ToggleBoxColliderRpc();
+            ToggleRigidbodyGravityRpc();
             ToggleIsBeingCarriedRpc();
             SetPlayerCarryingCoinRpc(Player.localPlayer.gameObject);
             Player.localPlayer.transform.GetComponent<Movement>().MultiplyMoveSpeedRpc(Constants.carryingCoinMoveSpeedMultiplier);
@@ -104,13 +104,13 @@ public class Coin : NetworkBehaviour, IInteractable
         }
     }
 
-    [ClientRpc]
-    private void ToggleRigidbodyGravityClientRpc()
+    [Rpc(SendTo.Everyone)]
+    private void ToggleRigidbodyGravityRpc()
     {
         this.GetComponent<Rigidbody>().useGravity = !this.GetComponent<Rigidbody>().useGravity;
     }
-    [ClientRpc]
-    private void ToggleBoxColliderClientRpc()
+    [Rpc(SendTo.Everyone)]
+    private void ToggleBoxColliderRpc()
     {
         this.GetComponent<BoxCollider>().enabled = !this.GetComponent<BoxCollider>().enabled;
     }
