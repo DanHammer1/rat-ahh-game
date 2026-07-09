@@ -140,8 +140,7 @@ public class Coin : NetworkBehaviour, IInteractable
     {
         if (other.CompareTag("CoinDeliveryLocation"))
         {
-            Player.localPlayer.score += ObjectiveScores.deliveryScore;
-            Player.localPlayer.scoreText.text = $"Score: {Player.localPlayer.score}";
+            Player.localPlayer.EditScoreServerRpc(Player.localPlayer.score.Value + ObjectiveScores.deliveryScore);
             Debug.Log("Coin delivered");
         }
     }

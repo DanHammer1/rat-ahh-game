@@ -1,6 +1,8 @@
 using UnityEngine;
+using Unity.Netcode;
+using System.Collections;
 
-public class DeathHandler : MonoBehaviour
+public class DeathHandler : NetworkBehaviour
 {
     public void ToggleRagdoll(bool state) {
         Rigidbody[] ragdollRigidbodies = GetComponentsInChildren<Rigidbody>(true);
@@ -34,8 +36,47 @@ public class DeathHandler : MonoBehaviour
         if (state == false)  GetComponent<Animator>().Rebind();
     }
 
+    public void KillPlayer() {
+        if (IsServer) {
+            GetComponent<Player>().EditHealthServerRpc(0);
+            GetComponent<Player>().EditScoreServerRpc(0);
+        }
+        GetComponent<Player>().dead = true;
+        ToggleRagdoll(true);
+    }
+
+    public void RevivePlayer() {
+        Player player = GetComponent<Player>();
+        
+        if (IsServer) player.EditHealthServerRpc(player.maxHealth.Value);
+        
+        player.dead = false;
+        ToggleRagdoll(false);
+        
+        GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+        GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+
+        StartCoroutine(ForceResetRatPosition());
+    }
+
+    IEnumerator ForceResetRatPosition() {
+        int resetFrameMaxCount = 1;
+        for (int i = 0; i < resetFrameMaxCount; i++) {
+            if (transform.position.magnitude > 0.1f) {
+                resetFrameMaxCount++;
+            }
+
+            transform.position = Vector3.zero;
+            yield return null;
+        }
+    }
+
     void Start() {
         GetComponent<Player>().onSpawn += () => ToggleRagdoll(false);
-        GetComponent<Player>().onDeath += () => ToggleRagdoll(true);
+        GetComponent<Player>().onDeath += () => {
+            KillPlayer();
+            Timer.CreateTimer(Constants.respawnTime, Timer.OnFinish.DESTROY, 
+                () => { RevivePlayer(); GetComponent<Player>().onRevive?.Invoke(); }, "Rat Revival Timer");
+        };
     }
 }

@@ -79,6 +79,7 @@ public class Movement : NetworkBehaviour
         movementRecoveryMultiplier = 1;
 
         GetComponent<Player>().onDeath += () => isMovementLocked = true;
+        GetComponent<Player>().onRevive += () => isMovementLocked = false;
     }
 
     bool CheckPlayerGrounded()
@@ -88,36 +89,16 @@ public class Movement : NetworkBehaviour
         float xScale = boxCollider.size.x * gameObject.transform.lossyScale.x * 1.01f;
         float zScale = boxCollider.size.z * gameObject.transform.lossyScale.z * 1.01f;
 
-        Vector3[] checkPositions = new Vector3[1];
-
-        /*checkPositions[0] = (transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(-xScale / 2, 0, zScale / 2));
-        checkPositions[1] = (transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(xScale / 2, 0, zScale / 2));
-        checkPositions[2] = (transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(-xScale / 2, 0, -zScale / 2));
-        checkPositions[3] = (transform.position + Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(xScale / 2, 0, -zScale / 2));
-        checkPositions[4] = transform.position;*/
-
-        checkPositions[0] = transform.position;
-
-        int hits = 0;
-
-        foreach (Vector3 corner in checkPositions)
-        {
-            Debug.DrawRay(
-                corner + Vector3.up * 0.05f,
-                Vector3.down * 0.075f,
-                Color.red
-            );
-
-            if (Physics.BoxCast(
-                corner + Vector3.up * 0.05f,
-                new Vector3(xScale / 2, 0, zScale / 2),
-                Vector3.down,
-                out RaycastHit hit,
-                Quaternion.Euler(0, transform.eulerAngles.y, 0),
-                0.075f, GROUNDLAYER))
-                hits++;
-        }
-        return (hits >= 1);
+        if (Physics.BoxCast(
+            transform.position + Vector3.up * 0.05f,
+            new Vector3(xScale / 2, 0, zScale / 2),
+            Vector3.down,
+            out RaycastHit hit,
+            Quaternion.Euler(0, transform.eulerAngles.y, 0),
+            0.075f, GROUNDLAYER))
+            return true;
+        
+        return false;
     }
 
     void FixedUpdate()

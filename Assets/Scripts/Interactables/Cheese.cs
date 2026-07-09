@@ -39,8 +39,8 @@ public class Cheese : NetworkBehaviour, IInteractable
     }
 
     public void Interact() {
-        Player.localPlayer.score += ObjectiveScores.cheeseScore;
-        Player.localPlayer.scoreText.text = $"Score: {Player.localPlayer.score}";
+        Player.localPlayer.EditScoreServerRpc(Player.localPlayer.score.Value + ObjectiveScores.cheeseScore);
+        Player.localPlayer.scoreText.text = $"Score: {Player.localPlayer.score.Value}";
         DespawnServerRpc();
     }
 

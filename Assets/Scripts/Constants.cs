@@ -31,4 +31,9 @@ public static class Constants
     # region "Camera"
     public static float cameraCollisionRadius = 0.5f;
     # endregion
+
+    # region "Misc"
+    public static float respawnTime = 10;
+    public static float cheeseSpawnInterval = 30;
+    # endregion
 }

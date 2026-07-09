@@ -27,6 +27,7 @@ public class Player : NetworkBehaviour
     private bool spawned = false;
     public Action onDeath;
     public bool dead = false;
+    public Action onRevive;
 
     public Movement movement;
     BoxCollider boxCollider;
@@ -51,7 +52,7 @@ public class Player : NetworkBehaviour
     public NetworkVariable<bool> isCarryingCoin = new NetworkVariable<bool>(false);
 
     // Cheese/score info
-    public int score;
+    public NetworkVariable<int> score = new NetworkVariable<int>();
     public TextMeshProUGUI scoreText;
 
     Animator animator;
@@ -83,6 +84,7 @@ public class Player : NetworkBehaviour
         {
             maxHealth.Value = 100;
             health.Value = maxHealth.Value;
+            score.Value = 0;
         }
 
         if (!IsOwner) return;
@@ -96,7 +98,7 @@ public class Player : NetworkBehaviour
 
         SetupCamera();
 
-        score = 0;
+        
         scoreText = GameObject.FindWithTag("Score").GetComponent<TextMeshProUGUI>();
 
         abilityIcon = GameObject.FindWithTag("Ability Icon");
@@ -149,6 +151,12 @@ public class Player : NetworkBehaviour
         health.Value = newHealth;
     }
 
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void EditScoreServerRpc(int newScore)
+    {
+        score.Value = newScore;
+    }
+
     protected virtual void Update()
     {
         if (!spawned) {
@@ -167,7 +175,6 @@ public class Player : NetworkBehaviour
         }
 
         if (health.Value <= 0 && !dead) {
-            dead = true;
             onDeath?.Invoke();
         }
     }
