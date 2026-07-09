@@ -1269,7 +1269,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.12, y: 0.59}
   m_AnchorMax: {x: 0.37, y: 0.6}
-  m_AnchoredPosition: {x: -10.814209, y: 9.17099}
+  m_AnchoredPosition: {x: -10.814148, y: 9.17099}
   m_SizeDelta: {x: -49.662598, y: 424.85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &758639817
@@ -1819,7 +1819,7 @@ MonoBehaviour:
   NetworkConfig:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 1357439577}
-    PlayerPrefab: {fileID: 8956695940269091181, guid: 25985c8cb1b40a040a0ccd18bb462fd3, type: 3}
+    PlayerPrefab: {fileID: 0}
     Prefabs:
       NetworkPrefabsLists:
       - {fileID: 11400000, guid: a464035f804ea3144aba89ade5443c35, type: 2}
