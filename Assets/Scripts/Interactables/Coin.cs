@@ -2,6 +2,7 @@ using TMPro;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using Unity.Netcode.Components;
 
 public class Coin : NetworkBehaviour, IInteractable
 {
@@ -66,9 +67,11 @@ public class Coin : NetworkBehaviour, IInteractable
     {
         ((IInteractable)this).TryInteract();
 
+        GetComponent<NetworkTransform>().enabled = true;
+        
         // If coin is being carried:
         if (!(Player.localPlayer && isBeingCarried.Value)) return;
-
+        GetComponent<NetworkTransform>().enabled = false;
         NetworkObject player;
         playerCarryingCoin.Value.TryGet(out player);
 
