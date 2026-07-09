@@ -66,6 +66,7 @@ public class Player : NetworkBehaviour
     {
         isCarryingCoin.Value = !isCarryingCoin.Value;
     }
+
     [ClientRpc]
     public void ToggleIsCarryingCoinClientRpc()
     {
@@ -97,24 +98,12 @@ public class Player : NetworkBehaviour
         Cursor.visible = false;
 
         SetupCamera();
-
         
         scoreText = GameObject.FindWithTag("Score").GetComponent<TextMeshProUGUI>();
-
-        abilityIcon = GameObject.FindWithTag("Ability Icon");
-        abilityIconBackground = GameObject.FindWithTag("Ability Icon Background");
-        abilityIconBackgroundImage = abilityIconBackground.GetComponent<Image>();
-        abilityIconBackgroundOutline = GameObject.FindWithTag("Ability Icon Background Outline");
-        abilityIconBackgroundOutlineImage = abilityIconBackgroundOutline.GetComponent<Image>();
-        abilityT = GameObject.FindWithTag("Ability T");
-        abilityTText = abilityT.GetComponent<TextMeshProUGUI>();
 
         ratAbilityShakeUI = GameObject.FindWithTag("Rat Ability Shake UI");
         shakeProgressBar = GameObject.FindWithTag("Shake Progress Bar");
         shakeProgressBarImage = shakeProgressBar.GetComponent<Image>();
-
-        ratAbilityShakeUI.SetActive(false);
-        abilityIcon.SetActive(false);
 
         impulseSource = GetComponent<CinemachineImpulseSource>();
     }

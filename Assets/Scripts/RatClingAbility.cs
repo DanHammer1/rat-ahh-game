@@ -9,32 +9,30 @@ using UnityEngine.UI;
 using ParrelSync.NonCore;
 using UnityEditor.Search;
 
-public class RatPlayer : Player
+public class RatClingAbility : Ability
 {
-    /*Transform clingHead;
+    Transform clingHead;
     public bool ratAbilityInRange;
     private HumanPlayer localHumanInRange;
     public NetworkVariable<bool> isClinging;
     public bool isSlapping;
-    public float ratAbilityCooldown;
     public float ratAbilityHumanStunDuration;
     public float ratAbilityHumanShakeMeter;
-    */
+    BoxCollider boxCollider;
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-
-        /*if (!IsOwner) return;
         ratAbilityInRange = false;
+        boxCollider = GetComponent<BoxCollider>();
 
-        ratAbilityCooldown = 0;
-
+        scoreText = GameObject.FindWithTag("Score").GetComponent<TextMeshProUGUI>();
+        
+        if (!IsOwner) return;
         abilityIcon.SetActive(true);
-        */
     }
 
-    /*void OnTriggerStay(Collider other)
+    void OnTriggerStay(Collider other)
     {
         if (transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
         {
@@ -46,30 +44,27 @@ public class RatPlayer : Player
                 ratAbilityInRange = true;
             }
         }
-    }*/
+    }
 
-    /*
     void OnTriggerExit(Collider other)
     {
         if (IsOwner && transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
         {
             ratAbilityInRange = false;
 
-            if (!movement.isPerformingAbility)
+            if (!GetComponent<Movement>().isPerformingAbility)
             {
                 localHumanInRange = null;
             }
         }
-    }*/
+    }
 
-    /*
-    void ActivateRatAbility()
+    public override void ExecuteAbility()
     {
         if (localHumanInRange == null) return; //safety check
         StartCoroutine(RatAbilityCoroutine());
-    }*/
+    }
 
-    /*
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     void SetClingingStateRpc(bool state)
     {
@@ -78,8 +73,7 @@ public class RatPlayer : Player
 
     IEnumerator RatAbilityCoroutine()
     {
-        ClearConsole();
-
+        Movement movement = GetComponent<Movement>();
         isSlapping = false;
         SetClingingStateRpc(false);
         SetHumanShakeMeterValueServerRpc(localHumanInRange.NetworkObjectId, 0f);
@@ -94,7 +88,7 @@ public class RatPlayer : Player
 
         bool forceApplied = false;
 
-        playerCamera.ForceLookAt(targetPos, startPos);
+        PlayerCamera.instance.ForceLookAt(targetPos, startPos);
 
         Rigidbody rb = movement.GetComponent<Rigidbody>();
         rb.linearVelocity = Vector3.zero;
@@ -141,8 +135,17 @@ public class RatPlayer : Player
         Debug.DrawLine(transform.position, targetPos, Color.red, 3f);
     }
 
+    [ServerRpc]
+    public void SetColliderStateServerRpc(bool state)
+    {
+        boxCollider.enabled = state;
+    }
+
     void UnCling()
     {
+        Rigidbody rb = GetComponent<Rigidbody>();
+        Movement movement = GetComponent<Movement>();
+
         SetColliderStateServerRpc(true);
         movement.toggleGravity = true;
 
@@ -151,29 +154,32 @@ public class RatPlayer : Player
 
         SetClingingStateRpc(false);
         movement.isPerformingAbility = false;
-        ratAbilityCooldown = Constants.maxRatAbilityCooldown;
+        abilityCooldown = Constants.maxRatAbilityCooldown;
 
         SetHumanClingStateServerRpc(localHumanInRange.NetworkObjectId, false);
         SetHumanDizzyStateServerRpc(localHumanInRange.NetworkObjectId, true);
-    }*/
+    }
+
+    public override bool CheckAbilityExecutable() {
+        return (ratAbilityInRange && abilityCooldown == 0);
+    }
 
     protected override void Update()
     {
         base.Update();
 
         if (!IsOwner) return;
-        
-        /*if (ratAbilityCooldown > 0)
+        if (abilityCooldown > 0)
         {
-            ratAbilityCooldown -= Time.deltaTime;
+            abilityCooldown -= Time.deltaTime;
             abilityIconBackgroundOutlineImage.color = new Color(0.4264151f, 0.4264151f, 0.4264151f); // dark gray
         }
-        if (ratAbilityCooldown < 0) ratAbilityCooldown = 0;
-        if (ratAbilityCooldown == 0)
+        if (abilityCooldown < 0) abilityCooldown = 0;
+        if (abilityCooldown == 0)
         {
             abilityIconBackgroundOutlineImage.color = new Color(0f, 1f, 0.03321505f);
         }
-        if (ratAbilityInRange && ratAbilityCooldown == 0)
+        if (ratAbilityInRange && abilityCooldown == 0)
         {
             abilityTText.color = Color.white;
         }
@@ -181,12 +187,12 @@ public class RatPlayer : Player
         {
             abilityTText.color = Color.gray;
         }
-        abilityIconBackgroundImage.fillAmount = Mathf.Clamp01((Constants.maxRatAbilityCooldown - ratAbilityCooldown) / Constants.maxRatAbilityCooldown);
+        abilityIconBackgroundImage.fillAmount = Mathf.Clamp01((Constants.maxRatAbilityCooldown - abilityCooldown) / Constants.maxRatAbilityCooldown);
 
-        if (ratAbilityInRange && Input.GetKeyDown(KeyCode.T) && ratAbilityCooldown == 0)
+        /*if (ratAbilityInRange && Input.GetKeyDown(KeyCode.T) && ratAbilityCooldown == 0)
         {
             ActivateRatAbility();
-        }
+        }*/
         if (Input.GetKeyDown(KeyCode.Q) && isClinging.Value)
         {
             isSlapping = !isSlapping;
@@ -219,10 +225,9 @@ public class RatPlayer : Player
             {
                 UnCling();
             }
-        }*/
+        }
     }
 
-    /*
     public void FixedUpdate()
     {
         if (isClinging.Value && IsServer)
@@ -231,9 +236,8 @@ public class RatPlayer : Player
             IncreaseHumanShakeMeterValue(localHumanInRange.NetworkObjectId);
         }
 
-    }*/
+    }
 
-    /*
     [ServerRpc]
     void SetViewPositionServerRpc(ulong humanNetworkId, Vector3 pos)
     {
@@ -332,5 +336,5 @@ public class RatPlayer : Player
             Gizmos.color = Color.green;
             Gizmos.DrawSphere(transform.position, 0.01f);
         }
-    }*/
+    }
 }

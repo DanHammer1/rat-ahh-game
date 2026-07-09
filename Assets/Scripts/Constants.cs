@@ -20,7 +20,7 @@ public static class Constants
     # endregion
 
     # region "Human"
-    public static float humanMoveSpeed = 1f;
+    public static float humanMoveSpeed = 1.3f;
     public static float humanJumpForce = 0.3f;
     public static float humanFallMultiplier = 0.7f;
     public static float humanAscendMultiplier = 0.7f;

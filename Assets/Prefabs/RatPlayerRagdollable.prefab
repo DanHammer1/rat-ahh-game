@@ -2823,6 +2823,7 @@ GameObject:
   - component: {fileID: 3883992586749571786}
   - component: {fileID: 1446131621800092068}
   - component: {fileID: 7640036583165578637}
+  - component: {fileID: 2856924736772963357}
   m_Layer: 7
   m_Name: RatPlayerRagdollable
   m_TagString: PlayerMouse
@@ -2931,16 +2932,6 @@ MonoBehaviour:
   impulseSource: {fileID: 0}
   eatCheesePrompt: {fileID: 0}
   pickUpCoinPrompt: {fileID: 0}
-  ratAbilityInRange: 0
-  isClinging:
-    UpdateTraits:
-      MinSecondsBetweenUpdates: 0
-      MaxSecondsBetweenUpdates: 0
-    m_InternalValue: 0
-  isSlapping: 0
-  ratAbilityCooldown: 0
-  ratAbilityHumanStunDuration: 0
-  ratAbilityHumanShakeMeter: 0
 --- !u!114 &3554162618360092705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3241,3 +3232,28 @@ MonoBehaviour:
       Synchronize: 1
       ParameterType: 4
   AnimatorParametersExpanded: 0
+--- !u!114 &2856924736772963357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8956695940269091181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9838d4c4cadc4a4c98dc2ad2d106ac2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  hotkey: 116
+  abilitySlotIndex: 0
+  abilityCooldown: 0
+  ratAbilityInRange: 0
+  isClinging:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  isSlapping: 0
+  ratAbilityHumanStunDuration: 0
+  ratAbilityHumanShakeMeter: 0
