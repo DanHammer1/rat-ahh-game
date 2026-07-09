@@ -33,6 +33,5 @@ public class Crawl : NetworkBehaviour
         {
             onCrawlEnd?.Invoke();
         }
-        Debug.Log(isCrawling);
     }
 }

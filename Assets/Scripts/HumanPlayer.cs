@@ -49,6 +49,8 @@ public class HumanPlayer : Player
 
         PlayerCamera.instance.onFirstPersonEnter += EnableRigBuilder;
         PlayerCamera.instance.onThirdPersonEnter += DisableRigBuilder;
+
+        GameObject.FindWithTag("AbilityParent").SetActive(false);
     }
 
     public void DisableRigBuilder()

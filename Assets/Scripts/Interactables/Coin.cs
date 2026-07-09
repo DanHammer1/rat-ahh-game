@@ -48,8 +48,6 @@ public class Coin : NetworkBehaviour, IInteractable
         ToggleBoxColliderRpc();
         ToggleRigidbodyGravityRpc();
         player.transform.GetComponent<Movement>().MultiplyMoveSpeedRpc(1 / Constants.carryingCoinMoveSpeedMultiplier);
-
-        Debug.Log(Player.localPlayer.isCarryingCoin.Value);
         pickUpProgress = 0;
     }
 
@@ -103,7 +101,6 @@ public class Coin : NetworkBehaviour, IInteractable
             ToggleIsBeingCarriedRpc();
             SetPlayerCarryingCoinRpc(Player.localPlayer.gameObject);
             Player.localPlayer.transform.GetComponent<Movement>().MultiplyMoveSpeedRpc(Constants.carryingCoinMoveSpeedMultiplier);
-            Debug.Log(Player.localPlayer.isCarryingCoin.Value);
         }
     }
 

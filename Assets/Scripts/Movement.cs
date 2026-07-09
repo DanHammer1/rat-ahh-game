@@ -121,7 +121,6 @@ public class Movement : NetworkBehaviour
                 pressedSpace = false;
             }
         }
-        Debug.Log(moveSpeed);
 
         if (!IsOwner || Player.localPlayer.dead) return;
 

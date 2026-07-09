@@ -374,8 +374,8 @@ GameObject:
   - component: {fileID: 105327095}
   - component: {fileID: 105327094}
   m_Layer: 5
-  m_Name: T
-  m_TagString: Ability T
+  m_Name: Hotkey
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -419,7 +419,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: T
+  m_text: HotKey
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -485,7 +485,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -17.231323, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -714,7 +714,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1962888625}
-  - {fileID: 1249774691}
   - {fileID: 559762956}
   - {fileID: 957113348}
   - {fileID: 29581987}
@@ -1354,8 +1353,8 @@ GameObject:
   - component: {fileID: 513102647}
   - component: {fileID: 513102646}
   m_Layer: 5
-  m_Name: Background (1)
-  m_TagString: Ability Icon Background
+  m_Name: ChargedIcon
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1376,8 +1375,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 5, y: 5}
+  m_AnchoredPosition: {x: 0.8, y: 1.7}
+  m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &513102646
 MonoBehaviour:
@@ -1399,7 +1398,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 992a03104d153de4bab9a70507404a08, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2730,7 +2729,7 @@ GameObject:
   - component: {fileID: 983440151}
   m_Layer: 5
   m_Name: AbilitySectionBackground
-  m_TagString: InteractionPromptBackground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2749,10 +2748,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1962888625}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -722.9977, y: -356}
-  m_SizeDelta: {x: 1, y: 3.0854988}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -444, y: -203}
+  m_SizeDelta: {x: 1, y: 3.085495}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &983440151
 MonoBehaviour:
@@ -2809,8 +2808,8 @@ GameObject:
   - component: {fileID: 992298385}
   - component: {fileID: 992298386}
   m_Layer: 5
-  m_Name: Background
-  m_TagString: Ability Icon Background
+  m_Name: CooldownBackground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2831,8 +2830,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 5, y: 5}
+  m_AnchoredPosition: {x: 0.8, y: 1.7}
+  m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &992298385
 CanvasRenderer:
@@ -2862,7 +2861,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 992a03104d153de4bab9a70507404a08, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3684,8 +3683,8 @@ GameObject:
   - component: {fileID: 1249774691}
   - component: {fileID: 1249774692}
   m_Layer: 5
-  m_Name: Ability Icon
-  m_TagString: Ability Icon
+  m_Name: Ability Slot 1
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3699,14 +3698,14 @@ Transform:
   m_GameObject: {fileID: 1249774690}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -876.4, y: -393.06, z: 8.203591}
+  m_LocalPosition: {x: -557.4173, y: -195.61044, z: 8.203592}
   m_LocalScale: {x: 10, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 105327093}
   - {fileID: 992298383}
   - {fileID: 513102645}
-  - {fileID: 105327093}
-  m_Father: {fileID: 152198282}
+  m_Father: {fileID: 1962888625}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!225 &1249774692
 CanvasGroup:
@@ -4216,9 +4215,9 @@ RectTransform:
   - {fileID: 1619903777}
   m_Father: {fileID: 152198282}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -779.6, y: 312.7}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 213, y: -251}
   m_SizeDelta: {x: 306, y: 422.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1502041777
@@ -4997,6 +4996,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1852970928}
   - component: {fileID: 1852970927}
+  - component: {fileID: 1852970930}
   - component: {fileID: 1852970929}
   m_Layer: 0
   m_Name: Game Manager
@@ -5057,6 +5057,19 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &1852970930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1852970926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6a833f2d0caca64d95d6cdcd40e8004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  RatClingAbilityIcon: {fileID: 21300000, guid: 992a03104d153de4bab9a70507404a08, type: 3}
 --- !u!64 &1900198761
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5089,8 +5102,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1962888625}
   m_Layer: 5
-  m_Name: Ability
-  m_TagString: Untagged
+  m_Name: AbilityParent
+  m_TagString: AbilityParent
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5108,11 +5121,12 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 983440150}
+  - {fileID: 1249774691}
   m_Father: {fileID: 152198282}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 662, y: 331}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1990268541

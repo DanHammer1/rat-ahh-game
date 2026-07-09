@@ -9,6 +9,7 @@ public class Timer : MonoBehaviour
     private float timer;
 
     private bool canFinish;
+    private Func<bool> progressionConditionsComplete;
     private Func<bool> extraConditionsComplete;
 
     private Action onFinish;
@@ -59,8 +60,7 @@ public class Timer : MonoBehaviour
                 newTimer.onFinish += () => Destroy(newTimer.gameObject);   
                 break;
             case OnFinish.REPEAT:
-                newTimer.onFinish += () => CreateTimer(length, OnFinish.REPEAT, finishAction, name);
-                newTimer.onFinish += () => Destroy(newTimer.gameObject);
+                newTimer.onFinish += () => newTimer.SetProgress(0);
                 break;
             case OnFinish.CUSTOM:
                 break;
@@ -81,6 +81,19 @@ public class Timer : MonoBehaviour
         return CreateTimer(length, OnFinish.CUSTOM, finishAction, name);
     }
 
+    public float GetProgress() {
+        return (1 - (timer / duration));
+    }
+
+    public void SetProgress(float value) {
+        timer = duration - value * duration;
+    }
+
+    public void AddProgressionCondition(Func<bool> condition) {
+        Func<bool> prevProgressConditions = progressionConditionsComplete;
+        progressionConditionsComplete = () => (prevProgressConditions?.Invoke() ?? true && condition());
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -88,10 +101,12 @@ public class Timer : MonoBehaviour
             if (objectRef == null) Destroy(this.gameObject);
         }
 
-        timer -= Time.deltaTime;
+        if (progressionConditionsComplete?.Invoke() ?? true)
+            timer -= Time.deltaTime;
 
         canFinish = (extraConditionsComplete() || canFinish);
         if (timer <= 0 && canFinish) {
+            canFinish = false;
             onFinish?.Invoke();
         }
     }

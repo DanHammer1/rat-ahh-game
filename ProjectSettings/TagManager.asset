@@ -33,6 +33,7 @@ TagManager:
   - ProgressFillBar
   - InteractionPromptParent
   - InteractionPromptBackground
+  - AbilityParent
   layers:
   - Default
   - TransparentFX

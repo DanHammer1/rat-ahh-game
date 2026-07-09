@@ -18,18 +18,30 @@ public class RatClingAbility : Ability
     public bool isSlapping;
     public float ratAbilityHumanStunDuration;
     public float ratAbilityHumanShakeMeter;
+    protected GameObject ratAbilityShakeUI;
     BoxCollider boxCollider;
+
+    public override Sprite GetIconSprite() {
+        return Constants.instance.RatClingAbilityIcon;
+    }
+
+    public override float GetAbilityCooldown() {
+        return Constants.maxRatAbilityCooldown;
+    }
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
         ratAbilityInRange = false;
+        ratAbilityShakeUI = GameObject.FindWithTag("Rat Ability Shake UI");
+        ratAbilityShakeUI.SetActive(false);
         boxCollider = GetComponent<BoxCollider>();
 
         scoreText = GameObject.FindWithTag("Score").GetComponent<TextMeshProUGUI>();
         
         if (!IsOwner) return;
-        abilityIcon.SetActive(true);
+
+        abilityTimer.AddProgressionCondition(() => !GetComponent<Movement>().isPerformingAbility);
     }
 
     void OnTriggerStay(Collider other)
@@ -154,14 +166,13 @@ public class RatClingAbility : Ability
 
         SetClingingStateRpc(false);
         movement.isPerformingAbility = false;
-        abilityCooldown = Constants.maxRatAbilityCooldown;
 
         SetHumanClingStateServerRpc(localHumanInRange.NetworkObjectId, false);
         SetHumanDizzyStateServerRpc(localHumanInRange.NetworkObjectId, true);
     }
 
     public override bool CheckAbilityExecutable() {
-        return (ratAbilityInRange && abilityCooldown == 0);
+        return (ratAbilityInRange);
     }
 
     protected override void Update()
@@ -169,30 +180,7 @@ public class RatClingAbility : Ability
         base.Update();
 
         if (!IsOwner) return;
-        if (abilityCooldown > 0)
-        {
-            abilityCooldown -= Time.deltaTime;
-            abilityIconBackgroundOutlineImage.color = new Color(0.4264151f, 0.4264151f, 0.4264151f); // dark gray
-        }
-        if (abilityCooldown < 0) abilityCooldown = 0;
-        if (abilityCooldown == 0)
-        {
-            abilityIconBackgroundOutlineImage.color = new Color(0f, 1f, 0.03321505f);
-        }
-        if (ratAbilityInRange && abilityCooldown == 0)
-        {
-            abilityTText.color = Color.white;
-        }
-        else
-        {
-            abilityTText.color = Color.gray;
-        }
-        abilityIconBackgroundImage.fillAmount = Mathf.Clamp01((Constants.maxRatAbilityCooldown - abilityCooldown) / Constants.maxRatAbilityCooldown);
 
-        /*if (ratAbilityInRange && Input.GetKeyDown(KeyCode.T) && ratAbilityCooldown == 0)
-        {
-            ActivateRatAbility();
-        }*/
         if (Input.GetKeyDown(KeyCode.Q) && isClinging.Value)
         {
             isSlapping = !isSlapping;

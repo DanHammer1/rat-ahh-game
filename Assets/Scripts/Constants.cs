@@ -1,8 +1,12 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public static class Constants
+public class Constants : MonoBehaviour
 {
+    public static Constants instance;
+    public Sprite RatClingAbilityIcon;
+
+
     public static float mouseSensitivity = 1f;
 
     #region "Rat"
@@ -37,4 +41,8 @@ public static class Constants
     public static float respawnTime = 10;
     public static float cheeseSpawnInterval = 30;
     # endregion
+
+    void Awake() {
+        instance = this;
+    }
 }
