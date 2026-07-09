@@ -64,6 +64,7 @@ public class DeathHandler : NetworkBehaviour
         for (int i = 0; i < resetFrameMaxCount; i++) {
             if (transform.position.magnitude > 0.1f) {
                 resetFrameMaxCount++;
+                Debug.Log(i);
             }
 
             transform.position = Vector3.zero;
