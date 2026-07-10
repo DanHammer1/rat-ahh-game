@@ -10,6 +10,7 @@ public class Timer : MonoBehaviour
 
     private bool canFinish;
     private Func<bool> progressionConditionsComplete;
+    private Func<bool> extraOneOffConditionsComplete;
     private Func<bool> extraConditionsComplete;
 
     private Action onFinish;
@@ -31,7 +32,7 @@ public class Timer : MonoBehaviour
 
     public static GameObject CreateTimer(float length, OnFinish finishState, 
         Action finishAction, string name,
-        Func<bool> extraConditionsComplete = null,
+        Func<bool> extraOneOffConditionsComplete = null,
         params GameObject[] objectsToSubscribe) {
         
         
@@ -48,11 +49,13 @@ public class Timer : MonoBehaviour
             newTimer.Subscribe(objectRef);
         }
         
-        if (extraConditionsComplete == null) {
-            newTimer.extraConditionsComplete = () => true;
+        if (extraOneOffConditionsComplete == null) {
+            newTimer.extraOneOffConditionsComplete = () => true;
         } else {
-            newTimer.extraConditionsComplete = extraConditionsComplete;
+            newTimer.extraOneOffConditionsComplete = extraOneOffConditionsComplete;
         }
+
+        newTimer.extraConditionsComplete = () => true;
 
         newTimer.onFinish += finishAction;
         switch(finishState) {
@@ -91,21 +94,29 @@ public class Timer : MonoBehaviour
 
     public void AddProgressionCondition(Func<bool> condition) {
         Func<bool> prevProgressConditions = progressionConditionsComplete;
-        progressionConditionsComplete = () => (prevProgressConditions?.Invoke() ?? true && condition());
+        progressionConditionsComplete = () => ((prevProgressConditions?.Invoke() ?? true) && condition());
+    }
+
+    public void AddCompletionCondition(Func<bool> condition) {
+        Func<bool> prevConditions = extraConditionsComplete;
+        extraConditionsComplete = () => ((prevConditions?.Invoke() ?? true) && condition());
     }
 
     // Update is called once per frame
     void Update()
     {
         foreach (GameObject objectRef in subscribedObjects) {
-            if (objectRef == null) Destroy(this.gameObject);
+            if (objectRef == null) {
+                Destroy(this.gameObject);
+                return;
+            }
         }
 
         if (progressionConditionsComplete?.Invoke() ?? true)
             timer -= Time.deltaTime;
 
-        canFinish = (extraConditionsComplete() || canFinish);
-        if (timer <= 0 && canFinish) {
+        canFinish = (extraOneOffConditionsComplete() || canFinish);
+        if (timer <= 0 && canFinish && extraConditionsComplete()) {
             canFinish = false;
             onFinish?.Invoke();
         }

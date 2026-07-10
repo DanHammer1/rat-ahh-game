@@ -4,7 +4,6 @@ using Unity.Cinemachine;
 using TMPro;
 using System.Collections;
 using UnityEditor;
-using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 using System;
 
@@ -54,7 +53,8 @@ public abstract class Ability : NetworkBehaviour
         abilityIconFilled = abilityFilled.GetComponent<Image>();
 
         abilityTimer = Timer.CreateTimer(GetAbilityCooldown(), Timer.OnFinish.REPEAT, 
-            ExecuteAbility, "Ability Timer.", AllExecutionConditionsMet).GetComponent<Timer>();
+            ExecuteAbility, "Ability Timer.").GetComponent<Timer>();
+        abilityTimer.AddCompletionCondition(AllExecutionConditionsMet);
 
         abilityTimer.SetProgress(1);
 
