@@ -32,14 +32,15 @@ public class RatClingAbility : Ability
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+
+        if (!IsOwner) return;
+
         ratAbilityInRange = false;
         ratAbilityShakeUI = GameObject.FindWithTag("Rat Ability Shake UI");
         ratAbilityShakeUI.SetActive(false);
         boxCollider = GetComponent<BoxCollider>();
 
         scoreText = GameObject.FindWithTag("Score").GetComponent<TextMeshProUGUI>();
-        
-        if (!IsOwner) return;
 
         abilityTimer.AddProgressionCondition(() => !GetComponent<Movement>().isPerformingAbility);
     }

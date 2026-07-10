@@ -98,12 +98,12 @@ public class Player : NetworkBehaviour
         Cursor.visible = false;
 
         SetupCamera();
-        
+
         scoreText = GameObject.FindWithTag("Score").GetComponent<TextMeshProUGUI>();
 
         ratAbilityShakeUI = GameObject.FindWithTag("Rat Ability Shake UI");
         shakeProgressBar = GameObject.FindWithTag("Shake Progress Bar");
-        shakeProgressBarImage = shakeProgressBar.GetComponent<Image>();
+        shakeProgressBarImage = shakeProgressBar?.GetComponent<Image>();
 
         impulseSource = GetComponent<CinemachineImpulseSource>();
     }

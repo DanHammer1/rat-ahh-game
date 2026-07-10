@@ -23,7 +23,12 @@ public abstract class Item : NetworkBehaviour, IInteractable
         useTimer.SetProgress(1);
 
         useTimer.Subscribe(this.gameObject);
-        useTimer.AddCompletionCondition(() => Input.GetMouseButtonDown(0) && isEquipped.Value);
+        useTimer.AddCompletionCondition(() => {
+            if (!humanPlayerRef.Value.TryGet(out NetworkObject humanPlayer)) return false;
+            bool isCarrying = (humanPlayer == Player.localPlayer.NetworkObject);
+            return Input.GetMouseButtonDown(0) && isEquipped.Value && isCarrying;
+            });
+        
         useTimer.AddProgressionCondition(() => isEquipped.Value);
     }
 
@@ -53,9 +58,11 @@ public abstract class Item : NetworkBehaviour, IInteractable
 
     void LateUpdate() {
         if (!humanPlayerRef.Value.TryGet(out NetworkObject humanPlayer) || !isEquipped.Value) return;
-        GameObject humanHand = humanPlayer.transform.Find("Armature/Hip/Spine/Upper Arm.R/Lower Arm.R/Hand.R/Hand.R_end").gameObject;
+        Transform humanHand = humanPlayer.transform.Find("Armature/Hip/Spine/Upper Arm.R/Lower Arm.R/Hand.R/Hand.R_end");
 
-        Transform parentObject = humanHand.transform.Find(parentGameObjectName);
+        Transform parentObject = humanHand.Find(parentGameObjectName);
+        if (parentObject == null) return;
+
         transform.position = parentObject.position;
         transform.rotation = parentObject.rotation;
     }
@@ -66,8 +73,10 @@ public abstract class Item : NetworkBehaviour, IInteractable
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void UpdateHumanPlayerRefRpc() {
-        humanPlayerRef.Value = Player.localPlayer.gameObject;
+    public void UpdateHumanPlayerRefRpc(NetworkObjectReference playerRef) {
+        if (playerRef.TryGet(out NetworkObject player)) {
+            humanPlayerRef.Value = playerRef;
+        }
     }
 
     public bool CheckExtraInteractionConditions() {
@@ -88,7 +97,7 @@ public abstract class Item : NetworkBehaviour, IInteractable
         SetIsEquippedRpc(true);
 
         ((HumanPlayer)Player.localPlayer).SetCarryingItemRpc(true);
-        UpdateHumanPlayerRefRpc();
+        UpdateHumanPlayerRefRpc(Player.localPlayer.NetworkObject);
 
         GetComponent<NetworkTransform>().enabled = true;
     }

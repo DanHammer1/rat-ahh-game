@@ -75,10 +75,11 @@ public class HumanPlayer : Player
     protected override void Update()
     {
         if (!IsOwner) return;
+
         if (isBeingClung.Value)
         {
             movement.movementRecoveryMultiplier = Mathf.Exp(-0.1f * slapCount.Value);
-            ratAbilityShakeUI.SetActive(true);
+            ratAbilityShakeUI?.SetActive(true);
             float mouseMovement = Mathf.Sqrt(Mathf.Pow(Input.GetAxis("Mouse X"), 2f) + Mathf.Pow(Input.GetAxis("Mouse Y"), 2));
             UpdateRatAbilityShakeMeterRpc(ratAbilityHumanShakeMeter.Value + mouseMovement / 100);
             if (ratAbilityHumanShakeMeter.Value > Constants.maxRatAbilityHumanShakeMeter)
@@ -91,12 +92,12 @@ public class HumanPlayer : Player
         }
         else if (isDizzy.Value)
         {
-            ratAbilityShakeUI.SetActive(false);
+            ratAbilityShakeUI?.SetActive(false);
             UpdateRatAbilityShakeMeterRpc(0);
         }
         else
         {
-            ratAbilityShakeUI.SetActive(false);
+            ratAbilityShakeUI?.SetActive(false);
             UpdateRatAbilityShakeMeterRpc(0);
             movement.isMovementLocked = false;
         }
