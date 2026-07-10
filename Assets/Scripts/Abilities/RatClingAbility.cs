@@ -22,7 +22,7 @@ public class RatClingAbility : Ability
     BoxCollider boxCollider;
 
     public override Sprite GetIconSprite() {
-        return Constants.instance.RatClingAbilityIcon;
+        return Constants.instance.ratClingAbilityIcon;
     }
 
     public override float GetAbilityCooldown() {

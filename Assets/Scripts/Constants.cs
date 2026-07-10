@@ -4,7 +4,10 @@ using UnityEngine;
 public class Constants : MonoBehaviour
 {
     public static Constants instance;
-    public Sprite RatClingAbilityIcon;
+    
+    
+    public Sprite ratClingAbilityIcon;
+    public Sprite ratDashAbilityIcon;
 
 
     public static float mouseSensitivity = 1f;
@@ -17,10 +20,12 @@ public class Constants : MonoBehaviour
     public static float ratAscendMultiplier = 0.8f;
     public static float ratAbilityDuration = 0.4f;
     public static float ratAbilityClingRange = 0.19f;
-    public static float maxRatAbilityCooldown = 10f;
+    public static float maxRatAbilityCooldown = 20f;
+    public static float ratDashAbilityCooldown = 8f;
     public static float maxRatAbilityHumanShakeMeter = 20f;
     public static float ratCameraFOV = 60f;
     public static float ratMaxCameraThirdPersonRadius = 0.8f;
+    public static float ratDashAbilityPower = 16f;
     # endregion
 
     # region "Human"

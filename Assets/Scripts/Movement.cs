@@ -88,7 +88,7 @@ public class Movement : NetworkBehaviour
 
     }
 
-    bool CheckPlayerGrounded()
+    public bool CheckPlayerGrounded()
     {
         BoxCollider boxCollider = GetComponent<BoxCollider>();
 
@@ -196,8 +196,7 @@ public class Movement : NetworkBehaviour
                 if (movement != Vector3.zero)
                     yaw = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;
                 break;
-        }
-        ;
+        };
 
         // Apply rotation
         if (!isRotationLocked)
@@ -216,7 +215,7 @@ public class Movement : NetworkBehaviour
             Vector3 velocityChange = targetVelocity - velocity;
             rb.AddForce(velocityChange * forceMultiplier, ForceMode.Acceleration);
 
-            LimitSpeed(moveSpeed);
+            //LimitSpeed(moveSpeed);
 
             /*if (isGrounded && moveHorizontal == 0 && moveForward == 0)
             {
