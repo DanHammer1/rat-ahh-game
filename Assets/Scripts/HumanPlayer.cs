@@ -13,11 +13,16 @@ public class HumanPlayer : Player
     public NetworkVariable<bool> isBeingClung = new NetworkVariable<bool>(false);
     public NetworkVariable<float> ratAbilityHumanShakeMeter = new NetworkVariable<float>();
     public NetworkVariable<int> slapCount = new NetworkVariable<int>();
+    public NetworkVariable<bool> isCarryingItem = new NetworkVariable<bool>(false);
     public NetworkVariable<bool> isDizzy = new NetworkVariable<bool>(false);
     public RigBuilder rigBuilder;
     public float dizzyDuration;
     public int currentSlapCount;
 
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SetCarryingItemRpc(bool state) {
+        isCarryingItem.Value = state;
+    }
 
     void OnDrawGizmos()
     {

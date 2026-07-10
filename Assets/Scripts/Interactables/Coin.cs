@@ -145,10 +145,3 @@ public class Coin : NetworkBehaviour, IInteractable
         }
     }
 }
-
-
-
-
-
-
-

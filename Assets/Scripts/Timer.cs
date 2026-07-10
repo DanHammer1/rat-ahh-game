@@ -85,6 +85,7 @@ public class Timer : MonoBehaviour
     }
 
     public float GetProgress() {
+        if (duration == 0) return 1;
         return (1 - (timer / duration));
     }
 

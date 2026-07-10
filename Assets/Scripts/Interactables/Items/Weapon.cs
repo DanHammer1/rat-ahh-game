@@ -1,37 +1,26 @@
 using UnityEngine;
 using Unity.Netcode;
 
-public class Weapon : NetworkBehaviour
+public class Weapon : Item
 {
-    public float cooldown;
     public float attackDuration;
     public float damage;
     public float rayRadius;
     public float attackRange;
 
-    float cooldownTimer;
-
     [SerializeField] AudioSource SFXSource;
     public AudioClip swingHit;
     public AudioClip swingMiss;
 
-    // Update is called once per frame
-    public virtual void Update()
-    {
-        CheckInput();
+    public override void OnNetworkSpawn() {
+        base.OnNetworkSpawn();
+    }
+    public override void UseItem() {
+        Attack();
     }
 
-    public void CheckInput()
-    {
-        if (!IsOwner) return;
-
-        cooldownTimer -= Time.deltaTime;
-
-        if (Input.GetMouseButtonDown(0) && cooldownTimer < 0)
-        {
-            cooldownTimer = cooldown;
-            Attack();
-        }
+    public override string GetInteractionPromptText() {
+        return "Hold E to pick up crowbar.";
     }
 
     public void Attack()

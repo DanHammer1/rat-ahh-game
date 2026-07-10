@@ -23,7 +23,6 @@ TagManager:
   - TimerUI
   - SimulatedCamera
   - InteractionPrompt
-  - Interactable
   - Coin
   - Pick Up Coin Prompt
   - CheeseSpawnParent
@@ -34,6 +33,7 @@ TagManager:
   - InteractionPromptParent
   - InteractionPromptBackground
   - AbilityParent
+  - Interactable
   layers:
   - Default
   - TransparentFX

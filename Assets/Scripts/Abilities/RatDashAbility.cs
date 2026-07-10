@@ -19,8 +19,6 @@ public class RatDashAbility : Ability
         else dashAbilityParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
     }
 
-
-
     public override bool CheckAbilityExecutable() {
         return !GetComponent<Movement>().CheckPlayerGrounded();
     }

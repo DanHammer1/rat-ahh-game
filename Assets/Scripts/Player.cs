@@ -50,7 +50,7 @@ public class Player : NetworkBehaviour
     public GameObject shakeProgressBar;
     public Image shakeProgressBarImage;
     public NetworkVariable<bool> isCarryingCoin = new NetworkVariable<bool>(false);
-
+    
     // Cheese/score info
     public NetworkVariable<int> score = new NetworkVariable<int>();
     public TextMeshProUGUI scoreText;
