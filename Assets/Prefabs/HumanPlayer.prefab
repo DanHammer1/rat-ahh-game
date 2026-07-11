@@ -724,6 +724,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  standCheckMask:
+    serializedVersion: 2
+    m_Bits: 1919
 --- !u!1 &1429462584268190609
 GameObject:
   m_ObjectHideFlags: 0

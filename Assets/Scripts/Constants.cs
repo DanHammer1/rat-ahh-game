@@ -4,8 +4,8 @@ using UnityEngine;
 public class Constants : MonoBehaviour
 {
     public static Constants instance;
-    
-    
+
+
     public Sprite ratClingAbilityIcon;
     public Sprite ratDashAbilityIcon;
 
@@ -36,6 +36,13 @@ public class Constants : MonoBehaviour
     public static float humanAscendMultiplier = 0.7f;
     public static float humanCameraFOV = 60f;
     public static float humanMaxCameraThirdPersonRadius = 0.4f;
+    public static float boxColliderStandingSizeX = 0.1f;
+    public static float boxColliderStandingSizeY = 0.8f;
+    public static float boxColliderStandingSizeZ = 0.062937f;
+    public static float boxColliderStandingCenterY = 0.4f;
+    public static float boxColliderCrawlingSizeY = 0.062937f;
+    public static float boxColliderCrawlingSizeZ = 0.4f;
+    public static float boxColliderCrawlingCenterY = 0.04f;
     # endregion
 
     # region "Camera"
@@ -47,7 +54,8 @@ public class Constants : MonoBehaviour
     public static float cheeseSpawnInterval = 30;
     # endregion
 
-    void Awake() {
+    void Awake()
+    {
         instance = this;
     }
 }
