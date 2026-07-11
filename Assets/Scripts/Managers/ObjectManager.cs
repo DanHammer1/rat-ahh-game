@@ -6,12 +6,18 @@ public class ObjectManager : NetworkBehaviour
     public static void MakeObjectSpectral(GameObject objectReference) {
         if (objectReference == null) return;
 
+        if (objectReference.transform.Find("Renderer") != null)
+            objectReference = objectReference.transform.Find("Renderer").gameObject;
+
         objectReference.layer = LayerMask.NameToLayer("SpectralObjects");
     }
 
     public static void TakeAwaySpectral(GameObject objectReference) {
         if (objectReference == null) return;
         
+        if (objectReference.transform.Find("Renderer") != null)
+            objectReference = objectReference.transform.Find("Renderer").gameObject;
+
         objectReference.layer = LayerMask.NameToLayer("Default");
     }
 

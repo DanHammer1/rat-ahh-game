@@ -46,11 +46,7 @@ public abstract class Item : NetworkBehaviour, IInteractable
             GetComponent<Rigidbody>().useGravity = true;
             pickUpProgress = 0;
 
-            Collider[] colliders = GetComponents<Collider>();
-
-            foreach (Collider collider in colliders) {
-                collider.enabled = true;
-            }
+            ToggleCollidersRpc(true);
 
             ((HumanPlayer)(Player.localPlayer)).SetCarryingItemRpc(false);
         }
@@ -88,11 +84,7 @@ public abstract class Item : NetworkBehaviour, IInteractable
     public void Interact() {
         GetComponent<Rigidbody>().useGravity = false;
 
-        Collider[] colliders = GetComponents<Collider>();
-
-        foreach (Collider collider in colliders) {
-            collider.enabled = false;
-        }
+        ToggleCollidersRpc(false);
 
         SetIsEquippedRpc(true);
 
@@ -100,6 +92,15 @@ public abstract class Item : NetworkBehaviour, IInteractable
         UpdateHumanPlayerRefRpc(Player.localPlayer.NetworkObject);
 
         GetComponent<NetworkTransform>().enabled = true;
+    }
+
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
+    public void ToggleCollidersRpc(bool state) {
+        Collider[] colliders = GetComponents<Collider>();
+
+        foreach (Collider collider in colliders) {
+            collider.enabled = state;
+        }
     }
 
     public void UpdateProgress() {

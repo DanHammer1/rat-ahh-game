@@ -4,7 +4,23 @@ using Unity.Netcode;
 public class Radar : Item
 {
     public override void UseItem() {
-        Debug.Log("PINGASINGAS");
+        Player[] players = FindObjectsByType<Player>(FindObjectsSortMode.None);
+
+        foreach (Player player in players) {
+            GameObject playerObj = player.gameObject;
+
+            if (player != Player.localPlayer && (playerObj.transform.position - 
+                Player.localPlayer.transform.position).magnitude < 15f) {
+                
+                ObjectManager.MakeObjectSpectral(playerObj);
+
+                Timer newTimer = Timer.CreateTimer(5, Timer.OnFinish.DESTROY, () => 
+                    ObjectManager.TakeAwaySpectral(playerObj), "Spectral player removal timer.").GetComponent<Timer>();
+
+                newTimer.Subscribe(playerObj);
+            }
+        }
+
         ((HumanPlayer)Player.localPlayer).SetCarryingItemRpc(false);
         DespawnServerRpc();
     }
