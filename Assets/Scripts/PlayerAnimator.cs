@@ -16,22 +16,22 @@ public class PlayerAnimator : NetworkBehaviour
         animator = GetComponent<Animator>();
     }
 
-    public void PlayAnimation(string animationName, string animationBool, float length)
+    public void PlayAnimation(string animationName, string animationBool, float length, int layer = 0)
     {
-        PlayAnimationServerRpc(animationName, animationBool, length);
+        PlayAnimationServerRpc(animationName, animationBool, length, layer);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void PlayAnimationServerRpc(string animationName, string animationBool, float length)
+    public void PlayAnimationServerRpc(string animationName, string animationBool, float length, int layer)
     {
-        PlayAnimationClientRpc(animationName, animationBool, length);
+        PlayAnimationClientRpc(animationName, animationBool, length, layer);
     }
 
     [ClientRpc]
-    public void PlayAnimationClientRpc(string animationName, string animationBool, float length)
+    public void PlayAnimationClientRpc(string animationName, string animationBool, float length, int layer)
     {
         animator.SetBool(animationBool, true);
-        animator.CrossFade(animationName, length);
+        animator.CrossFade(animationName, length, layer);
         animator.SetBool(animationBool, false);
     }
 
