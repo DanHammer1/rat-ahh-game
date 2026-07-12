@@ -12,20 +12,23 @@ public class Weapon : Item
     public AudioClip swingHit;
     public AudioClip swingMiss;
 
-    public override void OnNetworkSpawn() {
+    public override void OnNetworkSpawn()
+    {
         base.OnNetworkSpawn();
     }
-    public override void UseItem() {
+    public override void UseItem()
+    {
         Attack();
     }
 
-    public override string GetInteractionPromptText() {
+    public override string GetInteractionPromptText()
+    {
         return "Hold E to pick up crowbar.";
     }
 
     public void Attack()
     {
-        PlayerAnimator.instance.PlayAnimation("Swing", "isSwinging", 0.15f);
+        PlayerAnimator.instance.PlayAnimation("Swing", "isSwinging", 0.15f, 1);
         Invoke("CheckPlayerCollision", attackDuration);
     }
 
