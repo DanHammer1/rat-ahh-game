@@ -60,7 +60,7 @@ public class Movement : NetworkBehaviour
         playerHeight = GetComponent<Collider>().bounds.size.y; //  / 2 * transform.localScale.y removed
         raycastDistance = (playerHeight / 2) + 0.2f;
 
-        GROUNDLAYER = LayerMask.GetMask("groundLayer");
+        GROUNDLAYER = LayerMask.GetMask("groundLayer", "InteractableObject");
         animator = GetComponent<Animator>();
 
         if (transform.tag == "PlayerMouse")
@@ -96,12 +96,12 @@ public class Movement : NetworkBehaviour
         float zScale = boxCollider.size.z * gameObject.transform.lossyScale.z * 1.01f;
 
         if (Physics.BoxCast(
-            transform.position + Vector3.up * 0.05f,
+            transform.position + Vector3.up * 0.03f,
             new Vector3(xScale / 2, 0, zScale / 2),
             Vector3.down,
             out RaycastHit hit,
             Quaternion.Euler(0, transform.eulerAngles.y, 0),
-            0.075f, GROUNDLAYER))
+            0.035f, GROUNDLAYER))
             return true;
 
         return false;

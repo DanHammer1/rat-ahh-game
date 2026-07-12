@@ -11,7 +11,7 @@ public class Score : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Player.localPlayer != null && Player.localPlayer.scoreText != null)
-            Player.localPlayer.scoreText.text = $"Score: {Player.localPlayer.score.Value}";
+        //if (Player.localPlayer != null && Player.localPlayer.scoreText != null)
+        //   Player.localPlayer.scoreText.text = $"Score: {Player.localPlayer.score.Value}";
     }
 }

@@ -95,7 +95,6 @@ public class MainMenu : NetworkBehaviour
     {
         StartCoroutine(ExecuteWhenConnected(() =>
         {
-
             joined = true;
 
             if (nameInput.text == "") nameInput.text = NetworkManager.Singleton.LocalClientId.ToString();
