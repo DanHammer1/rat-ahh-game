@@ -52,6 +52,7 @@ public class Constants : MonoBehaviour
     # region "Misc"
     public static float respawnTime = 10;
     public static float cheeseSpawnInterval = 30;
+    public static float coinSpawnInterval = 30;
     # endregion
 
     void Awake()
