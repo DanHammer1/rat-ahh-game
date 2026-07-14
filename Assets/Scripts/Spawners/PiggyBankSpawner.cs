@@ -13,7 +13,7 @@ public class PiggyBankSpawner : NetworkBehaviour
     void Awake()
     {
         instance = this;
-        spawnPos = new Vector3(0.18f, 0.68f, 1);
+        spawnPos = new Vector3(0.18f, 0.18f, 1);
     }
 
     void Update()
