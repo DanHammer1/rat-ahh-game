@@ -6,11 +6,13 @@ using Unity.Netcode;
 public class PiggyBank : NetworkBehaviour
 {
     public GameObject piggyBankFracturedPrefab;
+    public GameObject coinPrefab;
 
     void Start()
     {
         Debug.Log(PiggyBankSpawner.instance);
         piggyBankFracturedPrefab = PiggyBankSpawner.instance?.piggyBankFracturedPrefab;
+        coinPrefab = PiggyBankSpawner.instance?.coinPrefab;
         Debug.Log(piggyBankFracturedPrefab);
     }
 
@@ -34,6 +36,13 @@ public class PiggyBank : NetworkBehaviour
     {
         GameObject fractured = Instantiate(piggyBankFracturedPrefab, position, rotation);
         fractured.GetComponent<NetworkObject>().Spawn();
+
+        int coinsSpawned = UnityEngine.Random.Range(Constants.piggyBankMinCoinsSpawned, Constants.piggyBankMaxCoinsSpawned + 1);
+        for (int i = 0; i < coinsSpawned; i++)
+        {
+            GameObject coin = Instantiate(coinPrefab, position + new Vector3(0, 0.04f * i), rotation);
+            coin.GetComponent<NetworkObject>().Spawn();
+        }
 
         if (NetworkObject != null && NetworkObject.IsSpawned)
         {

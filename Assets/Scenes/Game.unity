@@ -3060,6 +3060,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   piggyBankPrefab: {fileID: 7810735976403129115, guid: eb31b584953e1234397626072d6f77be, type: 3}
   piggyBankFracturedPrefab: {fileID: 6497119362898286067, guid: 2118ae4560102494ab0510026bf59bed, type: 3}
+  coinPrefab: {fileID: 8770749662742894988, guid: 06c4ccd3ef4e4244eb5c3b67a90d7fd4, type: 3}
   spawnPos: {x: 0, y: 0, z: 0}
 --- !u!4 &941695055
 Transform:
