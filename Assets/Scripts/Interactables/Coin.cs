@@ -3,6 +3,8 @@ using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
 using Unity.Netcode.Components;
+using System;
+using System.Collections;
 
 public class Coin : NetworkBehaviour, IInteractable
 {
@@ -66,7 +68,7 @@ public class Coin : NetworkBehaviour, IInteractable
         ((IInteractable)this).TryInteract();
 
         GetComponent<NetworkTransform>().enabled = true;
-        
+
         // If coin is being carried:
         if (!(Player.localPlayer && isBeingCarried.Value)) return;
         GetComponent<NetworkTransform>().enabled = false;
@@ -135,6 +137,11 @@ public class Coin : NetworkBehaviour, IInteractable
             NetworkObject.Despawn();
         }
     }
+    IEnumerator WaitThenDespawnCoin()
+    {
+        yield return new WaitForSeconds(0.2f);
+        DespawnServerRpc();
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -142,6 +149,8 @@ public class Coin : NetworkBehaviour, IInteractable
         {
             Player.localPlayer.EditScoreServerRpc(Player.localPlayer.score.Value + ObjectiveScores.deliveryScore);
             Debug.Log("Coin delivered");
+            CoinSpawner.instance?.onCoinDelivered?.Invoke();
+            StartCoroutine(WaitThenDespawnCoin());
         }
     }
 }

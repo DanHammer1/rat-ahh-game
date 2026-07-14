@@ -14,30 +14,37 @@ public class CheeseSpawner : NetworkBehaviour
 
     public Action onCheeseObtained;
 
-    void Awake() {
+    void Awake()
+    {
         instance = this;
 
         cheeseSpawnLocations = new List<GameObject>();
         GameObject cheeseSpawnLocationParent = GameObject.FindWithTag("CheeseSpawnParent");
 
-        foreach (Transform spawnLocation in cheeseSpawnLocationParent.transform) {
+        foreach (Transform spawnLocation in cheeseSpawnLocationParent.transform)
+        {
             cheeseSpawnLocations.Add(spawnLocation.gameObject);
         }
         takenSpawnLocations = new NetworkList<NetworkObjectReference>();
     }
 
-    void Start() {
+    void Start()
+    {
         if (!IsServer) return;
 
-        Timer.CreateTimer(30, Timer.OnFinish.REPEAT, () => SpawnRandomCheeseRpc(), "Cheese spawn repeating timer");
+        Timer.CreateTimer(30, Timer.OnFinish.REPEAT, () => SpawnRandomCheeseRpc(), "Cheese spawn repeating timer"); // TODO should this be Constants.cheeseSpawnInterval instead of 30?
     }
 
-    List<GameObject> GetVacantCheeseSpots() {
+    List<GameObject> GetVacantCheeseSpots()
+    {
         List<GameObject> vacantSpots = new List<GameObject>();
-        foreach (GameObject spawnLocation in cheeseSpawnLocations) {
+        foreach (GameObject spawnLocation in cheeseSpawnLocations)
+        {
             bool taken = false;
-            foreach (GameObject cheese in takenSpawnLocations) {
-                if (cheese.transform.position.Equals(spawnLocation.transform.position)) {
+            foreach (GameObject cheese in takenSpawnLocations)
+            {
+                if (cheese.transform.position.Equals(spawnLocation.transform.position))
+                {
                     taken = true;
                 }
             }
@@ -46,7 +53,8 @@ public class CheeseSpawner : NetworkBehaviour
         return vacantSpots;
     }
 
-    public Vector3 GetVacantCheeseSpot() {
+    public Vector3 GetVacantCheeseSpot()
+    {
         List<GameObject> vacantSpots = GetVacantCheeseSpots();
 
         if (vacantSpots.Count == 0) return Vector3.zero;
@@ -56,10 +64,12 @@ public class CheeseSpawner : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void SpawnRandomCheeseRpc() {
+    public void SpawnRandomCheeseRpc()
+    {
         Vector3 vacantSpot = GetVacantCheeseSpot();
 
-        if (vacantSpot == Vector3.zero) {
+        if (vacantSpot == Vector3.zero)
+        {
             return;
         }
 
@@ -70,24 +80,30 @@ public class CheeseSpawner : NetworkBehaviour
         cheese.GetComponent<Cheese>().onDestroyed += () => takenSpawnLocations.Remove(cheese);
     }
 
-    public IEnumerator ForceObtainRandomCheeseOverTime() {
-        if (takenSpawnLocations.Count == 0) {
+    public IEnumerator ForceObtainRandomCheeseOverTime()
+    {
+        if (takenSpawnLocations.Count == 0)
+        {
             SpawnRandomCheeseRpc();
         }
 
-        while (takenSpawnLocations.Count == 0) {
+        while (takenSpawnLocations.Count == 0)
+        {
             yield return null;
         }
 
         onCheeseObtained?.Invoke();
     }
 
-    public void ForceObtainRandomCheese() {
+    public void ForceObtainRandomCheese()
+    {
         StartCoroutine(ForceObtainRandomCheeseOverTime());
     }
 
-    public GameObject GetRandomCheese() {
-        if (takenSpawnLocations.Count == 0) {
+    public GameObject GetRandomCheese()
+    {
+        if (takenSpawnLocations.Count == 0)
+        {
             return null;
         }
 
