@@ -20,6 +20,11 @@ public class MainMenu : NetworkBehaviour
     GameManager.PlayerRole preference;
     bool hasPreference = false;
 
+    void Start() {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
     public void Host()
     {
         if (joined) return;
@@ -200,9 +205,12 @@ public class MainMenu : NetworkBehaviour
 
     void Update()
     {
+        if (!NetworkManager.Singleton) return;
+
         if (joined)
         {
             UpdateLobbyText();
         }
+        joined = NetworkManager.Singleton.IsClient;
     }
 }

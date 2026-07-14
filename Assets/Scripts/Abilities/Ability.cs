@@ -62,5 +62,7 @@ public abstract class Ability : NetworkBehaviour
 
         abilityIconCooldown.sprite = GetIconSprite();
         abilityIconFilled.sprite = GetIconSprite();
+
+        abilityTimer.Subscribe(this.gameObject);
     }
 }

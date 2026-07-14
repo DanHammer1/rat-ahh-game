@@ -1,25 +1,33 @@
 using UnityEngine;
-using TMPro;
 using Unity.Netcode;
-using System.Collections;
+using Unity.Collections;
+using TMPro;
+using UnityEngine.SceneManagement;
+using Unity.Netcode.Transports.UTP;
 using System.Collections.Generic;
+using System.Collections;
+using System;
 
 public class ProgressManager : NetworkBehaviour
 {
+    public float defaultTime; 
     public TextMeshProUGUI timer;
     public TextMeshProUGUI objectivesUI;
     public TextMeshProUGUI playersUIList;
     public TextMeshProUGUI scoreList;
 
-    public NetworkVariable<float> time = new NetworkVariable<float>(300);
+    public NetworkVariable<float> time = new NetworkVariable<float>(10);
     public List<Objective> objectives = new List<Objective>();
 
-    private bool IsActive = false;
-    private bool onActivateExecuted = false;
+    public bool IsActive = false;
+    public bool onActivateExecuted = false;
 
     public IEnumerator OnActivate()
     {
         if (onActivateExecuted) yield break;
+
+        if (IsServer) time.Value = defaultTime;
+
         onActivateExecuted = true;
 
         GameObject timerGameObject = GameObject.FindWithTag("TimerUI");
@@ -74,6 +82,12 @@ public class ProgressManager : NetworkBehaviour
     {
         if (timer == null) return;
         timer.text = $"Time remaining: {(int)time.Value}";
+
+        if (time.Value < 0 && IsServer) {
+            NetworkManager.Singleton.SceneManager.LoadScene(
+            "MainMenu",
+            LoadSceneMode.Single);
+        }
     }
 
     [ClientRpc]

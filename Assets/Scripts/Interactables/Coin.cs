@@ -8,7 +8,7 @@ public class Coin : NetworkBehaviour, IInteractable
 {
     public NetworkVariable<bool> isBeingCarried = new NetworkVariable<bool>(false);
     public NetworkVariable<NetworkObjectReference> playerCarryingCoin = new NetworkVariable<NetworkObjectReference>();
-    bool hasBeenDelivered = false;
+    //bool hasBeenDelivered = false;
 
     private float pickUpProgress = 0;
     private float totalInteractionTime = 0.8f;

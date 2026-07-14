@@ -1218,13 +1218,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4219599654096465067}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.03679957, y: 0.036799524, z: 0.03679955}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4683118623909702952}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &4377375152032231909
 GameObject:
   m_ObjectHideFlags: 0
@@ -2066,7 +2066,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4374495303434697987}
   - component: {fileID: 1930047793462273582}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Rat Stun Box
   m_TagString: Rat Stun Hitbox
   m_Icon: {fileID: 0}

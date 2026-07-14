@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System;
 using System.Collections;
 using Unity.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameManager : NetworkBehaviour
 {
@@ -25,8 +26,24 @@ public class GameManager : NetworkBehaviour
 
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        SceneManager.sceneLoaded += (scene, b) => {
+            sceneReady = false;
+            playersSpawned = false;
+
+            if (scene.name == "MainMenu") {
+                GetComponent<ProgressManager>().IsActive = false;
+                GetComponent<ProgressManager>().onActivateExecuted = false;
+            }
+        };
     }
 
     private static List<ulong> GetIds(int role) {

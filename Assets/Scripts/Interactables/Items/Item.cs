@@ -26,7 +26,7 @@ public abstract class Item : NetworkBehaviour, IInteractable
         useTimer.AddCompletionCondition(() => {
             if (!humanPlayerRef.Value.TryGet(out NetworkObject humanPlayer)) return false;
             bool isCarrying = (humanPlayer == Player.localPlayer.NetworkObject);
-            return Input.GetMouseButtonDown(0) && isEquipped.Value && isCarrying;
+            return Input.GetMouseButton(0) && isEquipped.Value && isCarrying;
             });
         
         useTimer.AddProgressionCondition(() => isEquipped.Value);

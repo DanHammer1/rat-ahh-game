@@ -204,6 +204,9 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   cooldown: 0
   parentGameObjectName: SprayCan
+  width: 80
+  height: 80
+  paintMaterial: {fileID: 2100000, guid: e5d4b0592632f6f4cbf76aa60c4c404c, type: 2}
 --- !u!1 &5872220468098353094
 GameObject:
   m_ObjectHideFlags: 0
