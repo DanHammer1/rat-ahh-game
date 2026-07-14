@@ -20,8 +20,12 @@ public class DeliveryObjective : Objective
         };
     }
 
-    public override bool CheckConditionCleared()
-    {
+    public override bool CheckConditionCleared() {
         return conditionCleared;
+    }
+
+    public override string GetDialogueText() {
+        return @"I WANNA BUY RAT HOOKERS!!! BREAK HUNTERS PIGGY 
+            BANK AND BRING MONEY TO THE BIN IN THE GARAGE!!!";
     }
 }

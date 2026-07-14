@@ -35,6 +35,9 @@ TagManager:
   - AbilityParent
   - Interactable
   - CoinSpawnParent
+  - DialogueUI
+  - ObjectiveSpawner
+  - MamaRat
   layers:
   - Default
   - TransparentFX

@@ -25,4 +25,8 @@ public class CheeseObjective : Objective
     {
         return (cheese == null);
     }
+
+    public override String GetDialogueText() {
+        return "IM HUNGRY!!! EAT CHEESE FOR ME!";
+    }
 }

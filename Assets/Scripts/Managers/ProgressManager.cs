@@ -22,8 +22,12 @@ public class ProgressManager : NetworkBehaviour
     public bool IsActive = false;
     public bool onActivateExecuted = false;
 
+    public static ProgressManager instance;
+
     public IEnumerator OnActivate()
     {
+        instance = this;
+        
         if (onActivateExecuted) yield break;
 
         if (IsServer) time.Value = defaultTime;
@@ -55,10 +59,7 @@ public class ProgressManager : NetworkBehaviour
 
         objectives = new List<Objective>();
 
-        if (GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER) {
-            objectives.Add(new CheeseObjective());
-            objectives.Add(new DeliveryObjective());
-        }
+        if (GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER) {}
 
         IsActive = true;
     }
@@ -143,10 +144,18 @@ public class ProgressManager : NetworkBehaviour
         if (objectivesUI == null) return;
 
         string text = "";
+        List<Objective> objectivesToRemove = new List<Objective>();
 
-        foreach (Objective objective in objectives)
-        {
-            if (!objective.CheckConditionCleared()) text += objective.objectiveText + "\n";
+        foreach (Objective objective in objectives) {
+            if (objective.CheckConditionCleared()) objectivesToRemove.Add(objective);
+        }
+
+        foreach (Objective objective in objectivesToRemove) {
+            objective.onConditionCleared?.Invoke();
+        }
+
+        foreach (Objective objective in objectives) {
+            text += objective.objectiveText + "\n";
         }
 
         objectivesUI.text = text;

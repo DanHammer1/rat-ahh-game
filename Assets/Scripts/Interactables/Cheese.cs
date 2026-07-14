@@ -14,7 +14,7 @@ public class Cheese : NetworkBehaviour, IInteractable
     public Action onPlayerSeesObject;
 
     private float eatProgress = 0;
-    private float totalInteractionTime = 5f;
+    private float totalInteractionTime = 10f;
 
     public override void OnNetworkSpawn() {
         onPlayerSeesObject += () => ObjectManager.TakeAwaySpectral(transform.Find("Renderer").gameObject);
