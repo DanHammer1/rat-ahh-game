@@ -49,4 +49,6 @@ public class PiggyBank : NetworkBehaviour
             NetworkObject.Despawn();
         }
     }
+
+
 }

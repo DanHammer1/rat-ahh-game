@@ -32,7 +32,7 @@ public class CoinSpawner : NetworkBehaviour
     {
         if (!IsServer) return;
 
-        Timer.CreateTimer(30, Timer.OnFinish.REPEAT, () => SpawnRandomCoinRpc(), "Coin spawn repeating timer"); // Same as cheeseSpawner?
+        Timer.CreateTimer(60, Timer.OnFinish.REPEAT, () => SpawnRandomCoinRpc(), "Coin spawn repeating timer"); // Same as cheeseSpawner?
     }
 
     List<GameObject> GetVacantCoinSpots()
