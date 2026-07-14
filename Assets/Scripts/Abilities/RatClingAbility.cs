@@ -21,11 +21,13 @@ public class RatClingAbility : Ability
     protected GameObject ratAbilityShakeUI;
     BoxCollider boxCollider;
 
-    public override Sprite GetIconSprite() {
+    public override Sprite GetIconSprite()
+    {
         return Constants.instance.ratClingAbilityIcon;
     }
 
-    public override float GetAbilityCooldown() {
+    public override float GetAbilityCooldown()
+    {
         return Constants.maxRatAbilityCooldown;
     }
 
@@ -172,14 +174,38 @@ public class RatClingAbility : Ability
         SetHumanDizzyStateServerRpc(localHumanInRange.NetworkObjectId, true);
     }
 
-    public override bool CheckAbilityExecutable() {
+    void OnMiss()
+    {
+        Rigidbody rb = GetComponent<Rigidbody>();
+        Movement movement = GetComponent<Movement>();
+
+        SetColliderStateServerRpc(true);
+        movement.toggleGravity = true;
+
+        rb.useGravity = true;
+        rb.detectCollisions = true;
+
+        movement.isPerformingAbility = false;
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        Movement movement = GetComponent<Movement>();
+
+        if (movement.isPerformingAbility && collision.gameObject.layer == LayerMask.NameToLayer("groundLayer"))
+        {
+            OnMiss();
+        }
+    }
+
+    public override bool CheckAbilityExecutable()
+    {
         return (ratAbilityInRange);
     }
 
     protected override void Update()
     {
         base.Update();
-
         if (!IsOwner) return;
 
         if (Input.GetKeyDown(KeyCode.Q) && isClinging.Value)
