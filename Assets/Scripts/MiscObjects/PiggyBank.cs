@@ -43,9 +43,12 @@ public class PiggyBank : NetworkBehaviour
 
         if (NetworkObject != null && NetworkObject.IsSpawned)
         {
-            NetworkObject.Despawn();
+            NetworkObject.Despawn(true);
         }
     }
 
-
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
+    void DestroyRpc() {
+        Destroy(this.gameObject);
+    }
 }

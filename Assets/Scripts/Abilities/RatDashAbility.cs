@@ -20,7 +20,7 @@ public class RatDashAbility : Ability
     }
 
     public override bool CheckAbilityExecutable() {
-        return !GetComponent<Movement>().CheckPlayerGrounded();
+        return true;
     }
 
     public override Sprite GetIconSprite() {

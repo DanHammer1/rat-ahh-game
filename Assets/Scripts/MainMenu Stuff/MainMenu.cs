@@ -132,6 +132,10 @@ public class MainMenu : NetworkBehaviour
     }
 
     public string GetClientInfo(ulong clientId) {
+        int index = GameManager.Instance.clientIds.IndexOf(clientId);
+
+        if (index == -1) return "";
+        
         FixedString32Bytes clientName = GameManager.Instance.clientNames[
             GameManager.Instance.clientIds.IndexOf(clientId)];
         
