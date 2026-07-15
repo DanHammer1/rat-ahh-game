@@ -41,8 +41,8 @@ public class Constants : MonoBehaviour
     public static float boxColliderStandingSizeY = 0.8f;
     public static float boxColliderStandingSizeZ = 0.062937f;
     public static float boxColliderStandingCenterY = 0.4f;
-    public static float boxColliderCrawlingSizeY = 0.062937f;
-    public static float boxColliderCrawlingSizeZ = 0.4f;
+    public static float boxColliderCrawlingSizeY = 0.12f;
+    public static float boxColliderCrawlingSizeZ = 0.062937f;
     public static float boxColliderCrawlingCenterY = 0.04f;
     # endregion
 
@@ -59,7 +59,8 @@ public class Constants : MonoBehaviour
     public static int piggyBankMaxCoinsSpawned = 4;
     # endregion
 
-    void Awake() {
+    void Awake()
+    {
         instance = this;
     }
 }
