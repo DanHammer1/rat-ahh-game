@@ -196,7 +196,8 @@ public class Movement : NetworkBehaviour
                 if (movement != Vector3.zero)
                     yaw = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;
                 break;
-        };
+        }
+        ;
 
         // Apply rotation
         if (!isRotationLocked)
