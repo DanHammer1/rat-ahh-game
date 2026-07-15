@@ -6,8 +6,9 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.Animations.Rigging;
+using System;
 
-public class HumanPlayer : Player
+public class HumanPlayer : Player 
 {
     public GameObject ratAbilityTarget;
     public NetworkVariable<bool> isBeingClung = new NetworkVariable<bool>(false);
@@ -19,9 +20,15 @@ public class HumanPlayer : Player
     public float dizzyDuration;
     public int currentSlapCount;
 
+    public static Action onHumanClung;
+
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void SetCarryingItemRpc(bool state) {
         isCarryingItem.Value = state;
+    }
+
+    public void CheckJustGotClung(bool state) {
+        if (state != isBeingClung.Value && state == true) onHumanClung?.Invoke();
     }
 
     void OnDrawGizmos()
@@ -113,6 +120,4 @@ public class HumanPlayer : Player
     {
         dizzyDuration = 1 + (slapCount.Value * 0.2f);
     }
-
-
 }

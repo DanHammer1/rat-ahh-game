@@ -146,6 +146,12 @@ public class Player : NetworkBehaviour
         score.Value = newScore;
     }
 
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void AddScoreServerRpc(int newScore)
+    {
+        score.Value += newScore;
+    }
+
     protected virtual void Update()
     {
         if (!spawned) {

@@ -14,19 +14,16 @@ public interface IInteractable
 
     public void OnInteraction() {}
 
-    public bool CheckExtraInteractionConditions()
-    {
+    public bool CheckExtraInteractionConditions() {
         return true;
     }
 
-    public void TryInteract()
-    {
+    public void TryInteract() {
         if (CheckInteractionShouldTrigger()) Interact();
         TryUpdateProgress();
     }
 
-    public static bool CheckPlayerFacingInteractableObject()
-    {
+    public static bool CheckPlayerFacingInteractableObject() {
         if (Player.localPlayer == null) return false;
 
         bool hitSomething = false;

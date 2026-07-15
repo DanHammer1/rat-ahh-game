@@ -25,7 +25,7 @@ public class DialogueManager : MonoBehaviour
         dialogueDisplay = dialogueUI.transform.Find("Text").GetComponent<TextMeshProUGUI>();
         objectiveSpawner = GameObject.FindWithTag("ObjectiveSpawner").GetComponent<ObjectiveSpawner>();
 
-        objectiveSpawner.OnObjectiveCreated += (objective) => CreateDialogue(objective.GetDialogueText());
+        objectiveSpawner.OnObjectiveCreated += (text) => CreateDialogue(text);
 
         dialogueUI.SetActive(false);
 

@@ -11,6 +11,8 @@ public class CheeseObjective : Objective
 
     public CheeseObjective() : base("Get Cheese.")
     {
+        completionScore = Constants.cheeseObjectiveCompletionScore;
+        
         CheeseSpawner.instance.onCheeseObtained += () => {
             cheese = CheeseSpawner.instance.GetRandomCheese();
             ObjectManager.MakeObjectSpectral(cheese.transform.Find("Renderer").gameObject);

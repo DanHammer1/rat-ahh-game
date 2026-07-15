@@ -224,6 +224,7 @@ public class RatClingAbility : Ability
             HumanPlayer humanPlayer = localHumanInRange.GetComponent<HumanPlayer>();
             // IncreaseHumanShakeMeterValue(localHumanInRange.NetworkObjectId, Time.deltaTime);
             SetHumanClingStateServerRpc(localHumanInRange.NetworkObjectId, true);
+            localHumanInRange.CheckJustGotClung(true);
             transform.position =
                 clingHead.position +
                 clingHead.TransformDirection(Vector3.forward * 0.1f) +

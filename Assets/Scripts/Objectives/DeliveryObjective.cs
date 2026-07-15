@@ -8,6 +8,8 @@ public class DeliveryObjective : Objective
 
     public DeliveryObjective() : base("Deliver one coin to the garbage container")
     {
+        completionScore = Constants.coinObjectiveCompletionScore;
+        
         // CoinSpawner.instance.ForceObtainRandomCoin();
         CoinSpawner.instance.onCoinDelivered += () =>
         {

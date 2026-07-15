@@ -5,12 +5,13 @@ public class Constants : MonoBehaviour
 {
     public static Constants instance;
 
-
     public Sprite ratClingAbilityIcon;
     public Sprite ratDashAbilityIcon;
 
-
     public static float mouseSensitivity = 1f;
+    public static int cheeseObjectiveCompletionScore = 15;
+    public static int coinObjectiveCompletionScore = 10;
+    public static int abilityObjectiveCompletionScore = 10;
 
     #region "Rat"
     public static float ratMoveSpeed = 1.3f;
@@ -58,8 +59,7 @@ public class Constants : MonoBehaviour
     public static int piggyBankMaxCoinsSpawned = 4;
     # endregion
 
-    void Awake()
-    {
+    void Awake() {
         instance = this;
     }
 }
