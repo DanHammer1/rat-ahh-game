@@ -1,13 +1,24 @@
 using UnityEngine;
 using Unity.Netcode;
+using System.Collections;
+using Unity.VisualScripting;
 
 public class RatInvisibilityAbility : Ability
 {
+    SkinnedMeshRenderer playerRenderer;
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void ExecuteAbilityRpc()
     {
-        Debug.Log("Look at me I'm invisible");
+        SetVisibleRpc(false);
+        Timer.CreateTimer(Constants.ratInvisibilityAbilityDuration, Timer.OnFinish.DESTROY,
+            () => { SetVisibleRpc(true); });
+    }
+
+    [Rpc(SendTo.Everyone)]
+    void SetVisibleRpc(bool state)
+    {
+        playerRenderer.enabled = state;
     }
 
     public override void ExecuteAbility()
@@ -38,5 +49,6 @@ public class RatInvisibilityAbility : Ability
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+        playerRenderer = transform.Find("Renderer").GetComponent<SkinnedMeshRenderer>();
     }
 }
