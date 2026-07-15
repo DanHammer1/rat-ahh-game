@@ -27,6 +27,8 @@ public class ProgressManager : NetworkBehaviour
     public IEnumerator OnActivate()
     {
         instance = this;
+
+        GameManager.onExit += () => objectives.Clear();
         
         if (onActivateExecuted) yield break;
 

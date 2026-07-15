@@ -37,17 +37,16 @@ public class PlayerAnimator : NetworkBehaviour
 
     void Update()
     {
-        if (!IsOwner) return;
+        if (!IsServer) return;
 
-        if (instance == null)
-        {
+        if (instance == null) {
             instance = this;
         }
 
         animator.SetFloat("Speed", movement.speed);
 
-        animator.SetFloat("Forward", movement.moveForward);
-        animator.SetFloat("Right", movement.moveHorizontal);
+        animator.SetFloat("Forward", movement.moveForward.Value);
+        animator.SetFloat("Right", movement.moveHorizontal.Value);
 
         if (Input.GetKeyDown(KeyCode.C))
         {

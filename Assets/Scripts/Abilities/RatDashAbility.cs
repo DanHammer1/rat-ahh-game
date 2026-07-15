@@ -5,11 +5,16 @@ public class RatDashAbility : Ability
 {
     public ParticleSystem dashAbilityParticles;
 
-    public override void ExecuteAbility() {
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void ExecuteAbilityRpc() {
         GetComponent<Rigidbody>().AddForce(transform.forward * Constants.ratDashAbilityPower, ForceMode.Impulse);
         ToggleParticleSystemClientRpc(true);
         Timer.CreateTimer(0.2f, Timer.OnFinish.DESTROY, 
             () => ToggleParticleSystemClientRpc(false), "Particle Stop timer.");
+    }
+
+    public override void ExecuteAbility() {
+        ExecuteAbilityRpc();
     }
 
     [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]

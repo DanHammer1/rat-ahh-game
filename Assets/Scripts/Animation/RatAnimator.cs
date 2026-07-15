@@ -16,11 +16,12 @@ public class RatAnimator : NetworkBehaviour
 
     void Update()
     {
-        if (!IsOwner) return;
+        if (!IsServer) return;
+        
         animator.SetFloat("Speed", movement.speed);
 
         animator.SetBool("isGrounded", movement.isGrounded);
-        animator.SetBool("pressedSpace", movement.pressedSpace);
+        animator.SetBool("pressedSpace", movement.pressedSpace.Value);
 
         animator.SetBool("isClinging", ratPlayer.GetComponent<RatClingAbility>().isClinging.Value);
         animator.SetBool("isSlapping", ratPlayer.GetComponent<RatClingAbility>().isSlapping);

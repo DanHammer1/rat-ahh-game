@@ -110,7 +110,7 @@ public class RatClingAbility : Ability
         float originalDrag = rb.linearDamping;
 
         movement.isGrounded = false;
-        movement.pressedSpace = true;
+        movement.pressedSpace.Value = true;
 
         Vector3 forceToAdd = Vector3.zero;
         forceToAdd.x = (targetPos.x - startPos.x) / ratAbilityDuration;

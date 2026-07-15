@@ -16,6 +16,8 @@ public class GameManager : NetworkBehaviour
     public static GameManager Instance;
     public static bool playersSpawned = false;
 
+    public static Action onExit;
+
     public GameObject ratPrefab;
     public GameObject hunterPrefab;
     public bool sceneReady = false;
@@ -113,8 +115,6 @@ public class GameManager : NetworkBehaviour
         
         netObj.SpawnAsPlayerObject(clientId, true);
         netObj.GetComponent<Player>().clientId.Value = clientId;
-        
-        //targetGroup.AddMember(playerInstance.transform.GetChild(1), 1f, 5f);
     }
 
     public IEnumerator SpawnAllPlayers() {
@@ -149,5 +149,9 @@ public class GameManager : NetworkBehaviour
 
     public static FixedString32Bytes GetLocalName() {
         return Instance.clientNames[Instance.clientIds.IndexOf(GetLocalId())];
+    }
+
+    public static void ExitToMainMenu() {
+        onExit?.Invoke();
     }
 }
