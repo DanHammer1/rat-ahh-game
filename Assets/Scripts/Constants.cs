@@ -5,9 +5,6 @@ public class Constants : MonoBehaviour
 {
     public static Constants instance;
 
-    public Sprite ratClingAbilityIcon;
-    public Sprite ratDashAbilityIcon;
-
     public static float mouseSensitivity = 1f;
     public static int cheeseObjectiveCompletionScore = 15;
     public static int coinObjectiveCompletionScore = 10;
@@ -57,6 +54,7 @@ public class Constants : MonoBehaviour
     public static float piggyBankBreakSpeed = 2.5f;
     public static int piggyBankMinCoinsSpawned = 2;
     public static int piggyBankMaxCoinsSpawned = 4;
+    public static float piggyBankDespawnTime = 6f;
     # endregion
 
     void Awake()

@@ -23,7 +23,7 @@ public class RatClingAbility : Ability
 
     public override Sprite GetIconSprite()
     {
-        return Constants.instance.ratClingAbilityIcon;
+        return Assets.instance.ratClingAbilityIcon;
     }
 
     public override float GetAbilityCooldown()
