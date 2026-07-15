@@ -10,17 +10,14 @@ public class PiggyBank : NetworkBehaviour
 
     void Start()
     {
-        Debug.Log(PiggyBankSpawner.instance);
         piggyBankFracturedPrefab = PiggyBankSpawner.instance?.piggyBankFracturedPrefab;
         coinPrefab = PiggyBankSpawner.instance?.coinPrefab;
-        Debug.Log(piggyBankFracturedPrefab);
     }
 
     void OnCollisionEnter(Collision collision)
     {
         if (collision.relativeVelocity.magnitude >= Constants.piggyBankBreakSpeed)
         {
-            Debug.Log("bank broken!");
             OnBreakRpc(transform.position, transform.rotation);
         }
     }

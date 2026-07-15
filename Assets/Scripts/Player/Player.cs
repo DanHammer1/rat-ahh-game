@@ -159,11 +159,6 @@ public class Player : NetworkBehaviour
             spawned = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Debug.Log("test");
-        }
-
         if (Input.GetKeyDown(KeyCode.O))
         {
             ClearConsole();

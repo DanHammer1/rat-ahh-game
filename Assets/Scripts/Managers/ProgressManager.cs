@@ -67,7 +67,7 @@ public class ProgressManager : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!IsServer || !IsActive) return;
+        if (!IsServer || !IsActive || !NetworkManager.Singleton) return;
 
         //UpdatePlayerUIListClientRpc();
         UpdateScoreListClientRpc();

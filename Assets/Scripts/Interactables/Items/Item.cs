@@ -24,7 +24,7 @@ public abstract class Item : NetworkBehaviour, IInteractable
 
         useTimer.Subscribe(this.gameObject);
         useTimer.AddCompletionCondition(() => {
-            if (!humanPlayerRef.Value.TryGet(out NetworkObject humanPlayer)) return false;
+            if (NetworkManager.Singleton == null || !humanPlayerRef.Value.TryGet(out NetworkObject humanPlayer)) return false;
             bool isCarrying = (humanPlayer == Player.localPlayer.NetworkObject);
             return Input.GetMouseButton(0) && isEquipped.Value && isCarrying;
             });
@@ -36,6 +36,7 @@ public abstract class Item : NetworkBehaviour, IInteractable
     {
         ((IInteractable)this).TryInteract();
 
+        if (NetworkManager.Singleton == null) return;
         if (!humanPlayerRef.Value.TryGet(out NetworkObject humanPlayer) || !isEquipped.Value) return;
 
         if (Player.localPlayer && GameManager.GetLocalRole() != GameManager.PlayerRole.HUNTER) return;
@@ -53,6 +54,7 @@ public abstract class Item : NetworkBehaviour, IInteractable
     }
 
     void LateUpdate() {
+        if (NetworkManager.Singleton == null) return;
         if (!humanPlayerRef.Value.TryGet(out NetworkObject humanPlayer) || !isEquipped.Value) return;
         Transform humanHand = humanPlayer.transform.Find("Armature/Hip/Spine/Upper Arm.R/Lower Arm.R/Hand.R/Hand.R_end");
 

@@ -148,7 +148,6 @@ public class Coin : NetworkBehaviour, IInteractable
         if (other.CompareTag("CoinDeliveryLocation"))
         {
             Player.localPlayer.EditScoreServerRpc(Player.localPlayer.score.Value + ObjectiveScores.deliveryScore);
-            Debug.Log("Coin delivered");
             CoinSpawner.instance?.onCoinDelivered?.Invoke();
             StartCoroutine(WaitThenDespawnCoin());
         }
