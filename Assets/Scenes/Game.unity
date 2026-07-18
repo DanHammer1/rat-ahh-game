@@ -5952,7 +5952,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1716988041}
   - component: {fileID: 1716988040}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: CoinDeliveryLocation
   m_TagString: CoinDeliveryLocation
   m_Icon: {fileID: 0}

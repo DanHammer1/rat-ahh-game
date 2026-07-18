@@ -36,7 +36,7 @@ public class Weapon : Item
     {
         GameObject mainCamera = PlayerCamera.mainCamera;
         Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
-        LayerMask ignoreMask = ~LayerMask.GetMask("Hunter", "groundLayer");
+        LayerMask ignoreMask = ~LayerMask.GetMask("Hunter", "groundLayer", "Ignore Raycast");
 
         Debug.DrawRay(ray.origin, ray.direction * attackRange, Color.red, 5f);
 
