@@ -22,12 +22,8 @@ public class Movement : NetworkBehaviour
     private Rigidbody rb;
     public float moveSpeed;
     public float speed;
-    public NetworkVariable<float> moveHorizontal = new NetworkVariable<float>(writePerm: NetworkVariableWritePermission.Owner);
-    public NetworkVariable<float> moveForward = new NetworkVariable<float>(writePerm: NetworkVariableWritePermission.Owner);
-    private NetworkVariable<Vector3> camPos = new NetworkVariable<Vector3>(writePerm: NetworkVariableWritePermission.Owner);
-    private NetworkVariable<Quaternion> camRotation = new NetworkVariable<Quaternion>(writePerm: NetworkVariableWritePermission.Owner);
-    private NetworkVariable<bool> isJumping = new NetworkVariable<bool>(writePerm: NetworkVariableWritePermission.Owner);
-    public NetworkVariable<bool> pressedSpace = new NetworkVariable<bool>(false);
+    public float moveHorizontal;
+    public float moveForward;
     public bool isPerformingAbility = false;
     public bool isMovementLocked = false;
     public bool isRotationLocked = false;
@@ -35,12 +31,14 @@ public class Movement : NetworkBehaviour
     public readonly float jumpForceMultiplier = 0.2f;
     public float movementRecoveryMultiplier;
 
+
     // jumping
     public float jumpforce = 5f;
     public float fallMultiplier = 2.5f; //reset in Start cause changing values here doesn't do anything for some reason
     public float ascendMultiplier = 2f; //reset in Start cause changing values here doesn't do anything for some reason
     public bool isGrounded = true;
     public bool toggleGravity = true;
+    public bool pressedSpace = false;
     public Transform eyePosition;
     LayerMask GROUNDLAYER;
     public float timeAirborne = 0f;
@@ -109,128 +107,143 @@ public class Movement : NetworkBehaviour
         return false;
     }
 
-    [ServerRpc]
-    void RotateServerRpc(float yaw) {
-        Quaternion targetRotation = Quaternion.Euler(0, yaw, 0);
-        rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, 8f * Time.fixedDeltaTime));
-    }
-
     void FixedUpdate()
     {
-        if (Player.localPlayer == null || Player.localPlayer.dead) return;
-
-        if (IsOwner) {
-            if (!isMovementLocked)
-            {
-                moveHorizontal.Value = Input.GetAxisRaw("Horizontal");
-                moveForward.Value = Input.GetAxisRaw("Vertical");
-            }
-            else
-            {
-                moveHorizontal.Value = 0f;
-                moveForward.Value = 0f;
-            }
-
-            camPos.Value = cameraTransform.position;
-            camRotation.Value = cameraTransform.rotation;
-
-            isJumping.Value = Input.GetButton("Jump");
-
-            Vector3 camForward = camRotation.Value * Vector3.forward;
-            Vector3 camRight = camRotation.Value * Vector3.right;
-            camForward.y = 0;
-            camRight.y = 0;
-            camForward.Normalize();
-            camRight.Normalize();
-            movement = (camForward * moveForward.Value + camRight * moveHorizontal.Value).normalized;
-            switch (PlayerCamera.instance.cameraState)
-            {
-                case PlayerCamera.CameraState.FirstPerson:
-                    yaw = Mathf.Atan2(camForward.x, camForward.z) * Mathf.Rad2Deg;
-                    break;
-
-                case PlayerCamera.CameraState.ThirdPerson:
-                    if (movement != Vector3.zero)
-                        yaw = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;
-                    break;
-            };
-
-            if (!isRotationLocked) {
-                RotateServerRpc(yaw);
-            }
+        if (Player.localPlayer != null)
+        {
+            eyePosition = Player.localPlayer.gameObject.transform.Find("EyePosition");
         }
-
-        if (!IsServer) return;
-        
-        eyePosition = Player.localPlayer.gameObject.transform.Find("EyePosition");
-
         if (!isPerformingAbility)
         {
             isGrounded = CheckPlayerGrounded();
-            if (isGrounded) {
-                pressedSpace.Value = false;
+            if (isGrounded)
+            {
+                pressedSpace = false;
             }
-        }    
+        }
+
+        if (!IsOwner || Player.localPlayer.dead) return;
+
+        if (!isMovementLocked)
+        {
+            moveHorizontal = Input.GetAxisRaw("Horizontal");
+            moveForward = Input.GetAxisRaw("Vertical");
+        }
+        else
+        {
+            moveHorizontal = 0f;
+            moveForward = 0f;
+        }
 
         if (isMovementLocked)
         {
             rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
         }
-
         if (!isPerformingAbility)
         {
             MovePlayer(moveSpeed);
         }
 
-        if (isJumping.Value && isGrounded && !isMovementLocked) {
+        if (Input.GetButton("Jump") && isGrounded && !isMovementLocked)
+        {
             Jump(jumpforce, ascendMultiplier, fallMultiplier);
         }
-
-        if (!isGrounded && toggleGravity) {
+        // Checking when we're on the ground and keeping track of our ground check delay
+        if (!isGrounded && toggleGravity)
+        {
             rb.useGravity = true;
+            // timeAirborne += Time.deltaTime;
+            // Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;
         }
-        
-        else if (toggleGravity) {
+        else if (toggleGravity)
+        {
             rb.useGravity = false;
         }
 
-        speed = new Vector2(moveForward.Value, moveHorizontal.Value).magnitude;
+        speed = new Vector2(moveForward, moveHorizontal).magnitude;
         //Debug.Log("speed: " + speed + ", moveForwards: " + moveForward + ", moveHorizontal: " + moveHorizontal);
 
 
-        if (transform.tag == "PlayerHuman") {
-            lookTarget.transform.position = camPos.Value + camRotation.Value * Vector3.forward;
+        if (transform.tag == "PlayerHuman")
+        {
+            lookTarget.transform.position = cameraTransform.position + cameraTransform.forward * 1f;
         }
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void MultiplyMoveSpeedRpc(float multiplier) {
+    public void MultiplyMoveSpeedRpc(float multiplier)
+    {
         moveSpeed *= multiplier;
     }
 
-    public void MovePlayer(float moveSpeed) {
-        Vector3 camForward = camRotation.Value * Vector3.forward;
-        Vector3 camRight = camRotation.Value * Vector3.right;
+    public void MovePlayer(float moveSpeed)
+    {
+        Vector3 camForward = cameraTransform.forward;
+        Vector3 camRight = cameraTransform.right;
         camForward.y = 0;
         camRight.y = 0;
         camForward.Normalize();
         camRight.Normalize();
-        movement = (camForward * moveForward.Value + camRight * moveHorizontal.Value).normalized;
+        movement = (camForward * moveForward + camRight * moveHorizontal).normalized;
+
+        switch (PlayerCamera.instance.cameraState)
+        {
+            case PlayerCamera.CameraState.FirstPerson:
+                yaw = Mathf.Atan2(camForward.x, camForward.z) * Mathf.Rad2Deg;
+                break;
+
+            case PlayerCamera.CameraState.ThirdPerson:
+                if (movement != Vector3.zero)
+                    yaw = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;
+                break;
+        };
+
+        // Apply rotation
+        if (!isRotationLocked)
+        {
+            Quaternion targetRotation = Quaternion.Euler(0, yaw, 0);
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, 8f * Time.fixedDeltaTime));
+        }
 
         if (!isMovementLocked)
         {
+            // Movement
             Vector3 targetVelocity = movement * moveSpeed * movementRecoveryMultiplier;
             Vector3 velocity = rb.linearVelocity;
             velocity.y = 0;
 
             Vector3 velocityChange = targetVelocity - velocity;
             rb.AddForce(velocityChange * forceMultiplier, ForceMode.Acceleration);
+
+            //LimitSpeed(moveSpeed);
+
+            /*if (isGrounded && moveHorizontal == 0 && moveForward == 0)
+            {
+                rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+            }*/
         }
+    }
+
+    void LimitSpeed(float maxSpeed)
+    {
+        if (rb == null) return;
+
+        Vector3 surfaceVelocity = rb.linearVelocity;
+        surfaceVelocity.y = 0;
+
+        if (surfaceVelocity.magnitude <= maxSpeed) return;
+
+        surfaceVelocity /= surfaceVelocity.magnitude;
+        surfaceVelocity *= moveSpeed;
+
+        surfaceVelocity.y = rb.linearVelocity.y;
+
+        rb.linearVelocity = surfaceVelocity;
     }
 
     public void Jump(float jumpHeight, float ascendMultiplier, float fallMultiplier)
     {
-        pressedSpace.Value = true;
+        pressedSpace = true;
         isGrounded = false;
         timeAirborne = groundCheckDelay;
 

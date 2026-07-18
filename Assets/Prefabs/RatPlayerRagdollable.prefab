@@ -7649,17 +7649,23 @@ GameObject:
   - component: {fileID: 3554162618360092705}
   - component: {fileID: 2306450048612317703}
   - component: {fileID: 555457032786538030}
+  - component: {fileID: 7957373780361175662}
   - component: {fileID: 2423679837172513963}
+  - component: {fileID: 6822310308092016609}
   - component: {fileID: 1581395147416929184}
   - component: {fileID: 1759279539805686456}
   - component: {fileID: 3883992586749571786}
   - component: {fileID: 1446131621800092068}
+  - component: {fileID: 7640036583165578637}
   - component: {fileID: 2856924736772963357}
+<<<<<<< HEAD
   - component: {fileID: 8736759085392105027}
   - component: {fileID: 5834448014269310003}
   - component: {fileID: 5697352531359012084}
   - component: {fileID: 3718505796022474179}
   - component: {fileID: -4420127338113501092}
+=======
+>>>>>>> parent of 4d851c7 (server syncs movement instead of client WIP)
   m_Layer: 7
   m_Name: RatPlayerRagdollable
   m_TagString: PlayerMouse
@@ -7786,21 +7792,8 @@ MonoBehaviour:
   lookTarget: {fileID: 0}
   moveSpeed: 2
   speed: 0
-  moveHorizontal:
-    UpdateTraits:
-      MinSecondsBetweenUpdates: 0
-      MaxSecondsBetweenUpdates: 0
-    m_InternalValue: 0
-  moveForward:
-    UpdateTraits:
-      MinSecondsBetweenUpdates: 0
-      MaxSecondsBetweenUpdates: 0
-    m_InternalValue: 0
-  pressedSpace:
-    UpdateTraits:
-      MinSecondsBetweenUpdates: 0
-      MaxSecondsBetweenUpdates: 0
-    m_InternalValue: 0
+  moveHorizontal: 0
+  moveForward: 0
   isPerformingAbility: 0
   isMovementLocked: 0
   isRotationLocked: 0
@@ -7810,6 +7803,7 @@ MonoBehaviour:
   ascendMultiplier: 2
   isGrounded: 1
   toggleGravity: 1
+  pressedSpace: 0
   eyePosition: {fileID: 0}
   timeAirborne: 0
   groundCheckDelay: 0.3
@@ -7860,6 +7854,52 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.61888856, y: 0.98395216, z: 1.9095144}
   m_Center: {x: 0, y: 0.48212326, z: 0.06475713}
+--- !u!114 &7957373780361175662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8956695940269091181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d238f4653f794349b1a5e2ab07702d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkTransformExpanded: 1
+  AutoOwnerAuthorityTickOffset: 1
+  PositionInterpolationType: 0
+  RotationInterpolationType: 0
+  ScaleInterpolationType: 0
+  PositionLerpSmoothing: 1
+  PositionMaxInterpolationTime: 0.1
+  RotationLerpSmoothing: 1
+  RotationMaxInterpolationTime: 0.1
+  ScaleLerpSmoothing: 1
+  ScaleMaxInterpolationTime: 0.1
+  AuthorityMode: 0
+  TickSyncChildren: 0
+  UseUnreliableDeltas: 0
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  SwitchTransformSpaceWhenParented: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!54 &2423679837172513963
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -7887,6 +7927,23 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 2
+--- !u!114 &6822310308092016609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8956695940269091181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkRigidbodyBaseExpanded: 0
+  UseRigidBodyForMotion: 0
+  AutoUpdateKinematicState: 1
+  AutoSetKinematicOnDespawn: 1
 --- !u!114 &1581395147416929184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7978,7 +8035,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2b80169566458244a7f8aa42ffac0c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2856924736772963357
+--- !u!114 &7640036583165578637
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7987,6 +8044,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8956695940269091181}
   m_Enabled: 1
   m_EditorHideFlags: 0
+<<<<<<< HEAD
   m_Script: {fileID: 11500000, guid: e9838d4c4cadc4a4c98dc2ad2d106ac2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -8106,11 +8164,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+=======
+  m_Script: {fileID: 11500000, guid: 77f9419b7a0121042a45514ba0396949, type: 3}
+>>>>>>> parent of 4d851c7 (server syncs movement instead of client WIP)
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   NetworkAnimatorExpanded: 0
-  AuthorityMode: 0
+  AuthorityMode: 1
   m_Animator: {fileID: 2306450048612317703}
   TransitionStateInfoList: []
   AnimatorParameterEntries:
@@ -8136,3 +8197,27 @@ MonoBehaviour:
       Synchronize: 1
       ParameterType: 4
   AnimatorParametersExpanded: 0
+--- !u!114 &2856924736772963357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8956695940269091181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9838d4c4cadc4a4c98dc2ad2d106ac2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  hotkey: 116
+  abilitySlotIndex: 0
+  ratAbilityInRange: 0
+  isClinging:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  isSlapping: 0
+  ratAbilityHumanStunDuration: 0
+  ratAbilityHumanShakeMeter: 0
