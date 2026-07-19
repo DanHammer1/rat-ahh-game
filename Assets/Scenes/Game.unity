@@ -7348,6 +7348,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: f0a9264ca991ab1468dc0fb33bca4deb, type: 2}
   - {fileID: 2100000, guid: a4b59765dadb96e42936af1de2b47070, type: 2}
   - {fileID: 2100000, guid: 965f643b6585ae845bf83ad7410e9bae, type: 2}
+  invisibilityMaterial: {fileID: 2100000, guid: e3cc83cd82e0d914784b2f945aabfb10, type: 2}
 --- !u!1 &1884143236
 GameObject:
   m_ObjectHideFlags: 0

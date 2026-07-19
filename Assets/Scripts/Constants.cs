@@ -26,6 +26,7 @@ public class Constants : MonoBehaviour
     public static float ratDashAbilityPower = 16f;
     public static float ratInvisibilityAbilityCooldown = 8f; // 60f after testing is done
     public static float ratInvisibilityAbilityDuration = 4f;
+    public static float ratInvisibilityAbilityVignetteFadeDuration = 0.5f;
     # endregion
 
     # region "Human"

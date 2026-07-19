@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Assets : MonoBehaviour
 {
@@ -16,9 +17,12 @@ public class Assets : MonoBehaviour
     public Material[] ratTransparentMaterials;
     #endregion
 
+    #region "Shaders"
+    public Material invisibilityMaterial;
+    #endregion
+
     void Awake()
     {
         instance = this;
-        //
     }
 }
