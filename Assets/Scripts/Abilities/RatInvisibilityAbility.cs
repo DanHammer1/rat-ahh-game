@@ -10,15 +10,21 @@ public class RatInvisibilityAbility : Ability
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void ExecuteAbilityRpc()
     {
-        SetVisibleRpc(false);
+        SetInvisibleRpc();
         Timer.CreateTimer(Constants.ratInvisibilityAbilityDuration, Timer.OnFinish.DESTROY,
-            () => { SetVisibleRpc(true); });
+            () => { SetVisibleRpc(); });
     }
 
     [Rpc(SendTo.Everyone)]
-    void SetVisibleRpc(bool state)
+    void SetVisibleRpc()
     {
-        playerRenderer.enabled = state;
+        playerRenderer.materials = Assets.instance.ratMaterials;
+    }
+
+    [Rpc(SendTo.Everyone)]
+    void SetInvisibleRpc()
+    {
+        playerRenderer.materials = Assets.instance.ratTransparentMaterials;
     }
 
     public override void ExecuteAbility()
