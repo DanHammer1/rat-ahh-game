@@ -6,6 +6,14 @@ using Unity.VisualScripting;
 public class RatInvisibilityAbility : Ability
 {
     SkinnedMeshRenderer playerRenderer;
+    public ParticleSystem invisibilityParticles;
+
+    public override void OnNetworkSpawn()
+    {
+        base.OnNetworkSpawn();
+        playerRenderer = transform.Find("Renderer").GetComponent<SkinnedMeshRenderer>();
+        invisibilityParticles = transform.Find("InvisibilityParticles").GetComponent<ParticleSystem>();
+    }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void ExecuteAbilityRpc()
@@ -25,6 +33,7 @@ public class RatInvisibilityAbility : Ability
     void SetInvisibleRpc()
     {
         playerRenderer.materials = Assets.instance.ratTransparentMaterials;
+        invisibilityParticles.Play();
     }
 
     public override void ExecuteAbility()
@@ -50,11 +59,5 @@ public class RatInvisibilityAbility : Ability
     protected override void Update()
     {
         base.Update();
-    }
-
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-        playerRenderer = transform.Find("Renderer").GetComponent<SkinnedMeshRenderer>();
     }
 }

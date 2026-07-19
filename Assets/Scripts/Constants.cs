@@ -24,7 +24,7 @@ public class Constants : MonoBehaviour
     public static float ratCameraFOV = 60f;
     public static float ratMaxCameraThirdPersonRadius = 0.8f;
     public static float ratDashAbilityPower = 16f;
-    public static float ratInvisibilityAbilityCooldown = 8f;
+    public static float ratInvisibilityAbilityCooldown = 8f; // 60f after testing is done
     public static float ratInvisibilityAbilityDuration = 4f;
     # endregion
 
