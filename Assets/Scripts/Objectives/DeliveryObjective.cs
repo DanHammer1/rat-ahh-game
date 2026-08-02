@@ -5,10 +5,13 @@ public class DeliveryObjective : Objective
 {
     public GameObject coin;
     private bool conditionCleared;
+    string locationString;
 
     public DeliveryObjective() : base("Deliver one coin to the garbage container")
     {
         completionScore = Constants.coinObjectiveCompletionScore;
+
+        locationString = CoinDeliveryLocationManager.instance.ChooseRandomCoinDeliveryLocation();
 
         // CoinSpawner.instance.ForceObtainRandomCoin();
         CoinSpawner.instance.onCoinDelivered += () =>
@@ -28,6 +31,7 @@ public class DeliveryObjective : Objective
     }
     public override string GetDialogueText()
     {
-        return "I WANNA BUY RAT HOOKERS!!! BREAK HUNTERS PIGGY BANK AND BRING MONEY TO THE BIN IN THE GARAGE!!!";
+        string text = "I WANNA BUY RAT HOOKERS!!! BREAK HUNTERS PIGGY BANK AND BRING MONEY TO THE " + locationString + "!!!";
+        return text;
     }
 }

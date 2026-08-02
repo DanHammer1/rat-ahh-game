@@ -14,6 +14,7 @@ public class Coin : NetworkBehaviour, IInteractable
 
     private float pickUpProgress = 0;
     private float totalInteractionTime = 0.8f;
+    Coroutine unassignPlayerCoroutine;
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void SetCoinParentRpc(NetworkObjectReference parentRef)
@@ -51,6 +52,27 @@ public class Coin : NetworkBehaviour, IInteractable
         ToggleRigidbodyGravityRpc();
         player.transform.GetComponent<Movement>().MultiplyMoveSpeedRpc(1 / Constants.carryingCoinMoveSpeedMultiplier);
         pickUpProgress = 0;
+        unassignPlayerCoroutine = StartCoroutine(UnassignPlayer());
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void StopUnassignCoroutineRpc()
+    {
+        if (unassignPlayerCoroutine != null)
+        {
+            StopCoroutine(unassignPlayerCoroutine);
+            unassignPlayerCoroutine = null;
+        }
+    }
+
+    public IEnumerator UnassignPlayer()
+    {
+        yield return new WaitForSeconds(3);
+        if (!isBeingCarried.Value)
+        {
+            playerCarryingCoin.Value = default;
+        }
+        unassignPlayerCoroutine = null;
     }
 
     public void OnInteractingExit()
@@ -95,6 +117,7 @@ public class Coin : NetworkBehaviour, IInteractable
         // Pickup coin
         if (!Player.localPlayer.isCarryingCoin.Value)
         {
+            StopUnassignCoroutineRpc();
             SetCoinParentRpc(Player.localPlayer.GetComponent<NetworkObject>());
             Player.localPlayer.ToggleIsCarryingCoinRpc();
             // Player.localPlayer.ToggleIsCarryingCoinClientRpc();
@@ -147,9 +170,25 @@ public class Coin : NetworkBehaviour, IInteractable
     {
         if (other.CompareTag("CoinDeliveryLocation"))
         {
-            Player.localPlayer.EditScoreServerRpc(Player.localPlayer.score.Value + ObjectiveScores.deliveryScore);
-            CoinSpawner.instance?.onCoinDelivered?.Invoke();
-            StartCoroutine(WaitThenDespawnCoin());
+            if (playerCarryingCoin.Value.TryGet(out NetworkObject playerObject))
+            {
+                Player player = playerObject.GetComponent<Player>();
+                if (player == Player.localPlayer)
+                {
+                    player.EditScoreServerRpc(player.score.Value + ObjectiveScores.deliveryScore);
+                    SetAllLocationsInactiveClientRpc(
+                        RpcTarget.Single(playerObject.OwnerClientId, RpcTargetUse.Temp)
+                    );
+                    CoinSpawner.instance?.onCoinDelivered?.Invoke();
+                    StartCoroutine(WaitThenDespawnCoin());
+                }
+            }
         }
+    }
+
+    [Rpc(SendTo.SpecifiedInParams)]
+    public void SetAllLocationsInactiveClientRpc(RpcParams rpcParams = default)
+    {
+        CoinDeliveryLocationManager.instance.SetAllLocationsInactive();
     }
 }

@@ -12,43 +12,54 @@ public class MamaRat : NetworkBehaviour, IInteractable
     private bool dialogueActive = false;
 
     public Action onInteraction;
-    
-    public void Start() {
+
+    public void Start()
+    {
         DialogueManager.instance.onDialogueActivate += () => dialogueActive = true;
         DialogueManager.instance.onDialogueEnd += () => dialogueActive = false;
     }
 
-    public String GetInteractionPromptText() {
-        return (GameManager.GetLocalRole() != GameManager.PlayerRole.HIDER) ? 
+    public String GetInteractionPromptText()
+    {
+        return (GameManager.GetLocalRole() != GameManager.PlayerRole.HIDER) ?
             "Only rats can speak rat language." : "Hold E to talk to mama rat.";
     }
 
-    public void Interact() {
+    public void Interact()
+    {
         interactionProgress = 0;
         onInteraction?.Invoke();
     }
 
-    public void OnInteractingExit() {
+    public void OnInteractingExit()
+    {
         interactionProgress = 0;
     }
 
-    public void UpdateProgress() {
+    public void UpdateProgress()
+    {
         if (!interactable) return;
 
         if (interactionCompletionTime == 0) interactionProgress = 1;
-        else if (GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER) 
+        else if (GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER)
             interactionProgress += Time.deltaTime / interactionCompletionTime;
     }
 
-    public float GetProgress() {
+    public float GetProgress()
+    {
         return interactionProgress;
     }
 
-    public bool CheckExtraInteractionConditions() {
+    public bool CheckExtraInteractionConditions()
+    {
         return !dialogueActive;
     }
-
-    void Update() {
+    void Update()
+    {
         ((IInteractable)this).TryInteract();
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            onInteraction.Invoke();
+        }
     }
 }
