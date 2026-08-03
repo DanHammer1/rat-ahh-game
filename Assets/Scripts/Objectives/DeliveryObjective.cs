@@ -12,6 +12,7 @@ public class DeliveryObjective : Objective
         completionScore = Constants.coinObjectiveCompletionScore;
 
         locationString = CoinDeliveryLocationManager.instance.ChooseRandomCoinDeliveryLocation();
+        objectiveText = $"Deliver one coin to the {locationString.ToLower()}";
 
         // CoinSpawner.instance.ForceObtainRandomCoin();
         CoinSpawner.instance.onCoinDelivered += () =>
