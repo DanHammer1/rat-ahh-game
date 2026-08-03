@@ -10,14 +10,17 @@ using System;
 
 public class ProgressManager : NetworkBehaviour
 {
-    public float defaultTime; 
+    public float defaultTime;
     public TextMeshProUGUI timer;
-    public TextMeshProUGUI objectivesUI;
+    public TextMeshProUGUI objectiveUISlot1;
+    public TextMeshProUGUI objectiveUISlot2;
+    public TextMeshProUGUI objectiveUISlot3;
     public TextMeshProUGUI playersUIList;
     public TextMeshProUGUI scoreList;
 
     public NetworkVariable<float> time = new NetworkVariable<float>(10);
     public List<Objective> objectives = new List<Objective>();
+    public List<ObjectiveListSlot> objectiveListSlots = new();
 
     public bool IsActive = false;
     public bool onActivateExecuted = false;
@@ -27,7 +30,7 @@ public class ProgressManager : NetworkBehaviour
     public IEnumerator OnActivate()
     {
         instance = this;
-        
+
         if (onActivateExecuted) yield break;
 
         if (IsServer) time.Value = defaultTime;
@@ -39,11 +42,12 @@ public class ProgressManager : NetworkBehaviour
         GameObject playersUIListGameObject = GameObject.FindWithTag("PlayerListUI");
         GameObject scoreListGameObject = GameObject.FindWithTag("Score");
 
-        while (timerGameObject == null || 
-            objectivesUIGameObject == null || 
+        while (timerGameObject == null ||
+            objectivesUIGameObject == null ||
             scoreListGameObject == null ||
-            CheeseSpawner.instance == null) {
-            
+            CheeseSpawner.instance == null)
+        {
+
             timerGameObject = GameObject.FindWithTag("TimerUI");
             objectivesUIGameObject = GameObject.FindWithTag("ObjectivesUI");
             //playersUIListGameObject = GameObject.FindWithTag("PlayerListUI");
@@ -53,13 +57,25 @@ public class ProgressManager : NetworkBehaviour
         }
 
         timer = timerGameObject.GetComponent<TextMeshProUGUI>();
-        objectivesUI = objectivesUIGameObject.GetComponent<TextMeshProUGUI>();
+        objectiveListSlots.Add(new ObjectiveListSlot
+        {
+            text = objectivesUIGameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>()
+        });
+        objectiveListSlots.Add(new ObjectiveListSlot
+        {
+            text = objectivesUIGameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>()
+        });
+        objectiveListSlots.Add(new ObjectiveListSlot
+        {
+            text = objectivesUIGameObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>()
+        });
+
         //playersUIList = playersUIListGameObject.GetComponent<TextMeshProUGUI>();
         scoreList = scoreListGameObject.GetComponent<TextMeshProUGUI>();
 
         objectives = new List<Objective>();
 
-        if (GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER) {}
+        if (GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER) { }
 
         IsActive = true;
     }
@@ -84,7 +100,8 @@ public class ProgressManager : NetworkBehaviour
         if (timer == null) return;
         timer.text = $"Time remaining: {(int)time.Value}";
 
-        if (time.Value < 0 && IsServer) {
+        if (time.Value < 0 && IsServer)
+        {
             NetworkManager.Singleton.SceneManager.LoadScene(
             "MainMenu",
             LoadSceneMode.Single);
@@ -126,8 +143,10 @@ public class ProgressManager : NetworkBehaviour
         {
             Player[] players = GameObject.FindObjectsByType<Player>(FindObjectsSortMode.None);
 
-            foreach (Player player in players) {
-                if (GameManager.Instance.clientIds[i] == player.clientId.Value) {
+            foreach (Player player in players)
+            {
+                if (GameManager.Instance.clientIds[i] == player.clientId.Value)
+                {
                     string name = GameManager.Instance.clientNames[i].Value;
                     text += $"{name}: {player.score.Value}\n";
                     break;
@@ -141,23 +160,69 @@ public class ProgressManager : NetworkBehaviour
     [ClientRpc]
     public void UpdateObjectiveUIListClientRpc()
     {
-        if (objectivesUI == null) return;
-
-        string text = "";
-        List<Objective> objectivesToRemove = new List<Objective>();
-
-        foreach (Objective objective in objectives) {
-            if (objective.CheckConditionCleared()) objectivesToRemove.Add(objective);
+        foreach (var slot in objectiveListSlots)
+        {
+            if (slot == null)
+            {
+                Debug.Log("objective UI slot is null");
+                return;
+            }
         }
 
-        foreach (Objective objective in objectivesToRemove) {
+        List<Objective> objectivesToRemove = new List<Objective>();
+
+        foreach (Objective objective in objectives)
+        {
+            if (objective.CheckConditionCleared())
+            {
+                objectivesToRemove.Add(objective);
+                ClearObjectiveText(objective);
+            }
+        }
+
+        foreach (Objective objective in objectivesToRemove)
+        {
             objective.onConditionCleared?.Invoke();
         }
 
-        foreach (Objective objective in objectives) {
-            text += objective.objectiveText + "\n";
+        foreach (Objective objective in objectives)
+        {
+            AssignObjectiveText(objective);
+        }
+    }
+
+    public void AssignObjectiveText(Objective objective)
+    {
+        foreach (var slot in objectiveListSlots)
+        {
+            if (slot.currentObjective == objective)
+            {
+                return;
+            }
         }
 
-        objectivesUI.text = text;
+        foreach (var slot in objectiveListSlots)
+        {
+            if (slot.currentObjective == null)
+            {
+                slot.currentObjective = objective;
+                slot.text.text = objective.objectiveText;
+                return;
+            }
+        }
+
+        Debug.Log("error - no objective slots available");
+    }
+
+    public void ClearObjectiveText(Objective objective)
+    {
+        foreach (var slot in objectiveListSlots)
+        {
+            if (slot.currentObjective == objective)
+            {
+                slot.currentObjective = null;
+                slot.text.text = "";
+            }
+        }
     }
 }
