@@ -210,6 +210,7 @@ public class ProgressManager : NetworkBehaviour
             {
                 slot.currentObjective = objective;
                 slot.text.text = objective.objectiveText;
+                slot.text.transform.localScale = Vector3.one;
                 UnityEngine.UI.Image checkbox = slot.text.transform.parent.Find("Checkbox").GetComponent<UnityEngine.UI.Image>();
                 checkbox.color = new Color(checkbox.color.r, checkbox.color.g, checkbox.color.b, 1);
                 return;
