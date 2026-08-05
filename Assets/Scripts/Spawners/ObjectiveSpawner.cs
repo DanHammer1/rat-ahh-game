@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class ObjectiveSpawner : MonoBehaviour
 {
@@ -29,7 +30,19 @@ public class ObjectiveSpawner : MonoBehaviour
             return;
         }
 
-        Objective randomObjective = objectiveTypeList[UnityEngine.Random.Range(0, objectiveTypeList.Count)]?.Invoke();
+        var availableObjectives = objectiveTypeList.FindAll(factory =>
+        {
+            Type objectiveType = factory().GetType();
+            return !ProgressManager.instance.objectives.Exists(o => o.GetType() == objectiveType);
+        });
+
+        if (availableObjectives.Count == 0)
+        {
+            OnObjectiveCreated?.Invoke("No more available objectives");
+            return;
+        }
+
+        Objective randomObjective = availableObjectives[UnityEngine.Random.Range(0, availableObjectives.Count)]?.Invoke();
         ProgressManager.instance.objectives.Add(randomObjective);
 
         OnObjectiveCreated?.Invoke(randomObjective.GetDialogueText());
