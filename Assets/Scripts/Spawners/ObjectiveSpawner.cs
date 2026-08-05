@@ -24,9 +24,9 @@ public class ObjectiveSpawner : MonoBehaviour
 
     public void CreateRandomObjective()
     {
-        if (ProgressManager.instance.objectives.Count > 4)
+        if (ProgressManager.instance.objectives.Count >= Constants.maxObjectives)
         {
-            OnObjectiveCreated?.Invoke("Do your objective bruh.");
+            OnObjectiveCreated?.Invoke("Do your objectives bruh.");
             return;
         }
 

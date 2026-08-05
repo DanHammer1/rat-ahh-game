@@ -58,6 +58,7 @@ public class Constants : MonoBehaviour
     public static int piggyBankMinCoinsSpawned = 2;
     public static int piggyBankMaxCoinsSpawned = 4;
     public static float piggyBankDespawnTime = 6f;
+    public static int maxObjectives = 3;
     # endregion
 
     void Awake()

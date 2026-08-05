@@ -206,6 +206,7 @@ public class ProgressManager : NetworkBehaviour
             if (slot.currentObjective == null)
             {
                 slot.currentObjective = objective;
+                slot.text.gameObject.transform.localScale = Vector3.one;
                 slot.text.text = objective.objectiveText;
                 return;
             }
