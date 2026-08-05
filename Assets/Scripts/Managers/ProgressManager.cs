@@ -221,7 +221,8 @@ public class ProgressManager : NetworkBehaviour
             if (slot.currentObjective == objective)
             {
                 slot.currentObjective = null;
-                slot.text.text = "";
+                // slot.text.text = "";
+                slot.text.gameObject.LeanScale(new Vector3(0, 0, 0), 0.5f).setEaseInBack();
             }
         }
     }
