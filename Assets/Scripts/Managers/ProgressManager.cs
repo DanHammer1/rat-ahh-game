@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using Unity.Netcode;
 using Unity.Collections;
 using TMPro;
@@ -7,6 +8,8 @@ using Unity.Netcode.Transports.UTP;
 using System.Collections.Generic;
 using System.Collections;
 using System;
+using Microsoft.Unity.VisualStudio.Editor;
+using UnityEngine.Animations;
 
 public class ProgressManager : NetworkBehaviour
 {
@@ -59,15 +62,15 @@ public class ProgressManager : NetworkBehaviour
         timer = timerGameObject.GetComponent<TextMeshProUGUI>();
         objectiveListSlots.Add(new ObjectiveListSlot
         {
-            text = objectivesUIGameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>()
+            text = objectivesUIGameObject.transform.GetChild(0).Find("Text").GetComponent<TextMeshProUGUI>()
         });
         objectiveListSlots.Add(new ObjectiveListSlot
         {
-            text = objectivesUIGameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>()
+            text = objectivesUIGameObject.transform.GetChild(1).Find("Text").GetComponent<TextMeshProUGUI>()
         });
         objectiveListSlots.Add(new ObjectiveListSlot
         {
-            text = objectivesUIGameObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>()
+            text = objectivesUIGameObject.transform.GetChild(2).Find("Text").GetComponent<TextMeshProUGUI>()
         });
 
         //playersUIList = playersUIListGameObject.GetComponent<TextMeshProUGUI>();
@@ -176,7 +179,7 @@ public class ProgressManager : NetworkBehaviour
             if (objective.CheckConditionCleared())
             {
                 objectivesToRemove.Add(objective);
-                ClearObjectiveText(objective);
+                StartCoroutine(ClearObjectiveText(objective));
             }
         }
 
@@ -206,8 +209,9 @@ public class ProgressManager : NetworkBehaviour
             if (slot.currentObjective == null)
             {
                 slot.currentObjective = objective;
-                slot.text.gameObject.transform.localScale = Vector3.one;
                 slot.text.text = objective.objectiveText;
+                UnityEngine.UI.Image checkbox = slot.text.transform.parent.Find("Checkbox").GetComponent<UnityEngine.UI.Image>();
+                checkbox.color = new Color(checkbox.color.r, checkbox.color.g, checkbox.color.b, 1);
                 return;
             }
         }
@@ -215,14 +219,26 @@ public class ProgressManager : NetworkBehaviour
         Debug.Log("error - no objective slots available");
     }
 
-    public void ClearObjectiveText(Objective objective)
+    public IEnumerator ClearObjectiveText(Objective objective)
     {
         foreach (var slot in objectiveListSlots)
         {
             if (slot.currentObjective == objective)
             {
                 slot.currentObjective = null;
-                // slot.text.text = "";
+
+                Transform ratStamp = slot.text.transform.parent.Find("Checkbox/RatStamp");
+                GameObject ratStampObject = ratStamp.gameObject;
+                UnityEngine.UI.Image ratStampImage = ratStampObject.GetComponent<UnityEngine.UI.Image>();
+                ratStampObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(UnityEngine.Random.Range(-6, 6), UnityEngine.Random.Range(-6, 6));
+                ratStampObject.transform.rotation = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-30, 30));
+                ratStampObject.transform.localScale = Vector3.one * 50;
+                // ratStampImage.color = new Color(ratStampImage.color.r, ratStampImage.color.g, ratStampImage.color.b, 0);
+                ratStampObject.SetActive(true);
+                ratStampObject.LeanScale(Vector3.one, 0.5f).setEase(LeanTweenType.easeInQuad);
+                // LeanTween.alpha(ratStampObject, 1f, 0.5f).setEase(LeanTweenType.easeInQuad);
+
+                yield return new WaitForSeconds(2);
                 slot.text.gameObject.LeanScale(new Vector3(0, 0, 0), 0.5f).setEaseInBack();
             }
         }

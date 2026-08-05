@@ -20,15 +20,15 @@ public class CoinDeliveryLocationManager : NetworkBehaviour
         selectedLocation.SetActive(true);
         if (randomIndex == 0)
         {
-            return "BIN IN THE GARAGE";
+            return "GARAGE BIN";
         }
         else if (randomIndex == 1)
         {
-            return "WASHING MACHINES IN THE GARAGE";
+            return "GARAGE WASHING MACHINES";
         }
         else if (randomIndex == 2)
         {
-            return "TOILET ON THE SECOND FLOOR";
+            return "SECOND FLOOR TOILET";
         }
         else if (randomIndex == 3)
         {
