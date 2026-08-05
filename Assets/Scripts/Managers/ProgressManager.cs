@@ -230,16 +230,25 @@ public class ProgressManager : NetworkBehaviour
                 Transform ratStamp = slot.text.transform.parent.Find("Checkbox/RatStamp");
                 GameObject ratStampObject = ratStamp.gameObject;
                 UnityEngine.UI.Image ratStampImage = ratStampObject.GetComponent<UnityEngine.UI.Image>();
+                UnityEngine.UI.Image checkbox = slot.text.transform.parent.Find("Checkbox").GetComponent<UnityEngine.UI.Image>();
+
                 ratStampObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(UnityEngine.Random.Range(-6, 6), UnityEngine.Random.Range(-6, 6));
                 ratStampObject.transform.rotation = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-30, 30));
-                ratStampObject.transform.localScale = Vector3.one * 50;
-                // ratStampImage.color = new Color(ratStampImage.color.r, ratStampImage.color.g, ratStampImage.color.b, 0);
+                ratStampObject.transform.localScale = Vector3.one * 30;
+                ratStampImage.color = new Color(ratStampImage.color.r, ratStampImage.color.g, ratStampImage.color.b, 0);
                 ratStampObject.SetActive(true);
-                ratStampObject.LeanScale(Vector3.one, 0.5f).setEase(LeanTweenType.easeInQuad);
-                // LeanTween.alpha(ratStampObject, 1f, 0.5f).setEase(LeanTweenType.easeInQuad);
+                ratStampObject.LeanScale(Vector3.one, 0.3f).setEase(LeanTweenType.easeInQuad);
+                LeanTween.value(ratStampObject, 0, 1f, 0.3f).setEase(LeanTweenType.easeInQuad).setOnUpdate((float alpha) =>
+                {
+                    Color c = ratStampImage.color;
+                    c.a = alpha;
+                    ratStampImage.color = c;
+                });
 
                 yield return new WaitForSeconds(2);
                 slot.text.gameObject.LeanScale(new Vector3(0, 0, 0), 0.5f).setEaseInBack();
+                ratStampObject.LeanScale(new Vector3(0, 0, 0), 0.5f).setEaseInBack();
+                checkbox.color = new Color(checkbox.color.r, checkbox.color.g, checkbox.color.b, 0.3f);
             }
         }
     }

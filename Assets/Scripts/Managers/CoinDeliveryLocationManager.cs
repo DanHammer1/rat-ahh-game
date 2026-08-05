@@ -14,7 +14,7 @@ public class CoinDeliveryLocationManager : NetworkBehaviour
 
     public string ChooseRandomCoinDeliveryLocation()
     {
-        int randomIndex = Random.Range(0, numberOfLocations - 1);
+        int randomIndex = Random.Range(0, numberOfLocations);
         SetAllLocationsInactive();
         GameObject selectedLocation = coinDeliveryLocationContainer.transform.GetChild(randomIndex).gameObject;
         selectedLocation.SetActive(true);
