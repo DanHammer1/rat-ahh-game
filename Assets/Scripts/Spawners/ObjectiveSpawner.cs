@@ -6,11 +6,11 @@ using Unity.VisualScripting;
 public class ObjectiveSpawner : MonoBehaviour
 {
     public Action<string> OnObjectiveCreated;
-    private List<Func<Objective>> objectiveTypeList = new()
+    private List<Type> objectiveTypeList = new()
     {
-        () => new CheeseObjective(),
-        () => new DeliveryObjective(),
-        () => new AbilityObjective()
+        typeof(CheeseObjective),
+        typeof(DeliveryObjective),
+        typeof(AbilityObjective),
     };
 
     void Start()
@@ -30,10 +30,9 @@ public class ObjectiveSpawner : MonoBehaviour
             return;
         }
 
-        var availableObjectives = objectiveTypeList.FindAll(factory =>
+        var availableObjectives = objectiveTypeList.FindAll(type =>
         {
-            Type objectiveType = factory().GetType();
-            return !ProgressManager.instance.objectives.Exists(o => o.GetType() == objectiveType);
+            return !ProgressManager.instance.objectives.Exists(o => o.GetType() == type);
         });
 
         if (availableObjectives.Count == 0)
@@ -42,7 +41,8 @@ public class ObjectiveSpawner : MonoBehaviour
             return;
         }
 
-        Objective randomObjective = availableObjectives[UnityEngine.Random.Range(0, availableObjectives.Count)]?.Invoke();
+        Type randomObjectiveType = availableObjectives[UnityEngine.Random.Range(0, availableObjectives.Count)];
+        Objective randomObjective = (Objective)Activator.CreateInstance(randomObjectiveType);
         ProgressManager.instance.objectives.Add(randomObjective);
 
         OnObjectiveCreated?.Invoke(randomObjective.GetDialogueText());
