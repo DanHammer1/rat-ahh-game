@@ -15,7 +15,11 @@ public class MamaRat : NetworkBehaviour, IInteractable
 
     public void Start()
     {
-        DialogueManager.instance.onDialogueActivate += () => dialogueActive = true;
+        DialogueManager.instance.onDialogueActivate += () =>
+        {
+            dialogueActive = true;
+            GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.MamaRatNoise, transform.position);
+        };
         DialogueManager.instance.onDialogueEnd += () => dialogueActive = false;
     }
 

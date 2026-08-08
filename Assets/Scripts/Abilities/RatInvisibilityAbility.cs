@@ -64,7 +64,10 @@ public class RatInvisibilityAbility : Ability
 
     public override void ExecuteAbility()
     {
+        GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.InvisibilityEnter);
         ExecuteAbilityRpc();
+        Timer.CreateTimer(Constants.ratInvisibilityAbilityDuration, Timer.OnFinish.DESTROY,
+            () => { GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.InvisibilityExit); });
     }
 
     public override bool CheckAbilityExecutable()

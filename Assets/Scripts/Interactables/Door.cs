@@ -39,22 +39,25 @@ public class Door : NetworkBehaviour, IInteractable
         InteractDoorRpc();
         interactionProgress = 0;
         interactable = false;
-        Timer.CreateTimer(0.1f, Timer.OnFinish.DESTROY, () => interactable = true, 
+        Timer.CreateTimer(0.1f, Timer.OnFinish.DESTROY, () => interactable = true,
             "Door interaction cooldown Timer", () => Input.GetKeyUp(KeyCode.E));
     }
 
-    public void OnInteractingExit() {
+    public void OnInteractingExit()
+    {
         interactionProgress = 0;
     }
 
-    public void UpdateProgress() {
+    public void UpdateProgress()
+    {
         if (!interactable) return;
 
         if (interactionCompletionTime == 0) interactionProgress = 1;
         else interactionProgress += Time.deltaTime / interactionCompletionTime;
     }
 
-    public float GetProgress() {
+    public float GetProgress()
+    {
         return interactionProgress;
     }
 
@@ -102,10 +105,12 @@ public class Door : NetworkBehaviour, IInteractable
         onDoorClosed += () =>
         {
             GetComponent<BoxCollider>().isTrigger = false;
+            GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.DoorClose, transform.GetChild(0).position);
         };
         onDoorOpened += () =>
         {
             GetComponent<BoxCollider>().isTrigger = true;
+            GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.DoorOpen, transform.GetChild(0).position);
         };
     }
 

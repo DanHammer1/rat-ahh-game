@@ -19,6 +19,7 @@ public class Weapon : Item
     public override void UseItem()
     {
         Attack();
+        GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.CrowbarSwing);
     }
 
     public override string GetInteractionPromptText()
@@ -55,11 +56,6 @@ public class Weapon : Item
                 SFXSource.clip = swingHit;
                 SFXSource.Play();
             }
-        }
-        else // also temp sound effect
-        {
-            SFXSource.clip = swingMiss;
-            SFXSource.Play();
         }
     }
 }

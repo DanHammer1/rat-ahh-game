@@ -42,7 +42,7 @@ public class ProgressManager : NetworkBehaviour
 
         GameObject timerGameObject = GameObject.FindWithTag("TimerUI");
         GameObject objectivesUIGameObject = GameObject.FindWithTag("ObjectivesUI");
-        GameObject playersUIListGameObject = GameObject.FindWithTag("PlayerListUI");
+        //GameObject playersUIListGameObject = GameObject.FindWithTag("PlayerListUI");
         GameObject scoreListGameObject = GameObject.FindWithTag("Score");
 
         while (timerGameObject == null ||

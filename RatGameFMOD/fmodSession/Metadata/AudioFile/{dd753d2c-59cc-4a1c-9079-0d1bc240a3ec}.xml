@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{dd753d2c-59cc-4a1c-9079-0d1bc240a3ec}">
+		<property name="assetPath">
+			<value>RatTauntLoudSFX.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>2.7429999999999999</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{7c81cc79-26a0-4890-be22-e9dc0e5853aa}</destination>
+		</relationship>
+	</object>
+</objects>

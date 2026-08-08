@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{d36b1069-3dff-422d-a4f6-66e2fb985cd2}">
+		<property name="assetPath">
+			<value>CrowbarSwingSFX.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.69499999999999995</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{7c81cc79-26a0-4890-be22-e9dc0e5853aa}</destination>
+		</relationship>
+	</object>
+</objects>

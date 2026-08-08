@@ -12537,6 +12537,9 @@ GameObject:
   - component: {fileID: 785355238756736901}
   - component: {fileID: 2588931726614771536}
   - component: {fileID: -4236754629211622639}
+  - component: {fileID: 437846356746991623}
+  - component: {fileID: 5407416480674267308}
+  - component: {fileID: 3026811689219908835}
   - component: {fileID: 3554162618360092705}
   - component: {fileID: 2306450048612317703}
   - component: {fileID: 555457032786538030}
@@ -12662,6 +12665,54 @@ MonoBehaviour:
   impulseSource: {fileID: 0}
   eatCheesePrompt: {fileID: 0}
   pickUpCoinPrompt: {fileID: 0}
+--- !u!114 &437846356746991623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8956695940269091181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87fc97c9e97e0bd47b09fa19608bc89b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  hotkey: 49
+  cooldown: 0
+  tauntType: 0
+--- !u!114 &5407416480674267308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8956695940269091181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87fc97c9e97e0bd47b09fa19608bc89b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  hotkey: 50
+  cooldown: 2
+  tauntType: 1
+--- !u!114 &3026811689219908835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8956695940269091181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87fc97c9e97e0bd47b09fa19608bc89b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  hotkey: 51
+  cooldown: 10
+  tauntType: 2
 --- !u!114 &3554162618360092705
 MonoBehaviour:
   m_ObjectHideFlags: 0

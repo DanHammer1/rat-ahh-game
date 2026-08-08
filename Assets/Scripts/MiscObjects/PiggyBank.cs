@@ -18,6 +18,7 @@ public class PiggyBank : NetworkBehaviour
     {
         if (collision.relativeVelocity.magnitude >= Constants.piggyBankBreakSpeed)
         {
+            GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.PiggyBankBreak, transform.position);
             OnBreakRpc(transform.position, transform.rotation);
         }
     }
@@ -48,7 +49,8 @@ public class PiggyBank : NetworkBehaviour
     }
 
     [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
-    void DestroyRpc() {
+    void DestroyRpc()
+    {
         Destroy(this.gameObject);
     }
 }

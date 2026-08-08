@@ -4,14 +4,16 @@ using System.Collections;
 
 public class DeathHandler : NetworkBehaviour
 {
-    public void ToggleRagdoll(bool state) {
+    public void ToggleRagdoll(bool state)
+    {
         Rigidbody[] ragdollRigidbodies = GetComponentsInChildren<Rigidbody>(true);
         Collider[] ragdollColliders = GetComponentsInChildren<Collider>(true);
         Joint[] ragdollJoints = GetComponentsInChildren<Joint>(true);
 
         foreach (var rb in ragdollRigidbodies)
         {
-            if (rb.gameObject != this.gameObject) {
+            if (rb.gameObject != this.gameObject)
+            {
                 rb.isKinematic = !state;
                 rb.useGravity = state;
             }
@@ -19,7 +21,8 @@ public class DeathHandler : NetworkBehaviour
 
         foreach (var col in ragdollColliders)
         {
-            if (col.gameObject != this.gameObject) {
+            if (col.gameObject != this.gameObject)
+            {
                 col.enabled = state;
             }
         }
@@ -33,36 +36,43 @@ public class DeathHandler : NetworkBehaviour
         GetComponent<Animator>().enabled = !state;
         GetComponent<Rigidbody>().useGravity = !state;
 
-        if (state == false)  GetComponent<Animator>().Rebind();
+        if (state == false) GetComponent<Animator>().Rebind();
     }
 
-    public void KillPlayer() {
-        if (IsServer) {
+    public void KillPlayer()
+    {
+        if (IsServer)
+        {
             GetComponent<Player>().EditHealthServerRpc(0);
             GetComponent<Player>().EditScoreServerRpc(0);
+            GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.RatDie, transform.position);
         }
         GetComponent<Player>().dead = true;
         ToggleRagdoll(true);
     }
 
-    public void RevivePlayer() {
+    public void RevivePlayer()
+    {
         Player player = GetComponent<Player>();
-        
+
         if (IsServer) player.EditHealthServerRpc(player.maxHealth.Value);
-        
+
         player.dead = false;
         ToggleRagdoll(false);
-        
+
         GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
         GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 
         StartCoroutine(ForceResetRatPosition());
     }
 
-    IEnumerator ForceResetRatPosition() {
+    IEnumerator ForceResetRatPosition()
+    {
         int resetFrameMaxCount = 1;
-        for (int i = 0; i < resetFrameMaxCount; i++) {
-            if (transform.position.magnitude > 0.1f) {
+        for (int i = 0; i < resetFrameMaxCount; i++)
+        {
+            if (transform.position.magnitude > 0.1f)
+            {
                 resetFrameMaxCount++;
                 Debug.Log(i);
             }
@@ -72,11 +82,13 @@ public class DeathHandler : NetworkBehaviour
         }
     }
 
-    void Start() {
+    void Start()
+    {
         GetComponent<Player>().onSpawn += () => ToggleRagdoll(false);
-        GetComponent<Player>().onDeath += () => {
+        GetComponent<Player>().onDeath += () =>
+        {
             KillPlayer();
-            Timer.CreateTimer(Constants.respawnTime, Timer.OnFinish.DESTROY, 
+            Timer.CreateTimer(Constants.respawnTime, Timer.OnFinish.DESTROY,
                 () => { RevivePlayer(); GetComponent<Player>().onRevive?.Invoke(); }, "Rat Revival Timer");
         };
     }
