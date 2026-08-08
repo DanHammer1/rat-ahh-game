@@ -38,6 +38,7 @@ TagManager:
   - DialogueUI
   - ObjectiveSpawner
   - MamaRat
+  - RaceTimer
   layers:
   - Default
   - TransparentFX

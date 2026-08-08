@@ -6,12 +6,15 @@ public class RaceLocationManager : NetworkBehaviour
 {
     public static RaceLocationManager instance;
     public GameObject raceLocationContainer;
+    GameObject raceTimerUI;
     int numberOfLocations;
     public Action onRaceCompleted;
     public void Awake()
     {
         instance = this;
         numberOfLocations = raceLocationContainer.transform.childCount;
+        raceTimerUI = GameObject.FindWithTag("RaceTimer");
+        raceTimerUI.SetActive(false);
     }
 
     public string ChooseRandomRaceLocation()
@@ -20,6 +23,7 @@ public class RaceLocationManager : NetworkBehaviour
         SetAllLocationsInactive();
         Transform selectedLocation = raceLocationContainer.transform.GetChild(randomIndex);
         selectedLocation.Find("RaceStart").GetComponent<BoxCollider>().enabled = true;
+        selectedLocation.Find("RaceStart/Start").gameObject.SetActive(true);
         if (randomIndex == 0)
         {
             return "test1";

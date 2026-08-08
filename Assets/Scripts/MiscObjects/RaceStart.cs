@@ -3,18 +3,28 @@ using System;
 using Unity.Netcode;
 using System.Collections;
 using System.Timers;
+using UnityEditor.EditorTools;
+using TMPro;
 
 
 public class RaceStart : NetworkBehaviour
 {
     BoxCollider startTrigger;
     BoxCollider finishTrigger;
+    GameObject startText;
+    GameObject finishText;
+    GameObject raceTimerUI;
+    TextMeshProUGUI raceTimerUIText;
     public Coroutine raceTimer;
 
     void Awake()
     {
         startTrigger = GetComponent<BoxCollider>();
         finishTrigger = transform.parent.Find("RaceFinish").GetComponent<BoxCollider>();
+        startText = transform.Find("Start").gameObject;
+        finishText = transform.parent.Find("RaceFinish/Finish").gameObject;
+        raceTimerUI = GameObject.FindWithTag("RaceTimer");
+        raceTimerUIText = raceTimerUI.GetComponent<TextMeshProUGUI>();
         if (Input.GetKeyDown(KeyCode.L) && raceTimer != null)
         {
             StopCoroutine(raceTimer);
@@ -28,7 +38,10 @@ public class RaceStart : NetworkBehaviour
         {
             startTrigger.enabled = false;
             finishTrigger.enabled = true;
+            startText.SetActive(false);
+            finishText.SetActive(true);
             raceTimer = StartCoroutine(StartRaceCoroutine(5f));
+            raceTimerUI.SetActive(true);
         }
     }
 
@@ -38,7 +51,10 @@ public class RaceStart : NetworkBehaviour
         while (remaining > 0)
         {
             remaining -= Time.deltaTime;
-            Debug.Log(remaining);
+
+            int seconds = Mathf.FloorToInt(remaining);
+            int milliseconds = Mathf.FloorToInt((remaining - seconds) * 100f);
+            raceTimerUIText.text = $"{seconds:00}:{milliseconds:00}";
             yield return null;
         }
 
@@ -47,6 +63,9 @@ public class RaceStart : NetworkBehaviour
             remaining = 0;
             startTrigger.enabled = true;
             finishTrigger.enabled = false;
+            startText.SetActive(true);
+            finishText.SetActive(false);
+            raceTimerUI.SetActive(false);
             Debug.Log("you failed");
         }
     }
