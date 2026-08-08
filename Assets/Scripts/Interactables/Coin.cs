@@ -175,7 +175,6 @@ public class Coin : NetworkBehaviour, IInteractable
                 Player player = playerObject.GetComponent<Player>();
                 if (player == Player.localPlayer)
                 {
-                    player.EditScoreServerRpc(player.score.Value + ObjectiveScores.deliveryScore);
                     SetAllLocationsInactiveClientRpc(
                         RpcTarget.Single(playerObject.OwnerClientId, RpcTargetUse.Temp)
                     );

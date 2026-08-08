@@ -11,7 +11,7 @@ public class AbilityObjective : Objective
 
     public AbilityObjective() : base("Use cling ability on a Hunter.")
     {
-        completionScore = Constants.abilityObjectiveCompletionScore;
+        completionScore = ObjectiveScores.abilityScore;
         HumanPlayer.onHumanClung += () => completed = true;
     }
 
@@ -20,7 +20,8 @@ public class AbilityObjective : Objective
         return (completed);
     }
 
-    public override string GetDialogueText() {
+    public override string GetDialogueText()
+    {
         return "LETS DO SOME TROLLING!!! USE YOUR T ABILITY TO JUMP ON THE HUNTERS FACE!!!";
     }
 }

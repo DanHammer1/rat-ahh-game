@@ -11,13 +11,14 @@ public class CheeseObjective : Objective
 
     public CheeseObjective() : base("Get Cheese.")
     {
-        completionScore = Constants.cheeseObjectiveCompletionScore;
-        
-        CheeseSpawner.instance.onCheeseObtained += () => {
+        completionScore = ObjectiveScores.cheeseScore;
+
+        CheeseSpawner.instance.onCheeseObtained += () =>
+        {
             cheese = CheeseSpawner.instance.GetRandomCheese();
             ObjectManager.MakeObjectSpectral(cheese.transform.Find("Renderer").gameObject);
-            Timer.CreateTimer(Constants.cheeseSpawnInterval, Timer.OnFinish.DESTROY, () => 
-                {if (this == null) return; ObjectManager.TakeAwaySpectral(cheese.transform.Find("Renderer").gameObject); },
+            Timer.CreateTimer(Constants.cheeseSpawnInterval, Timer.OnFinish.DESTROY, () =>
+                { if (this == null) return; ObjectManager.TakeAwaySpectral(cheese.transform.Find("Renderer").gameObject); },
                 "Spectral Effect removal for cheese timer.", null, cheese);
         };
         CheeseSpawner.instance.ForceObtainRandomCheese();
@@ -28,7 +29,8 @@ public class CheeseObjective : Objective
         return (cheese == null);
     }
 
-    public override String GetDialogueText() {
+    public override String GetDialogueText()
+    {
         return "IM HUNGRY!!! EAT CHEESE FOR ME!";
     }
 }

@@ -9,20 +9,14 @@ public class DeliveryObjective : Objective
 
     public DeliveryObjective() : base("Deliver one coin to the garbage container")
     {
-        completionScore = Constants.coinObjectiveCompletionScore;
+        completionScore = ObjectiveScores.deliveryScore;
 
         locationString = CoinDeliveryLocationManager.instance.ChooseRandomCoinDeliveryLocation();
         objectiveText = $"Deliver one coin to the {locationString.ToLower()}";
 
-        // CoinSpawner.instance.ForceObtainRandomCoin();
         CoinSpawner.instance.onCoinDelivered += () =>
         {
             conditionCleared = true;
-            // coin = CoinSpawner.instance.GetRandomCoin();
-            // ObjectManager.MakeObjectSpectral(coin.transform.Find("Renderer").gameObject);
-            // Timer.CreateTimer(Constants.coinSpawnInterval, Timer.OnFinish.DESTROY, () =>
-            //     { if (this == null) return; ObjectManager.TakeAwaySpectral(coin.transform.Find("Renderer").gameObject); },
-            //     "Spectral Effect removal for coin timer.", null, coin);
         };
     }
 
