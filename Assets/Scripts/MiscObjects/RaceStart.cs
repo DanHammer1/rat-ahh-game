@@ -25,10 +25,19 @@ public class RaceStart : NetworkBehaviour
         finishText = transform.parent.Find("RaceFinish/Finish").gameObject;
         raceTimerUI = GameObject.FindWithTag("RaceTimer");
         raceTimerUIText = raceTimerUI.GetComponent<TextMeshProUGUI>();
+    }
+
+    void Update()
+    {
         if (Input.GetKeyDown(KeyCode.L) && raceTimer != null)
         {
             StopCoroutine(raceTimer);
             raceTimer = null;
+            startTrigger.enabled = true;
+            finishTrigger.enabled = false;
+            startText.SetActive(true);
+            finishText.SetActive(false);
+            raceTimerUI.SetActive(false);
         }
     }
 
@@ -54,7 +63,7 @@ public class RaceStart : NetworkBehaviour
 
             int seconds = Mathf.FloorToInt(remaining);
             int milliseconds = Mathf.FloorToInt((remaining - seconds) * 100f);
-            raceTimerUIText.text = $"{seconds:00}:{milliseconds:00}";
+            raceTimerUIText.text = $"{seconds:00}:{milliseconds:00}\nPress L to cancel";
             yield return null;
         }
 
