@@ -102,7 +102,7 @@ public class HumanPlayer : Player
             movement.movementRecoveryMultiplier = Mathf.Exp(-0.1f * slapCount.Value);
             ratAbilityShakeUI?.SetActive(true);
             float mouseMovement = Mathf.Sqrt(Mathf.Pow(Input.GetAxis("Mouse X"), 2f) + Mathf.Pow(Input.GetAxis("Mouse Y"), 2));
-            ratAbilityHumanShakeMeter.Value += Time.fixedDeltaTime;
+            ratAbilityHumanShakeMeter.Value += Time.deltaTime;
             ratAbilityHumanShakeMeter.Value += mouseMovement / 100;
             // UpdateRatAbilityShakeMeterRpc(ratAbilityHumanShakeMeter.Value + mouseMovement / 100);
             if (ratAbilityHumanShakeMeter.Value > Constants.maxRatAbilityHumanShakeMeter)
