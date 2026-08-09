@@ -12,7 +12,7 @@ public class RaceObjective : Objective
         completionScore = ObjectiveScores.raceScore;
 
         locationString = RaceLocationManager.instance.ChooseRandomRaceLocation();
-        objectiveText = $"Race {locationString}";
+        objectiveText = $"Race: {locationString.ToLower()}";
 
         RaceLocationManager.instance.onRaceCompleted += () =>
         {
@@ -26,7 +26,7 @@ public class RaceObjective : Objective
     }
     public override string GetDialogueText()
     {
-        string text = $"RACE!!! {locationString}";
+        string text = $"SHOW ME YOUR SPEEDRUN LINES!! RACE FROM THE {locationString}";
         return text;
     }
 }

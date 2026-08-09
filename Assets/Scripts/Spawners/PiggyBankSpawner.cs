@@ -27,6 +27,7 @@ public class PiggyBankSpawner : NetworkBehaviour
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void SpawnPiggyBankRpc()
     {
+        spawnPos = Player.localPlayer.transform.position + new Vector3(0, 0.5f, 0);
         GameObject piggyBank = Instantiate(piggyBankPrefab, spawnPos, Quaternion.identity);
         piggyBank.GetComponent<NetworkObject>().Spawn();
     }

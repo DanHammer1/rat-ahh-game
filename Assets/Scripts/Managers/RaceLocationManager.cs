@@ -26,21 +26,21 @@ public class RaceLocationManager : NetworkBehaviour
         selectedLocation.Find("RaceStart/Start").gameObject.SetActive(true);
         if (randomIndex == 0)
         {
-            return "test1";
+            return "1ST FLOOR OFFICE TO LEDGE OVERLOOKING STAIRS";
         }
         else if (randomIndex == 1)
         {
-            return "test2";
+            return "1ST FLOOR BEDROOM TO GARAGE";
         }
         else if (randomIndex == 2)
         {
-            return "test3";
+            return "KITCHEN TO TOP BUNK BED";
         }
         else if (randomIndex == 3)
         {
             return "test4";
         }
-        return "error selecting race location";
+        return "2ND FLOOR DESK TO OFFICE BATHROOM";
     }
 
     public void SetAllLocationsInactive()

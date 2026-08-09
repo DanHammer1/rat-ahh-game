@@ -49,7 +49,7 @@ public class RaceStart : NetworkBehaviour
             finishTrigger.enabled = true;
             startText.SetActive(false);
             finishText.SetActive(true);
-            raceTimer = StartCoroutine(StartRaceCoroutine(5f));
+            raceTimer = StartCoroutine(StartRaceCoroutine(10f));
             raceTimerUI.SetActive(true);
         }
     }
