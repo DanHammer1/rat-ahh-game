@@ -132,7 +132,7 @@ public class RatClingAbility : Ability
 
             if (Vector3.Distance(transform.position, targetPos) <= Constants.ratAbilityClingRange)
             {
-                SetColliderStateServerRpc(false);
+                SetColliderStateRpc(false);
                 rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
                 rb.linearDamping = originalDrag;
@@ -151,8 +151,8 @@ public class RatClingAbility : Ability
         Debug.DrawLine(transform.position, targetPos, Color.red, 3f);
     }
 
-    [ServerRpc]
-    public void SetColliderStateServerRpc(bool state)
+    [Rpc(SendTo.Everyone)]
+    public void SetColliderStateRpc(bool state)
     {
         boxCollider.enabled = state;
     }
@@ -162,7 +162,7 @@ public class RatClingAbility : Ability
         Rigidbody rb = GetComponent<Rigidbody>();
         Movement movement = GetComponent<Movement>();
 
-        SetColliderStateServerRpc(true);
+        SetColliderStateRpc(true);
         movement.toggleGravity = true;
 
         rb.useGravity = true;
@@ -180,7 +180,7 @@ public class RatClingAbility : Ability
         Rigidbody rb = GetComponent<Rigidbody>();
         Movement movement = GetComponent<Movement>();
 
-        SetColliderStateServerRpc(true);
+        SetColliderStateRpc(true);
         movement.toggleGravity = true;
 
         rb.useGravity = true;
