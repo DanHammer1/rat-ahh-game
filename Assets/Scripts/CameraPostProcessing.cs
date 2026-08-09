@@ -63,7 +63,7 @@ public class CameraPostProcessing : MonoBehaviour
 
             if (t >= 1)
             {
-                human.isDizzy.Value = false;
+                human.SetIsDizzyServerRpc(false);
             }
 
             vignette.intensity.value = Mathf.Lerp(startVignetteIntensity, 0f, easedT);

@@ -8,11 +8,16 @@ using UnityEngine.SocialPlatforms;
 using UnityEngine.Animations.Rigging;
 using System;
 
-public class HumanPlayer : Player 
+public class HumanPlayer : Player
 {
     public GameObject ratAbilityTarget;
     public NetworkVariable<bool> isBeingClung = new NetworkVariable<bool>(false);
-    public NetworkVariable<float> ratAbilityHumanShakeMeter = new NetworkVariable<float>();
+    public NetworkVariable<float> ratAbilityHumanShakeMeter =
+    new NetworkVariable<float>(
+        0f,
+        NetworkVariableReadPermission.Everyone,
+        NetworkVariableWritePermission.Owner
+    );
     public NetworkVariable<int> slapCount = new NetworkVariable<int>();
     public NetworkVariable<bool> isCarryingItem = new NetworkVariable<bool>(false);
     public NetworkVariable<bool> isDizzy = new NetworkVariable<bool>(false);
@@ -23,11 +28,19 @@ public class HumanPlayer : Player
     public static Action onHumanClung;
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void SetCarryingItemRpc(bool state) {
+    public void SetCarryingItemRpc(bool state)
+    {
         isCarryingItem.Value = state;
     }
 
-    public void CheckJustGotClung(bool state) {
+    [ServerRpc]
+    public void SetIsDizzyServerRpc(bool state)
+    {
+        isDizzy.Value = state;
+    }
+
+    public void CheckJustGotClung(bool state)
+    {
         if (state != isBeingClung.Value && state == true) onHumanClung?.Invoke();
     }
 
@@ -51,7 +64,7 @@ public class HumanPlayer : Player
         base.OnNetworkSpawn();
         if (IsServer)
         {
-            ratAbilityHumanShakeMeter.Value = 0f;
+            // ratAbilityHumanShakeMeter.Value = 0f;
             slapCount.Value = 0;
         }
 
@@ -75,7 +88,8 @@ public class HumanPlayer : Player
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void UpdateRatAbilityShakeMeterRpc(float newValue) {
+    public void UpdateRatAbilityShakeMeterRpc(float newValue)
+    {
         ratAbilityHumanShakeMeter.Value = newValue;
     }
 
@@ -88,10 +102,13 @@ public class HumanPlayer : Player
             movement.movementRecoveryMultiplier = Mathf.Exp(-0.1f * slapCount.Value);
             ratAbilityShakeUI?.SetActive(true);
             float mouseMovement = Mathf.Sqrt(Mathf.Pow(Input.GetAxis("Mouse X"), 2f) + Mathf.Pow(Input.GetAxis("Mouse Y"), 2));
-            UpdateRatAbilityShakeMeterRpc(ratAbilityHumanShakeMeter.Value + mouseMovement / 100);
+            ratAbilityHumanShakeMeter.Value += Time.fixedDeltaTime;
+            ratAbilityHumanShakeMeter.Value += mouseMovement / 100;
+            // UpdateRatAbilityShakeMeterRpc(ratAbilityHumanShakeMeter.Value + mouseMovement / 100);
             if (ratAbilityHumanShakeMeter.Value > Constants.maxRatAbilityHumanShakeMeter)
             {
-                UpdateRatAbilityShakeMeterRpc(Constants.maxRatAbilityHumanShakeMeter);
+                // UpdateRatAbilityShakeMeterRpc(Constants.maxRatAbilityHumanShakeMeter);
+                ratAbilityHumanShakeMeter.Value = Constants.maxRatAbilityHumanShakeMeter;
             }
 
             shakeProgressBarImage.fillAmount = Mathf.Clamp01(ratAbilityHumanShakeMeter.Value / Constants.maxRatAbilityHumanShakeMeter);
@@ -100,12 +117,14 @@ public class HumanPlayer : Player
         else if (isDizzy.Value)
         {
             ratAbilityShakeUI?.SetActive(false);
-            UpdateRatAbilityShakeMeterRpc(0);
+            // UpdateRatAbilityShakeMeterRpc(0);
+            ratAbilityHumanShakeMeter.Value = 0;
         }
         else
         {
             ratAbilityShakeUI?.SetActive(false);
-            UpdateRatAbilityShakeMeterRpc(0);
+            // UpdateRatAbilityShakeMeterRpc(0);
+            ratAbilityHumanShakeMeter.Value = 0;
             movement.isMovementLocked = false;
         }
 

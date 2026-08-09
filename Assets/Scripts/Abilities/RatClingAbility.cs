@@ -35,12 +35,13 @@ public class RatClingAbility : Ability
     {
         base.OnNetworkSpawn();
 
+        boxCollider = GetComponent<BoxCollider>();
+
         if (!IsOwner) return;
 
         ratAbilityInRange = false;
         ratAbilityShakeUI = GameObject.FindWithTag("Rat Ability Shake UI");
         ratAbilityShakeUI.SetActive(false);
-        boxCollider = GetComponent<BoxCollider>();
 
         scoreText = GameObject.FindWithTag("Score").GetComponent<TextMeshProUGUI>();
 
@@ -91,7 +92,7 @@ public class RatClingAbility : Ability
         Movement movement = GetComponent<Movement>();
         isSlapping = false;
         SetClingingStateRpc(false);
-        SetHumanShakeMeterValueServerRpc(localHumanInRange.NetworkObjectId, 0f);
+        // SetHumanShakeMeterValueServerRpc(localHumanInRange.NetworkObjectId, 0f);
 
         Vector3 startPos = transform.position;
         Vector3 targetPos = localHumanInRange.ratAbilityTarget.transform.position;
@@ -222,7 +223,6 @@ public class RatClingAbility : Ability
         {
             clingHead = localHumanInRange.movement.headBone;
             HumanPlayer humanPlayer = localHumanInRange.GetComponent<HumanPlayer>();
-            // IncreaseHumanShakeMeterValue(localHumanInRange.NetworkObjectId, Time.deltaTime);
             SetHumanClingStateServerRpc(localHumanInRange.NetworkObjectId, true);
             localHumanInRange.CheckJustGotClung(true);
             transform.position =
@@ -249,7 +249,7 @@ public class RatClingAbility : Ability
         if (isClinging.Value && IsServer)
         {
             HumanPlayer humanPlayer = localHumanInRange.GetComponent<HumanPlayer>();
-            IncreaseHumanShakeMeterValue(localHumanInRange.NetworkObjectId);
+            // IncreaseHumanShakeMeterValue(localHumanInRange.NetworkObjectId);
         }
 
     }
