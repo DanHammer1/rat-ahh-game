@@ -38,9 +38,9 @@ public class RaceLocationManager : NetworkBehaviour
         }
         else if (randomIndex == 3)
         {
-            return "test4";
+            return "2ND FLOOR DESK TO OFFICE BATHROOM";
         }
-        return "2ND FLOOR DESK TO OFFICE BATHROOM";
+        return "error choosing race";
     }
 
     public void SetAllLocationsInactive()
