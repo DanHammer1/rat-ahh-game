@@ -2,6 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using FMODUnity;
+using UnityEditor;
 public class Assets : MonoBehaviour
 {
     public static Assets instance;
@@ -19,6 +20,10 @@ public class Assets : MonoBehaviour
 
     #region "Shaders"
     public Material invisibilityMaterial;
+    #endregion
+
+    #region "Prefabs"
+    public GameObject poisonGasPrefab;
     #endregion
 
     #region "Sound Effects"
