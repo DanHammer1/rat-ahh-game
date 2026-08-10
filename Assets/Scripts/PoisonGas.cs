@@ -53,8 +53,8 @@ public class PoisonGas : NetworkBehaviour
         particles.transform.localScale += Vector3.one * scaleSpeed * Time.deltaTime;
 
         float t = Mathf.Clamp01(lifeTimer / colorTransitionDuration);
-        minColor = Color.Lerp(Hex("#09A100"), Hex("#52F249"), t);
-        maxColor = Color.Lerp(Hex("#1B6500"), Hex("#37CC00"), t);
+        minColor = Color.Lerp(Hex("#48008F"), Hex("#8000FF"), t);
+        maxColor = Color.Lerp(Hex("#350069"), Hex("#6400C5"), t);
         main.startColor = new ParticleSystem.MinMaxGradient(minColor, maxColor);
 
         if (lifeTimer >= 10f)
