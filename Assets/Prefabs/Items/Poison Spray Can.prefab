@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 2091159038130345074}
   - component: {fileID: 323912249843323747}
   - component: {fileID: 1390968719491871397}
-  - component: {fileID: -6935241335259954217}
+  - component: {fileID: 5861648893998779326}
   m_Layer: 9
-  m_Name: Spray Can
+  m_Name: Poison Spray Can
   m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 180585619
+  GlobalObjectIdHash: 1482801578
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -189,7 +189,7 @@ CapsuleCollider:
   m_Height: 2.3437033
   m_Direction: 1
   m_Center: {x: 0, y: 1.0880609, z: -0.00826437}
---- !u!114 &-6935241335259954217
+--- !u!114 &5861648893998779326
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -198,15 +198,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 919132149155446097}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32bed38f6ef13f94ebc5f8653c0fabd2, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ab8e3b240287064784d1dd84c614140, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  cooldown: 0
-  parentGameObjectName: SprayCan
-  width: 80
-  height: 80
-  paintMaterial: {fileID: 2100000, guid: e5d4b0592632f6f4cbf76aa60c4c404c, type: 2}
+  cooldown: 0.03
+  parentGameObjectName: PoisonSprayCan
 --- !u!1 &5872220468098353094
 GameObject:
   m_ObjectHideFlags: 0

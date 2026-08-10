@@ -1,28 +1,8 @@
 using UnityEngine;
 using Unity.Netcode;
 
-public class PoisonGasCan : NetworkBehaviour
+public class PoisonGasCan : Item
 {
-    float spawnTimer = 0f;
-    float spawnInterval = 0.03f;
-
-
-    void Update()
-    {
-        if (Input.GetMouseButton(1))
-        {
-            spawnTimer += Time.deltaTime;
-            if (spawnTimer >= spawnInterval)
-            {
-                SpawnPoisonGasRpc();
-                spawnTimer = 0f;
-            }
-        }
-        else
-        {
-            spawnTimer = 0f;
-        }
-    }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void SpawnPoisonGasRpc()
@@ -32,5 +12,17 @@ public class PoisonGasCan : NetworkBehaviour
         Quaternion spawnRotation = PlayerCamera.mainCamera.transform.rotation;
         GameObject poisonGas = Instantiate(Assets.instance.poisonGasPrefab, spawnPos, spawnRotation);
         poisonGas.GetComponent<NetworkObject>().Spawn();
+    }
+
+
+    public override void UseItem()
+    {
+        SpawnPoisonGasRpc();
+        // GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.CrowbarSwing);
+    }
+
+    public override string GetInteractionPromptText()
+    {
+        return "Hold E to pick up poison spray can.";
     }
 }

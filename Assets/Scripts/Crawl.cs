@@ -43,7 +43,7 @@ public class Crawl : NetworkBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             if (!isCrawling)
             {
@@ -51,7 +51,7 @@ public class Crawl : NetworkBehaviour
                 isTryingToStand = false;
             }
         }
-        if (Input.GetKeyUp(KeyCode.LeftControl))
+        if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             if (isCrawling)
             {
