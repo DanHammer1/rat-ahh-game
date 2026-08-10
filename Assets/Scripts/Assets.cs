@@ -3,13 +3,14 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using FMODUnity;
 using UnityEditor;
-public class Assets : MonoBehaviour {
+public class Assets : MonoBehaviour
+{
     public static Assets instance;
 
     #region "Ability Icons"
     public Sprite ratClingAbilityIcon;
     public Sprite ratDashAbilityIcon;
-    public Sprite ratInvisibilityAbilityIcon;
+    public Sprite ratInvisibilityAbilityIcon;//hi
     #endregion
 
     #region "Rat Materials"
@@ -45,11 +46,13 @@ public class Assets : MonoBehaviour {
 
     #endregion
 
-    void Awake() {
+    void Awake()
+    {
         instance = this;
     }
 
-    public enum SfxType {
+    public enum SfxType
+    {
         RatDashAbility,
         InvisibilityEnter,
         InvisibilityExit,
@@ -68,8 +71,10 @@ public class Assets : MonoBehaviour {
         ratTauntLoud
     }
 
-    public EventReference GetEventReferenceFromSfxType(SfxType type) {
-        EventReference eventReference = type switch {
+    public EventReference GetEventReferenceFromSfxType(SfxType type)
+    {
+        EventReference eventReference = type switch
+        {
             SfxType.RatDashAbility => ratDashAbilitySFX,
             SfxType.InvisibilityEnter => invisibilityEnterSFX,
             SfxType.InvisibilityExit => invisibilityExitSFX,
