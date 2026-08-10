@@ -5,8 +5,7 @@ using System.Linq;
 using Unity.Netcode;
 using System;
 
-public class CoinSpawner : NetworkBehaviour
-{
+public class CoinSpawner : NetworkBehaviour {
     public static CoinSpawner instance;
     public GameObject coinPrefab;
     public List<GameObject> coinSpawnLocations;
@@ -14,37 +13,30 @@ public class CoinSpawner : NetworkBehaviour
 
     public Action onCoinDelivered;
 
-    void Awake()
-    {
+    void Awake() {
         instance = this;
 
         coinSpawnLocations = new List<GameObject>();
         GameObject coinSpawnLocationParent = GameObject.FindWithTag("CoinSpawnParent");
 
-        foreach (Transform spawnLocation in coinSpawnLocationParent.transform)
-        {
+        foreach (Transform spawnLocation in coinSpawnLocationParent.transform) {
             coinSpawnLocations.Add(spawnLocation.gameObject);
         }
         takenSpawnLocations = new NetworkList<NetworkObjectReference>();
     }
 
-    void Start()
-    {
+    void Start() {
         if (!IsServer) return;
 
         Timer.CreateTimer(60, Timer.OnFinish.REPEAT, () => SpawnRandomCoinRpc(), "Coin spawn repeating timer"); // Same as cheeseSpawner?
     }
 
-    List<GameObject> GetVacantCoinSpots()
-    {
+    List<GameObject> GetVacantCoinSpots() {
         List<GameObject> vacantSpots = new List<GameObject>();
-        foreach (GameObject spawnLocation in coinSpawnLocations)
-        {
+        foreach (GameObject spawnLocation in coinSpawnLocations) {
             bool taken = false;
-            foreach (GameObject coin in takenSpawnLocations)
-            {
-                if (coin.transform.position.Equals(spawnLocation.transform.position))
-                {
+            foreach (GameObject coin in takenSpawnLocations) {
+                if (coin.transform.position.Equals(spawnLocation.transform.position)) {
                     taken = true;
                 }
             }
@@ -53,8 +45,7 @@ public class CoinSpawner : NetworkBehaviour
         return vacantSpots;
     }
 
-    public Vector3 GetVacantCoinSpot()
-    {
+    public Vector3 GetVacantCoinSpot() {
         List<GameObject> vacantSpots = GetVacantCoinSpots();
 
         if (vacantSpots.Count == 0) return Vector3.zero;
@@ -64,12 +55,10 @@ public class CoinSpawner : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void SpawnRandomCoinRpc()
-    {
+    public void SpawnRandomCoinRpc() {
         Vector3 vacantSpot = GetVacantCoinSpot();
 
-        if (vacantSpot == Vector3.zero)
-        {
+        if (vacantSpot == Vector3.zero) {
             return;
         }
 
@@ -80,30 +69,24 @@ public class CoinSpawner : NetworkBehaviour
         // coin.GetComponent<Coin>().onDestroyed += () => takenSpawnLocations.Remove(coin); TODO
     }
 
-    public IEnumerator ForceObtainRandomCoinOverTime()
-    {
-        if (takenSpawnLocations.Count == 0)
-        {
+    public IEnumerator ForceObtainRandomCoinOverTime() {
+        if (takenSpawnLocations.Count == 0) {
             SpawnRandomCoinRpc();
         }
 
-        while (takenSpawnLocations.Count == 0)
-        {
+        while (takenSpawnLocations.Count == 0) {
             yield return null;
         }
 
         // onCoinObtained?.Invoke(); TODO
     }
 
-    public void ForceObtainRandomCoin()
-    {
+    public void ForceObtainRandomCoin() {
         StartCoroutine(ForceObtainRandomCoinOverTime());
     }
 
-    public GameObject GetRandomCoin()
-    {
-        if (takenSpawnLocations.Count == 0)
-        {
+    public GameObject GetRandomCoin() {
+        if (takenSpawnLocations.Count == 0) {
             return null;
         }
 

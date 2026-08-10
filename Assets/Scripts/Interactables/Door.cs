@@ -2,8 +2,7 @@ using UnityEngine;
 using Unity.Netcode;
 using System;
 
-public class Door : NetworkBehaviour, IInteractable
-{
+public class Door : NetworkBehaviour, IInteractable {
     public Collider doorCollider;
     private Animator animator;
 
@@ -11,8 +10,7 @@ public class Door : NetworkBehaviour, IInteractable
     private float interactionCompletionTime = 0f;
     private bool interactable = true;
 
-    public enum State
-    {
+    public enum State {
         OPEN,
         CLOSED
     }
@@ -22,10 +20,8 @@ public class Door : NetworkBehaviour, IInteractable
     public Action onDoorClosed;
     public Action onDoorOpened;
 
-    public String GetInteractionPromptText()
-    {
-        switch (doorState)
-        {
+    public String GetInteractionPromptText() {
+        switch (doorState) {
             case State.OPEN:
                 return "Press E to close Door";
             case State.CLOSED:
@@ -34,8 +30,7 @@ public class Door : NetworkBehaviour, IInteractable
                 return "Door has no state.";
         }
     }
-    public void Interact()
-    {
+    public void Interact() {
         InteractDoorRpc();
         interactionProgress = 0;
         interactable = false;
@@ -43,79 +38,62 @@ public class Door : NetworkBehaviour, IInteractable
             "Door interaction cooldown Timer", () => Input.GetKeyUp(KeyCode.E));
     }
 
-    public void OnInteractingExit()
-    {
+    public void OnInteractingExit() {
         interactionProgress = 0;
     }
 
-    public void UpdateProgress()
-    {
+    public void UpdateProgress() {
         if (!interactable) return;
 
         if (interactionCompletionTime == 0) interactionProgress = 1;
         else interactionProgress += Time.deltaTime / interactionCompletionTime;
     }
 
-    public float GetProgress()
-    {
+    public float GetProgress() {
         return interactionProgress;
     }
 
-    public void SwitchDoorState()
-    {
-        if (doorState == State.OPEN)
-        {
+    public void SwitchDoorState() {
+        if (doorState == State.OPEN) {
             doorState = State.CLOSED;
             onDoorClosed?.Invoke();
-        }
-        else
-        {
+        } else {
             doorState = State.OPEN;
             onDoorOpened?.Invoke();
         }
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void InteractDoorRpc()
-    {
+    public void InteractDoorRpc() {
         InteractDoorClientRpc();
     }
 
     [ClientRpc]
-    public void InteractDoorClientRpc()
-    {
-        if (doorState == State.OPEN)
-        {
+    public void InteractDoorClientRpc() {
+        if (doorState == State.OPEN) {
             animator.CrossFade("CLOSE", 0.15f);
-        }
-        else
-        {
+        } else {
             animator.CrossFade("OPEN", 0.15f);
         }
         SwitchDoorState();
     }
 
-    public override void OnNetworkSpawn()
-    {
+    public override void OnNetworkSpawn() {
         animator = GetComponent<Animator>();
     }
 
-    void Start()
-    {
-        onDoorClosed += () =>
-        {
+    void Start() {
+        onDoorClosed += () => {
             GetComponent<BoxCollider>().isTrigger = false;
             GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.DoorClose, transform.GetChild(0).position);
         };
-        onDoorOpened += () =>
-        {
+        onDoorOpened += () => {
             GetComponent<BoxCollider>().isTrigger = true;
             GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.DoorOpen, transform.GetChild(0).position);
         };
     }
 
-    void Update()
-    {
+    void Update() {
         ((IInteractable)this).TryInteract();
     }
 }

@@ -9,8 +9,7 @@ using UnityEngine.UI;
 using ParrelSync.NonCore;
 using UnityEditor.Search;
 
-public class RatClingAbility : Ability
-{
+public class RatClingAbility : Ability {
     Transform clingHead;
     public bool ratAbilityInRange;
     private HumanPlayer localHumanInRange;
@@ -21,18 +20,15 @@ public class RatClingAbility : Ability
     protected GameObject ratAbilityShakeUI;
     BoxCollider boxCollider;
 
-    public override Sprite GetIconSprite()
-    {
+    public override Sprite GetIconSprite() {
         return Assets.instance.ratClingAbilityIcon;
     }
 
-    public override float GetAbilityCooldown()
-    {
+    public override float GetAbilityCooldown() {
         return Constants.maxRatAbilityCooldown;
     }
 
-    public override void OnNetworkSpawn()
-    {
+    public override void OnNetworkSpawn() {
         base.OnNetworkSpawn();
 
         boxCollider = GetComponent<BoxCollider>();
@@ -48,47 +44,38 @@ public class RatClingAbility : Ability
         abilityTimer.AddProgressionCondition(() => !GetComponent<Movement>().isPerformingAbility);
     }
 
-    void OnTriggerStay(Collider other)
-    {
-        if (transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
-        {
+    void OnTriggerStay(Collider other) {
+        if (transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox")) {
             HumanPlayer humanPlayer = other.GetComponentInParent<HumanPlayer>();
             localHumanInRange = humanPlayer;
 
-            if (IsOwner)
-            {
+            if (IsOwner) {
                 ratAbilityInRange = true;
             }
         }
     }
 
-    void OnTriggerExit(Collider other)
-    {
-        if (IsOwner && transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox"))
-        {
+    void OnTriggerExit(Collider other) {
+        if (IsOwner && transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox")) {
             ratAbilityInRange = false;
 
-            if (!GetComponent<Movement>().isPerformingAbility)
-            {
+            if (!GetComponent<Movement>().isPerformingAbility) {
                 localHumanInRange = null;
             }
         }
     }
 
-    public override void ExecuteAbility()
-    {
+    public override void ExecuteAbility() {
         if (localHumanInRange == null) return; //safety check
         StartCoroutine(RatAbilityCoroutine());
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    void SetClingingStateRpc(bool state)
-    {
+    void SetClingingStateRpc(bool state) {
         isClinging.Value = state;
     }
 
-    IEnumerator RatAbilityCoroutine()
-    {
+    IEnumerator RatAbilityCoroutine() {
         Movement movement = GetComponent<Movement>();
         isSlapping = false;
         SetClingingStateRpc(false);
@@ -118,20 +105,17 @@ public class RatClingAbility : Ability
         forceToAdd.y = (((targetPos.y - startPos.y) - Physics.gravity.y / 2 * Mathf.Pow(ratAbilityDuration, 2)) / ratAbilityDuration) / 1.18f;
         forceToAdd.z = (targetPos.z - startPos.z) / ratAbilityDuration;
 
-        if (!forceApplied)
-        {
+        if (!forceApplied) {
             rb.linearDamping = 0;
             rb.AddForce(forceToAdd * rb.mass, ForceMode.Impulse);
             forceApplied = true;
         }
 
-        while (elapsed < ratAbilityDuration)
-        {
+        while (elapsed < ratAbilityDuration) {
             float t = elapsed / ratAbilityDuration;
             elapsed += Time.fixedDeltaTime;
 
-            if (Vector3.Distance(transform.position, targetPos) <= Constants.ratAbilityClingRange)
-            {
+            if (Vector3.Distance(transform.position, targetPos) <= Constants.ratAbilityClingRange) {
                 SetColliderStateRpc(false);
                 rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
@@ -152,13 +136,11 @@ public class RatClingAbility : Ability
     }
 
     [Rpc(SendTo.Everyone)]
-    public void SetColliderStateRpc(bool state)
-    {
+    public void SetColliderStateRpc(bool state) {
         boxCollider.enabled = state;
     }
 
-    void UnCling()
-    {
+    void UnCling() {
         Rigidbody rb = GetComponent<Rigidbody>();
         Movement movement = GetComponent<Movement>();
 
@@ -175,8 +157,7 @@ public class RatClingAbility : Ability
         SetHumanDizzyStateServerRpc(localHumanInRange.NetworkObjectId, true);
     }
 
-    void OnMiss()
-    {
+    void OnMiss() {
         Rigidbody rb = GetComponent<Rigidbody>();
         Movement movement = GetComponent<Movement>();
 
@@ -189,38 +170,31 @@ public class RatClingAbility : Ability
         movement.isPerformingAbility = false;
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
+    void OnCollisionEnter(Collision collision) {
         Movement movement = GetComponent<Movement>();
 
-        if (movement.isPerformingAbility && collision.gameObject.layer == LayerMask.NameToLayer("groundLayer"))
-        {
+        if (movement.isPerformingAbility && collision.gameObject.layer == LayerMask.NameToLayer("groundLayer")) {
             OnMiss();
         }
     }
 
-    public override bool CheckAbilityExecutable()
-    {
+    public override bool CheckAbilityExecutable() {
         return (ratAbilityInRange);
     }
 
-    protected override void Update()
-    {
+    protected override void Update() {
         base.Update();
         if (!IsOwner) return;
 
-        if (Input.GetKeyDown(KeyCode.Q) && isClinging.Value)
-        {
+        if (Input.GetKeyDown(KeyCode.Q) && isClinging.Value) {
             isSlapping = !isSlapping;
             UpdateHumanSlapCountServerRpc(localHumanInRange.NetworkObjectId, 1, "Add");
         }
-        if (Input.GetKeyDown(KeyCode.U) && isClinging.Value)
-        {
+        if (Input.GetKeyDown(KeyCode.U) && isClinging.Value) {
             UnCling();
         }
 
-        if (isClinging.Value && IsOwner)
-        {
+        if (isClinging.Value && IsOwner) {
             clingHead = localHumanInRange.movement.headBone;
             HumanPlayer humanPlayer = localHumanInRange.GetComponent<HumanPlayer>();
             SetHumanClingStateServerRpc(localHumanInRange.NetworkObjectId, true);
@@ -237,17 +211,14 @@ public class RatClingAbility : Ability
             Debug.DrawRay(clingHead.position, clingHead.forward * 0.5f, Color.blue);
             Debug.DrawRay(clingHead.position, clingHead.up * 0.5f, Color.green);
             Debug.DrawRay(clingHead.position, clingHead.right * 0.5f, Color.red);
-            if (humanPlayer.ratAbilityHumanShakeMeter.Value >= Constants.maxRatAbilityHumanShakeMeter)
-            {
+            if (humanPlayer.ratAbilityHumanShakeMeter.Value >= Constants.maxRatAbilityHumanShakeMeter) {
                 UnCling();
             }
         }
     }
 
-    public void FixedUpdate()
-    {
-        if (isClinging.Value && IsServer)
-        {
+    public void FixedUpdate() {
+        if (isClinging.Value && IsServer) {
             HumanPlayer humanPlayer = localHumanInRange.GetComponent<HumanPlayer>();
             // IncreaseHumanShakeMeterValue(localHumanInRange.NetworkObjectId);
         }
@@ -255,18 +226,15 @@ public class RatClingAbility : Ability
     }
 
     [ServerRpc]
-    void SetViewPositionServerRpc(ulong humanNetworkId, Vector3 pos)
-    {
-        if (!NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanNetworkId, out NetworkObject netObj))
-        {
+    void SetViewPositionServerRpc(ulong humanNetworkId, Vector3 pos) {
+        if (!NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanNetworkId, out NetworkObject netObj)) {
             Debug.Log("Human not found on server");
             return;
         }
 
         HumanPlayer human = netObj.GetComponent<HumanPlayer>();
 
-        if (human == null || human.viewPosition == null)
-        {
+        if (human == null || human.viewPosition == null) {
             Debug.Log("Human or viewPosition missing");
             return;
         }
@@ -275,57 +243,43 @@ public class RatClingAbility : Ability
     }
 
     [ServerRpc]
-    void SetHumanClingStateServerRpc(ulong humanId, bool state)
-    {
-        if (NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanId, out NetworkObject netObj))
-        {
+    void SetHumanClingStateServerRpc(ulong humanId, bool state) {
+        if (NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanId, out NetworkObject netObj)) {
             HumanPlayer human = netObj.GetComponent<HumanPlayer>();
-            if (human != null)
-            {
+            if (human != null) {
                 human.isBeingClung.Value = state;
             }
         }
     }
 
-    void IncreaseHumanShakeMeterValue(ulong humanId)
-    {
-        if (NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanId, out NetworkObject netObj))
-        {
+    void IncreaseHumanShakeMeterValue(ulong humanId) {
+        if (NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanId, out NetworkObject netObj)) {
             HumanPlayer human = netObj.GetComponent<HumanPlayer>();
-            if (human != null)
-            {
+            if (human != null) {
                 human.ratAbilityHumanShakeMeter.Value += Time.fixedDeltaTime;
             }
         }
     }
 
     [ServerRpc]
-    void SetHumanShakeMeterValueServerRpc(ulong humanId, float value)
-    {
-        if (NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanId, out NetworkObject netObj))
-        {
+    void SetHumanShakeMeterValueServerRpc(ulong humanId, float value) {
+        if (NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanId, out NetworkObject netObj)) {
             HumanPlayer human = netObj.GetComponent<HumanPlayer>();
-            if (human != null)
-            {
+            if (human != null) {
                 human.ratAbilityHumanShakeMeter.Value = value;
             }
         }
     }
 
     [ServerRpc]
-    void UpdateHumanSlapCountServerRpc(ulong humanId, int value, string addOrSet)
-    {
-        if (NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanId, out NetworkObject netObj))
-        {
+    void UpdateHumanSlapCountServerRpc(ulong humanId, int value, string addOrSet) {
+        if (NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanId, out NetworkObject netObj)) {
             HumanPlayer human = netObj.GetComponent<HumanPlayer>();
-            if (human != null)
-            {
-                if (addOrSet == "Add")
-                {
+            if (human != null) {
+                if (addOrSet == "Add") {
                     human.slapCount.Value += value;
                 }
-                if (addOrSet == "Set")
-                {
+                if (addOrSet == "Set") {
                     human.slapCount.Value = value;
                 }
             }
@@ -333,22 +287,17 @@ public class RatClingAbility : Ability
     }
 
     [ServerRpc]
-    void SetHumanDizzyStateServerRpc(ulong humanId, bool state)
-    {
-        if (NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanId, out NetworkObject netObj))
-        {
+    void SetHumanDizzyStateServerRpc(ulong humanId, bool state) {
+        if (NetworkManager.SpawnManager.SpawnedObjects.TryGetValue(humanId, out NetworkObject netObj)) {
             HumanPlayer human = netObj.GetComponent<HumanPlayer>();
-            if (human != null)
-            {
+            if (human != null) {
                 human.isDizzy.Value = state;
             }
         }
     }
 
-    void OnDrawGizmos()
-    {
-        if (transform.position != null)
-        {
+    void OnDrawGizmos() {
+        if (transform.position != null) {
             Gizmos.color = Color.green;
             Gizmos.DrawSphere(transform.position, 0.01f);
         }

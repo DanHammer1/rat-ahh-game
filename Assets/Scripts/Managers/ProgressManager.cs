@@ -11,8 +11,7 @@ using System;
 using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine.Animations;
 
-public class ProgressManager : NetworkBehaviour
-{
+public class ProgressManager : NetworkBehaviour {
     public float defaultTime;
     public TextMeshProUGUI timer;
     public TextMeshProUGUI objectiveUISlot1;
@@ -30,8 +29,7 @@ public class ProgressManager : NetworkBehaviour
 
     public static ProgressManager instance;
 
-    public IEnumerator OnActivate()
-    {
+    public IEnumerator OnActivate() {
         instance = this;
 
         if (onActivateExecuted) yield break;
@@ -48,8 +46,7 @@ public class ProgressManager : NetworkBehaviour
         while (timerGameObject == null ||
             objectivesUIGameObject == null ||
             scoreListGameObject == null ||
-            CheeseSpawner.instance == null)
-        {
+            CheeseSpawner.instance == null) {
 
             timerGameObject = GameObject.FindWithTag("TimerUI");
             objectivesUIGameObject = GameObject.FindWithTag("ObjectivesUI");
@@ -60,16 +57,13 @@ public class ProgressManager : NetworkBehaviour
         }
 
         timer = timerGameObject.GetComponent<TextMeshProUGUI>();
-        objectiveListSlots.Add(new ObjectiveListSlot
-        {
+        objectiveListSlots.Add(new ObjectiveListSlot {
             text = objectivesUIGameObject.transform.GetChild(0).Find("Text").GetComponent<TextMeshProUGUI>()
         });
-        objectiveListSlots.Add(new ObjectiveListSlot
-        {
+        objectiveListSlots.Add(new ObjectiveListSlot {
             text = objectivesUIGameObject.transform.GetChild(1).Find("Text").GetComponent<TextMeshProUGUI>()
         });
-        objectiveListSlots.Add(new ObjectiveListSlot
-        {
+        objectiveListSlots.Add(new ObjectiveListSlot {
             text = objectivesUIGameObject.transform.GetChild(2).Find("Text").GetComponent<TextMeshProUGUI>()
         });
 
@@ -84,8 +78,7 @@ public class ProgressManager : NetworkBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         if (!IsServer || !IsActive || !NetworkManager.Singleton) return;
 
         //UpdatePlayerUIListClientRpc();
@@ -98,13 +91,11 @@ public class ProgressManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void UpdateTimerClientRpc()
-    {
+    public void UpdateTimerClientRpc() {
         if (timer == null) return;
         timer.text = $"Time remaining: {(int)time.Value}";
 
-        if (time.Value < 0 && IsServer)
-        {
+        if (time.Value < 0 && IsServer) {
             NetworkManager.Singleton.SceneManager.LoadScene(
             "MainMenu",
             LoadSceneMode.Single);
@@ -112,22 +103,19 @@ public class ProgressManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void UpdatePlayerUIListClientRpc()
-    {
+    public void UpdatePlayerUIListClientRpc() {
         if (playersUIList == null) return;
 
         string text = $"Hunters:\n";
 
-        foreach (int i in GameManager.GetHunterIndexs())
-        {
+        foreach (int i in GameManager.GetHunterIndexs()) {
             string name = GameManager.Instance.clientNames[i].Value;
             text += $"{name}\n";
         }
 
         text += $"Hiders:\n";
 
-        foreach (int i in GameManager.GetHiderIndexs())
-        {
+        foreach (int i in GameManager.GetHiderIndexs()) {
             string name = GameManager.Instance.clientNames[i].Value;
             text += $"{name}\n";
         }
@@ -136,20 +124,16 @@ public class ProgressManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void UpdateScoreListClientRpc()
-    {
+    public void UpdateScoreListClientRpc() {
         if (scoreList == null) return;
 
         string text = $"<b><u>Leaderboard</u></b>\n";
 
-        foreach (int i in GameManager.GetHiderIndexs())
-        {
+        foreach (int i in GameManager.GetHiderIndexs()) {
             Player[] players = GameObject.FindObjectsByType<Player>(FindObjectsSortMode.None);
 
-            foreach (Player player in players)
-            {
-                if (GameManager.Instance.clientIds[i] == player.clientId.Value)
-                {
+            foreach (Player player in players) {
+                if (GameManager.Instance.clientIds[i] == player.clientId.Value) {
                     string name = GameManager.Instance.clientNames[i].Value;
                     text += $"{name}: {player.score.Value}\n";
                     break;
@@ -161,12 +145,9 @@ public class ProgressManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void UpdateObjectiveUIListClientRpc()
-    {
-        foreach (var slot in objectiveListSlots)
-        {
-            if (slot == null)
-            {
+    public void UpdateObjectiveUIListClientRpc() {
+        foreach (var slot in objectiveListSlots) {
+            if (slot == null) {
                 Debug.Log("objective UI slot is null");
                 return;
             }
@@ -174,40 +155,31 @@ public class ProgressManager : NetworkBehaviour
 
         List<Objective> objectivesToRemove = new List<Objective>();
 
-        foreach (Objective objective in objectives)
-        {
-            if (objective.CheckConditionCleared())
-            {
+        foreach (Objective objective in objectives) {
+            if (objective.CheckConditionCleared()) {
                 objectivesToRemove.Add(objective);
                 StartCoroutine(ClearObjectiveText(objective));
             }
         }
 
-        foreach (Objective objective in objectivesToRemove)
-        {
+        foreach (Objective objective in objectivesToRemove) {
             objective.onConditionCleared?.Invoke();
         }
 
-        foreach (Objective objective in objectives)
-        {
+        foreach (Objective objective in objectives) {
             AssignObjectiveText(objective);
         }
     }
 
-    public void AssignObjectiveText(Objective objective)
-    {
-        foreach (var slot in objectiveListSlots)
-        {
-            if (slot.currentObjective == objective)
-            {
+    public void AssignObjectiveText(Objective objective) {
+        foreach (var slot in objectiveListSlots) {
+            if (slot.currentObjective == objective) {
                 return;
             }
         }
 
-        foreach (var slot in objectiveListSlots)
-        {
-            if (slot.currentObjective == null)
-            {
+        foreach (var slot in objectiveListSlots) {
+            if (slot.currentObjective == null) {
                 slot.currentObjective = objective;
                 slot.text.text = objective.objectiveText;
                 slot.text.transform.localScale = Vector3.one;
@@ -220,12 +192,9 @@ public class ProgressManager : NetworkBehaviour
         Debug.Log("error - no objective slots available");
     }
 
-    public IEnumerator ClearObjectiveText(Objective objective)
-    {
-        foreach (var slot in objectiveListSlots)
-        {
-            if (slot.currentObjective == objective)
-            {
+    public IEnumerator ClearObjectiveText(Objective objective) {
+        foreach (var slot in objectiveListSlots) {
+            if (slot.currentObjective == objective) {
                 slot.currentObjective = null;
 
                 Transform ratStamp = slot.text.transform.parent.Find("Checkbox/RatStamp");
@@ -239,8 +208,7 @@ public class ProgressManager : NetworkBehaviour
                 ratStampImage.color = new Color(ratStampImage.color.r, ratStampImage.color.g, ratStampImage.color.b, 0);
                 ratStampObject.SetActive(true);
                 ratStampObject.LeanScale(Vector3.one, 0.3f).setEase(LeanTweenType.easeInQuad);
-                LeanTween.value(ratStampObject, 0, 1f, 0.3f).setEase(LeanTweenType.easeInQuad).setOnUpdate((float alpha) =>
-                {
+                LeanTween.value(ratStampObject, 0, 1f, 0.3f).setEase(LeanTweenType.easeInQuad).setOnUpdate((float alpha) => {
                     Color c = ratStampImage.color;
                     c.a = alpha;
                     ratStampImage.color = c;

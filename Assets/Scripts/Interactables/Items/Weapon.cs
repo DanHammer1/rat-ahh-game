@@ -1,8 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
 
-public class Weapon : Item
-{
+public class Weapon : Item {
     public float attackDuration;
     public float damage;
     public float rayRadius;
@@ -12,29 +11,24 @@ public class Weapon : Item
     public AudioClip swingHit;
     public AudioClip swingMiss;
 
-    public override void OnNetworkSpawn()
-    {
+    public override void OnNetworkSpawn() {
         base.OnNetworkSpawn();
     }
-    public override void UseItem()
-    {
+    public override void UseItem() {
         Attack();
         GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.CrowbarSwing);
     }
 
-    public override string GetInteractionPromptText()
-    {
+    public override string GetInteractionPromptText() {
         return "Hold E to pick up crowbar.";
     }
 
-    public void Attack()
-    {
+    public void Attack() {
         PlayerAnimator.instance.PlayAnimation("Swing", "isSwinging", 0.15f, 1);
         Invoke("CheckPlayerCollision", attackDuration);
     }
 
-    public void CheckPlayerCollision()
-    {
+    public void CheckPlayerCollision() {
         GameObject mainCamera = PlayerCamera.mainCamera;
         Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
         LayerMask ignoreMask = ~LayerMask.GetMask("Hunter", "groundLayer", "Ignore Raycast");
@@ -42,13 +36,11 @@ public class Weapon : Item
         Debug.DrawRay(ray.origin, ray.direction * attackRange, Color.red, 5f);
 
         if (Physics.SphereCast(ray, rayRadius, out RaycastHit hit, attackRange)) Debug.Log(hit.collider.gameObject.name + ", " + hit.collider.gameObject.tag);
-        if (Physics.SphereCast(ray, rayRadius, out hit, attackRange, ignoreMask))
-        {
+        if (Physics.SphereCast(ray, rayRadius, out hit, attackRange, ignoreMask)) {
 
             Debug.Log(hit.collider.gameObject.name + ", " + hit.collider.gameObject.tag);
 
-            if (hit.collider.gameObject.tag == "PlayerMouse")
-            {
+            if (hit.collider.gameObject.tag == "PlayerMouse") {
                 RatPlayer colliderRatScript = hit.collider.gameObject.GetComponent<RatPlayer>();
                 colliderRatScript.EditHealthServerRpc(colliderRatScript.health.Value - damage);
 

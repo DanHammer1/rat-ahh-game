@@ -2,8 +2,7 @@ using UnityEngine;
 using TMPro;
 using System;
 
-public class DialogueManager : MonoBehaviour
-{
+public class DialogueManager : MonoBehaviour {
     private TextMeshProUGUI dialogueDisplay;
     private GameObject dialogueUI;
     private ObjectiveSpawner objectiveSpawner;
@@ -13,7 +12,7 @@ public class DialogueManager : MonoBehaviour
     public Action onDialogueEnd;
 
     public static DialogueManager instance { get; private set; }
-    
+
     public void CreateDialogue(string text) {
         dialogueUI.SetActive(true);
         dialogueDisplay.text = text;
@@ -30,7 +29,7 @@ public class DialogueManager : MonoBehaviour
         dialogueUI.SetActive(false);
 
         onDialogueActivate += () => {
-            Cursor.lockState = CursorLockMode.None; 
+            Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         };
         onDialogueEnd += () => {

@@ -5,32 +5,26 @@ using System;
 using Unity.Collections;
 using System.Collections;
 
-public class CheeseObjective : Objective
-{
+public class CheeseObjective : Objective {
     public GameObject cheese;
 
-    public CheeseObjective() : base("Get Cheese.")
-    {
+    public CheeseObjective() : base("Get Cheese.") {
         completionScore = ObjectiveScores.cheeseScore;
 
-        CheeseSpawner.instance.onCheeseObtained += () =>
-        {
+        CheeseSpawner.instance.onCheeseObtained += () => {
             cheese = CheeseSpawner.instance.GetRandomCheese();
             ObjectManager.MakeObjectSpectral(cheese.transform.Find("Renderer").gameObject);
-            Timer.CreateTimer(Constants.cheeseSpawnInterval, Timer.OnFinish.DESTROY, () =>
-                { if (this == null) return; ObjectManager.TakeAwaySpectral(cheese.transform.Find("Renderer").gameObject); },
+            Timer.CreateTimer(Constants.cheeseSpawnInterval, Timer.OnFinish.DESTROY, () => { if (this == null) return; ObjectManager.TakeAwaySpectral(cheese.transform.Find("Renderer").gameObject); },
                 "Spectral Effect removal for cheese timer.", null, cheese);
         };
         CheeseSpawner.instance.ForceObtainRandomCheese();
     }
 
-    public override bool CheckConditionCleared()
-    {
+    public override bool CheckConditionCleared() {
         return (cheese == null);
     }
 
-    public override String GetDialogueText()
-    {
+    public override String GetDialogueText() {
         return "IM HUNGRY!!! EAT CHEESE FOR ME!";
     }
 }

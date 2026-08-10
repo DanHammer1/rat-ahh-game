@@ -7,8 +7,7 @@ using UnityEditor;
 using UnityEngine.UI;
 using System;
 
-public abstract class Ability : NetworkBehaviour
-{
+public abstract class Ability : NetworkBehaviour {
     public KeyCode hotkey;
     public int abilitySlotIndex; // Range 0 - 2 All inclusive.
     protected Timer abilityTimer;
@@ -52,7 +51,7 @@ public abstract class Ability : NetworkBehaviour
         GameObject abilityFilled = abilitySlot.transform.Find("ChargedIcon").gameObject;
         abilityIconFilled = abilityFilled.GetComponent<Image>();
 
-        abilityTimer = Timer.CreateTimer(GetAbilityCooldown(), Timer.OnFinish.REPEAT, 
+        abilityTimer = Timer.CreateTimer(GetAbilityCooldown(), Timer.OnFinish.REPEAT,
             ExecuteAbility, "Ability Timer.").GetComponent<Timer>();
         abilityTimer.AddCompletionCondition(AllExecutionConditionsMet);
 

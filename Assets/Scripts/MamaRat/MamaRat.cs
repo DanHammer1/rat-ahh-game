@@ -2,8 +2,7 @@ using UnityEngine;
 using Unity.Netcode;
 using System;
 
-public class MamaRat : NetworkBehaviour, IInteractable
-{
+public class MamaRat : NetworkBehaviour, IInteractable {
     private Animator animator;
 
     private float interactionProgress = 0;
@@ -13,35 +12,29 @@ public class MamaRat : NetworkBehaviour, IInteractable
 
     public Action onInteraction;
 
-    public void Start()
-    {
-        DialogueManager.instance.onDialogueActivate += () =>
-        {
+    public void Start() {
+        DialogueManager.instance.onDialogueActivate += () => {
             dialogueActive = true;
             GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.MamaRatNoise, transform.position);
         };
         DialogueManager.instance.onDialogueEnd += () => dialogueActive = false;
     }
 
-    public String GetInteractionPromptText()
-    {
+    public String GetInteractionPromptText() {
         return (GameManager.GetLocalRole() != GameManager.PlayerRole.HIDER) ?
             "Only rats can speak rat language." : "Hold E to talk to mama rat.";
     }
 
-    public void Interact()
-    {
+    public void Interact() {
         interactionProgress = 0;
         onInteraction?.Invoke();
     }
 
-    public void OnInteractingExit()
-    {
+    public void OnInteractingExit() {
         interactionProgress = 0;
     }
 
-    public void UpdateProgress()
-    {
+    public void UpdateProgress() {
         if (!interactable) return;
 
         if (interactionCompletionTime == 0) interactionProgress = 1;
@@ -49,20 +42,16 @@ public class MamaRat : NetworkBehaviour, IInteractable
             interactionProgress += Time.deltaTime / interactionCompletionTime;
     }
 
-    public float GetProgress()
-    {
+    public float GetProgress() {
         return interactionProgress;
     }
 
-    public bool CheckExtraInteractionConditions()
-    {
+    public bool CheckExtraInteractionConditions() {
         return !dialogueActive;
     }
-    void Update()
-    {
+    void Update() {
         ((IInteractable)this).TryInteract();
-        if (Input.GetKeyDown(KeyCode.O))
-        {
+        if (Input.GetKeyDown(KeyCode.O)) {
             onInteraction.Invoke();
         }
     }

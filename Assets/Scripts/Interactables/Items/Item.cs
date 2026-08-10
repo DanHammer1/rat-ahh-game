@@ -4,8 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Unity.Netcode.Components;
 
-public abstract class Item : NetworkBehaviour, IInteractable
-{
+public abstract class Item : NetworkBehaviour, IInteractable {
     private float pickUpProgress = 0;
     private float totalInteractionTime = 0.7f;
     public float cooldown;
@@ -16,16 +15,14 @@ public abstract class Item : NetworkBehaviour, IInteractable
 
     protected Timer useTimer;
 
-    public override void OnNetworkSpawn()
-    {
+    public override void OnNetworkSpawn() {
         useTimer = Timer.CreateTimer(
             cooldown, Timer.OnFinish.REPEAT, UseItem, "Item use Timer"
             ).GetComponent<Timer>();
         useTimer.SetProgress(1);
 
         useTimer.Subscribe(this.gameObject);
-        useTimer.AddCompletionCondition(() =>
-        {
+        useTimer.AddCompletionCondition(() => {
             if (NetworkManager.Singleton == null || !humanPlayerRef.Value.TryGet(out NetworkObject humanPlayer)) return false;
             bool isCarrying = (humanPlayer == Player.localPlayer.NetworkObject);
             return Input.GetMouseButton(0) && isEquipped.Value && isCarrying;
@@ -34,8 +31,7 @@ public abstract class Item : NetworkBehaviour, IInteractable
         useTimer.AddProgressionCondition(() => isEquipped.Value);
     }
 
-    void Update()
-    {
+    void Update() {
         ((IInteractable)this).TryInteract();
 
         if (NetworkManager.Singleton == null) return;
@@ -43,8 +39,7 @@ public abstract class Item : NetworkBehaviour, IInteractable
 
         if (Player.localPlayer && GameManager.GetLocalRole() != GameManager.PlayerRole.HUNTER) return;
 
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
+        if (Input.GetKeyDown(KeyCode.Q)) {
             SetIsEquippedRpc(false);
             GetComponent<NetworkTransform>().enabled = true;
             GetComponent<Rigidbody>().useGravity = true;
@@ -56,8 +51,7 @@ public abstract class Item : NetworkBehaviour, IInteractable
         }
     }
 
-    void LateUpdate()
-    {
+    void LateUpdate() {
         if (NetworkManager.Singleton == null) return;
         if (!humanPlayerRef.Value.TryGet(out NetworkObject humanPlayer) || !isEquipped.Value) return;
         Transform humanHand = humanPlayer.transform.Find("Armature/Hip/Spine/Upper Arm.R/Lower Arm.R/Hand.R/Hand.R_end");
@@ -70,29 +64,24 @@ public abstract class Item : NetworkBehaviour, IInteractable
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void SetIsEquippedRpc(bool state)
-    {
+    public void SetIsEquippedRpc(bool state) {
         isEquipped.Value = state;
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void UpdateHumanPlayerRefRpc(NetworkObjectReference playerRef)
-    {
-        if (playerRef.TryGet(out NetworkObject player))
-        {
+    public void UpdateHumanPlayerRefRpc(NetworkObjectReference playerRef) {
+        if (playerRef.TryGet(out NetworkObject player)) {
             humanPlayerRef.Value = playerRef;
         }
     }
 
-    public bool CheckExtraInteractionConditions()
-    {
+    public bool CheckExtraInteractionConditions() {
         return (GameManager.GetLocalRole() == GameManager.PlayerRole.HUNTER && !((HumanPlayer)(Player.localPlayer)).isCarryingItem.Value);
     }
 
     public abstract string GetInteractionPromptText();
 
-    public void Interact()
-    {
+    public void Interact() {
         GetComponent<Rigidbody>().useGravity = false;
 
         ToggleCollidersRpc(false);
@@ -107,30 +96,25 @@ public abstract class Item : NetworkBehaviour, IInteractable
     }
 
     [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
-    public void ToggleCollidersRpc(bool state)
-    {
+    public void ToggleCollidersRpc(bool state) {
         Collider[] colliders = GetComponents<Collider>();
 
-        foreach (Collider collider in colliders)
-        {
+        foreach (Collider collider in colliders) {
             collider.enabled = state;
         }
     }
 
-    public void UpdateProgress()
-    {
+    public void UpdateProgress() {
         pickUpProgress += Time.deltaTime / totalInteractionTime;
     }
 
-    public float GetProgress()
-    {
+    public float GetProgress() {
         return pickUpProgress;
     }
 
     public abstract void UseItem();
 
-    public void OnInteractingExit()
-    {
+    public void OnInteractingExit() {
         pickUpProgress = 0;
     }
 }

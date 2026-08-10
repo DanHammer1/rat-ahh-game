@@ -2,8 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System;
 
-public class GameReadyCheck : MonoBehaviour
-{
+public class GameReadyCheck : MonoBehaviour {
     public static Action onFirstUpdate;
     private bool hasExecuted = false;
 

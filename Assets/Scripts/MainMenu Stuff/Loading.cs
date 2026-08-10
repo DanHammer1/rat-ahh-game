@@ -8,24 +8,20 @@ using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEditor;
 
-public class Loading : NetworkBehaviour
-{
+public class Loading : NetworkBehaviour {
     public CinemachineTargetGroup targetGroup;
     PlayerCamera playerCamera;
-    void Start()
-    {
+    void Start() {
         DontDestroyOnLoad(gameObject);
 
         playerCamera = FindFirstObjectByType<PlayerCamera>();
 
-        if (NetworkManager.Singleton.IsServer)
-        {
+        if (NetworkManager.Singleton.IsServer) {
             LoadGameScene();
         }
     }
 
-    private void LoadGameScene()
-    {
+    private void LoadGameScene() {
         if (NetworkManager.Singleton.IsServer) {
             NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnLoadEventCompleted;
         }
@@ -41,7 +37,7 @@ public class Loading : NetworkBehaviour
         LoadSceneMode loadMode,
         List<ulong> clientsCompleted,
         List<ulong> clientsTimedOut) {
-        
+
         if (!NetworkManager.Singleton.IsServer)
             return;
 

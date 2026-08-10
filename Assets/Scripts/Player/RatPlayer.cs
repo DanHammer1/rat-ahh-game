@@ -9,15 +9,12 @@ using UnityEngine.UI;
 using ParrelSync.NonCore;
 using UnityEditor.Search;
 
-public class RatPlayer : Player
-{
-    public override void OnNetworkSpawn()
-    {
+public class RatPlayer : Player {
+    public override void OnNetworkSpawn() {
         base.OnNetworkSpawn();
     }
-    
-    protected override void Update()
-    {
+
+    protected override void Update() {
         base.Update();
     }
 }

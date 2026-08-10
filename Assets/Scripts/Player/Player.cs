@@ -12,8 +12,7 @@ using System;
 using System.Reflection;
 #endif
 
-public class Player : NetworkBehaviour
-{
+public class Player : NetworkBehaviour {
     public static Player localPlayer;
 
     CinemachineCamera cam;
@@ -50,7 +49,7 @@ public class Player : NetworkBehaviour
     public GameObject shakeProgressBar;
     public Image shakeProgressBarImage;
     public NetworkVariable<bool> isCarryingCoin = new NetworkVariable<bool>(false);
-    
+
     // Cheese/score info
     public NetworkVariable<int> score = new NetworkVariable<int>();
     public TextMeshProUGUI scoreText;
@@ -62,27 +61,23 @@ public class Player : NetworkBehaviour
     public GameObject pickUpCoinPrompt;
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void ToggleIsCarryingCoinRpc()
-    {
+    public void ToggleIsCarryingCoinRpc() {
         isCarryingCoin.Value = !isCarryingCoin.Value;
     }
 
     [ClientRpc]
-    public void ToggleIsCarryingCoinClientRpc()
-    {
+    public void ToggleIsCarryingCoinClientRpc() {
         isCarryingCoin.Value = !isCarryingCoin.Value;
     }
 
-    public override void OnNetworkSpawn()
-    {
+    public override void OnNetworkSpawn() {
         animator = GetComponent<Animator>();
         movement = GetComponent<Movement>();
         boxCollider = GetComponent<BoxCollider>();
         rb = GetComponent<Rigidbody>();
         clientNetworkTransform = GetComponent<ClientNetworkTransform>();
 
-        if (IsServer)
-        {
+        if (IsServer) {
             maxHealth.Value = 100;
             health.Value = maxHealth.Value;
             score.Value = 0;
@@ -108,18 +103,15 @@ public class Player : NetworkBehaviour
         impulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
-    void SetupCamera()
-    {
+    void SetupCamera() {
         CinemachineCamera cam = FindFirstObjectByType<CinemachineCamera>();
 
-        if (cam == null)
-        {
+        if (cam == null) {
             Debug.LogError("CinemachineCamera not found in scene!");
             return;
         }
 
-        if (cameraTarget == null)
-        {
+        if (cameraTarget == null) {
             Debug.LogError("CameraTarget not assigned on Player!");
             return;
         }
@@ -129,38 +121,32 @@ public class Player : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void SetColliderStateServerRpc(bool state)
-    {
+    public void SetColliderStateServerRpc(bool state) {
         boxCollider.enabled = state;
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void EditHealthServerRpc(float newHealth)
-    {
+    public void EditHealthServerRpc(float newHealth) {
         health.Value = newHealth;
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void EditScoreServerRpc(int newScore)
-    {
+    public void EditScoreServerRpc(int newScore) {
         score.Value = newScore;
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void AddScoreServerRpc(int newScore)
-    {
+    public void AddScoreServerRpc(int newScore) {
         score.Value += newScore;
     }
 
-    protected virtual void Update()
-    {
+    protected virtual void Update() {
         if (!spawned) {
             onSpawn?.Invoke();
             spawned = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.O))
-        {
+        if (Input.GetKeyDown(KeyCode.O)) {
             ClearConsole();
         }
 
@@ -170,8 +156,7 @@ public class Player : NetworkBehaviour
     }
 
 #if UNITY_EDITOR
-    public void ClearConsole()
-    {
+    public void ClearConsole() {
         var assembly = Assembly.GetAssembly(typeof(UnityEditor.Editor));
         var type = assembly.GetType("UnityEditor.LogEntries");
         var method = type.GetMethod("Clear");

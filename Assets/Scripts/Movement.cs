@@ -8,8 +8,7 @@ using Unity.Netcode;
 using TMPro;
 using NUnit.Framework.Constraints;
 
-public class Movement : NetworkBehaviour
-{
+public class Movement : NetworkBehaviour {
     Animator animator;
     public Transform headBone;
 
@@ -51,8 +50,7 @@ public class Movement : NetworkBehaviour
     Crawl crawl;
 
 
-    public override void OnNetworkSpawn()
-    {
+    public override void OnNetworkSpawn() {
         rb = GetComponent<Rigidbody>();
         cameraTransform = FindFirstObjectByType<Camera>().transform;
 
@@ -63,15 +61,13 @@ public class Movement : NetworkBehaviour
         GROUNDLAYER = LayerMask.GetMask("groundLayer", "InteractableObject");
         animator = GetComponent<Animator>();
 
-        if (transform.tag == "PlayerMouse")
-        {
+        if (transform.tag == "PlayerMouse") {
             moveSpeed = Constants.ratMoveSpeed;
             jumpforce = Constants.ratJumpForce;
             fallMultiplier = Constants.ratFallMultiplier;
             ascendMultiplier = Constants.ratAscendMultiplier;
         }
-        if (transform.tag == "PlayerHuman")
-        {
+        if (transform.tag == "PlayerHuman") {
             moveSpeed = Constants.humanMoveSpeed;
             jumpforce = Constants.humanJumpForce;
             fallMultiplier = Constants.humanFallMultiplier;
@@ -88,8 +84,7 @@ public class Movement : NetworkBehaviour
 
     }
 
-    public bool CheckPlayerGrounded()
-    {
+    public bool CheckPlayerGrounded() {
         BoxCollider boxCollider = GetComponent<BoxCollider>();
 
         float xScale = boxCollider.size.x * gameObject.transform.lossyScale.x * 1.01f;
@@ -107,56 +102,43 @@ public class Movement : NetworkBehaviour
         return false;
     }
 
-    void FixedUpdate()
-    {
-        if (Player.localPlayer != null)
-        {
+    void FixedUpdate() {
+        if (Player.localPlayer != null) {
             eyePosition = Player.localPlayer.gameObject.transform.Find("EyePosition");
         }
-        if (!isPerformingAbility)
-        {
+        if (!isPerformingAbility) {
             isGrounded = CheckPlayerGrounded();
-            if (isGrounded)
-            {
+            if (isGrounded) {
                 pressedSpace = false;
             }
         }
 
         if (!IsOwner || Player.localPlayer.dead) return;
 
-        if (!isMovementLocked)
-        {
+        if (!isMovementLocked) {
             moveHorizontal = Input.GetAxisRaw("Horizontal");
             moveForward = Input.GetAxisRaw("Vertical");
-        }
-        else
-        {
+        } else {
             moveHorizontal = 0f;
             moveForward = 0f;
         }
 
-        if (isMovementLocked)
-        {
+        if (isMovementLocked) {
             rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
         }
-        if (!isPerformingAbility)
-        {
+        if (!isPerformingAbility) {
             MovePlayer(moveSpeed);
         }
 
-        if (Input.GetButton("Jump") && isGrounded && !isMovementLocked)
-        {
+        if (Input.GetButton("Jump") && isGrounded && !isMovementLocked) {
             Jump(jumpforce, ascendMultiplier, fallMultiplier);
         }
         // Checking when we're on the ground and keeping track of our ground check delay
-        if (!isGrounded && toggleGravity)
-        {
+        if (!isGrounded && toggleGravity) {
             rb.useGravity = true;
             // timeAirborne += Time.deltaTime;
             // Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;
-        }
-        else if (toggleGravity)
-        {
+        } else if (toggleGravity) {
             rb.useGravity = false;
         }
 
@@ -164,20 +146,17 @@ public class Movement : NetworkBehaviour
         //Debug.Log("speed: " + speed + ", moveForwards: " + moveForward + ", moveHorizontal: " + moveHorizontal);
 
 
-        if (transform.tag == "PlayerHuman")
-        {
+        if (transform.tag == "PlayerHuman") {
             lookTarget.transform.position = cameraTransform.position + cameraTransform.forward * 1f;
         }
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void MultiplyMoveSpeedRpc(float multiplier)
-    {
+    public void MultiplyMoveSpeedRpc(float multiplier) {
         moveSpeed *= multiplier;
     }
 
-    public void MovePlayer(float moveSpeed)
-    {
+    public void MovePlayer(float moveSpeed) {
         Vector3 camForward = cameraTransform.forward;
         Vector3 camRight = cameraTransform.right;
         camForward.y = 0;
@@ -186,8 +165,7 @@ public class Movement : NetworkBehaviour
         camRight.Normalize();
         movement = (camForward * moveForward + camRight * moveHorizontal).normalized;
 
-        switch (PlayerCamera.instance.cameraState)
-        {
+        switch (PlayerCamera.instance.cameraState) {
             case PlayerCamera.CameraState.FirstPerson:
                 yaw = Mathf.Atan2(camForward.x, camForward.z) * Mathf.Rad2Deg;
                 break;
@@ -196,17 +174,16 @@ public class Movement : NetworkBehaviour
                 if (movement != Vector3.zero)
                     yaw = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;
                 break;
-        };
+        }
+        ;
 
         // Apply rotation
-        if (!isRotationLocked)
-        {
+        if (!isRotationLocked) {
             Quaternion targetRotation = Quaternion.Euler(0, yaw, 0);
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, 8f * Time.fixedDeltaTime));
         }
 
-        if (!isMovementLocked)
-        {
+        if (!isMovementLocked) {
             // Movement
             Vector3 targetVelocity = movement * moveSpeed * movementRecoveryMultiplier;
             Vector3 velocity = rb.linearVelocity;
@@ -224,8 +201,7 @@ public class Movement : NetworkBehaviour
         }
     }
 
-    void LimitSpeed(float maxSpeed)
-    {
+    void LimitSpeed(float maxSpeed) {
         if (rb == null) return;
 
         Vector3 surfaceVelocity = rb.linearVelocity;
@@ -241,8 +217,7 @@ public class Movement : NetworkBehaviour
         rb.linearVelocity = surfaceVelocity;
     }
 
-    public void Jump(float jumpHeight, float ascendMultiplier, float fallMultiplier)
-    {
+    public void Jump(float jumpHeight, float ascendMultiplier, float fallMultiplier) {
         pressedSpace = true;
         isGrounded = false;
         timeAirborne = groundCheckDelay;

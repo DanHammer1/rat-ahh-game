@@ -1,16 +1,13 @@
 using UnityEngine;
 using Unity.Netcode;
 
-public class PiggyBankFractured : NetworkBehaviour
-{
+public class PiggyBankFractured : NetworkBehaviour {
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    void DestroyRpc()
-    {
+    void DestroyRpc() {
         Destroy(this.gameObject);
     }
 
-    public override void OnNetworkSpawn()
-    {
+    public override void OnNetworkSpawn() {
         base.OnNetworkSpawn();
 
         if (!IsServer) return;

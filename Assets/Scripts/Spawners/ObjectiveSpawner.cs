@@ -3,8 +3,7 @@ using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 
-public class ObjectiveSpawner : MonoBehaviour
-{
+public class ObjectiveSpawner : MonoBehaviour {
     public Action<string> OnObjectiveCreated;
     private List<Type> objectiveTypeList = new()
     {
@@ -14,8 +13,7 @@ public class ObjectiveSpawner : MonoBehaviour
         typeof(RaceObjective),
     };
 
-    void Start()
-    {
+    void Start() {
         GameObject mamaRat = GameObject.FindWithTag("MamaRat");
         if (mamaRat == null) return;
 
@@ -23,21 +21,17 @@ public class ObjectiveSpawner : MonoBehaviour
         mamaRatScript.onInteraction += () => CreateRandomObjective();
     }
 
-    public void CreateRandomObjective()
-    {
-        if (ProgressManager.instance.objectives.Count >= Constants.maxObjectives)
-        {
+    public void CreateRandomObjective() {
+        if (ProgressManager.instance.objectives.Count >= Constants.maxObjectives) {
             OnObjectiveCreated?.Invoke("Do your objectives bruh.");
             return;
         }
 
-        var availableObjectives = objectiveTypeList.FindAll(type =>
-        {
+        var availableObjectives = objectiveTypeList.FindAll(type => {
             return !ProgressManager.instance.objectives.Exists(o => o.GetType() == type);
         });
 
-        if (availableObjectives.Count == 0)
-        {
+        if (availableObjectives.Count == 0) {
             OnObjectiveCreated?.Invoke("No more available objectives");
             return;
         }

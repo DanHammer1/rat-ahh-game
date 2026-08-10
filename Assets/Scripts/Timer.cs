@@ -3,8 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Timer : MonoBehaviour
-{
+public class Timer : MonoBehaviour {
     private float duration;
     private float timer;
 
@@ -17,8 +16,7 @@ public class Timer : MonoBehaviour
 
     private List<GameObject> subscribedObjects;
 
-    public enum OnFinish
-    {
+    public enum OnFinish {
         DESTROY,
         REPEAT,
         CUSTOM
@@ -30,12 +28,12 @@ public class Timer : MonoBehaviour
         subscribedObjects.Add(objectRef);
     }
 
-    public static GameObject CreateTimer(float length, OnFinish finishState, 
+    public static GameObject CreateTimer(float length, OnFinish finishState,
         Action finishAction, string name,
         Func<bool> extraOneOffConditionsComplete = null,
         params GameObject[] objectsToSubscribe) {
-        
-        
+
+
         GameObject newGameObject = new GameObject(name);
         newGameObject.transform.SetParent(GameObject.FindWithTag("TimerParent").transform);
 
@@ -44,11 +42,11 @@ public class Timer : MonoBehaviour
         newTimer.timer = length;
 
         newTimer.subscribedObjects = new List<GameObject>();
-        
+
         foreach (GameObject objectRef in objectsToSubscribe) {
             newTimer.Subscribe(objectRef);
         }
-        
+
         if (extraOneOffConditionsComplete == null) {
             newTimer.extraOneOffConditionsComplete = () => true;
         } else {
@@ -58,9 +56,9 @@ public class Timer : MonoBehaviour
         newTimer.extraConditionsComplete = () => true;
 
         newTimer.onFinish += finishAction;
-        switch(finishState) {
+        switch (finishState) {
             case OnFinish.DESTROY:
-                newTimer.onFinish += () => Destroy(newTimer.gameObject);   
+                newTimer.onFinish += () => Destroy(newTimer.gameObject);
                 break;
             case OnFinish.REPEAT:
                 newTimer.onFinish += () => newTimer.SetProgress(0);
@@ -104,8 +102,7 @@ public class Timer : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         foreach (GameObject objectRef in subscribedObjects) {
             if (objectRef == null) {
                 Destroy(this.gameObject);

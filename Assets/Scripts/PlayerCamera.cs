@@ -6,8 +6,7 @@ using Unity.Cinemachine;
 using Unity.Netcode;
 using System;
 
-public class PlayerCamera : MonoBehaviour
-{
+public class PlayerCamera : MonoBehaviour {
     public static PlayerCamera instance;
     public static GameObject mainCamera;
     public GameObject player;
@@ -22,8 +21,7 @@ public class PlayerCamera : MonoBehaviour
     float thirdPersonRadius; // If 0 then first person.
     public bool isCameraLocked;
 
-    void Awake()
-    {
+    void Awake() {
         instance = this;
         isCameraLocked = false;
         mainCamera = GameObject.FindWithTag("MainCamera");
@@ -39,16 +37,14 @@ public class PlayerCamera : MonoBehaviour
     public Action onThirdPersonEnter;
     public Action onFirstPersonEnter;
 
-    public enum CameraState
-    {
+    public enum CameraState {
         FirstPerson,
         ThirdPerson
     };
 
     public CameraState cameraState = CameraState.FirstPerson;
 
-    void Start()
-    {
+    void Start() {
         cinemachinePositionComposer = instance.GetComponent<CinemachinePositionComposer>();
         cinemachineInputAxisController = instance.GetComponent<CinemachineInputAxisController>();
         cinemachineDecollider = instance.GetComponent<CinemachineDecollider>();
@@ -58,8 +54,7 @@ public class PlayerCamera : MonoBehaviour
 
         if (GameManager.GetLocalRole() == GameManager.PlayerRole.HUNTER) {
             cinemachineCamera.Lens.FieldOfView = Constants.humanCameraFOV;
-        }
-        else if (GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER) {
+        } else if (GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER) {
             cinemachineCamera.Lens.FieldOfView = Constants.ratCameraFOV;
         }
 
@@ -69,31 +64,24 @@ public class PlayerCamera : MonoBehaviour
         disableCameraCollision();
     }
 
-    void Update()
-    {
+    void Update() {
         // Test screen shake - press K
-        if (Input.GetKeyDown(KeyCode.K))
-        {
+        if (Input.GetKeyDown(KeyCode.K)) {
             TestScreenShake();
         }
 
-        if (Player.localPlayer != null)
-        {
+        if (Player.localPlayer != null) {
             player = Player.localPlayer.gameObject;
             movement = player.GetComponent<Movement>();
             playerRenderer = player.transform.Find("Renderer").GetComponent<SkinnedMeshRenderer>();
-        }
-        else return;
+        } else return;
 
         Vector3 centrePos = player.transform.GetChild(1).position;
 
-        if (!isCameraLocked)
-        {
+        if (!isCameraLocked) {
             xMovement = Input.GetAxis("Mouse X");
             yMovement = Input.GetAxis("Mouse Y");
-        }
-        else
-        {
+        } else {
             xMovement = 0;
             yMovement = 0;
         }
@@ -101,8 +89,7 @@ public class PlayerCamera : MonoBehaviour
 
         thirdPersonRadius -= Input.GetAxis("Mouse ScrollWheel") * thirdPersonScrollSensitivity;
 
-        if (!isCameraLocked)
-        {
+        if (!isCameraLocked) {
             netX += xMovement;
             netY -= yMovement;
             netY = Mathf.Clamp(netY, -90, 90);
@@ -120,14 +107,12 @@ public class PlayerCamera : MonoBehaviour
         };
 
 
-        if (thirdPersonRadius == 0)
-        {
+        if (thirdPersonRadius == 0) {
             if (cameraState != CameraState.FirstPerson)
                 onFirstPersonEnter?.Invoke();
-            
+
             cameraState = CameraState.FirstPerson;
-        }
-        else {
+        } else {
             if (cameraState != CameraState.ThirdPerson) {
                 onThirdPersonEnter?.Invoke();
             }
@@ -137,14 +122,11 @@ public class PlayerCamera : MonoBehaviour
         cinemachinePositionComposer.CameraDistance = thirdPersonRadius;
 
         // Make player invisible in first person.
-        if (cameraState == CameraState.FirstPerson)
-        {
+        if (cameraState == CameraState.FirstPerson) {
             playerRenderer.shadowCastingMode =
                 UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
             cinemachinePositionComposer.Damping = new Vector3(0.00f, 0.00f, 0.00f);
-        }
-        else
-        {
+        } else {
             playerRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
             cinemachinePositionComposer.Damping = new Vector3(0.4f, 0.4f, 0.4f);
         }
@@ -177,8 +159,7 @@ public class PlayerCamera : MonoBehaviour
         cinemachineDecollider.CameraRadius = 0;
     }
 
-    public void ForceLookAt(Vector3 targetPosition, Vector3 originalPosition)
-    {
+    public void ForceLookAt(Vector3 targetPosition, Vector3 originalPosition) {
         Vector3 dir = (targetPosition - originalPosition).normalized;
 
         float targetYaw = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
@@ -187,28 +168,22 @@ public class PlayerCamera : MonoBehaviour
         netX = targetYaw;
         netY = targetPitch;
 
-        if (Player.localPlayer != null)
-        {
+        if (Player.localPlayer != null) {
             Rigidbody rb = Player.localPlayer.GetComponent<Rigidbody>();
             rb.rotation = Quaternion.Euler(0, targetYaw, 0);
         }
     }
 
-    public void SetCameraYaw(float yaw)
-    {
+    public void SetCameraYaw(float yaw) {
         netX = yaw;
     }
 
     // Test method - press K to trigger screen shake
-    public void TestScreenShake()
-    {
-        if (cinemachineNoise != null)
-        {
+    public void TestScreenShake() {
+        if (cinemachineNoise != null) {
             Debug.Log($"Noise component found!");
             TriggerScreenShake(100f, 50f, 0.5f);  // Extreme shake for 0.5 seconds
-        }
-        else
-        {
+        } else {
             Debug.LogError("CinemachineBasicMultiChannelPerlin component not found!");
         }
     }
@@ -216,16 +191,14 @@ public class PlayerCamera : MonoBehaviour
     /// <summary>
     /// Triggers a screen shake effect
     /// </summary>
-    public void TriggerScreenShake(float amplitude, float frequency, float duration)
-    {
+    public void TriggerScreenShake(float amplitude, float frequency, float duration) {
         if (cinemachineNoise == null)
             return;
 
         StartCoroutine(ScreenShakeCoroutine(amplitude, frequency, duration));
     }
 
-    private System.Collections.IEnumerator ScreenShakeCoroutine(float amplitude, float frequency, float duration)
-    {
+    private System.Collections.IEnumerator ScreenShakeCoroutine(float amplitude, float frequency, float duration) {
         // Store original values
         float originalAmplitude = cinemachineNoise.AmplitudeGain;
         float originalFrequency = cinemachineNoise.FrequencyGain;

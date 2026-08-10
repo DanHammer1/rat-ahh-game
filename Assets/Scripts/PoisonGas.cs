@@ -4,8 +4,7 @@ using System.Collections;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine.Rendering.PostProcessing;
 
-public class PoisonGas : NetworkBehaviour
-{
+public class PoisonGas : NetworkBehaviour {
     Collider hitbox;
     ParticleSystem particles;
     ParticleSystem.MainModule main;
@@ -18,8 +17,7 @@ public class PoisonGas : NetworkBehaviour
     float colorTransitionDuration = 2f;
 
 
-    public override void OnNetworkSpawn()
-    {
+    public override void OnNetworkSpawn() {
         base.OnNetworkSpawn();
 
         hitbox = transform.GetComponentInChildren<BoxCollider>();
@@ -33,16 +31,14 @@ public class PoisonGas : NetworkBehaviour
             0.1f,
             PlayerCamera.mainCamera.transform.forward,
             out hit,
-            1f, LayerMask.GetMask("groundLayer")))
-        {
+            1f, LayerMask.GetMask("groundLayer"))) {
             travelDistance = Mathf.Max(hit.distance, 0.01f);
         }
 
         deceleration = speed * speed / (2f * travelDistance);
     }
 
-    void Update()
-    {
+    void Update() {
         lifeTimer += Time.deltaTime;
 
         transform.position += transform.forward * speed * Time.deltaTime;
@@ -57,23 +53,19 @@ public class PoisonGas : NetworkBehaviour
         maxColor = Color.Lerp(Hex("#350069"), Hex("#6400C5"), t);
         main.startColor = new ParticleSystem.MinMaxGradient(minColor, maxColor);
 
-        if (lifeTimer >= 10f)
-        {
+        if (lifeTimer >= 10f) {
             DespawnServerRpc();
         }
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    private void DespawnServerRpc()
-    {
-        if (NetworkObject != null && NetworkObject.IsSpawned)
-        {
+    private void DespawnServerRpc() {
+        if (NetworkObject != null && NetworkObject.IsSpawned) {
             NetworkObject.Despawn();
         }
     }
 
-    Color Hex(string hex)
-    {
+    Color Hex(string hex) {
         ColorUtility.TryParseHtmlString(hex, out Color color);
         return color;
     }

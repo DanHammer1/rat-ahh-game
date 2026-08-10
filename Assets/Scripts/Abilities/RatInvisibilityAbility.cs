@@ -3,8 +3,7 @@ using Unity.Netcode;
 using System.Collections;
 using Unity.VisualScripting;
 
-public class RatInvisibilityAbility : Ability
-{
+public class RatInvisibilityAbility : Ability {
     SkinnedMeshRenderer playerRenderer;
     public ParticleSystem invisibilityParticles;
 
@@ -14,8 +13,7 @@ public class RatInvisibilityAbility : Ability
     private const float VORONOI_INTENSITY_MAX_AMOUNT = 1.25f;
     private const float VIGNETTE_INTENSITY_MAX_AMOUNT = 1.5f;
 
-    public override void OnNetworkSpawn()
-    {
+    public override void OnNetworkSpawn() {
         base.OnNetworkSpawn();
         playerRenderer = transform.Find("Renderer").GetComponent<SkinnedMeshRenderer>();
         invisibilityParticles = transform.Find("InvisibilityParticles").GetComponent<ParticleSystem>();
@@ -27,74 +25,62 @@ public class RatInvisibilityAbility : Ability
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void ExecuteAbilityRpc()
-    {
+    public void ExecuteAbilityRpc() {
         SetInvisibleRpc();
         Timer.CreateTimer(Constants.ratInvisibilityAbilityDuration, Timer.OnFinish.DESTROY,
             () => { SetVisibleRpc(); });
     }
 
     [Rpc(SendTo.Everyone)]
-    void SetVisibleRpc()
-    {
+    void SetVisibleRpc() {
         playerRenderer.materials = Assets.instance.ratMaterials;
     }
 
     [Rpc(SendTo.Everyone)]
-    void SetInvisibleRpc()
-    {
+    void SetInvisibleRpc() {
         playerRenderer.materials = Assets.instance.ratTransparentMaterials;
         invisibilityParticles.Play();
 
-        if (IsOwner)
-        {
+        if (IsOwner) {
             StartCoroutine(FadeInVignette());
         }
 
         // Starts fade out vignette just before ability deactivates. Should be in setvisible but idk
         Timer.CreateTimer(Constants.ratInvisibilityAbilityDuration - Constants.ratInvisibilityAbilityVignetteFadeDuration, Timer.OnFinish.DESTROY,
-            () =>
-            {
-                if (IsOwner)
-                {
+            () => {
+                if (IsOwner) {
                     StartCoroutine(FadeOutVignette());
                 }
             });
     }
 
-    public override void ExecuteAbility()
-    {
+    public override void ExecuteAbility() {
         GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.InvisibilityEnter);
         ExecuteAbilityRpc();
         Timer.CreateTimer(Constants.ratInvisibilityAbilityDuration, Timer.OnFinish.DESTROY,
             () => { GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.InvisibilityExit); });
     }
 
-    public override bool CheckAbilityExecutable()
-    {
+    public override bool CheckAbilityExecutable() {
         return true;
     }
 
-    public override Sprite GetIconSprite()
-    {
+    public override Sprite GetIconSprite() {
         return Assets.instance.ratInvisibilityAbilityIcon;
     }
 
-    public override float GetAbilityCooldown()
-    {
+    public override float GetAbilityCooldown() {
         return Constants.ratInvisibilityAbilityCooldown;
     }
 
-    private IEnumerator FadeInVignette()
-    {
+    private IEnumerator FadeInVignette() {
         // Assets.instance.invisibilityShader.SetActive(true);
         Assets.instance.invisibilityMaterial.SetFloat(_voronoiIntensity, 0f);
         Assets.instance.invisibilityMaterial.SetFloat(_vignetteIntensity, 0f);
 
         float elapsedTime = 0f;
         float duration = Constants.ratInvisibilityAbilityVignetteFadeDuration;
-        while (elapsedTime < duration)
-        {
+        while (elapsedTime < duration) {
             elapsedTime += Time.deltaTime;
 
             float t = elapsedTime / duration;
@@ -109,15 +95,13 @@ public class RatInvisibilityAbility : Ability
         }
     }
 
-    private IEnumerator FadeOutVignette()
-    {
+    private IEnumerator FadeOutVignette() {
         Assets.instance.invisibilityMaterial.SetFloat(_voronoiIntensity, VORONOI_INTENSITY_MAX_AMOUNT);
         Assets.instance.invisibilityMaterial.SetFloat(_vignetteIntensity, VIGNETTE_INTENSITY_MAX_AMOUNT);
 
         float elapsedTime = 0f;
         float duration = Constants.ratInvisibilityAbilityVignetteFadeDuration;
-        while (elapsedTime < duration)
-        {
+        while (elapsedTime < duration) {
             elapsedTime += Time.deltaTime;
 
             float t = elapsedTime / duration;
@@ -134,8 +118,7 @@ public class RatInvisibilityAbility : Ability
         // Assets.instance.invisibilityShader.SetActive(false);
     }
 
-    protected override void Update()
-    {
+    protected override void Update() {
         base.Update();
     }
 }

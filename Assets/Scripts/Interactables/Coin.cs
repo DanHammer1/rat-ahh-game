@@ -6,8 +6,7 @@ using Unity.Netcode.Components;
 using System;
 using System.Collections;
 
-public class Coin : NetworkBehaviour, IInteractable
-{
+public class Coin : NetworkBehaviour, IInteractable {
     public NetworkVariable<bool> isBeingCarried = new NetworkVariable<bool>(false);
     public NetworkVariable<NetworkObjectReference> playerCarryingCoin = new NetworkVariable<NetworkObjectReference>();
     //bool hasBeenDelivered = false;
@@ -17,29 +16,24 @@ public class Coin : NetworkBehaviour, IInteractable
     Coroutine unassignPlayerCoroutine;
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void SetCoinParentRpc(NetworkObjectReference parentRef)
-    {
-        if (parentRef.TryGet(out NetworkObject parent))
-        {
+    public void SetCoinParentRpc(NetworkObjectReference parentRef) {
+        if (parentRef.TryGet(out NetworkObject parent)) {
             NetworkObject.TrySetParent(parent);
         }
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void ToggleIsBeingCarriedRpc()
-    {
+    public void ToggleIsBeingCarriedRpc() {
         isBeingCarried.Value = !isBeingCarried.Value;
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void SetPlayerCarryingCoinRpc(NetworkObjectReference playerReference)
-    {
+    public void SetPlayerCarryingCoinRpc(NetworkObjectReference playerReference) {
         playerCarryingCoin.Value = playerReference;
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void DropCoinRpc()
-    {
+    public void DropCoinRpc() {
         NetworkObject player;
         playerCarryingCoin.Value.TryGet(out player);
 
@@ -56,37 +50,30 @@ public class Coin : NetworkBehaviour, IInteractable
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void StopUnassignCoroutineRpc()
-    {
-        if (unassignPlayerCoroutine != null)
-        {
+    public void StopUnassignCoroutineRpc() {
+        if (unassignPlayerCoroutine != null) {
             StopCoroutine(unassignPlayerCoroutine);
             unassignPlayerCoroutine = null;
         }
     }
 
-    public IEnumerator UnassignPlayer()
-    {
+    public IEnumerator UnassignPlayer() {
         yield return new WaitForSeconds(3);
-        if (!isBeingCarried.Value)
-        {
+        if (!isBeingCarried.Value) {
             playerCarryingCoin.Value = default;
         }
         unassignPlayerCoroutine = null;
     }
 
-    public void OnInteractingExit()
-    {
+    public void OnInteractingExit() {
         pickUpProgress = 0;
     }
 
-    public bool CheckExtraInteractionConditions()
-    {
+    public bool CheckExtraInteractionConditions() {
         return (GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER);
     }
 
-    public void Update()
-    {
+    public void Update() {
         ((IInteractable)this).TryInteract();
 
         GetComponent<NetworkTransform>().enabled = true;
@@ -101,22 +88,18 @@ public class Coin : NetworkBehaviour, IInteractable
         transform.position = spine.TransformPoint(new Vector3(0.005f, 0, 0));
         transform.rotation = spine.rotation * Quaternion.Euler(0, 0, 90);
 
-        if (Player.localPlayer.NetworkObject == player && Input.GetKeyDown(KeyCode.Q))
-        {
+        if (Player.localPlayer.NetworkObject == player && Input.GetKeyDown(KeyCode.Q)) {
             DropCoinRpc();
         }
     }
 
-    public string GetInteractionPromptText()
-    {
+    public string GetInteractionPromptText() {
         return Player.localPlayer.isCarryingCoin.Value ? "Already carrying coin" : "Hold E to pick up coin";
     }
 
-    public void Interact()
-    {
+    public void Interact() {
         // Pickup coin
-        if (!Player.localPlayer.isCarryingCoin.Value)
-        {
+        if (!Player.localPlayer.isCarryingCoin.Value) {
             StopUnassignCoroutineRpc();
             SetCoinParentRpc(Player.localPlayer.GetComponent<NetworkObject>());
             Player.localPlayer.ToggleIsCarryingCoinRpc();
@@ -130,51 +113,40 @@ public class Coin : NetworkBehaviour, IInteractable
     }
 
     [Rpc(SendTo.Everyone)]
-    private void ToggleRigidbodyGravityRpc()
-    {
+    private void ToggleRigidbodyGravityRpc() {
         this.GetComponent<Rigidbody>().useGravity = !this.GetComponent<Rigidbody>().useGravity;
     }
     [Rpc(SendTo.Everyone)]
-    private void ToggleBoxColliderRpc()
-    {
+    private void ToggleBoxColliderRpc() {
         this.GetComponent<BoxCollider>().enabled = !this.GetComponent<BoxCollider>().enabled;
     }
 
 
-    public void UpdateProgress()
-    {
+    public void UpdateProgress() {
         if (!Player.localPlayer.isCarryingCoin.Value) pickUpProgress += Time.deltaTime / totalInteractionTime;
     }
 
-    public float GetProgress()
-    {
+    public float GetProgress() {
         return pickUpProgress;
     }
 
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    private void DespawnServerRpc()
-    {
-        if (NetworkObject != null && NetworkObject.IsSpawned)
-        {
+    private void DespawnServerRpc() {
+        if (NetworkObject != null && NetworkObject.IsSpawned) {
             NetworkObject.Despawn();
         }
     }
-    IEnumerator WaitThenDespawnCoin()
-    {
+    IEnumerator WaitThenDespawnCoin() {
         yield return new WaitForSeconds(0.2f);
         DespawnServerRpc();
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("CoinDeliveryLocation"))
-        {
-            if (playerCarryingCoin.Value.TryGet(out NetworkObject playerObject))
-            {
+    void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("CoinDeliveryLocation")) {
+            if (playerCarryingCoin.Value.TryGet(out NetworkObject playerObject)) {
                 Player player = playerObject.GetComponent<Player>();
-                if (player == Player.localPlayer)
-                {
+                if (player == Player.localPlayer) {
                     SetAllLocationsInactiveClientRpc(
                         RpcTarget.Single(playerObject.OwnerClientId, RpcTargetUse.Temp)
                     );
@@ -186,8 +158,7 @@ public class Coin : NetworkBehaviour, IInteractable
     }
 
     [Rpc(SendTo.SpecifiedInParams)]
-    public void SetAllLocationsInactiveClientRpc(RpcParams rpcParams = default)
-    {
+    public void SetAllLocationsInactiveClientRpc(RpcParams rpcParams = default) {
         CoinDeliveryLocationManager.instance.SetAllLocationsInactive();
     }
 }

@@ -5,8 +5,7 @@ using System.Collections;
 using System.Timers;
 
 
-public class RaceFinish : NetworkBehaviour
-{
+public class RaceFinish : NetworkBehaviour {
     BoxCollider startTrigger;
     BoxCollider finishTrigger;
     GameObject startText;
@@ -16,8 +15,7 @@ public class RaceFinish : NetworkBehaviour
     RaceStart raceStart;
 
 
-    void Awake()
-    {
+    void Awake() {
         raceStart = transform.parent.Find("RaceStart").GetComponent<RaceStart>();
         startTrigger = raceStart.transform.GetComponent<BoxCollider>();
         finishTrigger = GetComponent<BoxCollider>();
@@ -28,10 +26,8 @@ public class RaceFinish : NetworkBehaviour
         raceTimer = transform.parent.Find("RaceStart").GetComponent<RaceStart>().raceTimer;
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("PlayerMouse"))
-        {
+    void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("PlayerMouse")) {
             Debug.Log("You did it!!");
             startTrigger.enabled = false;
             finishTrigger.enabled = false;
@@ -45,18 +41,15 @@ public class RaceFinish : NetworkBehaviour
         }
     }
 
-    IEnumerator StartRaceCoroutine(float duration)
-    {
+    IEnumerator StartRaceCoroutine(float duration) {
         float remaining = duration;
-        while (remaining > 0)
-        {
+        while (remaining > 0) {
             remaining -= Time.deltaTime;
             Debug.Log(remaining);
             yield return null;
         }
 
-        if (remaining <= 0)
-        {
+        if (remaining <= 0) {
             remaining = 0;
             Debug.Log("you failed");
         }

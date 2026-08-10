@@ -1,8 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Constants : MonoBehaviour
-{
+public class Constants : MonoBehaviour {
     public static Constants instance;
 
     public static float mouseSensitivity = 1f;
@@ -59,8 +58,7 @@ public class Constants : MonoBehaviour
     public static float poisonDPS = 15f;
     # endregion
 
-    void Awake()
-    {
+    void Awake() {
         instance = this;
     }
 }

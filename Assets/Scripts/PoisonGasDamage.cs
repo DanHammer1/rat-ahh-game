@@ -3,8 +3,7 @@ using Unity.Netcode;
 using System.Collections;
 using Unity.VisualScripting.Antlr3.Runtime;
 
-public class PoisonGasDamage : NetworkBehaviour
-{
+public class PoisonGasDamage : NetworkBehaviour {
     public bool isPoisoned = false;
     public int poisonZonesCount = 0;
     float poisonTimer = 0f;
@@ -13,29 +12,23 @@ public class PoisonGasDamage : NetworkBehaviour
 
 
 
-    void Update()
-    {
+    void Update() {
         if (!IsServer) return;
 
         isPoisoned = poisonZonesCount >= 1;
 
-        if (ratPlayer.health.Value <= 0)
-        {
+        if (ratPlayer.health.Value <= 0) {
             isPoisoned = false;
             poisonZonesCount = 0;
         }
 
-        if (isPoisoned && ratPlayer.health.Value > 0)
-        {
+        if (isPoisoned && ratPlayer.health.Value > 0) {
             poisonTimer += Time.deltaTime;
-            if (poisonTimer >= poisonInterval)
-            {
+            if (poisonTimer >= poisonInterval) {
                 ratPlayer.EditHealthServerRpc(ratPlayer.health.Value - (Constants.poisonDPS * poisonInterval));
                 poisonTimer = 0f;
             }
-        }
-        else
-        {
+        } else {
             poisonTimer = 0f;
         }
     }

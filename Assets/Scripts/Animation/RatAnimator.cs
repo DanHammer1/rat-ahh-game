@@ -1,21 +1,18 @@
 using UnityEngine;
 using Unity.Netcode;
 
-public class RatAnimator : NetworkBehaviour
-{
+public class RatAnimator : NetworkBehaviour {
     Movement movement;
     RatPlayer ratPlayer;
     Animator animator;
 
-    public override void OnNetworkSpawn()
-    {
+    public override void OnNetworkSpawn() {
         movement = GetComponent<Movement>();
         ratPlayer = GetComponent<RatPlayer>();
         animator = GetComponent<Animator>();
     }
 
-    void Update()
-    {
+    void Update() {
         if (!IsOwner) return;
         animator.SetFloat("Speed", movement.speed);
 

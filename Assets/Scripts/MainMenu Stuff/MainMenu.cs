@@ -8,8 +8,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 
-public class MainMenu : NetworkBehaviour
-{
+public class MainMenu : NetworkBehaviour {
     public TMP_InputField ipInput;
     public TMP_InputField nameInput;
 
@@ -25,8 +24,7 @@ public class MainMenu : NetworkBehaviour
         Cursor.visible = true;
     }
 
-    public void Host()
-    {
+    public void Host() {
         if (joined) return;
 
         NetworkManager.Singleton.StartHost();
@@ -38,8 +36,7 @@ public class MainMenu : NetworkBehaviour
     }
 
     // Update is called once per frame
-    public void Join()
-    {
+    public void Join() {
         if (joined) return;
 
         UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
@@ -51,44 +48,37 @@ public class MainMenu : NetworkBehaviour
         AddSelfToLobby();
     }
 
-    public void BecomeHider()
-    {
+    public void BecomeHider() {
         preference = GameManager.PlayerRole.HIDER;
         hasPreference = true;
 
-        if (joined)
-        {
+        if (joined) {
             ulong clientId = NetworkManager.Singleton.LocalClientId;
             EditClientRoleServerRpc(clientId, preference);
         }
     }
 
-    public void BecomeHunter()
-    {
+    public void BecomeHunter() {
         preference = GameManager.PlayerRole.HUNTER;
         hasPreference = true;
 
-        if (joined)
-        {
+        if (joined) {
             ulong clientId = NetworkManager.Singleton.LocalClientId;
             EditClientRoleServerRpc(clientId, preference);
         }
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    void EditClientRoleServerRpc(ulong clientId, GameManager.PlayerRole preference)
-    {
+    void EditClientRoleServerRpc(ulong clientId, GameManager.PlayerRole preference) {
         GameManager.Instance.clientRoles[GameManager.Instance.clientIds.IndexOf(clientId)]
                 = (int)(preference);
     }
 
-    public override void OnNetworkSpawn()
-    {
+    public override void OnNetworkSpawn() {
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
     }
 
-    public void StartGame()
-    {
+    public void StartGame() {
         if (!joined) return;
 
         NetworkManager.Singleton.SceneManager.LoadScene(
@@ -96,10 +86,8 @@ public class MainMenu : NetworkBehaviour
         LoadSceneMode.Single);
     }
 
-    void AddSelfToLobby()
-    {
-        StartCoroutine(ExecuteWhenConnected(() =>
-        {
+    void AddSelfToLobby() {
+        StartCoroutine(ExecuteWhenConnected(() => {
             joined = true;
 
             if (nameInput.text == "") nameInput.text = NetworkManager.Singleton.LocalClientId.ToString();
@@ -111,8 +99,7 @@ public class MainMenu : NetworkBehaviour
         }));
     }
 
-    IEnumerator ExecuteWhenConnected(System.Action function)
-    {
+    IEnumerator ExecuteWhenConnected(System.Action function) {
         while (NetworkManager.Singleton == null ||
             !NetworkManager.Singleton.IsListening ||
             !NetworkManager.Singleton.IsConnectedClient ||
@@ -123,8 +110,7 @@ public class MainMenu : NetworkBehaviour
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    void AddNameToLobbyListServerRpc(ulong clientId, FixedString32Bytes name)
-    {
+    void AddNameToLobbyListServerRpc(ulong clientId, FixedString32Bytes name) {
         GameManager.Instance.clientIds.Add(clientId);
         GameManager.Instance.clientNames.Add(name);
         if (!hasPreference) GameManager.Instance.clientRoles.Add(1);
@@ -135,27 +121,24 @@ public class MainMenu : NetworkBehaviour
         int index = GameManager.Instance.clientIds.IndexOf(clientId);
 
         if (index == -1) return "";
-        
+
         FixedString32Bytes clientName = GameManager.Instance.clientNames[
             GameManager.Instance.clientIds.IndexOf(clientId)];
-        
+
         int clientRoleIndex = GameManager.Instance.clientRoles[
             GameManager.Instance.clientIds.IndexOf(clientId)];
-        
+
         string clientRole = ((GameManager.PlayerRole[])Enum.GetValues(typeof(GameManager.PlayerRole)))[clientRoleIndex].ToString();
 
         return $@"{clientId} - {clientName} - {clientRole}";
     }
 
-    void UpdateLobbyText()
-    {
+    void UpdateLobbyText() {
         string wantedLobbyText = $@"<u>Players</u>\n{GetClientInfo(NetworkManager.ServerClientId)} <i>(Host)</i>\n";
 
         int i = 0;
-        foreach (ulong clientId in GameManager.Instance.clientIds)
-        {
-            if (clientId != NetworkManager.ServerClientId)
-            {
+        foreach (ulong clientId in GameManager.Instance.clientIds) {
+            if (clientId != NetworkManager.ServerClientId) {
                 wantedLobbyText += GetClientInfo(clientId) + "\n";
             }
             i++;
@@ -164,18 +147,14 @@ public class MainMenu : NetworkBehaviour
         lobbyText.text = wantedLobbyText;
     }
 
-    void OnClientDisconnected(ulong clientId)
-    {
+    void OnClientDisconnected(ulong clientId) {
         if (!joined) return;
 
-        if (clientId == NetworkManager.Singleton.LocalClientId)
-        {
+        if (clientId == NetworkManager.Singleton.LocalClientId) {
             lobbyText.text = "Disconnected.";
             joined = false;
             return;
-        }
-        else if (clientId == NetworkManager.ServerClientId)
-        {
+        } else if (clientId == NetworkManager.ServerClientId) {
             lobbyText.text = "Server/Host Disconnected.";
             joined = false;
         }
@@ -183,16 +162,15 @@ public class MainMenu : NetworkBehaviour
         if (!IsServer) return;
 
         int indexToRemove = GameManager.Instance.clientIds.IndexOf(clientId);
-        
+
         if (indexToRemove < 0) return;
-        
+
         GameManager.Instance.clientNames.RemoveAt(indexToRemove);
         GameManager.Instance.clientRoles.RemoveAt(indexToRemove);
         GameManager.Instance.clientIds.RemoveAt(indexToRemove);
     }
 
-    public void Disconnect()
-    {
+    public void Disconnect() {
         if (!joined) return;
 
         joined = false;
@@ -207,12 +185,10 @@ public class MainMenu : NetworkBehaviour
         GameManager.Instance.clientNames.Clear();
     }
 
-    void Update()
-    {
+    void Update() {
         if (!NetworkManager.Singleton) return;
 
-        if (joined)
-        {
+        if (joined) {
             UpdateLobbyText();
         }
         joined = NetworkManager.Singleton.IsClient;

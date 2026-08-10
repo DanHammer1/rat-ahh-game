@@ -7,8 +7,7 @@ using UnityEditor.EditorTools;
 using TMPro;
 
 
-public class RaceStart : NetworkBehaviour
-{
+public class RaceStart : NetworkBehaviour {
     BoxCollider startTrigger;
     BoxCollider finishTrigger;
     GameObject startText;
@@ -17,8 +16,7 @@ public class RaceStart : NetworkBehaviour
     TextMeshProUGUI raceTimerUIText;
     public Coroutine raceTimer;
 
-    void Awake()
-    {
+    void Awake() {
         startTrigger = GetComponent<BoxCollider>();
         finishTrigger = transform.parent.Find("RaceFinish").GetComponent<BoxCollider>();
         startText = transform.Find("Start").gameObject;
@@ -27,10 +25,8 @@ public class RaceStart : NetworkBehaviour
         raceTimerUIText = raceTimerUI.GetComponent<TextMeshProUGUI>();
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L) && raceTimer != null)
-        {
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.L) && raceTimer != null) {
             StopCoroutine(raceTimer);
             raceTimer = null;
             startTrigger.enabled = true;
@@ -41,10 +37,8 @@ public class RaceStart : NetworkBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("PlayerMouse"))
-        {
+    void OnTriggerEnter(Collider other) {
+        if (other.CompareTag("PlayerMouse")) {
             startTrigger.enabled = false;
             finishTrigger.enabled = true;
             startText.SetActive(false);
@@ -54,11 +48,9 @@ public class RaceStart : NetworkBehaviour
         }
     }
 
-    IEnumerator StartRaceCoroutine(float duration)
-    {
+    IEnumerator StartRaceCoroutine(float duration) {
         float remaining = duration;
-        while (remaining > 0)
-        {
+        while (remaining > 0) {
             remaining -= Time.deltaTime;
 
             int seconds = Mathf.FloorToInt(remaining);
@@ -67,8 +59,7 @@ public class RaceStart : NetworkBehaviour
             yield return null;
         }
 
-        if (remaining <= 0)
-        {
+        if (remaining <= 0) {
             remaining = 0;
             startTrigger.enabled = true;
             finishTrigger.enabled = false;

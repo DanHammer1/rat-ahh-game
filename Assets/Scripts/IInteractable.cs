@@ -2,8 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public interface IInteractable
-{
+public interface IInteractable {
     public void Interact();
 
     public string GetInteractionPromptText();
@@ -14,19 +13,16 @@ public interface IInteractable
 
     public void OnInteraction() { }
 
-    public bool CheckExtraInteractionConditions()
-    {
+    public bool CheckExtraInteractionConditions() {
         return true;
     }
 
-    public void TryInteract()
-    {
+    public void TryInteract() {
         if (CheckInteractionShouldTrigger()) Interact();
         TryUpdateProgress();
     }
 
-    public static bool CheckPlayerFacingInteractableObject()
-    {
+    public static bool CheckPlayerFacingInteractableObject() {
         if (Player.localPlayer == null) return false;
 
         bool hitSomething = false;
@@ -37,8 +33,7 @@ public interface IInteractable
             0.1f,
             PlayerCamera.mainCamera.transform.forward,
             out hit,
-            1f, LayerMask.GetMask("InteractableObject", "groundLayer")))
-        {
+            1f, LayerMask.GetMask("InteractableObject", "groundLayer"))) {
 
             hitSomething = (LayerMask.LayerToName(hit.collider.gameObject.layer).Equals("InteractableObject"));
         }
@@ -48,8 +43,7 @@ public interface IInteractable
             Player.localPlayer.viewPosition.transform.position,
             PlayerCamera.mainCamera.transform.forward,
             out hit,
-            1f, LayerMask.GetMask("InteractableObject", "groundLayer")))
-        {
+            1f, LayerMask.GetMask("InteractableObject", "groundLayer"))) {
 
             hitSomething = (LayerMask.LayerToName(hit.collider.gameObject.layer).Equals("InteractableObject"));
         }
@@ -65,8 +59,7 @@ public interface IInteractable
         return (!Player.localPlayer.dead && implementationScript.CheckExtraInteractionConditions());
     }
 
-    public bool CheckPlayerInRange()
-    {
+    public bool CheckPlayerInRange() {
         if (Player.localPlayer == null) return false;
 
         RaycastHit hit;
@@ -76,8 +69,7 @@ public interface IInteractable
             0.1f,
             PlayerCamera.mainCamera.transform.forward,
             out hit,
-            1f, LayerMask.GetMask("InteractableObject", "groundLayer")))
-        {
+            1f, LayerMask.GetMask("InteractableObject", "groundLayer"))) {
 
             hitSomething = (LayerMask.LayerToName(hit.collider.gameObject.layer).Equals("InteractableObject"));
         }
@@ -87,8 +79,7 @@ public interface IInteractable
             Player.localPlayer.viewPosition.transform.position,
             PlayerCamera.mainCamera.transform.forward,
             out hit,
-            1f, LayerMask.GetMask("InteractableObject", "groundLayer")))
-        {
+            1f, LayerMask.GetMask("InteractableObject", "groundLayer"))) {
 
             hitSomething = (LayerMask.LayerToName(hit.collider.gameObject.layer).Equals("InteractableObject"));
         }
@@ -103,38 +94,32 @@ public interface IInteractable
         return false;
     }
 
-    public bool CheckInteractionShouldTrigger()
-    {
+    public bool CheckInteractionShouldTrigger() {
         return (CheckPlayerInRange() && Input.GetKey(KeyCode.E) && GetProgress() >= 1);
     }
 
-    public void TryUpdateProgress()
-    {
+    public void TryUpdateProgress() {
         if (CheckPlayerInRange() && Input.GetKey(KeyCode.E)) UpdateProgress();
         else OnInteractingExit();
     }
 
     public void OnInteractingExit() { }
 
-    public void UpdateProgressBar(float progress)
-    {
+    public void UpdateProgressBar(float progress) {
         GameObject.FindWithTag("ProgressFillBar").GetComponent<Image>().fillAmount = progress;
     }
 
-    public static void TryDisplayInteractionText()
-    {
+    public static void TryDisplayInteractionText() {
         GameObject interactPrompt = GameObject.FindWithTag("InteractionPrompt");
         GameObject interactBackground = GameObject.FindWithTag("InteractionPromptBackground");
         GameObject interactFillBar = GameObject.FindWithTag("ProgressFillBar");
 
-        if (interactPrompt == null)
-        {
+        if (interactPrompt == null) {
             Debug.LogError("No prompt found.");
             return;
         }
 
-        if (!CheckPlayerFacingInteractableObject())
-        {
+        if (!CheckPlayerFacingInteractableObject()) {
             interactPrompt.GetComponent<TextMeshProUGUI>().enabled = false;
             interactBackground.GetComponent<Image>().enabled = false;
             interactFillBar.GetComponent<Image>().enabled = false;
