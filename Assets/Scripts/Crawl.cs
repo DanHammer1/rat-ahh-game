@@ -38,6 +38,7 @@ public class Crawl : NetworkBehaviour {
     }
 
     void Update() {
+        if (!IsOwner) return;
         if (Input.GetKeyDown(KeyCode.LeftShift)) {
             if (!isCrawling) {
                 onCrawlStart?.Invoke();
