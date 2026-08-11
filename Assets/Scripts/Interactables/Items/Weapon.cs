@@ -1,5 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
+using System.Collections;
+using UnityEditor.U2D;
 
 public class Weapon : Item {
     public float attackDuration;
@@ -27,13 +29,21 @@ public class Weapon : Item {
 
         if (humanPlayerRef.Value.TryGet(out NetworkObject playerObj)) {
             Crawl crawl = playerObj.GetComponent<Crawl>();
+            HumanPlayer player = playerObj.GetComponent<HumanPlayer>();
             if (crawl.isCrawling) {
                 PlayerAnimator.instance.PlayAnimation("Crawl Swing", "isSwinging", 0.15f, 2);
             } else {
                 PlayerAnimator.instance.PlayAnimation("Swing", "isSwinging", 0.15f, 1);
             }
+            player.isSwinging = true;
+            StartCoroutine(SetIsSwingingDelay(player, false));
         }
         Invoke("CheckPlayerCollision", attackDuration);
+    }
+
+    public IEnumerator SetIsSwingingDelay(HumanPlayer player, bool state) {
+        yield return new WaitForSeconds(cooldown);
+        player.isSwinging = state;
     }
 
     public void CheckPlayerCollision() {

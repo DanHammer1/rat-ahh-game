@@ -43,8 +43,9 @@ public class Crawl : NetworkBehaviour {
 
     void Update() {
         if (!IsOwner) return;
-        if (Input.GetKeyDown(KeyCode.LeftShift)) {
-            if (!isCrawling) {
+        if (Input.GetKey(KeyCode.LeftShift)) {
+            Debug.Log($"{isCrawling} + {humanPlayer.isSwinging}");
+            if (!isCrawling && !humanPlayer.isSwinging) {
                 onCrawlStart?.Invoke();
                 isTryingToStand = false;
             }
@@ -71,6 +72,6 @@ public class Crawl : NetworkBehaviour {
             new Vector3(Constants.boxColliderStandingSizeX / 2, Constants.boxColliderStandingSizeY / 2, Constants.boxColliderStandingSizeZ / 2),
             transform.rotation,
             standCheckMask
-            );
+            ) && !humanPlayer.isSwinging;
     }
 }

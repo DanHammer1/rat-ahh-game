@@ -23,6 +23,7 @@ public class HumanPlayer : Player {
     public RigBuilder rigBuilder;
     public float dizzyDuration;
     public int currentSlapCount;
+    public bool isSwinging = false;
 
     public static Action onHumanClung;
 
