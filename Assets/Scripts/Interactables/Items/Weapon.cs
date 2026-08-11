@@ -24,7 +24,15 @@ public class Weapon : Item {
     }
 
     public void Attack() {
-        PlayerAnimator.instance.PlayAnimation("Swing", "isSwinging", 0.15f, 1);
+
+        if (humanPlayerRef.Value.TryGet(out NetworkObject playerObj)) {
+            Crawl crawl = playerObj.GetComponent<Crawl>();
+            if (crawl.isCrawling) {
+                PlayerAnimator.instance.PlayAnimation("Crawl Swing", "isSwinging", 0.15f, 2);
+            } else {
+                PlayerAnimator.instance.PlayAnimation("Swing", "isSwinging", 0.15f, 1);
+            }
+        }
         Invoke("CheckPlayerCollision", attackDuration);
     }
 

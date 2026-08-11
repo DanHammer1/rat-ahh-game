@@ -8,7 +8,7 @@ public abstract class Item : NetworkBehaviour, IInteractable {
     private float pickUpProgress = 0;
     private float totalInteractionTime = 0.7f;
     public float cooldown;
-    private NetworkVariable<NetworkObjectReference> humanPlayerRef = new NetworkVariable<NetworkObjectReference>();
+    public NetworkVariable<NetworkObjectReference> humanPlayerRef = new NetworkVariable<NetworkObjectReference>();
     public string parentGameObjectName;
 
     private NetworkVariable<bool> isEquipped = new NetworkVariable<bool>(false);

@@ -6,7 +6,7 @@ using UnityEngine.Animations;
 public class Crawl : NetworkBehaviour {
     public Action onCrawlStart;
     public Action onCrawlEnd;
-    bool isCrawling = false;
+    public bool isCrawling = false;
     bool isTryingToStand = false;
     Animator animator;
     BoxCollider boxCollider;
