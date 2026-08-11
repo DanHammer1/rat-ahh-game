@@ -63,16 +63,18 @@ public class HumanPlayer : Player {
 
         if (!IsOwner) return;
 
-        PlayerCamera.instance.onFirstPersonEnter += EnableRigBuilder;
-        PlayerCamera.instance.onThirdPersonEnter += DisableRigBuilder;
+        PlayerCamera.instance.onFirstPersonEnter += EnableRigBuilderRpc;
+        PlayerCamera.instance.onThirdPersonEnter += DisableRigBuilderRpc;
 
         GameObject.FindWithTag("AbilityParent").SetActive(false);
     }
 
-    public void DisableRigBuilder() {
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
+    public void DisableRigBuilderRpc() {
         rigBuilder.layers[0].active = false;
     }
-    public void EnableRigBuilder() {
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
+    public void EnableRigBuilderRpc() {
         rigBuilder.layers[0].active = true;
     }
 

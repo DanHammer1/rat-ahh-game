@@ -11,12 +11,14 @@ public class Crawl : NetworkBehaviour {
     Animator animator;
     BoxCollider boxCollider;
     GameObject viewPosition;
+    HumanPlayer humanPlayer;
     [SerializeField] private LayerMask standCheckMask;
 
     public override void OnNetworkSpawn() {
         animator = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider>();
         viewPosition = transform.Find("ViewPosition").gameObject;
+        humanPlayer = transform.GetComponent<HumanPlayer>();
 
         // On Crawl Start
         onCrawlStart += () => isCrawling = true;
@@ -26,6 +28,7 @@ public class Crawl : NetworkBehaviour {
             boxCollider.size = new Vector3(boxCollider.size.x, Constants.boxColliderCrawlingSizeY, Constants.boxColliderCrawlingSizeZ);
             boxCollider.center = new Vector3(boxCollider.center.x, Constants.boxColliderCrawlingCenterY, boxCollider.center.z);
         };
+        onCrawlStart += () => humanPlayer.DisableRigBuilderRpc();
 
         // On Crawl End
         onCrawlEnd += () => isCrawling = false;
@@ -35,6 +38,7 @@ public class Crawl : NetworkBehaviour {
             boxCollider.size = new Vector3(boxCollider.size.x, Constants.boxColliderStandingSizeY, Constants.boxColliderStandingSizeZ);
             boxCollider.center = new Vector3(boxCollider.center.x, Constants.boxColliderStandingCenterY, boxCollider.center.z);
         };
+        onCrawlEnd += () => humanPlayer.EnableRigBuilderRpc();
     }
 
     void Update() {
