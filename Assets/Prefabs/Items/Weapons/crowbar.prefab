@@ -168,13 +168,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   cooldown: 1.2
   parentGameObjectName: Crowbar
-  attackDuration: 0.5
-  damage: 8
-  rayRadius: 0.15
-  attackRange: 3.2
-  SFXSource: {fileID: 8591460160180508591}
-  swingHit: {fileID: 8300000, guid: 6fa705728cff43d4e9873b9afcd04676, type: 3}
-  swingMiss: {fileID: 8300000, guid: 82689117a58c13c42920d4e1164d4c7d, type: 3}
+  data: {fileID: 11400000, guid: 6b1cb9a45c870d142a41a8825c398a8b, type: 2}
 --- !u!82 &8591460160180508591
 AudioSource:
   m_ObjectHideFlags: 0

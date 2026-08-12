@@ -4,14 +4,7 @@ using System.Collections;
 using UnityEditor.U2D;
 
 public class Weapon : Item {
-    public float attackDuration;
-    public float damage;
-    public float rayRadius;
-    public float attackRange;
-
-    [SerializeField] AudioSource SFXSource;
-    public AudioClip swingHit;
-    public AudioClip swingMiss;
+    public CrowbarData data;
 
     public override void OnNetworkSpawn() {
         base.OnNetworkSpawn();
@@ -51,20 +44,16 @@ public class Weapon : Item {
         Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
         LayerMask ignoreMask = ~LayerMask.GetMask("Hunter", "groundLayer", "Ignore Raycast");
 
-        Debug.DrawRay(ray.origin, ray.direction * attackRange, Color.red, 5f);
+        Debug.DrawRay(ray.origin, ray.direction * data.attackRange, Color.red, 5f);
 
-        if (Physics.SphereCast(ray, rayRadius, out RaycastHit hit, attackRange)) Debug.Log(hit.collider.gameObject.name + ", " + hit.collider.gameObject.tag);
-        if (Physics.SphereCast(ray, rayRadius, out hit, attackRange, ignoreMask)) {
+        if (Physics.SphereCast(ray, data.rayRadius, out RaycastHit hit, data.attackRange)) Debug.Log(hit.collider.gameObject.name + ", " + hit.collider.gameObject.tag);
+        if (Physics.SphereCast(ray, data.rayRadius, out hit, data.attackRange, ignoreMask)) {
 
             Debug.Log(hit.collider.gameObject.name + ", " + hit.collider.gameObject.tag);
 
             if (hit.collider.gameObject.tag == "PlayerMouse") {
                 RatPlayer colliderRatScript = hit.collider.gameObject.GetComponent<RatPlayer>();
-                colliderRatScript.EditHealthServerRpc(colliderRatScript.health.Value - damage);
-
-                // temp sound effect
-                SFXSource.clip = swingHit;
-                SFXSource.Play();
+                colliderRatScript.EditHealthServerRpc(colliderRatScript.health.Value - data.damage);
             }
         }
     }
