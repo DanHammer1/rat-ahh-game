@@ -31,7 +31,7 @@ public class Weapon : Item {
             player.isSwinging = true;
             StartCoroutine(SetIsSwingingDelay(player, false));
         }
-        Invoke("CheckPlayerCollision", attackDuration);
+        Invoke("CheckPlayerCollision", data.attackDuration);
     }
 
     public IEnumerator SetIsSwingingDelay(HumanPlayer player, bool state) {
