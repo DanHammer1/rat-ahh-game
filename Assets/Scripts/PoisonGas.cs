@@ -29,7 +29,7 @@ public class PoisonGas : NetworkBehaviour {
         if (Physics.SphereCast(
             transform.position,
             0.1f,
-            PlayerCamera.mainCamera.transform.forward,
+            transform.forward,
             out hit,
             1f, LayerMask.GetMask("groundLayer"))) {
             travelDistance = Mathf.Max(hit.distance, 0.01f);
