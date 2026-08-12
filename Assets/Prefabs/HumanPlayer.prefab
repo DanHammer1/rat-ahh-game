@@ -311,6 +311,8 @@ MonoBehaviour:
   rigBuilder: {fileID: 0}
   dizzyDuration: 0
   currentSlapCount: 0
+  isSwinging: 0
+  isSpraying: 1
 --- !u!114 &6867819731970602610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -540,6 +542,10 @@ MonoBehaviour:
       NameHash: 1303860790
       Synchronize: 1
       ParameterType: 4
+    - name: isSpraying
+      NameHash: -1414085746
+      Synchronize: 1
+      ParameterType: 4
   AnimatorParametersExpanded: 0
 --- !u!114 &542472084966609988
 MonoBehaviour:
@@ -725,6 +731,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  isCrawling: 0
   standCheckMask:
     serializedVersion: 2
     m_Bits: 1919
@@ -742,6 +749,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   cooldown: 0
+  humanPlayerRef:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
   parentGameObjectName: 
 --- !u!1 &1429462584268190609
 GameObject:
@@ -1235,7 +1246,7 @@ Transform:
   m_GameObject: {fileID: 4219599654096465067}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: -0, z: -0.00123}
   m_LocalScale: {x: 0.03679957, y: 0.036799524, z: 0.03679955}
   m_ConstrainProportionsScale: 0
   m_Children: []

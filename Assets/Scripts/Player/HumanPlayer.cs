@@ -24,6 +24,7 @@ public class HumanPlayer : Player {
     public float dizzyDuration;
     public int currentSlapCount;
     public bool isSwinging = false;
+    public bool isSpraying = true;
 
     public static Action onHumanClung;
 
