@@ -5,19 +5,21 @@ using Unity.VisualScripting;
 
 public class PoisonGasCan : Item {
 
+    Vector3 spawnPos;
+
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void SpawnPoisonGasRpc() {
+    public void SpawnPoisonGasRpc(Quaternion cameraRotation) {
         // Vector3 spawnPos = Player.localPlayer.viewPosition.transform.position + (PlayerCamera.mainCamera.transform.forward * 0.2f) + (-PlayerCamera.mainCamera.transform.up * 0.2f);
-        Vector3 spawnPos = Player.localPlayer.transform.Find("Armature/Hip/Spine/Upper Arm.R/Lower Arm.R/Hand.R/Hand.R_end").position;
-        Debug.Log(spawnPos);
-        Quaternion spawnRotation = PlayerCamera.mainCamera.transform.rotation;
-        GameObject poisonGas = Instantiate(Assets.instance.poisonGasPrefab, spawnPos, spawnRotation);
+        if (humanPlayerRef.Value.TryGet(out NetworkObject playerObj)) {
+            spawnPos = playerObj.transform.Find("Armature/Hip/Spine/Upper Arm.R/Lower Arm.R/Hand.R/Hand.R_end").position;
+        }
+        GameObject poisonGas = Instantiate(Assets.instance.poisonGasPrefab, spawnPos, cameraRotation);
         poisonGas.GetComponent<NetworkObject>().Spawn();
     }
 
 
     public override void UseItem() {
-        SpawnPoisonGasRpc();
+        SpawnPoisonGasRpc(PlayerCamera.mainCamera.transform.rotation);
         // GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.CrowbarSwing);
         if (humanPlayerRef.Value.TryGet(out NetworkObject playerObj)) {
             Crawl crawl = playerObj.GetComponent<Crawl>();
