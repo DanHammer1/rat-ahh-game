@@ -5,6 +5,9 @@ using UnityEngine;
 using Unity.Netcode.Components;
 
 public abstract class Item : NetworkBehaviour, IInteractable {
+    [SerializeField] private bool showInteractionUI = true;
+
+    public bool ShowInteractionUI => showInteractionUI;
     private float pickUpProgress = 0;
     private float totalInteractionTime = 0.7f;
     public float cooldown;

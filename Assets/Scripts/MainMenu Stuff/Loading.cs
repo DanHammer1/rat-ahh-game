@@ -25,9 +25,23 @@ public class Loading : NetworkBehaviour {
         if (NetworkManager.Singleton.IsServer) {
             NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += OnLoadEventCompleted;
         }
-
+        string sceneToLoad;
+        switch (GameManager.gameState) {
+            case GameManager.GameState.MAINMENU:
+                sceneToLoad = "Lobby";
+                break;
+            case GameManager.GameState.LOBBY:
+                sceneToLoad = "Game";
+                break;
+            case GameManager.GameState.GAME:
+                sceneToLoad = "Lobby";
+                break;
+            default:
+                sceneToLoad = "Lobby";
+                break;
+        }
         NetworkManager.Singleton.SceneManager.LoadScene(
-            "Game",
+            $"{sceneToLoad}",
             LoadSceneMode.Single
         );
     }

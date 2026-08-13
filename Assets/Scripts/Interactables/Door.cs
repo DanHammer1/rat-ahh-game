@@ -3,6 +3,9 @@ using Unity.Netcode;
 using System;
 
 public class Door : NetworkBehaviour, IInteractable {
+    [SerializeField] private bool showInteractionUI = true;
+
+    public bool ShowInteractionUI => showInteractionUI;
     public Collider doorCollider;
     private Animator animator;
 

@@ -5,6 +5,9 @@ using UnityEngine;
 using System;
 
 public class Cheese : NetworkBehaviour, IInteractable {
+    [SerializeField] private bool showInteractionUI = true;
+
+    public bool ShowInteractionUI => showInteractionUI;
     public bool playerInRange = false;
     private RatPlayer localPlayerInRange;
 

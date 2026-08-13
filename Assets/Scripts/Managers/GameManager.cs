@@ -11,9 +11,15 @@ public class GameManager : NetworkBehaviour {
         HUNTER,
         HIDER
     };
+    public enum GameState {
+        MAINMENU,
+        LOBBY,
+        GAME,
+    }
 
     public static GameManager Instance;
     public static bool playersSpawned = false;
+    public static GameState gameState = GameState.MAINMENU;
 
     public GameObject ratPrefab;
     public GameObject hunterPrefab;

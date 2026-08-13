@@ -94,9 +94,7 @@ public class HumanPlayer : Player {
             float mouseMovement = Mathf.Sqrt(Mathf.Pow(Input.GetAxis("Mouse X"), 2f) + Mathf.Pow(Input.GetAxis("Mouse Y"), 2));
             ratAbilityHumanShakeMeter.Value += Time.deltaTime;
             ratAbilityHumanShakeMeter.Value += mouseMovement / 100;
-            // UpdateRatAbilityShakeMeterRpc(ratAbilityHumanShakeMeter.Value + mouseMovement / 100);
             if (ratAbilityHumanShakeMeter.Value > Constants.maxRatAbilityHumanShakeMeter) {
-                // UpdateRatAbilityShakeMeterRpc(Constants.maxRatAbilityHumanShakeMeter);
                 ratAbilityHumanShakeMeter.Value = Constants.maxRatAbilityHumanShakeMeter;
             }
 
@@ -104,13 +102,10 @@ public class HumanPlayer : Player {
             Debug.Log(ratAbilityHumanShakeMeter.Value);
         } else if (isDizzy.Value) {
             ratAbilityShakeUI?.SetActive(false);
-            // UpdateRatAbilityShakeMeterRpc(0);
             ratAbilityHumanShakeMeter.Value = 0;
         } else {
             ratAbilityShakeUI?.SetActive(false);
-            // UpdateRatAbilityShakeMeterRpc(0);
             ratAbilityHumanShakeMeter.Value = 0;
-            movement.isMovementLocked = false;
         }
 
         if (slapCount.Value > currentSlapCount) {

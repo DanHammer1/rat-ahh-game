@@ -748,6 +748,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  showInteractionUI: 1
   cooldown: 0
   humanPlayerRef:
     UpdateTraits:

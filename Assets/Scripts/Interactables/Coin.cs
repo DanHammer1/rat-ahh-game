@@ -7,6 +7,9 @@ using System;
 using System.Collections;
 
 public class Coin : NetworkBehaviour, IInteractable {
+    [SerializeField] private bool showInteractionUI = true;
+
+    public bool ShowInteractionUI => showInteractionUI;
     public NetworkVariable<bool> isBeingCarried = new NetworkVariable<bool>(false);
     public NetworkVariable<NetworkObjectReference> playerCarryingCoin = new NetworkVariable<NetworkObjectReference>();
     //bool hasBeenDelivered = false;

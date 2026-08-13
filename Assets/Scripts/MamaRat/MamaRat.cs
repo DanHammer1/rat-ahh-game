@@ -3,6 +3,9 @@ using Unity.Netcode;
 using System;
 
 public class MamaRat : NetworkBehaviour, IInteractable {
+    [SerializeField] private bool showInteractionUI = true;
+
+    public bool ShowInteractionUI => showInteractionUI;
     private Animator animator;
 
     private float interactionProgress = 0;

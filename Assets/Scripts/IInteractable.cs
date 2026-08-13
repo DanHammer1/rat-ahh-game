@@ -1,8 +1,10 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 public interface IInteractable {
+    bool ShowInteractionUI { get; }
     public void Interact();
 
     public string GetInteractionPromptText();
@@ -52,6 +54,9 @@ public interface IInteractable {
 
         GameObject interactPrompt = GameObject.FindWithTag("InteractionPrompt");
         IInteractable implementationScript = hit.collider.gameObject.GetComponent<IInteractable>();
+        if (!implementationScript.ShowInteractionUI) {
+            return false;
+        }
         string newInteractText = implementationScript.GetInteractionPromptText();
         interactPrompt.GetComponent<TextMeshProUGUI>().text = newInteractText;
         implementationScript.UpdateProgressBar(implementationScript.GetProgress());
@@ -115,7 +120,7 @@ public interface IInteractable {
         GameObject interactFillBar = GameObject.FindWithTag("ProgressFillBar");
 
         if (interactPrompt == null) {
-            Debug.LogError("No prompt found.");
+            // Debug.LogError("No prompt found.");
             return;
         }
 

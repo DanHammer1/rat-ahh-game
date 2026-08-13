@@ -39,8 +39,6 @@ public class RatClingAbility : Ability {
         ratAbilityShakeUI = GameObject.FindWithTag("Rat Ability Shake UI");
         ratAbilityShakeUI.SetActive(false);
 
-        scoreText = GameObject.FindWithTag("Score").GetComponent<TextMeshProUGUI>();
-
         abilityTimer.AddProgressionCondition(() => !GetComponent<Movement>().isPerformingAbility);
     }
 
