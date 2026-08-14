@@ -102,7 +102,7 @@ public class GameManager : NetworkBehaviour {
         return (PlayerRole)Instance.clientRoles[Instance.clientIds.IndexOf(clientId)];
     }
 
-    void SpawnPlayer(GameManager.PlayerRole role, ulong clientId) {
+    public void SpawnPlayer(GameManager.PlayerRole role, ulong clientId) {
         if (!IsServer) return;
 
         GameObject playerInstance;
