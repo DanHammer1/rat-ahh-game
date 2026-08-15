@@ -76,6 +76,7 @@ public class Movement : NetworkBehaviour {
             crawl = GetComponent<Crawl>();
             crawl.onCrawlStart += () => moveSpeed *= Constants.crawlSpeedMultiplier;
             crawl.onCrawlEnd += () => moveSpeed *= 1 / Constants.crawlSpeedMultiplier;
+
         }
         movementRecoveryMultiplier = 1;
 
@@ -96,9 +97,11 @@ public class Movement : NetworkBehaviour {
             Vector3.down,
             out RaycastHit hit,
             Quaternion.Euler(0, transform.eulerAngles.y, 0),
-            0.035f, GROUNDLAYER))
+            0.035f, GROUNDLAYER)) {
+            // Debug.Log("detected ground");
             return true;
-
+        }
+        // Debug.Log("didn't detect ground");
         return false;
     }
 
@@ -191,13 +194,6 @@ public class Movement : NetworkBehaviour {
 
             Vector3 velocityChange = targetVelocity - velocity;
             rb.AddForce(velocityChange * forceMultiplier, ForceMode.Acceleration);
-
-            //LimitSpeed(moveSpeed);
-
-            /*if (isGrounded && moveHorizontal == 0 && moveForward == 0)
-            {
-                rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
-            }*/
         }
     }
 

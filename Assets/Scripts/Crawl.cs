@@ -44,7 +44,6 @@ public class Crawl : NetworkBehaviour {
     void Update() {
         if (!IsOwner) return;
         if (Input.GetKey(KeyCode.LeftShift)) {
-            Debug.Log($"{isCrawling} + {hunterPlayer.isSwinging}");
             if (!isCrawling && !hunterPlayer.isSwinging) {
                 onCrawlStart?.Invoke();
                 isTryingToStand = false;
