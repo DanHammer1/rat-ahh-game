@@ -67,8 +67,15 @@ public class HumanPlayer : Player {
 
         PlayerCamera.instance.onFirstPersonEnter += EnableRigBuilderRpc;
         PlayerCamera.instance.onThirdPersonEnter += DisableRigBuilderRpc;
+        PlayerCamera.instance.thirdPersonRadius = 0;
 
         GameObject.FindWithTag("AbilityParent").SetActive(false);
+    }
+
+    public override void OnNetworkDespawn() {
+        base.OnNetworkDespawn();
+        PlayerCamera.instance.onFirstPersonEnter -= EnableRigBuilderRpc;
+        PlayerCamera.instance.onThirdPersonEnter -= DisableRigBuilderRpc;
     }
 
     [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]

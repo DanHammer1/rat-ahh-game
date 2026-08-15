@@ -18,7 +18,7 @@ public class PlayerCamera : MonoBehaviour {
     Movement movement;
     SkinnedMeshRenderer playerRenderer;
 
-    float thirdPersonRadius; // If 0 then first person.
+    public float thirdPersonRadius; // If 0 then first person.
     public bool isCameraLocked;
 
     void Awake() {
@@ -105,6 +105,10 @@ public class PlayerCamera : MonoBehaviour {
             GameManager.PlayerRole.HIDER => Mathf.Clamp(thirdPersonRadius, 0, Constants.ratMaxCameraThirdPersonRadius),
             _ => thirdPersonRadius
         };
+
+        if (thirdPersonRadius < 0.2) {
+            thirdPersonRadius = 0;
+        } // temp solution, will break when mouse sensitivity introduced
 
 
         if (thirdPersonRadius == 0) {

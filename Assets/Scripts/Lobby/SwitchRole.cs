@@ -28,8 +28,11 @@ public class SwitchRole : NetworkBehaviour {
         EditClientRoleServerRpc(clientId, role);
 
         NetworkClient client = NetworkManager.Singleton.ConnectedClients[clientId];
+        Transform playerObject = client.PlayerObject.transform;
+        Vector3 spawnPos = playerObject.position;
+        Quaternion spawnRotation = playerObject.rotation;
         client.PlayerObject.Despawn(true);
-        GameManager.Instance.SpawnPlayer(role, clientId);
+        GameManager.Instance.SpawnPlayer(role, clientId, spawnPos, spawnRotation);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -39,7 +42,6 @@ public class SwitchRole : NetworkBehaviour {
     }
 
     void OnTriggerEnter() {
-        Debug.Log("switched");
         SwitchRoles();
     }
 }

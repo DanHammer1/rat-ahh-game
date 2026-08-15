@@ -36,7 +36,7 @@ public class RatClingAbility : Ability {
         if (!IsOwner) return;
 
         ratAbilityInRange = false;
-        ratAbilityShakeUI = GameObject.FindWithTag("Rat Ability Shake UI");
+        ratAbilityShakeUI = Assets.instance.ratAbilityShakeUI;
         ratAbilityShakeUI.SetActive(false);
 
         abilityTimer.AddProgressionCondition(() => !GetComponent<Movement>().isPerformingAbility);

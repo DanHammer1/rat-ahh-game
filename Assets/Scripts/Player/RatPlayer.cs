@@ -12,6 +12,7 @@ using UnityEditor.Search;
 public class RatPlayer : Player {
     public override void OnNetworkSpawn() {
         base.OnNetworkSpawn();
+        Assets.instance.abilityParent.SetActive(true);
     }
 
     protected override void Update() {

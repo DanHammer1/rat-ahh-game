@@ -25,6 +25,11 @@ public class Assets : MonoBehaviour {
     public GameObject poisonGasPrefab;
     #endregion
 
+    #region "GameObjects"
+    public GameObject abilityParent;
+    public GameObject ratAbilityShakeUI;
+    #endregion
+
     #region "Sound Effects"
     public EventReference ratDashAbilitySFX;
     public EventReference invisibilityEnterSFX;

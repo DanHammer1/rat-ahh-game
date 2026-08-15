@@ -102,14 +102,14 @@ public class GameManager : NetworkBehaviour {
         return (PlayerRole)Instance.clientRoles[Instance.clientIds.IndexOf(clientId)];
     }
 
-    public void SpawnPlayer(GameManager.PlayerRole role, ulong clientId) {
+    public void SpawnPlayer(GameManager.PlayerRole role, ulong clientId, Vector3 spawnPos = default, Quaternion spawnRotation = default) {
         if (!IsServer) return;
 
         GameObject playerInstance;
         if (role == GameManager.PlayerRole.HUNTER) {
-            playerInstance = Instantiate(hunterPrefab);
+            playerInstance = Instantiate(hunterPrefab, spawnPos, spawnRotation);
         } else {
-            playerInstance = Instantiate(ratPrefab);
+            playerInstance = Instantiate(ratPrefab, spawnPos, spawnRotation);
         }
         NetworkObject netObj = playerInstance.GetComponent<NetworkObject>();
 

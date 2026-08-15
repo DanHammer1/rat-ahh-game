@@ -687,6 +687,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  showInteractionUI: 1
   doorCollider: {fileID: 0}
   doorState: 1
 --- !u!114 &118130794
@@ -4793,6 +4794,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  showInteractionUI: 1
   doorCollider: {fileID: 0}
   doorState: 1
 --- !u!114 &853799764
@@ -6670,6 +6672,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  showInteractionUI: 1
   doorCollider: {fileID: 0}
   doorState: 1
 --- !u!114 &1223868511
@@ -9693,6 +9696,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 965f643b6585ae845bf83ad7410e9bae, type: 2}
   invisibilityMaterial: {fileID: 2100000, guid: e3cc83cd82e0d914784b2f945aabfb10, type: 2}
   poisonGasPrefab: {fileID: 4443721202340868769, guid: e7cb6f0d54dd55549bf4a2cc07d6e266, type: 3}
+  abilityParent: {fileID: 1962888624}
+  ratAbilityShakeUI: {fileID: 680648393}
   ratDashAbilitySFX:
     Guid:
       Data1: 1793818506
@@ -16875,6 +16880,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  showInteractionUI: 1
 --- !u!4 &4123878016641198184
 Transform:
   m_ObjectHideFlags: 0

@@ -40,8 +40,10 @@ public abstract class Ability : NetworkBehaviour {
     public override void OnNetworkSpawn() {
         if (!IsOwner) return;
 
-        GameObject abilityParent = GameObject.FindWithTag("AbilityParent");
+        GameObject abilityParent = Assets.instance.abilityParent;
+        if (abilityParent == null) Debug.Log("abilityParent is null");
         GameObject abilitySlot = abilityParent.transform.GetChild(abilitySlotIndex + 1).gameObject;
+        if (abilitySlot == null) Debug.Log("abilitySlot is null");
         GameObject abilityHotKey = abilitySlot.transform.Find("Hotkey").gameObject;
         abilityHotKeyText = abilityHotKey.GetComponent<TextMeshProUGUI>();
 
