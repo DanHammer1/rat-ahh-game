@@ -171,7 +171,7 @@ GameObject:
   - component: {fileID: 8643121179215462194}
   - component: {fileID: -451291058327095747}
   m_Layer: 7
-  m_Name: HumanPlayer
+  m_Name: HunterPlayer
   m_TagString: PlayerHunter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -328,25 +328,25 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   headBone: {fileID: 0}
   lookTarget: {fileID: 7927201847556250970}
-  moveSpeed: 2
+  moveSpeed: 1.3
   speed: 0
   moveHorizontal: 0
   moveForward: 0
   isPerformingAbility: 0
   isMovementLocked: 0
   isRotationLocked: 0
-  movementRecoveryMultiplier: 0
-  jumpforce: 10
-  fallMultiplier: 2.5
-  ascendMultiplier: 2
+  movementRecoveryMultiplier: 1
+  jumpforce: 0.3
+  fallMultiplier: 0.7
+  ascendMultiplier: 0.7
   isGrounded: 1
   toggleGravity: 1
   pressedSpace: 0
   eyePosition: {fileID: 0}
   timeAirborne: 0
   groundCheckDelay: 0.3
-  playerHeight: 0
-  raycastDistance: 0
+  playerHeight: 0.8
+  raycastDistance: 0.1
   movement: {x: 0, y: 0, z: 0}
   yaw: 0
 --- !u!114 &1192673047784221271
