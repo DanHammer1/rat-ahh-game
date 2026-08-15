@@ -31,8 +31,8 @@ public class SwitchRole : NetworkBehaviour {
         Transform playerObject = client.PlayerObject.transform;
         Vector3 spawnPos = playerObject.position;
         Quaternion spawnRotation = playerObject.rotation;
-        client.PlayerObject.Despawn(true);
-        GameManager.Instance.SpawnPlayer(role, clientId, spawnPos, spawnRotation);
+        DespawnClientServerRpc(clientId);
+        SpawnPlayerServerRpc(role, clientId, spawnPos, spawnRotation);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -40,8 +40,22 @@ public class SwitchRole : NetworkBehaviour {
         GameManager.Instance.clientRoles[GameManager.Instance.clientIds.IndexOf(clientId)]
                 = (int)(preference);
     }
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    void SpawnPlayerServerRpc(GameManager.PlayerRole role, ulong clientId, Vector3 spawnPos, Quaternion spawnRotation) {
+        GameManager.Instance.SpawnPlayer(role, clientId, spawnPos, spawnRotation);
+    }
 
-    void OnTriggerEnter() {
-        SwitchRoles();
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    private void DespawnClientServerRpc(ulong clientId) {
+        NetworkClient client = NetworkManager.Singleton.ConnectedClients[clientId];
+        if (client != null) {
+            client.PlayerObject.Despawn(true);
+        }
+    }
+
+    void OnTriggerEnter(Collider other) {
+        if (Player.localPlayer.gameObject == other.gameObject) {
+            SwitchRoles();
+        }
     }
 }
