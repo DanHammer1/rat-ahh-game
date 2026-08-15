@@ -5,7 +5,6 @@ TagManager:
   serializedVersion: 3
   tags:
   - PlayerMouse
-  - PlayerHuman
   - Interact Prompt
   - Score
   - Rat Stun Hitbox
@@ -39,6 +38,7 @@ TagManager:
   - ObjectiveSpawner
   - MamaRat
   - RaceTimer
+  - PlayerHunter
   layers:
   - Default
   - TransparentFX

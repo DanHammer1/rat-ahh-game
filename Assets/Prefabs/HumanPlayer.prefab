@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: -451291058327095747}
   m_Layer: 7
   m_Name: HumanPlayer
-  m_TagString: PlayerHuman
+  m_TagString: PlayerHunter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -288,7 +288,7 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
-  ratAbilityHumanShakeMeter:
+  ratAbilityHunterShakeMeter:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
@@ -750,7 +750,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   showInteractionUI: 1
   cooldown: 0
-  humanPlayerRef:
+  hunterPlayerRef:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
