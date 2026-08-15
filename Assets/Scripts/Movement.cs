@@ -229,5 +229,6 @@ public class Movement : NetworkBehaviour {
 
         rb.AddForce(new Vector3(0, jumpVelocity, 0) *
             forceMultiplier * jumpForceMultiplier, ForceMode.Impulse);
+        Debug.Log("HI");
     }
 }
