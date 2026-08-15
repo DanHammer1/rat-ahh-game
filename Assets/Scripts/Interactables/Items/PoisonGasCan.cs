@@ -9,7 +9,7 @@ public class PoisonGasCan : Item {
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void SpawnPoisonGasRpc(Quaternion cameraRotation) {
-        if (humanPlayerRef.Value.TryGet(out NetworkObject playerObj)) {
+        if (hunterPlayerRef.Value.TryGet(out NetworkObject playerObj)) {
             spawnPos = playerObj.transform.Find("Armature/Hip/Spine/Upper Arm.R/Lower Arm.R/Hand.R/Hand.R_end").position;
         }
         GameObject poisonGas = Instantiate(Assets.instance.poisonGasPrefab, spawnPos, cameraRotation);
@@ -20,9 +20,9 @@ public class PoisonGasCan : Item {
     public override void UseItem() {
         SpawnPoisonGasRpc(PlayerCamera.mainCamera.transform.rotation);
         // GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.CrowbarSwing);
-        if (humanPlayerRef.Value.TryGet(out NetworkObject playerObj)) {
+        if (hunterPlayerRef.Value.TryGet(out NetworkObject playerObj)) {
             Crawl crawl = playerObj.GetComponent<Crawl>();
-            HumanPlayer player = playerObj.GetComponent<HumanPlayer>();
+            HunterPlayer player = playerObj.GetComponent<HunterPlayer>();
             Animator animator = player.GetComponent<Animator>();
             player.isSpraying = true;
             animator.SetBool("isSpraying", true);
@@ -30,7 +30,7 @@ public class PoisonGasCan : Item {
         }
     }
 
-    public IEnumerator SetIsSprayingDelay(HumanPlayer player, bool state) {
+    public IEnumerator SetIsSprayingDelay(HunterPlayer player, bool state) {
         yield return new WaitForSeconds(cooldown);
         if (!Input.GetMouseButton(0)) {
             player.isSpraying = state;

@@ -29,7 +29,7 @@ public class CameraPostProcessing : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         if (!Player.localPlayer) return;
-        HumanPlayer human = Player.localPlayer as HumanPlayer;
+        HunterPlayer hunter = Player.localPlayer as HunterPlayer;
 
         healthRatio = Player.localPlayer.health.Value / Player.localPlayer.maxHealth.Value;
         Vignette vignette;
@@ -37,29 +37,29 @@ public class CameraPostProcessing : MonoBehaviour {
         DepthOfField depthOfField;
         postProcessingSettings.Profile.TryGet(out depthOfField);
 
-        if (human != null && human.isBeingClung.Value) {
+        if (hunter != null && hunter.isBeingClung.Value) {
             vignette.color.value = new Color(1f, 0.2f, 0.2f); // softer red
-            vignette.intensity.value = -0.5f * Mathf.Exp(-0.1f * (float)human.slapCount.Value) + 0.5f;
-            depthOfField.aperture.value = maxAperture - human.slapCount.Value;
-        } else if (human != null && human.isDizzy.Value) {
+            vignette.intensity.value = -0.5f * Mathf.Exp(-0.1f * (float)hunter.slapCount.Value) + 0.5f;
+            depthOfField.aperture.value = maxAperture - hunter.slapCount.Value;
+        } else if (hunter != null && hunter.isDizzy.Value) {
             if (!startedRecovery) {
                 startVignetteIntensity = vignette.intensity.value;
                 startDepthOfFieldAperture = depthOfField.aperture.value;
                 recoveryTimer = 0f; // reset timer
-                startMovementRecoveryMultiplier = human.movement.movementRecoveryMultiplier;
+                startMovementRecoveryMultiplier = hunter.movement.movementRecoveryMultiplier;
                 startedRecovery = true;
             }
-            human.UpdateDizzyDuration();
-            float t = Mathf.Clamp01(recoveryTimer / human.dizzyDuration);
+            hunter.UpdateDizzyDuration();
+            float t = Mathf.Clamp01(recoveryTimer / hunter.dizzyDuration);
             float easedT = Mathf.SmoothStep(0f, 1f, t);
 
             if (t >= 1) {
-                human.SetIsDizzyServerRpc(false);
+                hunter.SetIsDizzyServerRpc(false);
             }
 
             vignette.intensity.value = Mathf.Lerp(startVignetteIntensity, 0f, easedT);
             depthOfField.aperture.value = Mathf.Lerp(startDepthOfFieldAperture, maxAperture, easedT);
-            human.movement.movementRecoveryMultiplier = Mathf.Lerp(0f, 1, easedT);
+            hunter.movement.movementRecoveryMultiplier = Mathf.Lerp(0f, 1, easedT);
 
             recoveryTimer += Time.deltaTime;
         } else {

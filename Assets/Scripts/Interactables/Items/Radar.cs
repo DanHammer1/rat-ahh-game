@@ -21,7 +21,7 @@ public class Radar : Item {
             }
         }
 
-        ((HumanPlayer)Player.localPlayer).SetCarryingItemRpc(false);
+        ((HunterPlayer)Player.localPlayer).SetCarryingItemRpc(false);
         DespawnServerRpc();
     }
 

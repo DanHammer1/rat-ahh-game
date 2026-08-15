@@ -67,11 +67,11 @@ public class Movement : NetworkBehaviour {
             fallMultiplier = Constants.ratFallMultiplier;
             ascendMultiplier = Constants.ratAscendMultiplier;
         }
-        if (transform.tag == "PlayerHuman") {
-            moveSpeed = Constants.humanMoveSpeed;
-            jumpforce = Constants.humanJumpForce;
-            fallMultiplier = Constants.humanFallMultiplier;
-            ascendMultiplier = Constants.humanAscendMultiplier;
+        if (transform.tag == "PlayerHunter") {
+            moveSpeed = Constants.hunterMoveSpeed;
+            jumpforce = Constants.hunterJumpForce;
+            fallMultiplier = Constants.hunterFallMultiplier;
+            ascendMultiplier = Constants.hunterAscendMultiplier;
             headBone = animator.GetBoneTransform(HumanBodyBones.Head);
             crawl = GetComponent<Crawl>();
             crawl.onCrawlStart += () => moveSpeed *= Constants.crawlSpeedMultiplier;
@@ -146,7 +146,7 @@ public class Movement : NetworkBehaviour {
         //Debug.Log("speed: " + speed + ", moveForwards: " + moveForward + ", moveHorizontal: " + moveHorizontal);
 
 
-        if (transform.tag == "PlayerHuman") {
+        if (transform.tag == "PlayerHunter") {
             lookTarget.transform.position = cameraTransform.position + cameraTransform.forward * 1f;
         }
     }

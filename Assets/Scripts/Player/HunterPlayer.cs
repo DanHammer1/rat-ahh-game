@@ -8,10 +8,10 @@ using UnityEngine.SocialPlatforms;
 using UnityEngine.Animations.Rigging;
 using System;
 
-public class HumanPlayer : Player {
+public class HunterPlayer : Player {
     public GameObject ratAbilityTarget;
     public NetworkVariable<bool> isBeingClung = new NetworkVariable<bool>(false);
-    public NetworkVariable<float> ratAbilityHumanShakeMeter =
+    public NetworkVariable<float> ratAbilityHunterShakeMeter =
     new NetworkVariable<float>(
         0f,
         NetworkVariableReadPermission.Everyone,
@@ -26,7 +26,7 @@ public class HumanPlayer : Player {
     public bool isSwinging = false;
     public bool isSpraying = true;
 
-    public static Action onHumanClung;
+    public static Action onHunterClung;
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void SetCarryingItemRpc(bool state) {
@@ -39,7 +39,7 @@ public class HumanPlayer : Player {
     }
 
     public void CheckJustGotClung(bool state) {
-        if (state != isBeingClung.Value && state == true) onHumanClung?.Invoke();
+        if (state != isBeingClung.Value && state == true) onHunterClung?.Invoke();
     }
 
     void OnDrawGizmos() {
@@ -57,7 +57,6 @@ public class HumanPlayer : Player {
     public override void OnNetworkSpawn() {
         base.OnNetworkSpawn();
         if (IsServer) {
-            // ratAbilityHumanShakeMeter.Value = 0f;
             slapCount.Value = 0;
         }
 
@@ -89,7 +88,7 @@ public class HumanPlayer : Player {
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void UpdateRatAbilityShakeMeterRpc(float newValue) {
-        ratAbilityHumanShakeMeter.Value = newValue;
+        ratAbilityHunterShakeMeter.Value = newValue;
     }
 
     protected override void Update() {
@@ -99,20 +98,20 @@ public class HumanPlayer : Player {
             movement.movementRecoveryMultiplier = Mathf.Exp(-0.1f * slapCount.Value);
             ratAbilityShakeUI?.SetActive(true);
             float mouseMovement = Mathf.Sqrt(Mathf.Pow(Input.GetAxis("Mouse X"), 2f) + Mathf.Pow(Input.GetAxis("Mouse Y"), 2));
-            ratAbilityHumanShakeMeter.Value += Time.deltaTime;
-            ratAbilityHumanShakeMeter.Value += mouseMovement / 100;
-            if (ratAbilityHumanShakeMeter.Value > Constants.maxRatAbilityHumanShakeMeter) {
-                ratAbilityHumanShakeMeter.Value = Constants.maxRatAbilityHumanShakeMeter;
+            ratAbilityHunterShakeMeter.Value += Time.deltaTime;
+            ratAbilityHunterShakeMeter.Value += mouseMovement / 100;
+            if (ratAbilityHunterShakeMeter.Value > Constants.maxRatAbilityHunterShakeMeter) {
+                ratAbilityHunterShakeMeter.Value = Constants.maxRatAbilityHunterShakeMeter;
             }
 
-            shakeProgressBarImage.fillAmount = Mathf.Clamp01(ratAbilityHumanShakeMeter.Value / Constants.maxRatAbilityHumanShakeMeter);
-            Debug.Log(ratAbilityHumanShakeMeter.Value);
+            shakeProgressBarImage.fillAmount = Mathf.Clamp01(ratAbilityHunterShakeMeter.Value / Constants.maxRatAbilityHunterShakeMeter);
+            Debug.Log(ratAbilityHunterShakeMeter.Value);
         } else if (isDizzy.Value) {
             ratAbilityShakeUI?.SetActive(false);
-            ratAbilityHumanShakeMeter.Value = 0;
+            ratAbilityHunterShakeMeter.Value = 0;
         } else {
             ratAbilityShakeUI?.SetActive(false);
-            ratAbilityHumanShakeMeter.Value = 0;
+            ratAbilityHunterShakeMeter.Value = 0;
         }
 
         if (slapCount.Value > currentSlapCount) {

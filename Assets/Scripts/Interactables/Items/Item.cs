@@ -11,7 +11,7 @@ public abstract class Item : NetworkBehaviour, IInteractable {
     private float pickUpProgress = 0;
     private float totalInteractionTime = 0.7f;
     public float cooldown;
-    public NetworkVariable<NetworkObjectReference> humanPlayerRef = new NetworkVariable<NetworkObjectReference>();
+    public NetworkVariable<NetworkObjectReference> hunterPlayerRef = new NetworkVariable<NetworkObjectReference>();
     public string parentGameObjectName;
 
     private NetworkVariable<bool> isEquipped = new NetworkVariable<bool>(false);
@@ -26,8 +26,8 @@ public abstract class Item : NetworkBehaviour, IInteractable {
 
         useTimer.Subscribe(this.gameObject);
         useTimer.AddCompletionCondition(() => {
-            if (NetworkManager.Singleton == null || !humanPlayerRef.Value.TryGet(out NetworkObject humanPlayer)) return false;
-            bool isCarrying = (humanPlayer == Player.localPlayer.NetworkObject);
+            if (NetworkManager.Singleton == null || !hunterPlayerRef.Value.TryGet(out NetworkObject hunterPlayer)) return false;
+            bool isCarrying = (hunterPlayer == Player.localPlayer.NetworkObject);
             return Input.GetMouseButton(0) && isEquipped.Value && isCarrying;
         });
 
@@ -38,7 +38,7 @@ public abstract class Item : NetworkBehaviour, IInteractable {
         ((IInteractable)this).TryInteract();
 
         if (NetworkManager.Singleton == null) return;
-        if (!humanPlayerRef.Value.TryGet(out NetworkObject humanPlayer) || !isEquipped.Value) return;
+        if (!hunterPlayerRef.Value.TryGet(out NetworkObject hunterPlayer) || !isEquipped.Value) return;
 
         if (Player.localPlayer && GameManager.GetLocalRole() != GameManager.PlayerRole.HUNTER) return;
 
@@ -50,16 +50,16 @@ public abstract class Item : NetworkBehaviour, IInteractable {
 
             ToggleCollidersRpc(true);
 
-            ((HumanPlayer)(Player.localPlayer)).SetCarryingItemRpc(false);
+            ((HunterPlayer)(Player.localPlayer)).SetCarryingItemRpc(false);
         }
     }
 
     void LateUpdate() {
         if (NetworkManager.Singleton == null) return;
-        if (!humanPlayerRef.Value.TryGet(out NetworkObject humanPlayer) || !isEquipped.Value) return;
-        Transform humanHand = humanPlayer.transform.Find("Armature/Hip/Spine/Upper Arm.R/Lower Arm.R/Hand.R/Hand.R_end");
+        if (!hunterPlayerRef.Value.TryGet(out NetworkObject hunterPlayer) || !isEquipped.Value) return;
+        Transform hunterHand = hunterPlayer.transform.Find("Armature/Hip/Spine/Upper Arm.R/Lower Arm.R/Hand.R/Hand.R_end");
 
-        Transform parentObject = humanHand.Find(parentGameObjectName);
+        Transform parentObject = hunterHand.Find(parentGameObjectName);
         if (parentObject == null) return;
 
         transform.position = parentObject.position;
@@ -72,14 +72,14 @@ public abstract class Item : NetworkBehaviour, IInteractable {
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void UpdateHumanPlayerRefRpc(NetworkObjectReference playerRef) {
+    public void UpdateHunterPlayerRefRpc(NetworkObjectReference playerRef) {
         if (playerRef.TryGet(out NetworkObject player)) {
-            humanPlayerRef.Value = playerRef;
+            hunterPlayerRef.Value = playerRef;
         }
     }
 
     public bool CheckExtraInteractionConditions() {
-        return (GameManager.GetLocalRole() == GameManager.PlayerRole.HUNTER && !((HumanPlayer)(Player.localPlayer)).isCarryingItem.Value);
+        return (GameManager.GetLocalRole() == GameManager.PlayerRole.HUNTER && !((HunterPlayer)(Player.localPlayer)).isCarryingItem.Value);
     }
 
     public abstract string GetInteractionPromptText();
@@ -92,8 +92,8 @@ public abstract class Item : NetworkBehaviour, IInteractable {
         SetIsEquippedRpc(true);
         GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.itemPickup, Player.localPlayer.transform.position);
 
-        ((HumanPlayer)Player.localPlayer).SetCarryingItemRpc(true);
-        UpdateHumanPlayerRefRpc(Player.localPlayer.NetworkObject);
+        ((HunterPlayer)Player.localPlayer).SetCarryingItemRpc(true);
+        UpdateHunterPlayerRefRpc(Player.localPlayer.NetworkObject);
 
         GetComponent<NetworkTransform>().enabled = true;
     }

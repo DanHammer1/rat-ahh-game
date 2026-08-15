@@ -10,7 +10,7 @@ public class AbilityObjective : Objective {
 
     public AbilityObjective() : base("Use cling ability on a Hunter.") {
         completionScore = ObjectiveScores.abilityScore;
-        HumanPlayer.onHumanClung += () => completed = true;
+        HunterPlayer.onHunterClung += () => completed = true;
     }
 
     public override bool CheckConditionCleared() {

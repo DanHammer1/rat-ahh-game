@@ -20,9 +20,9 @@ public class Weapon : Item {
 
     public void Attack() {
 
-        if (humanPlayerRef.Value.TryGet(out NetworkObject playerObj)) {
+        if (hunterPlayerRef.Value.TryGet(out NetworkObject playerObj)) {
             Crawl crawl = playerObj.GetComponent<Crawl>();
-            HumanPlayer player = playerObj.GetComponent<HumanPlayer>();
+            HunterPlayer player = playerObj.GetComponent<HunterPlayer>();
             if (crawl.isCrawling) {
                 PlayerAnimator.instance.PlayAnimation("Crawl Swing", "isSwinging", 0.15f, 2);
             } else {
@@ -34,7 +34,7 @@ public class Weapon : Item {
         Invoke("CheckPlayerCollision", data.attackDuration);
     }
 
-    public IEnumerator SetIsSwingingDelay(HumanPlayer player, bool state) {
+    public IEnumerator SetIsSwingingDelay(HunterPlayer player, bool state) {
         yield return new WaitForSeconds(cooldown);
         player.isSwinging = state;
     }

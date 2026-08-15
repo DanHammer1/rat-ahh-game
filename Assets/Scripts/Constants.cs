@@ -16,7 +16,7 @@ public class Constants : MonoBehaviour {
     public static float ratAbilityClingRange = 0.19f;
     public static float maxRatAbilityCooldown = 20f;
     public static float ratDashAbilityCooldown = 8f;
-    public static float maxRatAbilityHumanShakeMeter = 20f;
+    public static float maxRatAbilityHunterShakeMeter = 20f;
     public static float ratCameraFOV = 60f;
     public static float ratMaxCameraThirdPersonRadius = 0.8f;
     public static float ratDashAbilityPower = 16f;
@@ -25,14 +25,14 @@ public class Constants : MonoBehaviour {
     public static float ratInvisibilityAbilityVignetteFadeDuration = 0.5f;
     # endregion
 
-    # region "Human"
-    public static float humanMoveSpeed = 1.3f;
+    # region "Hunter"
+    public static float hunterMoveSpeed = 1.3f;
     public static float crawlSpeedMultiplier = 0.4f;
-    public static float humanJumpForce = 0.3f;
-    public static float humanFallMultiplier = 0.7f;
-    public static float humanAscendMultiplier = 0.7f;
-    public static float humanCameraFOV = 60f;
-    public static float humanMaxCameraThirdPersonRadius = 0.4f;
+    public static float hunterJumpForce = 0.3f;
+    public static float hunterFallMultiplier = 0.7f;
+    public static float hunterAscendMultiplier = 0.7f;
+    public static float hunterCameraFOV = 60f;
+    public static float hunterMaxCameraThirdPersonRadius = 0.4f;
     public static float boxColliderStandingSizeX = 0.1f;
     public static float boxColliderStandingSizeY = 0.8f;
     public static float boxColliderStandingSizeZ = 0.062937f;
