@@ -68,7 +68,7 @@ public class HunterPlayer : Player {
         PlayerCamera.instance.onThirdPersonEnter += DisableRigBuilderRpc;
         PlayerCamera.instance.thirdPersonRadius = 0;
 
-        GameObject.FindWithTag("AbilityParent").SetActive(false);
+        Assets.instance.abilityParent.SetActive(false);
     }
 
     public override void OnNetworkDespawn() {

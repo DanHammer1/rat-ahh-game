@@ -18,39 +18,26 @@ public class SwitchRole : NetworkBehaviour {
     }
 
     void SwitchRoles() {
-        // if (!IsServer) return;
-
         GameManager.PlayerRole playerRole = GameManager.GetLocalRole();
         if (playerRole == role) {
             return;
         }
-        ulong clientId = GameManager.GetLocalId();
-        EditClientRoleServerRpc(clientId, role);
+        SwitchRolesServerRpc(role);
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    void SwitchRolesServerRpc(GameManager.PlayerRole role, RpcParams rpcParams = default) {
+        ulong clientId = rpcParams.Receive.SenderClientId;
+        GameManager.Instance.clientRoles[GameManager.Instance.clientIds.IndexOf(clientId)]
+                = (int)(role);
 
         NetworkClient client = NetworkManager.Singleton.ConnectedClients[clientId];
         Transform playerObject = client.PlayerObject.transform;
         Vector3 spawnPos = playerObject.position;
         Quaternion spawnRotation = playerObject.rotation;
-        DespawnClientServerRpc(clientId);
-        SpawnPlayerServerRpc(role, clientId, spawnPos, spawnRotation);
-    }
-
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    void EditClientRoleServerRpc(ulong clientId, GameManager.PlayerRole preference) {
-        GameManager.Instance.clientRoles[GameManager.Instance.clientIds.IndexOf(clientId)]
-                = (int)(preference);
-    }
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    void SpawnPlayerServerRpc(GameManager.PlayerRole role, ulong clientId, Vector3 spawnPos, Quaternion spawnRotation) {
+        Debug.Log(spawnPos);
+        client.PlayerObject.Despawn(true);
         GameManager.Instance.SpawnPlayer(role, clientId, spawnPos, spawnRotation);
-    }
-
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    private void DespawnClientServerRpc(ulong clientId) {
-        NetworkClient client = NetworkManager.Singleton.ConnectedClients[clientId];
-        if (client != null) {
-            client.PlayerObject.Despawn(true);
-        }
     }
 
     void OnTriggerEnter(Collider other) {
