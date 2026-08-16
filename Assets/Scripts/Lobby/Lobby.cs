@@ -7,11 +7,12 @@ using Unity.Netcode.Transports.UTP;
 using System.Collections.Generic;
 using System.Collections;
 using System;
+using Unity.VisualScripting;
 
 public class Lobby : NetworkBehaviour {
     public TMP_InputField nameInput;
 
-    public TextMeshPro lobbyText;
+    public TextMeshPro[] lobbyTexts;
     public GameObject playerSettingsUI;
 
     bool joined = false;
@@ -147,18 +148,24 @@ public class Lobby : NetworkBehaviour {
             i++;
         }
 
-        lobbyText.text = wantedLobbyText;
+        foreach (TextMeshPro lobbyText in lobbyTexts) {
+            lobbyText.text = wantedLobbyText;
+        }
     }
 
     void OnClientDisconnected(ulong clientId) {
         if (!joined) return;
 
         if (clientId == NetworkManager.Singleton.LocalClientId) {
-            lobbyText.text = "Disconnected.";
+            foreach (TextMeshPro lobbyText in lobbyTexts) {
+                lobbyText.text = "Disconnected.";
+            }
             joined = false;
             return;
         } else if (clientId == NetworkManager.ServerClientId) {
-            lobbyText.text = "Server/Host Disconnected.";
+            foreach (TextMeshPro lobbyText in lobbyTexts) {
+                lobbyText.text = "Server/Host Disconnected.";
+            }
             joined = false;
         }
 
@@ -178,7 +185,9 @@ public class Lobby : NetworkBehaviour {
 
         joined = false;
 
-        lobbyText.text = "Disconnected.";
+        foreach (TextMeshPro lobbyText in lobbyTexts) {
+            lobbyText.text = "Disconnected.";
+        }
 
         NetworkManager.Singleton.Shutdown();
 

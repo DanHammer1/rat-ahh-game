@@ -13,7 +13,7 @@ using Unity.VisualScripting;
 [DefaultExecutionOrder(-100)]
 public class PlayerSettingsUIManager : NetworkBehaviour {
     public TMP_InputField nameInput;
-    public TextMeshPro lobbyText;
+    public TextMeshPro[] lobbyTexts;
     public GameObject playerSettingsUI;
     public MatchSettingsButton matchSettingsButton;
     public CinemachineInputAxisController cinemachineCamera;
@@ -85,7 +85,9 @@ public class PlayerSettingsUIManager : NetworkBehaviour {
             i++;
         }
 
-        lobbyText.text = wantedLobbyText;
+        foreach (TextMeshPro lobbyText in lobbyTexts) {
+            lobbyText.text = wantedLobbyText;
+        }
     }
 
     void Update() {
