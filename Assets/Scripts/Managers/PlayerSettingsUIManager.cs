@@ -8,11 +8,14 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 
+[DefaultExecutionOrder(-100)]
 public class PlayerSettingsUIManager : NetworkBehaviour {
     public TMP_InputField nameInput;
     public TextMeshPro lobbyText;
     public GameObject playerSettingsUI;
+    public MatchSettingsButton matchSettingsButton;
     public CinemachineInputAxisController cinemachineCamera;
     Movement movement;
 
@@ -86,7 +89,7 @@ public class PlayerSettingsUIManager : NetworkBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.BackQuote)) {
+        if (Input.GetKeyDown(KeyCode.BackQuote) && matchSettingsButton.settingsUI == MatchSettingsButton.State.CLOSED) {
             TogglePlayerSettingsUI();
         }
     }

@@ -71,6 +71,10 @@ public class Lobby : NetworkBehaviour {
     public void StartGame() {
         if (!joined) return;
 
+        StartGameServerRpc();
+    }
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    void StartGameServerRpc() {
         NetworkManager.Singleton.SceneManager.LoadScene(
         "LoadingScreen",
         LoadSceneMode.Single);

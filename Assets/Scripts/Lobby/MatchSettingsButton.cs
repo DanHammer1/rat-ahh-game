@@ -2,6 +2,7 @@ using UnityEngine;
 using Unity.Netcode;
 using System;
 using UnityEngine.Rendering;
+using Unity.Cinemachine;
 
 public class MatchSettingsButton : NetworkBehaviour, IInteractable {
     [SerializeField] private bool showInteractionUI = true;
@@ -11,6 +12,7 @@ public class MatchSettingsButton : NetworkBehaviour, IInteractable {
     private float interactionCompletionTime = 0f;
     private bool interactable = true;
     public GameObject matchSettingsUI;
+    public CinemachineInputAxisController cinemachineCamera;
     Movement movement;
 
     public enum State {
@@ -34,25 +36,24 @@ public class MatchSettingsButton : NetworkBehaviour, IInteractable {
         }
     }
     public void Interact() {
-        matchSettingsUI.SetActive(true);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        showInteractionUI = false;
+        IsInteracting(true);
         InteractSettingsRpc();
-        interactable = false;
-        movement = Player.localPlayer.GetComponent<Movement>();
-        movement.isMovementLocked = true;
     }
 
     public void CloseMatchSettings() {
-        matchSettingsUI.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        showInteractionUI = true;
+        IsInteracting(false);
         InteractSettingsRpc();
-        interactable = true;
+    }
+
+    void IsInteracting(bool state) {
+        matchSettingsUI.SetActive(state);
+        Cursor.lockState = state ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.visible = state;
+        showInteractionUI = !state;
+        cinemachineCamera.enabled = !state;
+        interactable = !state;
         movement = Player.localPlayer.GetComponent<Movement>();
-        movement.isMovementLocked = false;
+        movement.isMovementLocked = state;
     }
 
     public void OnInteractingExit() {
@@ -95,7 +96,7 @@ public class MatchSettingsButton : NetworkBehaviour, IInteractable {
             ((IInteractable)this).TryInteract();
         }
 
-        if (Input.GetKey(KeyCode.Escape) && settingsUI == State.OPEN) {
+        if (Input.GetKey(KeyCode.BackQuote) && settingsUI == State.OPEN) {
             CloseMatchSettings();
         }
     }
