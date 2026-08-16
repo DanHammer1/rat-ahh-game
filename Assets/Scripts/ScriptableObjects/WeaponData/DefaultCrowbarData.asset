@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 750987a66156a1247a44bfa6511f0dff, type: 3}
   m_Name: DefaultCrowbarData
   m_EditorClassIdentifier: 
-  attackDuration: 0
-  damage: 0
-  rayRadius: 0
-  attackRange: 0
+  attackDuration: 0.5
+  damage: 8
+  rayRadius: 0.15
+  attackRange: 3.2
