@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 
 public class BobAnimation : MonoBehaviour {
-    [SerializeField] float bobHeight = 0.5f;
+    [SerializeField] float bobHeight = 0.04f;
     [SerializeField] float bobSpeed = 4f;
 
     Vector3 startPos;
