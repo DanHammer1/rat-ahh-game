@@ -115,7 +115,14 @@ public abstract class Item : NetworkBehaviour, IInteractable {
         return pickUpProgress;
     }
 
-    public abstract void UseItem();
+    public void UseItem() {
+        // Disabled if being clung
+        if (hunterPlayerRef.Value.TryGet(out NetworkObject playerObj)) {
+            if (playerObj.GetComponent<HunterPlayer>().isBeingClung.Value) return;
+        }
+        OnUseItem();
+    }
+    public abstract void OnUseItem();
 
     public void OnInteractingExit() {
         pickUpProgress = 0;

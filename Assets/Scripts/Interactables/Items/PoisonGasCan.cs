@@ -17,8 +17,7 @@ public class PoisonGasCan : Item {
     }
 
 
-    public override void UseItem() {
-        SpawnPoisonGasRpc(PlayerCamera.mainCamera.transform.rotation);
+    public override void OnUseItem() {
         // GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.CrowbarSwing);
         if (hunterPlayerRef.Value.TryGet(out NetworkObject playerObj)) {
             Crawl crawl = playerObj.GetComponent<Crawl>();
@@ -28,6 +27,7 @@ public class PoisonGasCan : Item {
             animator.SetBool("isSpraying", true);
             StartCoroutine(SetIsSprayingDelay(player, false));
         }
+        SpawnPoisonGasRpc(PlayerCamera.mainCamera.transform.rotation);
     }
 
     public IEnumerator SetIsSprayingDelay(HunterPlayer player, bool state) {

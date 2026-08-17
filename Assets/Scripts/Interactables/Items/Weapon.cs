@@ -9,7 +9,7 @@ public class Weapon : Item {
     public override void OnNetworkSpawn() {
         base.OnNetworkSpawn();
     }
-    public override void UseItem() {
+    public override void OnUseItem() {
         Attack();
         GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.CrowbarSwing);
     }

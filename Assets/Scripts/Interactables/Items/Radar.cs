@@ -2,7 +2,7 @@ using UnityEngine;
 using Unity.Netcode;
 
 public class Radar : Item {
-    public override void UseItem() {
+    public override void OnUseItem() {
         GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.radarUse, transform.GetChild(0).position);
         Player[] players = FindObjectsByType<Player>(FindObjectsSortMode.None);
 
