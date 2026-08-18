@@ -4,6 +4,7 @@ using Unity.Netcode;
 public class PiggyBankFractured : NetworkBehaviour {
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     void DestroyRpc() {
+        GameManager.Instance.spawnedObjectsToDespawn.Remove(NetworkObject);
         Destroy(this.gameObject);
     }
 

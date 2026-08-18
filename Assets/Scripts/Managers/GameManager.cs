@@ -29,6 +29,8 @@ public class GameManager : NetworkBehaviour {
     public NetworkList<FixedString32Bytes> clientNames = new NetworkList<FixedString32Bytes>();
     public NetworkList<int> clientRoles = new NetworkList<int>();
 
+    public List<NetworkObject> spawnedObjectsToDespawn = new List<NetworkObject>();
+
     void Awake() {
         if (Instance != null && Instance != this) {
             Destroy(gameObject);
@@ -47,6 +49,13 @@ public class GameManager : NetworkBehaviour {
                 GetComponent<ProgressManager>().onActivateExecuted = false;
             }
         };
+    }
+
+    public void DespawnObjects() {
+        foreach (NetworkObject objectToDespawn in spawnedObjectsToDespawn) {
+            objectToDespawn.Despawn(true);
+        }
+        spawnedObjectsToDespawn.Clear();
     }
 
     private static List<ulong> GetIds(int role) {
@@ -138,6 +147,10 @@ public class GameManager : NetworkBehaviour {
     public void OnGameStartClientRpc() {
         gameObject.GetComponent<ProgressManager>().enabled = true;
         StartCoroutine(gameObject.GetComponent<ProgressManager>().OnActivate());
+    }
+    [ClientRpc]
+    public void OnLobbyStartClientRpc() {
+        gameObject.GetComponent<ProgressManager>().OnDeactivate();
     }
 
     public static ulong GetLocalId() {

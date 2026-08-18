@@ -18,24 +18,24 @@ public class PiggyBank : NetworkBehaviour {
             OnBreakRpc(transform.position, transform.rotation);
         }
     }
-
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    void SpawnFracturedPiggyBankRpc(Vector3 position, Quaternion rotation) {
-        Instantiate(piggyBankFracturedPrefab, position, rotation);
+    void SpawnObject(GameObject prefab, Vector3 position, Quaternion rotation) {
+        GameObject coin = Instantiate(prefab, position, rotation);
+        NetworkObject networkObject = coin.GetComponent<NetworkObject>();
+        networkObject.Spawn();
+        GameManager.Instance.spawnedObjectsToDespawn.Add(networkObject);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     void OnBreakRpc(Vector3 position, Quaternion rotation) {
-        GameObject fractured = Instantiate(piggyBankFracturedPrefab, position, rotation);
-        fractured.GetComponent<NetworkObject>().Spawn();
+        SpawnObject(piggyBankFracturedPrefab, position, rotation);
 
         int coinsSpawned = UnityEngine.Random.Range(Constants.piggyBankMinCoinsSpawned, Constants.piggyBankMaxCoinsSpawned + 1);
         for (int i = 0; i < coinsSpawned; i++) {
-            GameObject coin = Instantiate(coinPrefab, position + new Vector3(0, 0.04f * i), rotation);
-            coin.GetComponent<NetworkObject>().Spawn();
+            SpawnObject(coinPrefab, position + new Vector3(0, 0.04f * i), rotation);
         }
 
         if (NetworkObject != null && NetworkObject.IsSpawned) {
+            GameManager.Instance.spawnedObjectsToDespawn.Remove(NetworkObject);
             NetworkObject.Despawn(true);
         }
     }

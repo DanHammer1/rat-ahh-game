@@ -858,7 +858,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  defaultTime: 500
+  defaultTime: 5
   timer: {fileID: 0}
   objectiveUISlot1: {fileID: 0}
   objectiveUISlot2: {fileID: 0}

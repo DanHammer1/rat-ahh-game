@@ -24,7 +24,9 @@ public class PiggyBankSpawner : NetworkBehaviour {
     public void SpawnPiggyBankRpc() {
         spawnPos = Player.localPlayer.transform.position + new Vector3(0, 0.5f, 0);
         GameObject piggyBank = Instantiate(piggyBankPrefab, spawnPos, Quaternion.identity);
-        piggyBank.GetComponent<NetworkObject>().Spawn();
+        NetworkObject networkObject = piggyBank.GetComponent<NetworkObject>();
+        networkObject.Spawn();
+        GameManager.Instance.spawnedObjectsToDespawn.Add(networkObject);
     }
 
 }

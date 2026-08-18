@@ -34,6 +34,8 @@ public class ProgressManager : NetworkBehaviour {
 
         if (onActivateExecuted) yield break;
 
+        GameManager.gameState = GameManager.GameState.GAME;
+
         if (IsServer) time.Value = defaultTime;
 
         onActivateExecuted = true;
@@ -75,6 +77,17 @@ public class ProgressManager : NetworkBehaviour {
         if (GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER) { }
 
         IsActive = true;
+
+    }
+    public void OnDeactivate() {
+
+        GameManager.gameState = GameManager.GameState.LOBBY;
+
+        onActivateExecuted = false;
+
+        IsActive = false;
+        this.enabled = false;
+
     }
 
     // Update is called once per frame
@@ -92,14 +105,21 @@ public class ProgressManager : NetworkBehaviour {
 
     [ClientRpc]
     public void UpdateTimerClientRpc() {
-        if (timer == null) return;
+        if (timer == null) {
+            // Debug.Log("timer is null");
+            return;
+        }
         timer.text = $"Time remaining: {(int)time.Value}";
 
         if (time.Value < 0 && IsServer) {
-            NetworkManager.Singleton.SceneManager.LoadScene(
-            "MainMenu",
-            LoadSceneMode.Single);
+            OnGameEnd();
         }
+    }
+    void OnGameEnd() {
+        GameManager.Instance.DespawnObjects();
+        NetworkManager.Singleton.SceneManager.LoadScene(
+            "LoadingScreen",
+        LoadSceneMode.Single);
     }
 
     [ClientRpc]

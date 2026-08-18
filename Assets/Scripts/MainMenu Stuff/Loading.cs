@@ -56,7 +56,11 @@ public class Loading : NetworkBehaviour {
             return;
 
         StartCoroutine(GameManager.Instance.SpawnAllPlayers());
-        GameManager.Instance.OnGameStartClientRpc();
+        if (GameManager.gameState == GameManager.GameState.LOBBY) {
+            GameManager.Instance.OnGameStartClientRpc();
+        } else {
+            GameManager.Instance.OnLobbyStartClientRpc();
+        }
 
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= OnLoadEventCompleted;
     }
