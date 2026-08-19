@@ -93,10 +93,6 @@ public class Lobby : NetworkBehaviour {
             if (IsServer) UpdateLobbyText();
         }));
     }
-    void UpdateName() {
-        UpdateNameServerRpc(NetworkManager.Singleton.LocalClientId, nameInput.text);
-        UpdateLobbyText();
-    }
 
     IEnumerator ExecuteWhenConnected(System.Action function) {
         while (NetworkManager.Singleton == null ||
@@ -114,11 +110,6 @@ public class Lobby : NetworkBehaviour {
         GameManager.Instance.clientNames.Add(name);
         if (!hasPreference) GameManager.Instance.clientRoles.Add(1);
         else GameManager.Instance.clientRoles.Add((int)preference);
-    }
-    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    void UpdateNameServerRpc(ulong clientId, FixedString32Bytes name) {
-        GameManager.Instance.clientNames[
-            GameManager.Instance.clientIds.IndexOf(clientId)] = name;
     }
 
     public string GetClientInfo(ulong clientId) {

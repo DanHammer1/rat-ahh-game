@@ -10,9 +10,9 @@ using System.Collections;
 using System;
 using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine.Animations;
+using UnityEngine.Events;
 
 public class ProgressManager : NetworkBehaviour {
-    public float defaultTime;
     public TextMeshProUGUI timer;
     public TextMeshProUGUI objectiveUISlot1;
     public TextMeshProUGUI objectiveUISlot2;
@@ -20,6 +20,7 @@ public class ProgressManager : NetworkBehaviour {
     public TextMeshProUGUI playersUIList;
     public TextMeshProUGUI scoreList;
 
+    public NetworkVariable<float> defaultTime = new NetworkVariable<float>(600);
     public NetworkVariable<float> time = new NetworkVariable<float>(10);
     public List<Objective> objectives = new List<Objective>();
     public List<ObjectiveListSlot> objectiveListSlots = new();
@@ -29,14 +30,15 @@ public class ProgressManager : NetworkBehaviour {
 
     public static ProgressManager instance;
 
-    public IEnumerator OnActivate() {
+    void Awake() {
         instance = this;
-
+    }
+    public IEnumerator OnActivate() {
         if (onActivateExecuted) yield break;
 
         GameManager.gameState = GameManager.GameState.GAME;
 
-        if (IsServer) time.Value = defaultTime;
+        if (IsServer) time.Value = defaultTime.Value;
 
         onActivateExecuted = true;
 
@@ -88,6 +90,11 @@ public class ProgressManager : NetworkBehaviour {
         IsActive = false;
         this.enabled = false;
 
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SetMatchLengthRpc(float newTime) {
+        defaultTime.Value = newTime;
     }
 
     // Update is called once per frame
