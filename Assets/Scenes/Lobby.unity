@@ -14352,6 +14352,8 @@ MonoBehaviour:
   poisonGasPrefab: {fileID: 4443721202340868769, guid: e7cb6f0d54dd55549bf4a2cc07d6e266, type: 3}
   abilityParent: {fileID: 1962888624}
   ratAbilityShakeUI: {fileID: 1060618145}
+  tauntsUI: {fileID: 1055829423}
+  objectivesUI: {fileID: 0}
   ratDashAbilitySFX:
     Guid:
       Data1: 1793818506
@@ -15435,6 +15437,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1962888625}
+  - component: {fileID: 1962888626}
   m_Layer: 5
   m_Name: AbilityParent
   m_TagString: AbilityParent
@@ -15465,6 +15468,19 @@ RectTransform:
   m_AnchoredPosition: {x: 662, y: 331}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1962888626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1962888624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2df1305eccb9b0d4dbe2ccb848578d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roleToShowOn: 1
 --- !u!1 &1990268541
 GameObject:
   m_ObjectHideFlags: 0

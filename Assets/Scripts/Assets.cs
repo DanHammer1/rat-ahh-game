@@ -28,6 +28,7 @@ public class Assets : MonoBehaviour {
     #region "GameObjects"
     public GameObject abilityParent;
     public GameObject ratAbilityShakeUI;
+    public GameObject tauntsUI;
     #endregion
 
     #region "Sound Effects"
