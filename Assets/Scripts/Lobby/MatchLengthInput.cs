@@ -3,18 +3,18 @@ using Unity.Netcode;
 using TMPro;
 using System.Globalization;
 using System;
+using UnityEngine.UI;
 
 public class MatchLengthInput : NetworkBehaviour {
-    TMP_InputField input;
+    public TMP_InputField input;
 
     void Awake() {
-        input = GetComponent<TMP_InputField>();
         input.text = ProgressManager.instance.defaultTime.Value.ToString();
-        ProgressManager.instance.defaultTime.OnValueChanged -= OnMatchLengthChanged;
-        ProgressManager.instance.defaultTime.OnValueChanged += OnMatchLengthChanged;
+        ProgressManager.instance.defaultTime.OnValueChanged -= OnDefaultTimeChanged;
+        ProgressManager.instance.defaultTime.OnValueChanged += OnDefaultTimeChanged;
     }
 
-    public void OnDeselectRpc() {
+    public void OnEndEdit() {
         if (float.TryParse(input.text, out float newTime) && newTime > 0) {
             newTime = Mathf.Clamp(newTime, 5, 600);
             // input.text = newTime.ToString();
@@ -24,9 +24,7 @@ public class MatchLengthInput : NetworkBehaviour {
         }
     }
 
-    void OnMatchLengthChanged(float oldValue, float newValue) {
+    void OnDefaultTimeChanged(float oldValue, float newValue) {
         input.text = newValue.ToString();
     }
-
-
 }
