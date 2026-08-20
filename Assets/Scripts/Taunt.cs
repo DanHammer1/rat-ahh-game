@@ -16,7 +16,7 @@ public class Taunt : NetworkBehaviour {
     void Update() {
         if (!IsOwner) return;
 
-        if (Input.GetKeyDown(hotkey) && playable) {
+        if (Input.GetKeyDown(hotkey) && playable && !GetComponent<Player>().isInUIMenu) {
             playable = false;
             StartCoroutine(ReactivateTaunt());
             GameManager.PlayGlobalSoundEffectInWorld(GetSfxFromTaunt(tauntType));

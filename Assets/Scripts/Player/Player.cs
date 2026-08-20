@@ -54,6 +54,8 @@ public class Player : NetworkBehaviour {
     public NetworkVariable<int> score = new NetworkVariable<int>();
     public TextMeshProUGUI scoreText;
 
+    public bool isInUIMenu = false;
+
     Animator animator;
     public CinemachineImpulseSource impulseSource;
 

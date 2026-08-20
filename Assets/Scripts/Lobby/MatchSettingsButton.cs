@@ -47,6 +47,7 @@ public class MatchSettingsButton : NetworkBehaviour, IInteractable {
 
     void IsInteracting(bool state) {
         matchSettingsUI.SetActive(state);
+        Player.localPlayer.GetComponent<Player>().isInUIMenu = state;
         Cursor.lockState = state ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = state;
         showInteractionUI = !state;
