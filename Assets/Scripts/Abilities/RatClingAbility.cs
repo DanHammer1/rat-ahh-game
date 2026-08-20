@@ -38,6 +38,7 @@ public class RatClingAbility : Ability {
         ratAbilityInRange = false;
         ratAbilityShakeUI = Assets.instance.ratAbilityShakeUI;
         ratAbilityShakeUI.SetActive(false);
+        Assets.instance.ratAbilitySlapPrompt?.SetActive(false);
 
         abilityTimer.AddProgressionCondition(() => !GetComponent<Movement>().isPerformingAbility);
     }
@@ -125,6 +126,7 @@ public class RatClingAbility : Ability {
                 UpdateHunterSlapCountServerRpc(localHunterInRange.NetworkObjectId, 0, "Set");
 
                 SetClingingStateRpc(true);
+                Assets.instance.ratAbilitySlapPrompt.SetActive(true);
                 break;
             }
             yield return new WaitForFixedUpdate();
@@ -149,6 +151,8 @@ public class RatClingAbility : Ability {
 
         SetClingingStateRpc(false);
         movement.isPerformingAbility = false;
+        Assets.instance.ratAbilitySlapPrompt.SetActive(false);
+
 
         SetHunterClingStateServerRpc(localHunterInRange.NetworkObjectId, false);
         SetHunterDizzyStateServerRpc(localHunterInRange.NetworkObjectId, true);
