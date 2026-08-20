@@ -8,6 +8,7 @@ using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 using ParrelSync.NonCore;
 using UnityEditor.Search;
+using UnityEngine.SceneManagement;
 
 public class RatClingAbility : Ability {
     Transform clingHead;
@@ -44,6 +45,8 @@ public class RatClingAbility : Ability {
     }
 
     void OnTriggerStay(Collider other) {
+        if (SceneManager.GetActiveScene().name != "Game") return;
+
         if (transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox")) {
             HunterPlayer hunterPlayer = other.GetComponentInParent<HunterPlayer>();
             localHunterInRange = hunterPlayer;
