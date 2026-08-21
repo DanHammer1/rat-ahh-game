@@ -15063,6 +15063,7 @@ MonoBehaviour:
   poisonGasPrefab: {fileID: 4443721202340868769, guid: e7cb6f0d54dd55549bf4a2cc07d6e266, type: 3}
   abilityParent: {fileID: 1962888624}
   ratAbilityShakeUI: {fileID: 1060618145}
+  ratAbilitySlapPrompt: {fileID: 0}
   tauntsUI: {fileID: 1055829423}
   ratDashAbilitySFX:
     Guid:

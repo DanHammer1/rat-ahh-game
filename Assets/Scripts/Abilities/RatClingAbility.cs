@@ -39,7 +39,7 @@ public class RatClingAbility : Ability {
         ratAbilityInRange = false;
         ratAbilityShakeUI = Assets.instance.ratAbilityShakeUI;
         ratAbilityShakeUI.SetActive(false);
-        Assets.instance.ratAbilitySlapPrompt?.SetActive(false);
+        if (Assets.instance.ratAbilitySlapPrompt != null) Assets.instance.ratAbilitySlapPrompt?.SetActive(false);
 
         abilityTimer.AddProgressionCondition(() => !GetComponent<Movement>().isPerformingAbility);
     }
