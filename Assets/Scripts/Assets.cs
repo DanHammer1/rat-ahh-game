@@ -29,6 +29,8 @@ public class Assets : MonoBehaviour {
     public GameObject abilityParent;
     public GameObject ratAbilityShakeUI;
     public GameObject ratAbilitySlapPrompt;
+    public GameObject playerResult;
+    public GameObject endGameResults;
     public GameObject tauntsUI;
     #endregion
 

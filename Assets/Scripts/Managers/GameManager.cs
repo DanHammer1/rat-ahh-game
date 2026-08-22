@@ -164,6 +164,9 @@ public class GameManager : NetworkBehaviour {
     public static FixedString32Bytes GetLocalName() {
         return Instance.clientNames[Instance.clientIds.IndexOf(GetLocalId())];
     }
+    public static FixedString32Bytes GetName(ulong clientId) {
+        return Instance.clientNames[Instance.clientIds.IndexOf(clientId)];
+    }
 
     public static void PlayLocalSoundEffectInWorld(Assets.SfxType soundEffect, Vector3 worldPosition) {
         RuntimeManager.PlayOneShot(Assets.instance.GetEventReferenceFromSfxType(soundEffect), worldPosition);

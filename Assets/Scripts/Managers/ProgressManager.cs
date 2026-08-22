@@ -27,6 +27,7 @@ public class ProgressManager : NetworkBehaviour {
 
     public bool IsActive = false;
     public bool onActivateExecuted = false;
+    public bool isGameEnded = false;
 
     public static ProgressManager instance;
 
@@ -118,15 +119,33 @@ public class ProgressManager : NetworkBehaviour {
         }
         timer.text = $"Time remaining: {(int)time.Value}";
 
-        if (time.Value < 0 && IsServer) {
-            OnGameEnd();
+        if (time.Value < 0 && IsServer && !isGameEnded) {
+            StartCoroutine(OnGameEnd());
         }
     }
-    void OnGameEnd() {
+    IEnumerator OnGameEnd() {
+        isGameEnded = true;
+        CreateResults();
+        yield return new WaitForSeconds(10);
+
         GameManager.Instance.DespawnObjects();
         NetworkManager.Singleton.SceneManager.LoadScene(
             "LoadingScreen",
         LoadSceneMode.Single);
+    }
+
+    void CreateResults() {
+        Assets.instance.endGameResults?.SetActive(true);
+        foreach (ulong clientId in GameManager.Instance.clientIds) {
+            if (GameManager.GetRole(clientId) == GameManager.PlayerRole.HUNTER) continue;
+            GameObject playerResult = Instantiate(Assets.instance.playerResult, GameObject.Find("PlayerRankings").transform);
+            playerResult.transform.Find("UsernameText").GetComponent<TextMeshProUGUI>().text = GameManager.GetName(clientId).ToString();
+            playerResult.transform.Find("ScoreText").GetComponent<TextMeshProUGUI>().text = GetScore(clientId).ToString();
+        }
+    }
+
+    IEnumerator WaitSeconds(int seconds) {
+        yield return new WaitForSeconds(seconds);
     }
 
     [ClientRpc]
@@ -169,6 +188,12 @@ public class ProgressManager : NetworkBehaviour {
         }
 
         scoreList.text = text;
+    }
+
+    public int GetScore(ulong clientId) {
+        Player[] players = GameObject.FindObjectsByType<Player>(FindObjectsSortMode.None);
+        Player player = Array.Find(players, p => p.clientId.Value == clientId);
+        return player.score.Value;
     }
 
     [ClientRpc]
