@@ -136,12 +136,30 @@ public class ProgressManager : NetworkBehaviour {
 
     void CreateResults() {
         Assets.instance.endGameResults?.SetActive(true);
-        foreach (ulong clientId in GameManager.Instance.clientIds) {
+        foreach (var (clientId, rank) in OrderByScore()) {
             if (GameManager.GetRole(clientId) == GameManager.PlayerRole.HUNTER) continue;
             GameObject playerResult = Instantiate(Assets.instance.playerResult, GameObject.Find("PlayerRankings").transform);
+            playerResult.transform.Find("RankingText").GetComponent<TextMeshProUGUI>().text = rank.ToString();
             playerResult.transform.Find("UsernameText").GetComponent<TextMeshProUGUI>().text = GameManager.GetName(clientId).ToString();
             playerResult.transform.Find("ScoreText").GetComponent<TextMeshProUGUI>().text = GetScore(clientId).ToString();
         }
+    }
+
+    Dictionary<ulong, int> OrderByScore() {
+        Dictionary<ulong, int> idsByScore = new Dictionary<ulong, int>();
+        List<ulong> sortedIds = GameManager.GetHiderIds();
+        sortedIds.Sort((a, b) => GetScore(b).CompareTo(GetScore(a)));
+        int i = 0;
+        while (i < sortedIds.Count) {
+            idsByScore[sortedIds[i]] = i + 1;
+            int currentRank = i + 1;
+            while (i + 1 < sortedIds.Count && (GetScore(sortedIds[i]) == GetScore(sortedIds[i + 1]))) {
+                idsByScore[sortedIds[i + 1]] = currentRank;
+                i++;
+            }
+            i++;
+        }
+        return idsByScore;
     }
 
     IEnumerator WaitSeconds(int seconds) {
