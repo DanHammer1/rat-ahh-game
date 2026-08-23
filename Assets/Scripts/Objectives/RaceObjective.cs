@@ -1,16 +1,18 @@
 using UnityEngine;
 using Unity.Netcode;
+using System.Collections.Generic;
+
 
 public class RaceObjective : Objective {
     public GameObject coin;
     private bool conditionCleared;
-    string locationString;
+    List<string> locationString;
 
     public RaceObjective() : base("Race") {
         completionScore = ObjectiveScores.raceScore;
 
         locationString = RaceLocationManager.instance.ChooseRandomRaceLocation();
-        objectiveText = $"Race: {locationString.ToLower()}";
+        objectiveText = $"Race: {locationString[1]}";
 
         RaceLocationManager.instance.onRaceCompleted += () => {
             conditionCleared = true;
@@ -21,7 +23,7 @@ public class RaceObjective : Objective {
         return conditionCleared;
     }
     public override string GetDialogueText() {
-        string text = $"SHOW ME YOUR SPEEDRUN LINES!! RACE FROM THE {locationString}";
+        string text = $"SHOW ME YOUR SPEEDRUN LINES!! RACE FROM THE {locationString[0]}";
         return text;
     }
 }

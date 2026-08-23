@@ -1,5 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
+using System.Collections.Generic;
+
 
 public class CoinDeliveryLocationManager : NetworkBehaviour {
     public static CoinDeliveryLocationManager instance;
@@ -10,21 +12,36 @@ public class CoinDeliveryLocationManager : NetworkBehaviour {
         numberOfLocations = coinDeliveryLocationContainer.transform.childCount;
     }
 
-    public string ChooseRandomCoinDeliveryLocation() {
+    public List<string> ChooseRandomCoinDeliveryLocation() {
         int randomIndex = Random.Range(0, numberOfLocations);
         SetAllLocationsInactive();
         GameObject selectedLocation = coinDeliveryLocationContainer.transform.GetChild(randomIndex).gameObject;
         selectedLocation.SetActive(true);
         if (randomIndex == 0) {
-            return "GARAGE BIN";
+            return new List<string> {
+                "GARAGE BIN",
+                "garage bin"
+            };
         } else if (randomIndex == 1) {
-            return "GARAGE WASHING MACHINES";
+            return new List<string> {
+                "GARAGE WASHING MACHINES",
+                "washing machines"
+            };
         } else if (randomIndex == 2) {
-            return "SECOND FLOOR TOILET";
+            return new List<string> {
+                "SECOND FLOOR TOILET",
+                "upstairs toilet"
+            };
         } else if (randomIndex == 3) {
-            return "VAULT BEHIND ME";
+            return new List<string> {
+                "VAULT BEHIND ME",
+                "Mama Rat's vault"
+            };
         }
-        return "error selecting coin delivery location";
+        return new List<string> {
+                "error selecting coin delivery location",
+                "error selecting coin delivery location"
+            };
     }
 
     public void SetAllLocationsInactive() {

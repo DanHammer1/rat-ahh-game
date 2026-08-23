@@ -1,6 +1,8 @@
 using UnityEngine;
 using Unity.Netcode;
 using System;
+using System.Collections.Generic;
+
 
 public class RaceLocationManager : NetworkBehaviour {
     public static RaceLocationManager instance;
@@ -15,22 +17,37 @@ public class RaceLocationManager : NetworkBehaviour {
         raceTimerUI.SetActive(false);
     }
 
-    public string ChooseRandomRaceLocation() {
+    public List<string> ChooseRandomRaceLocation() {
         int randomIndex = UnityEngine.Random.Range(0, numberOfLocations);
         SetAllLocationsInactive();
         Transform selectedLocation = raceLocationContainer.transform.GetChild(randomIndex);
         selectedLocation.Find("RaceStart").GetComponent<BoxCollider>().enabled = true;
         selectedLocation.Find("RaceStart/Start").gameObject.SetActive(true);
         if (randomIndex == 0) {
-            return "1ST FLOOR OFFICE TO LEDGE OVERLOOKING STAIRS";
+            return new List<string> {
+                "1ST FLOOR OFFICE TO LEDGE OVERLOOKING STAIRS",
+                "office - stairs ledge"
+            };
         } else if (randomIndex == 1) {
-            return "1ST FLOOR BEDROOM TO GARAGE";
+            return new List<string> {
+                "1ST FLOOR BEDROOM TO GARAGE",
+                "bedroom - garage"
+            };
         } else if (randomIndex == 2) {
-            return "KITCHEN TO TOP BUNK BED";
+            return new List<string> {
+                "KITCHEN TO TOP BUNK BED",
+                "kitchen - bunk bed"
+            };
         } else if (randomIndex == 3) {
-            return "2ND FLOOR DESK TO OFFICE BATHROOM";
+            return new List<string> {
+                "2ND FLOOR DESK TO OFFICE BATHROOM",
+                "upstairs desk - office"
+            };
         }
-        return "error choosing race";
+        return new List<string> {
+            "error choosing race",
+            "error choosing race",
+        };
     }
 
     public void SetAllLocationsInactive() {
