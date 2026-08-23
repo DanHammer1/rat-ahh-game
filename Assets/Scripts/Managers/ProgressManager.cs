@@ -21,7 +21,6 @@ public class ProgressManager : NetworkBehaviour {
     public TextMeshProUGUI playersUIList;
     public TextMeshProUGUI scoreList;
     public TextMeshProUGUI returningToLobbyText;
-    public CinemachineInputAxisController cinemachineCamera;
 
     public NetworkVariable<float> defaultTime = new NetworkVariable<float>(600);
     public NetworkVariable<float> time = new NetworkVariable<float>(10);
@@ -57,7 +56,6 @@ public class ProgressManager : NetworkBehaviour {
         GameObject objectivesUIGameObject = GameObject.FindWithTag("ObjectivesUI");
         //GameObject playersUIListGameObject = GameObject.FindWithTag("PlayerListUI");
         GameObject scoreListGameObject = GameObject.FindWithTag("Score");
-        cinemachineCamera = GameObject.Find("CinemachineCamera").GetComponent<CinemachineInputAxisController>();
 
         while (timerGameObject == null ||
             objectivesUIGameObject == null ||
@@ -122,7 +120,7 @@ public class ProgressManager : NetworkBehaviour {
         }
 
         if (isGameEnded && !movingToLobby) {
-            UpdateReturnToLobbyTimerClientRpc();
+            UpdateReturnToLobbyTimerClientRpc(returningToLobbyTimer.GetTimeRemaining());
         }
 
         UpdateObjectiveUIListClientRpc();
@@ -142,19 +140,17 @@ public class ProgressManager : NetworkBehaviour {
     }
 
     [ClientRpc]
-    public void UpdateReturnToLobbyTimerClientRpc() {
+    public void UpdateReturnToLobbyTimerClientRpc(float timeRemaining) {
         if (returningToLobbyText == null) {
             Debug.Log("returnToLobbyText is null");
             return;
         }
-        returningToLobbyText.text = $"(Returning to lobby in {(int)returningToLobbyTimer.GetTimeRemaining()}...)";
+        returningToLobbyText.text = $"(Returning to lobby in {(int)timeRemaining}...)";
     }
 
     void OnGameEnd() {
-        isGameEnded = true;
-        time.Value = 0;
-        CreateResults();
-        DisableGameplay();
+        CreateResultsClientRpc();
+        DisableGameplayClientRpc();
         returningToLobbyTimer = Timer.CreateTimer(8f, Timer.OnFinish.DESTROY, // todo move time to constants.cs
             () => {
                 movingToLobby = true;
@@ -165,22 +161,22 @@ public class ProgressManager : NetworkBehaviour {
             }).GetComponent<Timer>();
     }
 
-    void CreateResults() {
+    [ClientRpc]
+    void CreateResultsClientRpc() {
         Assets.instance.endGameResults?.SetActive(true);
+        isGameEnded = true;
         returningToLobbyText = GameObject.FindWithTag("ReturningToLobbyText").GetComponent<TextMeshProUGUI>();
+        if (returningToLobbyText == null) Debug.Log("it is null"); 
         foreach (var (clientId, rank) in OrderByScore()) {
             if (GameManager.GetRole(clientId) == GameManager.PlayerRole.HUNTER) continue;
             GameObject playerResult = Instantiate(Assets.instance.playerResult, GameObject.Find("PlayerRankings").transform);
 
             // set colour based on rank
             UnityEngine.UI.Image image = playerResult.GetComponent<UnityEngine.UI.Image>();
-            if (rank == 1) image.color = new Color(1.0f, 0.84f, 0.0f); // gold
-            else if (rank == 2) image.color = new Color(1.0f, 0.84f, 0.0f); // silver
-            else if (rank == 3) image.color = new Color(1.0f, 0.84f, 0.0f); // bronze
-            else image.color = new Color( // random brown
-                UnityEngine.Random.Range(0.25f, 0.45f), // R
-                UnityEngine.Random.Range(0.10f, 0.25f), // G
-                UnityEngine.Random.Range(0.03f, 0.12f)  // B
+            image.color = new Color(
+                UnityEngine.Random.Range(0.50f, 0.55f), // R
+                UnityEngine.Random.Range(0.30f, 0.33f), // G
+                UnityEngine.Random.Range(0.18f, 0.21f)  // B
             );
 
             // set rank, username & score
@@ -190,11 +186,12 @@ public class ProgressManager : NetworkBehaviour {
         }
     }
 
-    void DisableGameplay() {
+    [ClientRpc]
+    void DisableGameplayClientRpc() {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Player.localPlayer.GetComponent<Movement>().isMovementLocked = true;
-        cinemachineCamera.enabled = false;
+        GameObject.Find("CinemachineCamera").GetComponent<CinemachineInputAxisController>().enabled = false;
     }
 
     Dictionary<ulong, int> OrderByScore() {

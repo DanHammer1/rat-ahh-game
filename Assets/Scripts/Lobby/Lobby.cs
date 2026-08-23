@@ -21,7 +21,7 @@ public class Lobby : NetworkBehaviour {
     bool hasPreference = false;
 
     void Start() {
-        Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = true;
         GameManager.gameState = GameManager.GameState.LOBBY;
     }
