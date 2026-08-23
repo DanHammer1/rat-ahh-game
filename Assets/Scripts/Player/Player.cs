@@ -5,6 +5,7 @@ using TMPro;
 using System.Collections;
 using UnityEditor;
 using UnityEngine.SocialPlatforms;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
 
@@ -96,7 +97,9 @@ public class Player : NetworkBehaviour {
 
         SetupCamera();
 
-        scoreText = GameObject.FindWithTag("Score").GetComponent<TextMeshProUGUI>();
+        if (SceneManager.GetActiveScene().name == "Game") {
+            scoreText = GameObject.FindWithTag("Score").GetComponent<TextMeshProUGUI>();
+        }
 
         ratAbilityShakeUI = GameObject.FindWithTag("Rat Ability Shake UI");
         shakeProgressBar = GameObject.FindWithTag("Shake Progress Bar");
