@@ -10,6 +10,7 @@ public class DeliveryObjective : Objective {
 
     public DeliveryObjective() : base("Deliver one coin to the garbage container") {
         completionScore = ObjectiveScores.deliveryScore;
+        objectiveIcon = Assets.instance.deliveryObjectiveIcon;
 
         locationString = CoinDeliveryLocationManager.instance.ChooseRandomCoinDeliveryLocation();
         objectiveText = $"Coin Delivery: {locationString[1]}";

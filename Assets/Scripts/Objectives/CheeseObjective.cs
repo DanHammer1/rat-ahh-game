@@ -8,8 +8,9 @@ using System.Collections;
 public class CheeseObjective : Objective {
     public GameObject cheese;
 
-    public CheeseObjective() : base("Get Cheese.") {
+    public CheeseObjective() : base("Eat Cheese") {
         completionScore = ObjectiveScores.cheeseScore;
+        objectiveIcon = Assets.instance.cheeseObjectiveIcon;
 
         CheeseSpawner.instance.onCheeseObtained += () => {
             cheese = CheeseSpawner.instance.GetRandomCheese();

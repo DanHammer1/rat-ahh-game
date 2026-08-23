@@ -6,6 +6,7 @@ public abstract class Objective {
     public string objectiveText;
     public Action onConditionCleared;
     protected int completionScore;
+    public Sprite objectiveIcon;
 
     public Objective(string objectiveText) {
         this.objectiveText = objectiveText;

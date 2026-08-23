@@ -72,13 +72,16 @@ public class ProgressManager : NetworkBehaviour {
 
         timer = timerGameObject.GetComponent<TextMeshProUGUI>();
         objectiveListSlots.Add(new ObjectiveListSlot {
-            text = objectivesUIGameObject.transform.GetChild(0).Find("Text").GetComponent<TextMeshProUGUI>()
+            text = objectivesUIGameObject.transform.GetChild(0).Find("Text").GetComponent<TextMeshProUGUI>(),
+            objectiveIcon = objectivesUIGameObject.transform.GetChild(0).Find("Checkbox/Icon").GetComponent<UnityEngine.UI.Image>(),
         });
         objectiveListSlots.Add(new ObjectiveListSlot {
-            text = objectivesUIGameObject.transform.GetChild(1).Find("Text").GetComponent<TextMeshProUGUI>()
+            text = objectivesUIGameObject.transform.GetChild(1).Find("Text").GetComponent<TextMeshProUGUI>(),
+            objectiveIcon = objectivesUIGameObject.transform.GetChild(1).Find("Checkbox/Icon").GetComponent<UnityEngine.UI.Image>(),
         });
         objectiveListSlots.Add(new ObjectiveListSlot {
-            text = objectivesUIGameObject.transform.GetChild(2).Find("Text").GetComponent<TextMeshProUGUI>()
+            text = objectivesUIGameObject.transform.GetChild(2).Find("Text").GetComponent<TextMeshProUGUI>(),
+            objectiveIcon = objectivesUIGameObject.transform.GetChild(2).Find("Checkbox/Icon").GetComponent<UnityEngine.UI.Image>(),
         });
 
         //playersUIList = playersUIListGameObject.GetComponent<TextMeshProUGUI>();
@@ -166,7 +169,7 @@ public class ProgressManager : NetworkBehaviour {
         Assets.instance.endGameResults?.SetActive(true);
         isGameEnded = true;
         returningToLobbyText = GameObject.FindWithTag("ReturningToLobbyText").GetComponent<TextMeshProUGUI>();
-        if (returningToLobbyText == null) Debug.Log("it is null"); 
+        if (returningToLobbyText == null) Debug.Log("it is null");
         foreach (var (clientId, rank) in OrderByScore()) {
             if (GameManager.GetRole(clientId) == GameManager.PlayerRole.HUNTER) continue;
             GameObject playerResult = Instantiate(Assets.instance.playerResult, GameObject.Find("PlayerRankings").transform);
@@ -286,11 +289,11 @@ public class ProgressManager : NetworkBehaviour {
         }
 
         foreach (Objective objective in objectives) {
-            AssignObjectiveText(objective);
+            AssignObjectiveData(objective);
         }
     }
 
-    public void AssignObjectiveText(Objective objective) {
+    public void AssignObjectiveData(Objective objective) {
         foreach (var slot in objectiveListSlots) {
             if (slot.currentObjective == objective) {
                 return;
@@ -302,6 +305,7 @@ public class ProgressManager : NetworkBehaviour {
                 slot.currentObjective = objective;
                 slot.text.text = objective.objectiveText;
                 slot.text.transform.localScale = Vector3.one;
+                slot.objectiveIcon.sprite = objective.objectiveIcon;
                 UnityEngine.UI.Image checkbox = slot.text.transform.parent.Find("Checkbox").GetComponent<UnityEngine.UI.Image>();
                 checkbox.color = new Color(checkbox.color.r, checkbox.color.g, checkbox.color.b, 1);
                 return;

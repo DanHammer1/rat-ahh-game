@@ -34,6 +34,13 @@ public class Assets : MonoBehaviour {
     public GameObject tauntsUI;
     #endregion
 
+    #region "Objective Icons"
+    public Sprite clingObjectiveIcon;
+    public Sprite cheeseObjectiveIcon;
+    public Sprite deliveryObjectiveIcon;
+    public Sprite raceObjectiveIcon;
+    #endregion
+
     #region "Sound Effects"
     public EventReference ratDashAbilitySFX;
     public EventReference invisibilityEnterSFX;

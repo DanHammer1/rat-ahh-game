@@ -10,6 +10,7 @@ public class AbilityObjective : Objective {
 
     public AbilityObjective() : base("Use cling ability on a Hunter.") {
         completionScore = ObjectiveScores.abilityScore;
+        objectiveIcon = Assets.instance.clingObjectiveIcon;
         HunterPlayer.onHunterClung += () => completed = true;
     }
 

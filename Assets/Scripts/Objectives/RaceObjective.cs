@@ -10,6 +10,7 @@ public class RaceObjective : Objective {
 
     public RaceObjective() : base("Race") {
         completionScore = ObjectiveScores.raceScore;
+        objectiveIcon = Assets.instance.raceObjectiveIcon;
 
         locationString = RaceLocationManager.instance.ChooseRandomRaceLocation();
         objectiveText = $"Race: {locationString[1]}";
