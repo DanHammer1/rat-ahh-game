@@ -6898,7 +6898,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2676060868016260452, guid: 0464e58c061a0fe4aa73904a43e552b4, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.57
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2676060868016260452, guid: 0464e58c061a0fe4aa73904a43e552b4, type: 3}
       propertyPath: m_LocalScale.z
@@ -7594,7 +7594,7 @@ Transform:
   m_GameObject: {fileID: 874131238}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.005, y: 0.017, z: -0.023}
+  m_LocalPosition: {x: -0.005, y: -0.041, z: -0.023}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -15064,6 +15064,8 @@ MonoBehaviour:
   abilityParent: {fileID: 1962888624}
   ratAbilityShakeUI: {fileID: 1060618145}
   ratAbilitySlapPrompt: {fileID: 0}
+  playerResult: {fileID: 0}
+  endGameResults: {fileID: 0}
   tauntsUI: {fileID: 1055829423}
   ratDashAbilitySFX:
     Guid:

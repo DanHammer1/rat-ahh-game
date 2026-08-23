@@ -101,6 +101,10 @@ public class Timer : MonoBehaviour {
         extraConditionsComplete = () => ((prevConditions?.Invoke() ?? true) && condition());
     }
 
+    public float GetTimeRemaining() {
+        return timer;
+    }
+
     // Update is called once per frame
     void Update() {
         foreach (GameObject objectRef in subscribedObjects) {
