@@ -73,15 +73,15 @@ public class ProgressManager : NetworkBehaviour {
         timer = timerGameObject.GetComponent<TextMeshProUGUI>();
         objectiveListSlots.Add(new ObjectiveListSlot {
             text = objectivesUIGameObject.transform.GetChild(0).Find("Text").GetComponent<TextMeshProUGUI>(),
-            objectiveIcon = objectivesUIGameObject.transform.GetChild(0).Find("Checkbox/Icon").GetComponent<UnityEngine.UI.Image>(),
+            objectiveIcon = objectivesUIGameObject.transform.GetChild(0).Find("DotPoint/Icon").GetComponent<UnityEngine.UI.Image>(),
         });
         objectiveListSlots.Add(new ObjectiveListSlot {
             text = objectivesUIGameObject.transform.GetChild(1).Find("Text").GetComponent<TextMeshProUGUI>(),
-            objectiveIcon = objectivesUIGameObject.transform.GetChild(1).Find("Checkbox/Icon").GetComponent<UnityEngine.UI.Image>(),
+            objectiveIcon = objectivesUIGameObject.transform.GetChild(1).Find("DotPoint/Icon").GetComponent<UnityEngine.UI.Image>(),
         });
         objectiveListSlots.Add(new ObjectiveListSlot {
             text = objectivesUIGameObject.transform.GetChild(2).Find("Text").GetComponent<TextMeshProUGUI>(),
-            objectiveIcon = objectivesUIGameObject.transform.GetChild(2).Find("Checkbox/Icon").GetComponent<UnityEngine.UI.Image>(),
+            objectiveIcon = objectivesUIGameObject.transform.GetChild(2).Find("DotPoint/Icon").GetComponent<UnityEngine.UI.Image>(),
         });
 
         //playersUIList = playersUIListGameObject.GetComponent<TextMeshProUGUI>();
@@ -306,8 +306,10 @@ public class ProgressManager : NetworkBehaviour {
                 slot.text.text = objective.objectiveText;
                 slot.text.transform.localScale = Vector3.one;
                 slot.objectiveIcon.sprite = objective.objectiveIcon;
-                UnityEngine.UI.Image checkbox = slot.text.transform.parent.Find("Checkbox").GetComponent<UnityEngine.UI.Image>();
-                checkbox.color = new Color(checkbox.color.r, checkbox.color.g, checkbox.color.b, 1);
+                slot.objectiveIcon.transform.localScale = Vector3.one;
+                GameObject checkbox = slot.text.transform.parent.Find("DotPoint/Checkbox").gameObject;
+                checkbox.SetActive(false);
+                slot.objectiveIcon.gameObject.SetActive(true);
                 return;
             }
         }
@@ -320,10 +322,10 @@ public class ProgressManager : NetworkBehaviour {
             if (slot.currentObjective == objective) {
                 slot.currentObjective = null;
 
-                Transform ratStamp = slot.text.transform.parent.Find("Checkbox/RatStamp");
+                Transform ratStamp = slot.text.transform.parent.Find("DotPoint/RatStamp");
                 GameObject ratStampObject = ratStamp.gameObject;
                 UnityEngine.UI.Image ratStampImage = ratStampObject.GetComponent<UnityEngine.UI.Image>();
-                UnityEngine.UI.Image checkbox = slot.text.transform.parent.Find("Checkbox").GetComponent<UnityEngine.UI.Image>();
+                GameObject checkbox = slot.text.transform.parent.Find("DotPoint/Checkbox").gameObject;
 
                 ratStampObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(UnityEngine.Random.Range(-6, 6), UnityEngine.Random.Range(-6, 6));
                 ratStampObject.transform.rotation = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-30, 30));
@@ -340,7 +342,8 @@ public class ProgressManager : NetworkBehaviour {
                 yield return new WaitForSeconds(2);
                 slot.text.gameObject.LeanScale(new Vector3(0, 0, 0), 0.5f).setEaseInBack();
                 ratStampObject.LeanScale(new Vector3(0, 0, 0), 0.5f).setEaseInBack();
-                checkbox.color = new Color(checkbox.color.r, checkbox.color.g, checkbox.color.b, 0.3f);
+                slot.objectiveIcon.gameObject.LeanScale(new Vector3(0, 0, 0), 0.5f).setEaseInBack();
+                checkbox.SetActive(true);
             }
         }
     }
