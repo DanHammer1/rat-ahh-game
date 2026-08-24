@@ -37,7 +37,6 @@ public class SwitchRole : NetworkBehaviour {
         Transform playerObject = client.PlayerObject.transform;
         Vector3 spawnPos = playerObject.position;
         Quaternion spawnRotation = playerObject.rotation;
-        Debug.Log(spawnPos);
         client.PlayerObject.Despawn(true);
         GameManager.Instance.SpawnPlayer(role, clientId, spawnPos, spawnRotation);
     }
