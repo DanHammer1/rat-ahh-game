@@ -859,20 +859,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  defaultTime: 5
   timer: {fileID: 0}
   objectiveUISlot1: {fileID: 0}
   objectiveUISlot2: {fileID: 0}
   objectiveUISlot3: {fileID: 0}
   playersUIList: {fileID: 0}
   scoreList: {fileID: 0}
+  returningToLobbyText: {fileID: 0}
+  defaultTime:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 600
   time:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 10
+  returningToLobbyTimer: {fileID: 0}
   IsActive: 0
   onActivateExecuted: 0
+  isGameEnded: 0
+  movingToLobby: 0
 --- !u!1 &663073559
 GameObject:
   m_ObjectHideFlags: 0
@@ -2194,7 +2202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: f91d8cd122154b2419b56cd80872d3b6, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}

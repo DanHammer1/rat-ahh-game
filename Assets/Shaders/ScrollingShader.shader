@@ -4,7 +4,9 @@ Shader "Unlit/TestShader"
     {
         // _OutlineColor ("OutlineColor", Color) = (1, 0.5, 1, 1)
         // _OutlineThickness ("OutlineThickness", float) = 0
-        _BaseColor ("BaseColor", Color) = (1, 1, 1, 1)
+        _BaseColor ("Base Color", Color) = (1, 1, 1, 1)
+        _BaseTexture ("Base Texture", 2D) = "white" {}
+        _ScrollSpeed ("Scroll Speed", Vector) = (0, 0, 0, 0)
     }
     SubShader
     {
@@ -56,6 +58,10 @@ Shader "Unlit/TestShader"
             #pragma fragment frag
 
             fixed4 _BaseColor;
+            float4 _BaseTexture_ST;
+            float2 _ScrollSpeed;
+
+            sampler2D _BaseTexture;
 
             #include "UnityCG.cginc"
 
@@ -77,7 +83,7 @@ Shader "Unlit/TestShader"
             {
                 vertOut o;
                 o.color = v.color;
-                o.uv = v.uv;
+                o.uv = TRANSFORM_TEX(v.uv, _BaseTexture);
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 
                 return o;
@@ -85,11 +91,23 @@ Shader "Unlit/TestShader"
 
             fixed4 frag (vertOut i) : SV_Target
             {
-                float2 offset = i.uv - 0.5;
-                float d = length(offset) / 0.7071;
-                d = pow(d, 2);
-                float4 col = float4(d, d / 30, d, 0.5);
-                return col * _BaseColor;
+                // float2 offset = i.uv - 0.5;
+                // float d = length(offset) / 0.7071;
+                // d = pow(d, 2);
+                // float scroll = sin(_Time.y * 2);
+                // float4 col = float4(d + scroll, (d + scroll) / 30, d + scroll, 1);
+                // return col * _BaseColor;
+                // if (i.uv.x > frac(_Time.y)) return float4(1, 0.5, 1, 1);
+                // else return float4(1, 1, 0.5, 1);
+                float2 uv = i.uv + _ScrollSpeed * _Time.y;
+                float4 textureColor = tex2D(_BaseTexture, uv);
+
+                float t = uv.x + _Time.y * 0.5;
+                float r = sin(t * 6.2831) * 0.5 + 0.5;
+                float g = sin(t * 6.2831 + 2.094) * 0.5 + 0.5;
+                float b = sin(t * 6.2831 + 4.188) * 0.5 + 0.5;
+                float4 rainbow = float4(r, g, b, 1);
+                return textureColor * _BaseColor * rainbow;
             }
             ENDCG
         }
