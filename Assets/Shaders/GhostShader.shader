@@ -6,7 +6,7 @@ Shader "Unlit/GhostShader"
         // _OutlineThickness ("OutlineThickness", float) = 0
         _BaseColor ("Base Color", Color) = (1, 1, 1, 1)
         _BaseTexture ("Base Texture", 2D) = "white" {}
-        _ScrollSpeed ("Scroll Speed", Vector) = (0, 0, 0, 0)
+        _Transparency ("Transparency", Range(0.0, 1)) = 0.5
     }
     SubShader
     {
@@ -14,6 +14,7 @@ Shader "Unlit/GhostShader"
         LOD 200
 
         Blend SrcAlpha OneMinusSrcAlpha
+        ZWrite Off
 
         Pass
         {
@@ -24,6 +25,7 @@ Shader "Unlit/GhostShader"
             fixed4 _BaseColor;
             float4 _BaseTexture_ST;
             float2 _ScrollSpeed;
+            float _Transparency;
 
             sampler2D _BaseTexture;
 
@@ -57,7 +59,9 @@ Shader "Unlit/GhostShader"
             {
                 float2 uv = i.uv + _ScrollSpeed * _Time.y;
                 float4 textureColor = tex2D(_BaseTexture, uv);
-                return textureColor * _BaseColor * float4(0.1, 0.15, 1.0, 0.65);
+                float4 col = textureColor * _BaseColor * float4(0.1, 0.15, 1.0, 1);
+                col.a = _Transparency;
+                return col;
             }
             ENDCG
         }
