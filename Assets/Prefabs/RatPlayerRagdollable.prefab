@@ -11488,7 +11488,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6561710733638111731}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -12084,7 +12084,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: -5495902117074765545, guid: a72a25f6ffc18f940b92cb1b8abf01a8, type: 3}
+  m_Mesh: {fileID: -5495902117074765545, guid: 8ade23a8933f6e24d863f9f1cb4737ad, type: 3}
   m_Bones:
   - {fileID: 3630303783420804393}
   - {fileID: 5690410550847511601}
