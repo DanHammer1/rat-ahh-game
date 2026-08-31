@@ -11757,6 +11757,11 @@ MonoBehaviour:
   - {fileID: 2100000, guid: f0a9264ca991ab1468dc0fb33bca4deb, type: 2}
   - {fileID: 2100000, guid: a4b59765dadb96e42936af1de2b47070, type: 2}
   - {fileID: 2100000, guid: 965f643b6585ae845bf83ad7410e9bae, type: 2}
+  ratGhostMaterials:
+  - {fileID: 2100000, guid: c95d1d8e53b307c4bb79696e76a154df, type: 2}
+  - {fileID: 2100000, guid: 72379c75334df804882ae83d9b265758, type: 2}
+  - {fileID: 2100000, guid: 88444dde1941bc14fbfaf3283cc1d249, type: 2}
+  - {fileID: 2100000, guid: ee92b4c492bc72745be4fb565b3459b1, type: 2}
   invisibilityMaterial: {fileID: 2100000, guid: e3cc83cd82e0d914784b2f945aabfb10, type: 2}
   poisonGasPrefab: {fileID: 4443721202340868769, guid: e7cb6f0d54dd55549bf4a2cc07d6e266, type: 3}
   abilityParent: {fileID: 1962888624}

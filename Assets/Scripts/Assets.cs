@@ -15,6 +15,7 @@ public class Assets : MonoBehaviour {
     #region "Rat Materials"
     public Material[] ratMaterials;
     public Material[] ratTransparentMaterials;
+    public Material[] ratGhostMaterials;
     #endregion
 
     #region "Shaders"
