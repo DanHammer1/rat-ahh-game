@@ -36,7 +36,7 @@ public class GhostShader : NetworkBehaviour {
     IEnumerator Glitch() {
         float distance = Random.Range(0.003f, 0.007f);
         // float amplitude = Random.Range(3.5f, 4.5f);
-        float speed = Random.Range(5f, 15f);
+        float speed = Random.Range(1f, 5f);
 
         foreach (Material material in playerRenderer.materials) {
             material.SetFloat("_Amount", 1f);

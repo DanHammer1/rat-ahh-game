@@ -23,6 +23,7 @@ public class RaceLocationManager : NetworkBehaviour {
         Transform selectedLocation = raceLocationContainer.transform.GetChild(randomIndex);
         selectedLocation.Find("RaceStart").GetComponent<BoxCollider>().enabled = true;
         selectedLocation.Find("RaceStart/Start").gameObject.SetActive(true);
+        selectedLocation.gameObject.SetActive(true);
         if (randomIndex == 0) {
             return new List<string> {
                 "1ST FLOOR OFFICE TO LEDGE OVERLOOKING STAIRS",

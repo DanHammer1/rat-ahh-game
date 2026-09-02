@@ -8,20 +8,21 @@ using System.Timers;
 public class RaceFinish : NetworkBehaviour {
     BoxCollider startTrigger;
     BoxCollider finishTrigger;
+    GameObject startRace;
     GameObject startText;
     GameObject finishText;
     Coroutine raceTimer;
-    GameObject raceTimerUI;
+    [SerializeField] GameObject raceTimerUI;
     RaceStart raceStart;
 
 
-    void Awake() {
+    void OnEnable() {
         raceStart = transform.parent.Find("RaceStart").GetComponent<RaceStart>();
         startTrigger = raceStart.transform.GetComponent<BoxCollider>();
         finishTrigger = GetComponent<BoxCollider>();
+        startRace = transform.parent.gameObject;
         startText = transform.parent.Find("RaceStart/Start").gameObject;
         finishText = transform.Find("Finish").gameObject;
-        raceTimerUI = GameObject.FindWithTag("RaceTimer");
 
         raceTimer = transform.parent.Find("RaceStart").GetComponent<RaceStart>().raceTimer;
     }
@@ -38,6 +39,8 @@ public class RaceFinish : NetworkBehaviour {
 
             Player player = other.GetComponent<Player>();
             RaceLocationManager.instance?.onRaceCompleted?.Invoke();
+            startRace.SetActive(false);
+            this.gameObject.SetActive(false);
         }
     }
 

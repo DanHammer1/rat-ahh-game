@@ -7,7 +7,6 @@ Shader "Unlit/GhostShader"
         _BaseColor ("Base Color", Color) = (1, 1, 1, 1)
         _BaseTexture ("Base Texture", 2D) = "white" {}
         _Transparency ("Transparency", Range(0.0, 1)) = 0.5
-        _CutoutThresh ("Cutout Threshold", Range(0.0, 1.0)) = 0.2
         _Distance("Distance", float) = 1
         // _Amplitude("Amplitude", float) = 1
         _Speed("Speed", float) = 1
@@ -30,7 +29,6 @@ Shader "Unlit/GhostShader"
             fixed4 _BaseColor;
             float4 _BaseTexture_ST;
             float _Transparency;
-            float _CutoutThresh;
             float _Distance;
             // float _Amplitude;
             float _Speed;
@@ -73,7 +71,7 @@ Shader "Unlit/GhostShader"
                 float4 textureColor = tex2D(_BaseTexture, i.uv);
                 float4 col = textureColor * _BaseColor * float4(0.4, 0.6, 1.0, 1);
                 col.a = _Transparency;
-                clip(col.b - _CutoutThresh);
+                
                 return col;
             }
             ENDCG

@@ -37,6 +37,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _AlphaTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -118,15 +122,24 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
+    - _Fill: 0.8
+    - _Frequency: 10
+    - _GlitchFrequency: 20
+    - _GlitchIntensity: 0.002
+    - _GlitchSpeed: 8.8
+    - _GlitchThreshold: 0.65
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _GlowIntensity: 0.5
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _Scale: 3
+    - _ScrollSpeedV: 1
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -136,6 +149,9 @@ Material:
     - _Surface: 0
     - _Transparency: 0.85
     - _UVSec: 0
+    - _WaveAmount: 0.015
+    - _WaveFrequency: 12
+    - _WaveSpeed: 2
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
@@ -144,5 +160,6 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _ScrollSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _TintColor: {r: 0.113057934, g: 0.43463734, b: 0.7584905, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

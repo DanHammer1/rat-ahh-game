@@ -12,17 +12,14 @@ public class RaceStart : NetworkBehaviour {
     BoxCollider finishTrigger;
     GameObject startText;
     GameObject finishText;
-    GameObject raceTimerUI;
-    TextMeshProUGUI raceTimerUIText;
+    [SerializeField] GameObject raceTimerUI;
+    [SerializeField] TextMeshProUGUI raceTimerUIText;
     public Coroutine raceTimer;
-
-    void Awake() {
+    void OnEnable() {
         startTrigger = GetComponent<BoxCollider>();
         finishTrigger = transform.parent.Find("RaceFinish").GetComponent<BoxCollider>();
         startText = transform.Find("Start").gameObject;
         finishText = transform.parent.Find("RaceFinish/Finish").gameObject;
-        raceTimerUI = GameObject.FindWithTag("RaceTimer");
-        raceTimerUIText = raceTimerUI.GetComponent<TextMeshProUGUI>();
     }
 
     void Update() {

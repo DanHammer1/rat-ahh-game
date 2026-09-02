@@ -597,7 +597,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &113208192
 Transform:
   m_ObjectHideFlags: 0
@@ -857,6 +857,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4988279597006400182, guid: 55e2a31845cb97b44bc4b744b8754cb1, type: 3}
+      propertyPath: raceTimerUI
+      value: 
+      objectReference: {fileID: 596296463}
     - target: {fileID: 5849793983720085099, guid: 55e2a31845cb97b44bc4b744b8754cb1, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 296665117
@@ -1477,6 +1481,14 @@ PrefabInstance:
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
       value: 2611262163
       objectReference: {fileID: 0}
+    - target: {fileID: 9000351464533288262, guid: 4eb61002cdb8fef4184197cecf93e4ad, type: 3}
+      propertyPath: raceTimerUI
+      value: 
+      objectReference: {fileID: 596296463}
+    - target: {fileID: 9000351464533288262, guid: 4eb61002cdb8fef4184197cecf93e4ad, type: 3}
+      propertyPath: raceTimerUIText
+      value: 
+      objectReference: {fileID: 596296465}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2380,7 +2392,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &376739937
 Transform:
   m_ObjectHideFlags: 0
@@ -2462,6 +2474,14 @@ PrefabInstance:
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
       value: 2611262163
       objectReference: {fileID: 0}
+    - target: {fileID: 9000351464533288262, guid: 4eb61002cdb8fef4184197cecf93e4ad, type: 3}
+      propertyPath: raceTimerUI
+      value: 
+      objectReference: {fileID: 596296463}
+    - target: {fileID: 9000351464533288262, guid: 4eb61002cdb8fef4184197cecf93e4ad, type: 3}
+      propertyPath: raceTimerUIText
+      value: 
+      objectReference: {fileID: 596296465}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2970,6 +2990,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4988279597006400182, guid: 55e2a31845cb97b44bc4b744b8754cb1, type: 3}
+      propertyPath: raceTimerUI
+      value: 
+      objectReference: {fileID: 596296463}
     - target: {fileID: 5849793983720085099, guid: 55e2a31845cb97b44bc4b744b8754cb1, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 4149458715
@@ -4202,6 +4226,14 @@ PrefabInstance:
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
       value: 2611262163
       objectReference: {fileID: 0}
+    - target: {fileID: 9000351464533288262, guid: 4eb61002cdb8fef4184197cecf93e4ad, type: 3}
+      propertyPath: raceTimerUI
+      value: 
+      objectReference: {fileID: 596296463}
+    - target: {fileID: 9000351464533288262, guid: 4eb61002cdb8fef4184197cecf93e4ad, type: 3}
+      propertyPath: raceTimerUIText
+      value: 
+      objectReference: {fileID: 596296465}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -6525,6 +6557,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4988279597006400182, guid: 55e2a31845cb97b44bc4b744b8754cb1, type: 3}
+      propertyPath: raceTimerUI
+      value: 
+      objectReference: {fileID: 596296463}
     - target: {fileID: 5849793983720085099, guid: 55e2a31845cb97b44bc4b744b8754cb1, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1227040601
@@ -8284,6 +8320,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4988279597006400182, guid: 55e2a31845cb97b44bc4b744b8754cb1, type: 3}
+      propertyPath: raceTimerUI
+      value: 
+      objectReference: {fileID: 596296463}
     - target: {fileID: 5849793983720085099, guid: 55e2a31845cb97b44bc4b744b8754cb1, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2552352267
@@ -8939,7 +8979,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1305396904
 Transform:
   m_ObjectHideFlags: 0
@@ -10614,6 +10654,14 @@ PrefabInstance:
       propertyPath: InScenePlacedSourceGlobalObjectIdHash
       value: 2611262163
       objectReference: {fileID: 0}
+    - target: {fileID: 9000351464533288262, guid: 4eb61002cdb8fef4184197cecf93e4ad, type: 3}
+      propertyPath: raceTimerUI
+      value: 
+      objectReference: {fileID: 596296463}
+    - target: {fileID: 9000351464533288262, guid: 4eb61002cdb8fef4184197cecf93e4ad, type: 3}
+      propertyPath: raceTimerUIText
+      value: 
+      objectReference: {fileID: 596296465}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -14014,7 +14062,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2085465993
 Transform:
   m_ObjectHideFlags: 0
