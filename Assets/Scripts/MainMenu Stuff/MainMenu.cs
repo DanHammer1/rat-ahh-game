@@ -7,6 +7,8 @@ using Unity.Netcode.Transports.UTP;
 using System.Collections.Generic;
 using System.Collections;
 using System;
+using System.Net;
+using System.Net.Sockets;
 
 public class MainMenu : NetworkBehaviour {
     public TMP_InputField ipInput;
@@ -33,19 +35,77 @@ public class MainMenu : NetworkBehaviour {
         if (GameManager.Instance.clientNames == null) GameManager.Instance.clientNames = new NetworkList<FixedString32Bytes>();
 
         AddSelfToLobby();
+        Debug.Log("host function called");
     }
 
     // Update is called once per frame
     public void Join() {
         if (joined) return;
+        if (!IsValidIPv4(ipInput.text)) {
+            Debug.Log("invalid ip");
+            return;
+        }
 
         UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
 
         transport.SetConnectionData(ipInput.text, 7777);
 
         NetworkManager.Singleton.StartClient();
+        StartCoroutine(ConnectionTimeout());
+    }
 
+    private IEnumerator ConnectionTimeout() {
+        float duration = 3f;
+        float elapsed = 0f;
+
+        while (elapsed < duration) {
+            if (NetworkManager.Singleton.IsConnectedClient) yield break;
+            elapsed += Time.deltaTime;
+            Debug.Log("connecting...");
+            yield return null;
+        }
+
+        if (!NetworkManager.Singleton.IsConnectedClient) {
+            Debug.Log("Could not connect to server.");
+            NetworkManager.Singleton.Shutdown();
+        }
+    }
+
+    private bool IsValidIPv4(string ip) {
+        string[] parts = ip.Trim().Split('.');
+
+        if (parts.Length != 4)
+            return false;
+
+        foreach (string part in parts) {
+            if (string.IsNullOrEmpty(part))
+                return false;
+
+            if (!int.TryParse(part, out int number))
+                return false;
+
+            if (number < 0 || number > 255)
+                return false;
+        }
+
+        return true;
+    }
+
+    private void OnClientConnected(ulong clientId) {
+        if (clientId != NetworkManager.Singleton.LocalClientId)
+            return;
+
+        Debug.Log("Successfully connected to server!");
+
+        joined = true;
         AddSelfToLobby();
+    }
+
+    private void OnClientDisconnectedd(ulong clientId) {
+        if (clientId != NetworkManager.Singleton.LocalClientId)
+            return;
+
+        Debug.Log("Could not connect to server.");
     }
 
     public void BecomeHider() {
@@ -75,6 +135,7 @@ public class MainMenu : NetworkBehaviour {
     }
 
     public override void OnNetworkSpawn() {
+        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
     }
 
@@ -191,6 +252,6 @@ public class MainMenu : NetworkBehaviour {
         if (joined) {
             UpdateLobbyText();
         }
-        joined = NetworkManager.Singleton.IsClient;
+        // joined = NetworkManager.Singleton.IsClient;
     }
 }
