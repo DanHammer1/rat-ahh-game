@@ -9,14 +9,20 @@ using System.Collections;
 using System;
 using System.Net;
 using System.Net.Sockets;
+using UnityEngine.UI;
 
 public class MainMenu : NetworkBehaviour {
     public TMP_InputField ipInput;
     public TMP_InputField nameInput;
 
     public TextMeshProUGUI lobbyText;
+    public Button disconnectButton;
+    public Button startGameButton;
+    public Button hostButton;
+    public Button joinButton;
 
     bool joined = false;
+    bool attemptingToJoin = false;
 
     GameManager.PlayerRole preference;
     bool hasPreference = false;
@@ -54,18 +60,21 @@ public class MainMenu : NetworkBehaviour {
     private IEnumerator ConnectionTimeout() {
         float duration = 3f;
         float elapsed = 0f;
+        attemptingToJoin = true;
+        lobbyText.text = "Connecting...";
 
         while (elapsed < duration) {
-            if (NetworkManager.Singleton.IsConnectedClient) yield break;
+            if (NetworkManager.Singleton.IsConnectedClient) {
+                attemptingToJoin = false;
+                yield break;
+            }
             elapsed += Time.deltaTime;
-            Debug.Log("connecting...");
             yield return null;
         }
 
-        if (!NetworkManager.Singleton.IsConnectedClient) {
-            Debug.Log("Could not connect to server.");
-            NetworkManager.Singleton.Shutdown();
-        }
+        attemptingToJoin = false;
+        lobbyText.text = "Could not connect to server.";
+        NetworkManager.Singleton.Shutdown();
     }
 
     private bool IsValidIPv4(string ip) {
@@ -252,11 +261,29 @@ public class MainMenu : NetworkBehaviour {
         if (joined) {
             UpdateLobbyText();
         }
-        // string names = "";
-        // foreach (var name in GameManager.Instance.clientNames) {
-        //     names += name + ", ";
-        // }
-        // Debug.Log(names);
-        // joined = NetworkManager.Singleton.IsClient;
+
+        if (!joined && !attemptingToJoin) {
+            startGameButton.interactable = false;
+            disconnectButton.interactable = false;
+            hostButton.interactable = true;
+            joinButton.interactable = true;
+            ipInput.interactable = true;
+            nameInput.interactable = true;
+        } else if (!joined && attemptingToJoin) {
+            startGameButton.interactable = false;
+            disconnectButton.interactable = false;
+            hostButton.interactable = false;
+            joinButton.interactable = false;
+            ipInput.interactable = false;
+            nameInput.interactable = false;
+        } else {
+            startGameButton.interactable = true;
+            disconnectButton.interactable = true;
+            hostButton.interactable = false;
+            joinButton.interactable = false;
+            ipInput.interactable = false;
+            nameInput.interactable = false;
+        }
+
     }
 }

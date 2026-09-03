@@ -3421,6 +3421,10 @@ MonoBehaviour:
   ipInput: {fileID: 1768765163}
   nameInput: {fileID: 293409734}
   lobbyText: {fileID: 758639814}
+  disconnectButton: {fileID: 2064076414}
+  startGameButton: {fileID: 1910071640}
+  hostButton: {fileID: 1446252078}
+  joinButton: {fileID: 1593533404}
 --- !u!114 &1996144109
 MonoBehaviour:
   m_ObjectHideFlags: 0

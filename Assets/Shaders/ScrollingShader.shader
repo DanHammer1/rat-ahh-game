@@ -107,7 +107,7 @@ Shader "Unlit/ScrollingShader"
                 float g = sin(t * 6.2831 + 2.094) * 0.5 + 0.5;
                 float b = sin(t * 6.2831 + 4.188) * 0.5 + 0.5;
                 float4 rainbow = float4(r, g, b, 0.5);
-                return textureColor * _BaseColor * rainbow;
+                return textureColor * _BaseColor;
             }
             ENDCG
         }
