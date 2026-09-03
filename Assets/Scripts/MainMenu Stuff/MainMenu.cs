@@ -33,9 +33,6 @@ public class MainMenu : NetworkBehaviour {
 
         if (GameManager.Instance.clientIds == null) GameManager.Instance.clientIds = new NetworkList<ulong>();
         if (GameManager.Instance.clientNames == null) GameManager.Instance.clientNames = new NetworkList<FixedString32Bytes>();
-
-        AddSelfToLobby();
-        Debug.Log("host function called");
     }
 
     // Update is called once per frame
@@ -92,20 +89,12 @@ public class MainMenu : NetworkBehaviour {
     }
 
     private void OnClientConnected(ulong clientId) {
-        if (clientId != NetworkManager.Singleton.LocalClientId)
-            return;
+        if (clientId != NetworkManager.Singleton.LocalClientId) return;
 
         Debug.Log("Successfully connected to server!");
 
         joined = true;
         AddSelfToLobby();
-    }
-
-    private void OnClientDisconnectedd(ulong clientId) {
-        if (clientId != NetworkManager.Singleton.LocalClientId)
-            return;
-
-        Debug.Log("Could not connect to server.");
     }
 
     public void BecomeHider() {
@@ -137,6 +126,11 @@ public class MainMenu : NetworkBehaviour {
     public override void OnNetworkSpawn() {
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
+    }
+
+    public override void OnNetworkDespawn() {
+        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+        NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
     }
 
     public void StartGame() {
@@ -220,6 +214,11 @@ public class MainMenu : NetworkBehaviour {
             joined = false;
         }
 
+        // if (clientId == NetworkManager.Singleton.LocalClientId) {
+        //     lobbyText.text = "Disconnected.";
+        //     joined = false;
+        // }
+
         if (!IsServer) return;
 
         int indexToRemove = GameManager.Instance.clientIds.IndexOf(clientId);
@@ -244,6 +243,7 @@ public class MainMenu : NetworkBehaviour {
 
         GameManager.Instance.clientIds.Clear();
         GameManager.Instance.clientNames.Clear();
+        GameManager.Instance.clientRoles.Clear();
     }
 
     void Update() {
@@ -252,6 +252,11 @@ public class MainMenu : NetworkBehaviour {
         if (joined) {
             UpdateLobbyText();
         }
+        // string names = "";
+        // foreach (var name in GameManager.Instance.clientNames) {
+        //     names += name + ", ";
+        // }
+        // Debug.Log(names);
         // joined = NetworkManager.Singleton.IsClient;
     }
 }
