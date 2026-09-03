@@ -45,7 +45,7 @@ public class MainMenu : NetworkBehaviour {
     public void Join() {
         if (joined) return;
         if (!IsValidIPv4(ipInput.text)) {
-            Debug.Log("invalid ip");
+            lobbyText.text = "Invalid IP";
             return;
         }
 
@@ -99,9 +99,6 @@ public class MainMenu : NetworkBehaviour {
 
     private void OnClientConnected(ulong clientId) {
         if (clientId != NetworkManager.Singleton.LocalClientId) return;
-
-        Debug.Log("Successfully connected to server!");
-
         joined = true;
         AddSelfToLobby();
     }
