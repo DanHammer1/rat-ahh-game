@@ -12811,11 +12811,7 @@ MonoBehaviour:
   impulseSource: {fileID: 0}
   eatCheesePrompt: {fileID: 0}
   pickUpCoinPrompt: {fileID: 0}
-  isInvisible:
-    UpdateTraits:
-      MinSecondsBetweenUpdates: 0
-      MaxSecondsBetweenUpdates: 0
-    m_InternalValue: 0
+  isInvisible: 0
 --- !u!114 &437846356746991623
 MonoBehaviour:
   m_ObjectHideFlags: 0

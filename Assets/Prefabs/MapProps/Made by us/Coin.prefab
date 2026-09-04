@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  showInteractionUI: 1
   isBeingCarried:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0
@@ -259,6 +260,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0f97c1125a5f0584ab80148e01656ca0, type: 3}
       propertyPath: m_Name
       value: Renderer
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0f97c1125a5f0584ab80148e01656ca0, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0f97c1125a5f0584ab80148e01656ca0, type: 3}
       propertyPath: m_TagString
