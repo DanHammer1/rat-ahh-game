@@ -33,6 +33,7 @@ public class Assets : MonoBehaviour {
     public GameObject playerResult;
     public GameObject endGameResults;
     public GameObject tauntsUI;
+    public GameObject emotesUI;
     #endregion
 
     #region "Objective Icons"

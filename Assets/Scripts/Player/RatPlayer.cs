@@ -10,7 +10,7 @@ using ParrelSync.NonCore;
 using UnityEditor.Search;
 
 public class RatPlayer : Player {
-    public NetworkVariable<bool> isInvisible = new NetworkVariable<bool>(false);
+    public bool isInvisible = false;
 
 
     public override void OnNetworkSpawn() {

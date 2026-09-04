@@ -42,11 +42,11 @@ public class PlayerAnimator : NetworkBehaviour {
         animator.SetFloat("Forward", movement.moveForward);
         animator.SetFloat("Right", movement.moveHorizontal);
 
-        if (Input.GetKeyDown(KeyCode.C) && !Player.localPlayer.isInUIMenu) {
+        if (Input.GetKeyDown(KeyCode.Alpha1) && !Player.localPlayer.isInUIMenu) {
             PlayAnimation("Twerk", "isTwerking", 0.3f);
         }
 
-        if (Input.GetKeyDown(KeyCode.F) && !Player.localPlayer.isInUIMenu) {
+        if (Input.GetKeyDown(KeyCode.Alpha2) && !Player.localPlayer.isInUIMenu) {
             PlayAnimation("ARAT", "isARAT", 0.3f);
         }
     }

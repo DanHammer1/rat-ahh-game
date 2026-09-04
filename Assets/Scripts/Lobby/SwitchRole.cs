@@ -20,7 +20,7 @@ public class SwitchRole : NetworkBehaviour {
     void SwitchRoles() {
         GameManager.PlayerRole playerRole = GameManager.GetLocalRole();
         if (playerRole == role ||
-            playerRole == GameManager.PlayerRole.HIDER && Player.localPlayer.GetComponent<RatPlayer>().isInvisible.Value == true) {
+            playerRole == GameManager.PlayerRole.HIDER && Player.localPlayer.GetComponent<RatPlayer>().isInvisible == true) {
             return;
         }
         SwitchUIElements();
@@ -43,6 +43,7 @@ public class SwitchRole : NetworkBehaviour {
     void SwitchUIElements() {
         Assets.instance.abilityParent.SetActive(!Assets.instance.abilityParent.activeSelf);
         Assets.instance.tauntsUI.SetActive(!Assets.instance.tauntsUI.activeSelf);
+        Assets.instance.emotesUI.SetActive(!Assets.instance.emotesUI.activeSelf);
     }
 
     void OnTriggerStay(Collider other) {

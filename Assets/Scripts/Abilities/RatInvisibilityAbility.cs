@@ -34,13 +34,13 @@ public class RatInvisibilityAbility : Ability {
     [Rpc(SendTo.Everyone)]
     void SetVisibleRpc() {
         playerRenderer.materials = Assets.instance.ratMaterials;
-        gameObject.GetComponent<RatPlayer>().isInvisible.Value = false;
+        gameObject.GetComponent<RatPlayer>().isInvisible = false;
     }
 
     [Rpc(SendTo.Everyone)]
     void SetInvisibleRpc() {
         playerRenderer.materials = Assets.instance.ratTransparentMaterials;
-        gameObject.GetComponent<RatPlayer>().isInvisible.Value = true;
+        gameObject.GetComponent<RatPlayer>().isInvisible = true;
         invisibilityParticles.Play();
 
         if (IsOwner) {
