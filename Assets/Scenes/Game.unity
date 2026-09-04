@@ -9250,6 +9250,10 @@ PrefabInstance:
       value: Drawer4 (1)
       objectReference: {fileID: 0}
     - target: {fileID: 7714843878279598083, guid: 8584e83dbe009ee43811bde86a9d1a25, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.14
+      objectReference: {fileID: 0}
+    - target: {fileID: 7714843878279598083, guid: 8584e83dbe009ee43811bde86a9d1a25, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.686
       objectReference: {fileID: 0}
@@ -9287,6 +9291,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7714843878279598083, guid: 8584e83dbe009ee43811bde86a9d1a25, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7714843878279598083, guid: 8584e83dbe009ee43811bde86a9d1a25, type: 3}
+      propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
