@@ -24,6 +24,7 @@ public class Assets : MonoBehaviour {
 
     #region "Prefabs"
     public GameObject poisonGasPrefab;
+    public GameObject heartPrefab;
     #endregion
 
     #region "GameObjects"

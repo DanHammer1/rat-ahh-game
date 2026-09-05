@@ -8,16 +8,19 @@ using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 using ParrelSync.NonCore;
 using UnityEditor.Search;
+using UnityEngine.SceneManagement;
 
 public class RatPlayer : Player {
     public bool isInvisible = false;
+    public int lives = 1;
 
 
     public override void OnNetworkSpawn() {
         base.OnNetworkSpawn();
-        if (IsOwner) {
-            // Assets.instance.abilityParent.SetActive(true);
-            // if (Assets.instance.objectivesList) Assets.instance.objectivesList.SetActive(true);
+        GameObject heartsContainer = GameObject.Find("HeartsContainer");
+        lives = 2;
+        if (SceneManager.GetActiveScene().name == "Game") {
+            heartsContainer.GetComponent<HeartsContainer>().DrawHearts();
         }
     }
 

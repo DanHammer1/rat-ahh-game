@@ -29,7 +29,6 @@ public class RaceFinish : NetworkBehaviour {
 
     void OnTriggerEnter(Collider other) {
         if (other.CompareTag("PlayerMouse")) {
-            Debug.Log("You did it!!");
             startTrigger.enabled = false;
             finishTrigger.enabled = false;
             startText.SetActive(false);
@@ -44,17 +43,16 @@ public class RaceFinish : NetworkBehaviour {
         }
     }
 
-    IEnumerator StartRaceCoroutine(float duration) {
-        float remaining = duration;
-        while (remaining > 0) {
-            remaining -= Time.deltaTime;
-            Debug.Log(remaining);
-            yield return null;
-        }
+    // IEnumerator StartRaceCoroutine(float duration) {
+    //     float remaining = duration;
+    //     while (remaining > 0) {
+    //         remaining -= Time.deltaTime;
+    //         yield return null;
+    //     }
 
-        if (remaining <= 0) {
-            remaining = 0;
-            Debug.Log("you failed");
-        }
-    }
+    //     if (remaining <= 0) {
+    //         remaining = 0;
+    //         Debug.Log("you failed");
+    //     }
+    // }
 }

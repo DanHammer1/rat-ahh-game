@@ -22,8 +22,9 @@ public class ProgressManager : NetworkBehaviour {
     public TextMeshProUGUI scoreList;
     public TextMeshProUGUI returningToLobbyText;
 
-    public NetworkVariable<float> defaultTime = new NetworkVariable<float>(600);
-    public NetworkVariable<float> time = new NetworkVariable<float>(10);
+    public NetworkVariable<float> startingMatchLength = new NetworkVariable<float>(Constants.defaultStartingMatchLength);
+    public NetworkVariable<float> remainingMatchLength = new NetworkVariable<float>(10);
+    public NetworkVariable<int> startingRatLives = new NetworkVariable<int>(Constants.defaultStartingRatLives);
     public Timer returningToLobbyTimer;
     // public NetworkVariable<float> defaultReturningToLobbyTime = new NetworkVariable<float>(8);
     // public NetworkVariable<float> returningToLobbyTime = new NetworkVariable<float>(8);
@@ -46,7 +47,7 @@ public class ProgressManager : NetworkBehaviour {
 
         GameManager.gameState = GameManager.GameState.GAME;
 
-        if (IsServer) time.Value = defaultTime.Value;
+        if (IsServer) remainingMatchLength.Value = startingMatchLength.Value;
 
         onActivateExecuted = true;
         isGameEnded = false;
@@ -107,7 +108,11 @@ public class ProgressManager : NetworkBehaviour {
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void SetMatchLengthRpc(float newTime) {
-        defaultTime.Value = newTime;
+        startingMatchLength.Value = newTime;
+    }
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SetStartingRatLivesRpc(int newValue) {
+        startingRatLives.Value = newValue;
     }
 
     // Update is called once per frame
@@ -118,7 +123,7 @@ public class ProgressManager : NetworkBehaviour {
         UpdateScoreListClientRpc();
 
         if (!isGameEnded) {
-            time.Value -= Time.deltaTime;
+            remainingMatchLength.Value -= Time.deltaTime;
             UpdateTimerClientRpc();
         }
 
@@ -135,9 +140,9 @@ public class ProgressManager : NetworkBehaviour {
             // Debug.Log("timer is null");
             return;
         }
-        timer.text = $"Time remaining: {(int)time.Value}";
+        timer.text = $"Time remaining: {(int)remainingMatchLength.Value}";
 
-        if (time.Value < 0 && IsServer && !isGameEnded) {
+        if (remainingMatchLength.Value < 0 && IsServer && !isGameEnded) {
             OnGameEnd();
         }
     }
@@ -169,7 +174,6 @@ public class ProgressManager : NetworkBehaviour {
         Assets.instance.endGameResults?.SetActive(true);
         isGameEnded = true;
         returningToLobbyText = GameObject.FindWithTag("ReturningToLobbyText").GetComponent<TextMeshProUGUI>();
-        if (returningToLobbyText == null) Debug.Log("it is null");
         foreach (var (clientId, rank) in OrderByScore()) {
             if (GameManager.GetRole(clientId) == GameManager.PlayerRole.HUNTER) continue;
             GameObject playerResult = Instantiate(Assets.instance.playerResult, GameObject.Find("PlayerRankings").transform);

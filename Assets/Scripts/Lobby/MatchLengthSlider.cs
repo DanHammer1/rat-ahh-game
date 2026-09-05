@@ -7,16 +7,16 @@ using TMPro;
 public class MatchLengthSlider : NetworkBehaviour {
     public Slider slider;
     void Awake() {
-        slider.value = ProgressManager.instance.defaultTime.Value;
-        ProgressManager.instance.defaultTime.OnValueChanged -= OnDefaultTimeChanged;
-        ProgressManager.instance.defaultTime.OnValueChanged += OnDefaultTimeChanged;
+        slider.value = ProgressManager.instance.startingMatchLength.Value;
+        ProgressManager.instance.startingMatchLength.OnValueChanged -= OnStartingMatchLengthChanged;
+        ProgressManager.instance.startingMatchLength.OnValueChanged += OnStartingMatchLengthChanged;
     }
 
     public void OnSliderValueChanged() {
         ProgressManager.instance.SetMatchLengthRpc(slider.value);
     }
 
-    void OnDefaultTimeChanged(float oldValue, float newValue) {
+    void OnStartingMatchLengthChanged(float oldValue, float newValue) {
         slider.value = newValue;
     }
 }

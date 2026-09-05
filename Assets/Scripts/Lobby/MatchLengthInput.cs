@@ -9,9 +9,9 @@ public class MatchLengthInput : NetworkBehaviour {
     public TMP_InputField input;
 
     void Awake() {
-        input.text = ProgressManager.instance.defaultTime.Value.ToString();
-        ProgressManager.instance.defaultTime.OnValueChanged -= OnDefaultTimeChanged;
-        ProgressManager.instance.defaultTime.OnValueChanged += OnDefaultTimeChanged;
+        input.text = ProgressManager.instance.startingMatchLength.Value.ToString();
+        ProgressManager.instance.startingMatchLength.OnValueChanged -= OnStartingMatchLengthChanged;
+        ProgressManager.instance.startingMatchLength.OnValueChanged += OnStartingMatchLengthChanged;
     }
 
     public void OnEndEdit() {
@@ -20,11 +20,11 @@ public class MatchLengthInput : NetworkBehaviour {
             // input.text = newTime.ToString();
             ProgressManager.instance.SetMatchLengthRpc(newTime);
         } else {
-            input.text = ProgressManager.instance.defaultTime.Value.ToString();
+            input.text = ProgressManager.instance.startingMatchLength.Value.ToString();
         }
     }
 
-    void OnDefaultTimeChanged(float oldValue, float newValue) {
+    void OnStartingMatchLengthChanged(float oldValue, float newValue) {
         input.text = newValue.ToString();
     }
 }

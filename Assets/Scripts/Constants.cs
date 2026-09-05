@@ -58,6 +58,11 @@ public class Constants : MonoBehaviour {
     public static float poisonDPS = 15f;
     # endregion
 
+    # region "Match Settings"
+    public static int defaultStartingRatLives = 3;
+    public static int defaultStartingMatchLength = 600;
+    # endregion
+
     void Awake() {
         instance = this;
     }
