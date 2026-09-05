@@ -12,13 +12,18 @@ using UnityEngine.SceneManagement;
 
 public class RatPlayer : Player {
     public bool isInvisible = false;
-    public int lives = 1;
+    public int lives;
 
 
     public override void OnNetworkSpawn() {
         base.OnNetworkSpawn();
+        InitialiseRatFeatures();
+    }
+
+    public void InitialiseRatFeatures() {
+        if (!IsOwner) return;
+        lives = ProgressManager.instance.startingRatLives.Value;
         GameObject heartsContainer = GameObject.Find("HeartsContainer");
-        lives = 2;
         if (SceneManager.GetActiveScene().name == "Game") {
             heartsContainer.GetComponent<HeartsContainer>().DrawHearts();
         }
