@@ -22,6 +22,11 @@ public class ObjectiveSpawner : MonoBehaviour {
     }
 
     public void CreateRandomObjective() {
+        if (Player.localPlayer.GetComponent<RatPlayer>().isGhost) {
+            OnObjectiveCreated?.Invoke("YOU WORTHLESS PIECE OF TRASH!! DEAD RATS ARE NOT WORTHY OF MY OBJECTIVES!!!");
+            return;
+        }
+
         if (ProgressManager.instance.objectives.Count >= Constants.maxObjectives) {
             OnObjectiveCreated?.Invoke("Do your objectives bruh.");
             return;

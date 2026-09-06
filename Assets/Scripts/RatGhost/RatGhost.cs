@@ -18,7 +18,7 @@ public class RatGhost : NetworkBehaviour {
         ratPlayer.isGhost = true;
         ghostShader.enabled = true;
 
-        Assets.instance.objectivesUIGameObject.SetActive(false);
+        Assets.instance.objectivesUIGameObject.transform.parent.gameObject.SetActive(false);
         Assets.instance.ghostRulesUIGameObject.SetActive(true);
 
         ProgressManager.instance.RemoveAllObjectives();
