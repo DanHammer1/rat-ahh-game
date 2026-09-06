@@ -18,6 +18,9 @@ public interface IInteractable {
     public bool CheckExtraInteractionConditions() {
         return true;
     }
+    public bool CheckGlobalInteractionConditions() {
+        return !Player.localPlayer.isInUIMenu;
+    }
 
     public void TryInteract() {
         if (CheckInteractionShouldTrigger()) Interact();
@@ -61,7 +64,10 @@ public interface IInteractable {
         interactPrompt.GetComponent<TextMeshProUGUI>().text = newInteractText;
         implementationScript.UpdateProgressBar(implementationScript.GetProgress());
 
-        return (!Player.localPlayer.dead && implementationScript.CheckExtraInteractionConditions());
+        return (!Player.localPlayer.dead &&
+                implementationScript.CheckExtraInteractionConditions() &&
+                implementationScript.CheckGlobalInteractionConditions()
+            );
     }
 
     public bool CheckPlayerInRange() {
@@ -100,7 +106,7 @@ public interface IInteractable {
     }
 
     public bool CheckInteractionShouldTrigger() {
-        return (CheckPlayerInRange() && Input.GetKey(KeyCode.E) && GetProgress() >= 1);
+        return (CheckPlayerInRange() && Input.GetKey(KeyCode.E) && GetProgress() >= 1 && CheckGlobalInteractionConditions());
     }
 
     public void TryUpdateProgress() {

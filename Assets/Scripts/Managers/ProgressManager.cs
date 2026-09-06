@@ -198,6 +198,7 @@ public class ProgressManager : NetworkBehaviour {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Player.localPlayer.GetComponent<Movement>().isMovementLocked = true;
+        Player.localPlayer.GetComponent<Player>().isInUIMenu = true;
         GameObject.Find("CinemachineCamera").GetComponent<CinemachineInputAxisController>().enabled = false;
     }
 
