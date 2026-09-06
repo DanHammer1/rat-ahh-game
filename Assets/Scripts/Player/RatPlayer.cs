@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 
 public class RatPlayer : Player {
     public bool isInvisible = false;
-    public int lives;
+    public NetworkVariable<int> lives;
 
 
     public override void OnNetworkSpawn() {
@@ -21,12 +21,19 @@ public class RatPlayer : Player {
     }
 
     public void InitialiseRatFeatures() {
-        if (!IsOwner) return;
-        lives = ProgressManager.instance.startingRatLives.Value;
-        GameObject heartsContainer = GameObject.Find("HeartsContainer");
-        if (SceneManager.GetActiveScene().name == "Game") {
-            heartsContainer.GetComponent<HeartsContainer>().DrawHearts();
+        if (IsOwner && SceneManager.GetActiveScene().name == "Game") {
+            HeartsContainer heartsContainer = GameObject.Find("HeartsContainer").GetComponent<HeartsContainer>();
+            heartsContainer.DrawHearts();
+            lives.OnValueChanged -= OnLivesChanged;
+            lives.OnValueChanged += OnLivesChanged;
         }
+        if (IsServer) lives.Value = ProgressManager.instance.startingRatLives.Value;
+    }
+
+    public void OnLivesChanged(int oldValue, int newValue) {
+        if (!IsOwner) return;
+        HeartsContainer heartsContainer = GameObject.Find("HeartsContainer").GetComponent<HeartsContainer>();
+        heartsContainer.DrawHearts();
     }
 
     protected override void Update() {

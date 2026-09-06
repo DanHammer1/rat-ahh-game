@@ -12570,6 +12570,7 @@ MonoBehaviour:
   endGameResults: {fileID: 2005392947}
   tauntsUI: {fileID: 0}
   emotesUI: {fileID: 0}
+  objectivesUIGameObject: {fileID: 1619903776}
   clingObjectiveIcon: {fileID: 21300000, guid: 00a2aa8f84b2bbd4297cd6974ace0f8f, type: 3}
   cheeseObjectiveIcon: {fileID: 21300000, guid: f34c6c6829e53284a82400c174b01332, type: 3}
   deliveryObjectiveIcon: {fileID: 21300000, guid: 018682c9832b10848992933f68590952, type: 3}

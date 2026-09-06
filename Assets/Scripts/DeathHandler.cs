@@ -36,6 +36,7 @@ public class DeathHandler : NetworkBehaviour {
         if (IsServer) {
             GetComponent<Player>().EditHealthServerRpc(0);
             GetComponent<Player>().EditScoreServerRpc(0);
+            GetComponent<RatPlayer>().lives.Value--;
             GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.RatDie, transform.position);
         }
         GetComponent<Player>().dead = true;
@@ -61,7 +62,7 @@ public class DeathHandler : NetworkBehaviour {
         for (int i = 0; i < resetFrameMaxCount; i++) {
             if (transform.position.magnitude > 0.1f) {
                 resetFrameMaxCount++;
-                Debug.Log(i);
+                // Debug.Log(i);
             }
 
             transform.position = Vector3.zero;

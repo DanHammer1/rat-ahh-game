@@ -54,8 +54,8 @@ public class ProgressManager : NetworkBehaviour {
         movingToLobby = false;
 
         GameObject timerGameObject = GameObject.FindWithTag("TimerUI");
-        GameObject objectivesUIGameObject = GameObject.FindWithTag("ObjectivesUI");
-        //GameObject playersUIListGameObject = GameObject.FindWithTag("PlayerListUI");
+        GameObject objectivesUIGameObject = Assets.instance.objectivesUIGameObject;
+        // GameObject objectivesUIGameObject = GameObject.FindWithTag("ObjectivesUI");
         GameObject scoreListGameObject = GameObject.FindWithTag("Score");
 
         while (timerGameObject == null ||
@@ -64,8 +64,8 @@ public class ProgressManager : NetworkBehaviour {
             CheeseSpawner.instance == null) {
 
             timerGameObject = GameObject.FindWithTag("TimerUI");
-            objectivesUIGameObject = GameObject.FindWithTag("ObjectivesUI");
-            //playersUIListGameObject = GameObject.FindWithTag("PlayerListUI");
+            // objectivesUIGameObject = GameObject.FindWithTag("ObjectivesUI");
+            objectivesUIGameObject = Assets.instance.objectivesUIGameObject;
             scoreListGameObject = GameObject.FindWithTag("Score");
 
             yield return null;
@@ -137,7 +137,7 @@ public class ProgressManager : NetworkBehaviour {
     [ClientRpc]
     public void UpdateTimerClientRpc() {
         if (timer == null) {
-            // Debug.Log("timer is null");
+            Debug.Log("timer is null");
             return;
         }
         timer.text = $"Time remaining: {(int)remainingMatchLength.Value}";
