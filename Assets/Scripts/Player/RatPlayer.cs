@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 
 public class RatPlayer : Player {
     public bool isInvisible = false;
+    public bool isGhost = false;
     public NetworkVariable<int> lives;
 
 

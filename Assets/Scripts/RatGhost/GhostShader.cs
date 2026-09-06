@@ -10,13 +10,6 @@ public class GhostShader : NetworkBehaviour {
 
     void Awake() {
         playerRenderer = transform.Find("Renderer").GetComponent<SkinnedMeshRenderer>();
-        playerRenderer.materials = Assets.instance.ratGhostMaterials;
-
-        foreach (Material material in playerRenderer.materials) {
-            // Debug.Log(material.HasProperty("_Amount"));
-            // material.SetFloat("_Amount", 0f);
-            // Debug.Log(material.GetFloat("_Amount"));
-        }
     }
 
     void Update() {
