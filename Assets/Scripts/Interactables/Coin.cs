@@ -91,7 +91,7 @@ public class Coin : NetworkBehaviour, IInteractable {
         transform.position = spine.TransformPoint(new Vector3(0.005f, 0, 0));
         transform.rotation = spine.rotation * Quaternion.Euler(0, 0, 90);
 
-        if (Player.localPlayer.NetworkObject == player && Input.GetKeyDown(KeyCode.Q)) {
+        if (Player.localPlayer.NetworkObject == player && Input.GetKeyDown(KeyCode.Q) && !Player.localPlayer.isInUIMenu) {
             DropCoinRpc();
         }
     }
