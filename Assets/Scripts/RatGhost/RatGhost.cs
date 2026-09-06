@@ -17,5 +17,10 @@ public class RatGhost : NetworkBehaviour {
         playerRenderer.materials = Assets.instance.ratGhostMaterials;
         ratPlayer.isGhost = true;
         ghostShader.enabled = true;
+
+        Assets.instance.objectivesUIGameObject.SetActive(false);
+        Assets.instance.ghostRulesUIGameObject.SetActive(true);
+
+        ProgressManager.instance.RemoveAllObjectives();
     }
 }

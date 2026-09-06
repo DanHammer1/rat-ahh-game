@@ -18,6 +18,7 @@ public class RaceObjective : Objective {
         RaceLocationManager.instance.onRaceCompleted += () => {
             conditionCleared = true;
         };
+        onObjectiveCancelled += RaceLocationManager.instance.SetAllLocationsInactive;
     }
 
     public override bool CheckConditionCleared() {

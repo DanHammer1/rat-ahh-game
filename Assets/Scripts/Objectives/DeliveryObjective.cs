@@ -18,6 +18,7 @@ public class DeliveryObjective : Objective {
         CoinSpawner.instance.onCoinDelivered += () => {
             conditionCleared = true;
         };
+        onObjectiveCancelled += CoinDeliveryLocationManager.instance.SetAllLocationsInactive;
     }
 
     public override bool CheckConditionCleared() {

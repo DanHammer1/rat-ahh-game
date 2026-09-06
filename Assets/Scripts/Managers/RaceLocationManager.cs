@@ -10,11 +10,13 @@ public class RaceLocationManager : NetworkBehaviour {
     GameObject raceTimerUI;
     int numberOfLocations;
     public Action onRaceCompleted;
+    public Action onObjectiveCancelled;
     public void Awake() {
         instance = this;
         numberOfLocations = raceLocationContainer.transform.childCount;
         raceTimerUI = GameObject.FindWithTag("RaceTimer");
         raceTimerUI.SetActive(false);
+        onObjectiveCancelled += SetAllLocationsInactive;
     }
 
     public List<string> ChooseRandomRaceLocation() {
@@ -55,6 +57,7 @@ public class RaceLocationManager : NetworkBehaviour {
         for (int i = 0; i < numberOfLocations; i++) {
             raceLocationContainer.transform.GetChild(i).Find("RaceStart").GetComponent<BoxCollider>().enabled = false;
             raceLocationContainer.transform.GetChild(i).Find("RaceFinish").GetComponent<BoxCollider>().enabled = false;
+            raceLocationContainer.transform.GetChild(i).gameObject.SetActive(false);
         }
     }
 }

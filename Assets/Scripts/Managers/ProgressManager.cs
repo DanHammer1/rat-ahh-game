@@ -279,17 +279,25 @@ public class ProgressManager : NetworkBehaviour {
             }
         }
 
+        List<Objective> objectivesToSucceed = new List<Objective>();
         List<Objective> objectivesToRemove = new List<Objective>();
 
         foreach (Objective objective in objectives) {
             if (objective.CheckConditionCleared()) {
-                objectivesToRemove.Add(objective);
+                objectivesToSucceed.Add(objective);
                 StartCoroutine(ClearObjectiveText(objective));
+            } else if (objective.CheckObjectiveCancelled()) {
+                objectivesToRemove.Add(objective);
+                RemoveObjectiveText(objective);
             }
         }
 
-        foreach (Objective objective in objectivesToRemove) {
+        foreach (Objective objective in objectivesToSucceed) {
             objective.onConditionCleared?.Invoke();
+        }
+
+        foreach (Objective objective in objectivesToRemove) {
+            objective.onObjectiveCancelled?.Invoke();
         }
 
         foreach (Objective objective in objectives) {
@@ -347,6 +355,30 @@ public class ProgressManager : NetworkBehaviour {
                 slot.text.gameObject.LeanScale(new Vector3(0, 0, 0), 0.5f).setEaseInBack();
                 ratStampObject.LeanScale(new Vector3(0, 0, 0), 0.5f).setEaseInBack();
                 slot.objectiveIcon.gameObject.LeanScale(new Vector3(0, 0, 0), 0.5f).setEaseInBack();
+                checkbox.SetActive(true);
+            }
+        }
+    }
+
+    public void RemoveAllObjectives() {
+        foreach (Objective objective in objectives) {
+            objective.isObjectiveCancelled = true;
+        }
+    }
+
+    public void RemoveObjectiveText(Objective objective) {
+        foreach (var slot in objectiveListSlots) {
+            if (slot.currentObjective == objective) {
+                slot.currentObjective = null;
+
+                Transform ratStamp = slot.text.transform.parent.Find("DotPoint/RatStamp");
+                GameObject ratStampObject = ratStamp.gameObject;
+                UnityEngine.UI.Image ratStampImage = ratStampObject.GetComponent<UnityEngine.UI.Image>();
+                GameObject checkbox = slot.text.transform.parent.Find("DotPoint/Checkbox").gameObject;
+
+                slot.text.transform.localScale = Vector3.zero;
+                ratStampObject.transform.localScale = Vector3.zero;
+                slot.objectiveIcon.transform.localScale = Vector3.zero;
                 checkbox.SetActive(true);
             }
         }
