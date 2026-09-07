@@ -12699,6 +12699,7 @@ GameObject:
   - component: {fileID: 6201170529866288369}
   - component: {fileID: 2808643057110915283}
   - component: {fileID: 6508474433186596926}
+  - component: {fileID: 5783246946827398283}
   m_Layer: 7
   m_Name: RatPlayerRagdollable
   m_TagString: PlayerMouse
@@ -12787,6 +12788,7 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   clientNetworkTransform: {fileID: 0}
   viewPosition: {fileID: 6386831360713167238}
+  skinnedMeshRenderer: {fileID: 0}
   abilityIcon: {fileID: 0}
   abilityIconBackgroundOutline: {fileID: 0}
   abilityIconBackgroundOutlineImage: {fileID: 0}
@@ -12815,6 +12817,11 @@ MonoBehaviour:
   isInvisible: 0
   isGhost: 0
   lives:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  isPossessingItem:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
@@ -13304,3 +13311,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &5783246946827398283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8956695940269091181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57aaaa94257df0e45a3bfbcc4bf47a26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  itemBeingPossessed: {fileID: 0}

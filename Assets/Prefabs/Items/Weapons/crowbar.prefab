@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 9185164458330294537}
   - component: {fileID: 1709159690796207139}
   - component: {fileID: 6306578808051411387}
+  - component: {fileID: 4703202592022567559}
   - component: {fileID: 8591460160180508591}
   - component: {fileID: 8738094209339205633}
   - component: {fileID: 3597932210469606005}
@@ -106,7 +107,7 @@ GameObject:
   - component: {fileID: 9040544115688200655}
   - component: {fileID: 7647854481628335096}
   m_Layer: 9
-  m_Name: Crowbar
+  m_Name: crowbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -166,9 +167,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  showInteractionUI: 1
   cooldown: 1.2
+  hunterPlayerRef:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
   parentGameObjectName: Crowbar
   data: {fileID: 11400000, guid: 6b1cb9a45c870d142a41a8825c398a8b, type: 2}
+--- !u!114 &4703202592022567559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6761461891507685333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35f17be5b805f124bb19b4c0bb347abb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  showInteractionUI: 1
+  cooldown: 0
+  ratPlayerRef:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+  parentGameObjectName: 
 --- !u!82 &8591460160180508591
 AudioSource:
   m_ObjectHideFlags: 0

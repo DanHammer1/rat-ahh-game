@@ -35,6 +35,7 @@ public class Player : NetworkBehaviour {
     public PlayerCamera playerCamera;
     public ClientNetworkTransform clientNetworkTransform;
     public GameObject viewPosition;
+    public SkinnedMeshRenderer skinnedMeshRenderer;
 
     // Ability Icon
     public GameObject abilityIcon;
@@ -79,6 +80,7 @@ public class Player : NetworkBehaviour {
         boxCollider = GetComponent<BoxCollider>();
         rb = GetComponent<Rigidbody>();
         clientNetworkTransform = GetComponent<ClientNetworkTransform>();
+        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
         if (IsServer) {
             maxHealth.Value = 100;
