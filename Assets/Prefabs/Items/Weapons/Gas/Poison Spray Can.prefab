@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 323912249843323747}
   - component: {fileID: 1390968719491871397}
   - component: {fileID: 5861648893998779326}
+  - component: {fileID: 544001861801587044}
   m_Layer: 9
   m_Name: Poison Spray Can
   m_TagString: Interactable
@@ -202,8 +203,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  showInteractionUI: 1
   cooldown: 0.03
+  hunterPlayerRef:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
   parentGameObjectName: PoisonSprayCan
+--- !u!114 &544001861801587044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132149155446097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db42171c1bd5dd7408381f2a00af5082, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  showInteractionUI: 1
+  ratPlayerRef:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+  isPossessed:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
 --- !u!1 &5872220468098353094
 GameObject:
   m_ObjectHideFlags: 0

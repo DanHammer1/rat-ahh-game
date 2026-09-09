@@ -11,7 +11,10 @@ public class GhostMovement : NetworkBehaviour {
         if (!IsOwner || Player.localPlayer.dead || !itemBeingPossessedObject.Value.TryGet(out NetworkObject itemBeingPossessed)) return;
 
         transform.position = itemBeingPossessed.transform.position;
+    }
 
+    void Update() {
+        if (!IsOwner || Player.localPlayer.dead || !itemBeingPossessedObject.Value.TryGet(out NetworkObject itemBeingPossessed)) return;
         if (Input.GetKeyDown(KeyCode.Z)) {
             Vector3 direction = Camera.main.transform.forward;
             PossessedJumpRpc(direction);

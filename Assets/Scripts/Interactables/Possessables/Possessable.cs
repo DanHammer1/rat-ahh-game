@@ -13,7 +13,7 @@ public abstract class Possessable : NetworkBehaviour, IInteractable {
     public NetworkVariable<NetworkObjectReference> ratPlayerRef = new NetworkVariable<NetworkObjectReference>();
 
 
-    private NetworkVariable<bool> isPossessed = new NetworkVariable<bool>(false);
+    public NetworkVariable<bool> isPossessed = new NetworkVariable<bool>(false);
 
     public override void OnNetworkSpawn() {
     }
@@ -25,15 +25,6 @@ public abstract class Possessable : NetworkBehaviour, IInteractable {
         if (!ratPlayerRef.Value.TryGet(out NetworkObject ratPlayer) || !isPossessed.Value) return;
 
         if (Player.localPlayer && GameManager.GetLocalRole() != GameManager.PlayerRole.HIDER) return;
-
-        if (Input.GetKeyDown(KeyCode.Q)) {
-            SetIsPossessedRpc(false);
-            GetComponent<NetworkTransform>().enabled = true; // todo update
-            GetComponent<Rigidbody>().useGravity = true;
-            pickUpProgress = 0;
-
-            ((RatPlayer)(Player.localPlayer)).SetIsPossessingItemRpc(false);
-        }
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -49,7 +40,7 @@ public abstract class Possessable : NetworkBehaviour, IInteractable {
     }
 
     public bool CheckExtraInteractionConditions() {
-        return GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER && !((RatPlayer)(Player.localPlayer)).isPossessingItem.Value;
+        return GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER && !((RatPlayer)(Player.localPlayer)).isPossessingItem.Value && !isPossessed.Value;
     }
 
     public abstract string GetInteractionPromptText();
@@ -60,6 +51,7 @@ public abstract class Possessable : NetworkBehaviour, IInteractable {
             RatPlayer ratPlayer = playerObj.GetComponent<RatPlayer>();
             ratPlayer.possessedItem.Invoke();
             SetItemBeingPossessedRpc(ratPlayerRef.Value, NetworkObject);
+            SetIsPossessedRpc(true);
         }
     }
 

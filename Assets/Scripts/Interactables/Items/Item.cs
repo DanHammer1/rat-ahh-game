@@ -96,6 +96,11 @@ public abstract class Item : NetworkBehaviour, IInteractable {
         UpdateHunterPlayerRefRpc(Player.localPlayer.NetworkObject);
 
         GetComponent<NetworkTransform>().enabled = true;
+        if (TryGetComponent<Possessable>(out Possessable possessable)) {
+            if (possessable.isPossessed.Value && possessable.ratPlayerRef.Value.TryGet(out NetworkObject ratPlayer)) {
+                ratPlayer.GetComponent<RatPlayer>().unPossessedItem.Invoke();
+            }
+        }
     }
 
     [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
