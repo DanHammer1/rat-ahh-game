@@ -56,18 +56,26 @@ public interface IInteractable {
         if (!hitSomething) return false;
 
         GameObject interactPrompt = GameObject.FindWithTag("InteractionPrompt");
-        IInteractable implementationScript = hit.collider.gameObject.GetComponent<IInteractable>();
-        if (!implementationScript.ShowInteractionUI) {
+        IInteractable implementationScript = null;
+        IInteractable[] interactables = hit.collider.gameObject.GetComponents<IInteractable>();
+
+        foreach (IInteractable interactable in interactables) {
+            if (interactable.ShowInteractionUI &&
+                interactable.CheckExtraInteractionConditions() &&
+                interactable.CheckGlobalInteractionConditions()) {
+                implementationScript = interactable;
+                break;
+            }
+        }
+
+        if (implementationScript == null) {
             return false;
         }
         string newInteractText = implementationScript.GetInteractionPromptText();
         interactPrompt.GetComponent<TextMeshProUGUI>().text = newInteractText;
         implementationScript.UpdateProgressBar(implementationScript.GetProgress());
 
-        return (!Player.localPlayer.dead &&
-                implementationScript.CheckExtraInteractionConditions() &&
-                implementationScript.CheckGlobalInteractionConditions()
-            );
+        return !Player.localPlayer.dead;
     }
 
     public bool CheckPlayerInRange() {
@@ -100,7 +108,10 @@ public interface IInteractable {
         if (hit.collider.gameObject == null || LayerMask.LayerToName(hit.collider.gameObject.layer) == "groundLayer") return false;
 
         GameObject hitObject = hit.collider.gameObject;
-        if (hitObject.GetComponent<IInteractable>() == this && CheckExtraInteractionConditions()) return true;
+        IInteractable[] interactables = hitObject.GetComponents<IInteractable>();
+        foreach (IInteractable interactable in interactables) {
+            if (ReferenceEquals(interactable, this) && CheckExtraInteractionConditions()) return true;
+        }
 
         return false;
     }

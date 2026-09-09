@@ -13,8 +13,12 @@ public class GhostMovement : NetworkBehaviour {
 
         transform.position = itemBeingPossessed.position;
 
-        if (Input.GetKeyDown(KeyCode.Y)) {
-            itemBeingPossessed.GetComponent<Rigidbody>().AddForce(Vector3.up * 0.1f, ForceMode.Impulse);
+        if (Input.GetKeyDown(KeyCode.Z)) {
+            Vector3 direction = Camera.main.transform.forward;
+            itemBeingPossessed.GetComponent<Rigidbody>().AddForce(direction * 5, ForceMode.Impulse);
+        }
+        if (Input.GetKeyDown(KeyCode.Q)) {
+            GetComponent<RatPlayer>().unPossessedItem.Invoke();
         }
     }
 }

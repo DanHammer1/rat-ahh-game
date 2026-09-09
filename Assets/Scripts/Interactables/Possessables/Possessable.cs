@@ -49,7 +49,8 @@ public abstract class Possessable : NetworkBehaviour, IInteractable {
     }
 
     public bool CheckExtraInteractionConditions() {
-        return (GameManager.GetLocalRole() == GameManager.PlayerRole.HUNTER && !((HunterPlayer)(Player.localPlayer)).isCarryingItem.Value);
+        Debug.Log(GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER && !((RatPlayer)(Player.localPlayer)).isPossessingItem.Value);
+        return GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER && !((RatPlayer)(Player.localPlayer)).isPossessingItem.Value;
     }
 
     public abstract string GetInteractionPromptText();

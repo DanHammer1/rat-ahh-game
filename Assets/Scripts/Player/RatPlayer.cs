@@ -53,6 +53,7 @@ public class RatPlayer : Player {
         skinnedMeshRenderer.enabled = false;
         BoxCollider boxCollider = GetComponent<BoxCollider>();
         boxCollider.enabled = false;
+        SetIsPossessingItemRpc(true);
 
     }
     void UnPossessedItem() {
@@ -61,6 +62,8 @@ public class RatPlayer : Player {
         skinnedMeshRenderer.enabled = true;
         BoxCollider boxCollider = GetComponent<BoxCollider>();
         boxCollider.enabled = true;
+        GetComponent<GhostMovement>().itemBeingPossessed = default;
+        SetIsPossessingItemRpc(false);
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
