@@ -49,7 +49,6 @@ public abstract class Possessable : NetworkBehaviour, IInteractable {
     }
 
     public bool CheckExtraInteractionConditions() {
-        Debug.Log(GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER && !((RatPlayer)(Player.localPlayer)).isPossessingItem.Value);
         return GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER && !((RatPlayer)(Player.localPlayer)).isPossessingItem.Value;
     }
 
@@ -60,8 +59,16 @@ public abstract class Possessable : NetworkBehaviour, IInteractable {
         if (ratPlayerRef.Value.TryGet(out NetworkObject playerObj)) {
             RatPlayer ratPlayer = playerObj.GetComponent<RatPlayer>();
             ratPlayer.possessedItem.Invoke();
-            ratPlayer.GetComponent<GhostMovement>().itemBeingPossessed = transform;
+            SetItemBeingPossessedRpc(ratPlayerRef.Value, NetworkObject);
         }
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SetItemBeingPossessedRpc(NetworkObjectReference ratPlayerRef, NetworkObjectReference itemRef) {
+        if (!ratPlayerRef.TryGet(out NetworkObject playerObj))
+            return;
+
+        playerObj.GetComponent<GhostMovement>().itemBeingPossessedObject.Value = itemRef;
     }
 
     public void UpdateProgress() {

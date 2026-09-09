@@ -137,7 +137,9 @@ public class Movement : NetworkBehaviour {
             Jump(jumpforce, ascendMultiplier, fallMultiplier);
         }
         // Checking when we're on the ground and keeping track of our ground check delay
-        if (!isGrounded && toggleGravity) {
+        if (!isGrounded &&
+            toggleGravity &&
+            !(transform.tag == "PlayerMouse" && GetComponent<RatPlayer>().isPossessingItem.Value)) {
             rb.useGravity = true;
             // timeAirborne += Time.deltaTime;
             // Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;

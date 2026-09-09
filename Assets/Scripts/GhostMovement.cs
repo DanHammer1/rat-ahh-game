@@ -2,23 +2,29 @@ using UnityEngine;
 using Unity.Netcode;
 
 public class GhostMovement : NetworkBehaviour {
-    public Transform itemBeingPossessed;
+    public NetworkVariable<NetworkObjectReference> itemBeingPossessedObject = new NetworkVariable<NetworkObjectReference>();
 
     void FixedUpdate() {
         // if (Player.localPlayer != null) {
         //     eyePosition = Player.localPlayer.gameObject.transform.Find("EyePosition");
         // }
+        if (!IsOwner || Player.localPlayer.dead || !itemBeingPossessedObject.Value.TryGet(out NetworkObject itemBeingPossessed)) return;
 
-        if (!IsOwner || Player.localPlayer.dead || !itemBeingPossessed) return;
-
-        transform.position = itemBeingPossessed.position;
+        transform.position = itemBeingPossessed.transform.position;
 
         if (Input.GetKeyDown(KeyCode.Z)) {
             Vector3 direction = Camera.main.transform.forward;
-            itemBeingPossessed.GetComponent<Rigidbody>().AddForce(direction * 5, ForceMode.Impulse);
+            PossessedJumpRpc(direction);
+            // itemBeingPossessed.GetComponent<Rigidbody>().AddForce(direction * 5, ForceMode.Impulse);
         }
         if (Input.GetKeyDown(KeyCode.Q)) {
             GetComponent<RatPlayer>().unPossessedItem.Invoke();
         }
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void PossessedJumpRpc(Vector3 direction) {
+        if (!itemBeingPossessedObject.Value.TryGet(out NetworkObject itemBeingPossessed)) return;
+        itemBeingPossessed.GetComponent<Rigidbody>().AddForce(direction * 5, ForceMode.Impulse);
     }
 }

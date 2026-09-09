@@ -25,6 +25,7 @@ public class RatPlayer : Player {
         InitialiseRatFeatures();
         possessedItem += PossessedItem;
         unPossessedItem += UnPossessedItem;
+        boxCollider = GetComponent<BoxCollider>();
     }
 
     public void InitialiseRatFeatures() {
@@ -48,26 +49,36 @@ public class RatPlayer : Player {
     }
 
     void PossessedItem() {
-        movement.isMovementLocked = true;
-        rb.useGravity = false;
-        skinnedMeshRenderer.enabled = false;
-        BoxCollider boxCollider = GetComponent<BoxCollider>();
-        boxCollider.enabled = false;
         SetIsPossessingItemRpc(true);
-
+        PossessedItemRpc();
     }
     void UnPossessedItem() {
-        movement.isMovementLocked = false;
-        rb.useGravity = true;
-        skinnedMeshRenderer.enabled = true;
-        BoxCollider boxCollider = GetComponent<BoxCollider>();
-        boxCollider.enabled = true;
-        GetComponent<GhostMovement>().itemBeingPossessed = default;
+        UnPossessedItemRpc();
+        SetItemBeingPossessedObjectRpc();
         SetIsPossessingItemRpc(false);
+    }
+
+    [Rpc(SendTo.Everyone)]
+    void PossessedItemRpc() {
+        skinnedMeshRenderer.enabled = false;
+        boxCollider.enabled = false;
+        movement.isMovementLocked = true;
+        movement.toggleGravity = false;
+    }
+    [Rpc(SendTo.Everyone)]
+    void UnPossessedItemRpc() {
+        skinnedMeshRenderer.enabled = true;
+        boxCollider.enabled = true;
+        movement.isMovementLocked = false;
+        movement.toggleGravity = true;
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void SetIsPossessingItemRpc(bool state) {
         isPossessingItem.Value = state;
+    }
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SetItemBeingPossessedObjectRpc() {
+        GetComponent<GhostMovement>().itemBeingPossessedObject.Value = default;
     }
 }

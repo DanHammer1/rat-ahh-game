@@ -30,7 +30,7 @@ public class Player : NetworkBehaviour {
     public Action onRevive;
 
     public Movement movement;
-    BoxCollider boxCollider;
+    public BoxCollider boxCollider;
     public Rigidbody rb;
     public PlayerCamera playerCamera;
     public ClientNetworkTransform clientNetworkTransform;

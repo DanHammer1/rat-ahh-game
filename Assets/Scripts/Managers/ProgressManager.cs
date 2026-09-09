@@ -137,7 +137,7 @@ public class ProgressManager : NetworkBehaviour {
     [ClientRpc]
     public void UpdateTimerClientRpc() {
         if (timer == null) {
-            Debug.Log("timer is null");
+            // Debug.Log("timer is null");
             return;
         }
         timer.text = $"Time remaining: {(int)remainingMatchLength.Value}";
