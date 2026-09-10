@@ -7,27 +7,32 @@ public class Assets : MonoBehaviour {
     public static Assets instance;
 
     #region "Ability Icons"
+    [Header("Ability Icons")]
     public Sprite ratClingAbilityIcon;
     public Sprite ratDashAbilityIcon;
     public Sprite ratInvisibilityAbilityIcon;
     #endregion
 
     #region "Rat Materials"
+    [Header("Rat Materials")]
     public Material[] ratMaterials;
     public Material[] ratTransparentMaterials;
     public Material[] ratGhostMaterials;
     #endregion
 
     #region "Shaders"
+    [Header("Shaders")]
     public Material invisibilityMaterial;
     #endregion
 
     #region "Prefabs"
+    [Header("Prefabs")]
     public GameObject poisonGasPrefab;
     public GameObject heartPrefab;
     #endregion
 
     #region "GameObjects"
+    [Header("GameObjects")]
     public GameObject abilityParent;
     public GameObject ratAbilityShakeUI;
     public GameObject ratAbilitySlapPrompt;
@@ -37,9 +42,11 @@ public class Assets : MonoBehaviour {
     public GameObject emotesUI;
     public GameObject objectivesUIGameObject;
     public GameObject ghostRulesUIGameObject;
-    #endregion
+    public GameObject ratGhostJumpMeterUI;
+    # endregion
 
     #region "Objective Icons"
+    [Header("Objective Icons")]
     public Sprite clingObjectiveIcon;
     public Sprite cheeseObjectiveIcon;
     public Sprite deliveryObjectiveIcon;
@@ -47,6 +54,7 @@ public class Assets : MonoBehaviour {
     #endregion
 
     #region "Sound Effects"
+    [Header("Sound Effects")]
     public EventReference ratDashAbilitySFX;
     public EventReference invisibilityEnterSFX;
     public EventReference invisibilityExitSFX;
