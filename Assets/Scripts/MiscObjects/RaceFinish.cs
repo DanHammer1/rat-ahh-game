@@ -39,20 +39,6 @@ public class RaceFinish : NetworkBehaviour {
             Player player = other.GetComponent<Player>();
             RaceLocationManager.instance?.onRaceCompleted?.Invoke();
             startRace.SetActive(false);
-            this.gameObject.SetActive(false);
         }
     }
-
-    // IEnumerator StartRaceCoroutine(float duration) {
-    //     float remaining = duration;
-    //     while (remaining > 0) {
-    //         remaining -= Time.deltaTime;
-    //         yield return null;
-    //     }
-
-    //     if (remaining <= 0) {
-    //         remaining = 0;
-    //         Debug.Log("you failed");
-    //     }
-    // }
 }
