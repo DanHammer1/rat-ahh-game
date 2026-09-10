@@ -60,7 +60,7 @@ public abstract class Possessable : NetworkBehaviour, IInteractable {
         if (!ratPlayerRef.TryGet(out NetworkObject playerObj))
             return;
 
-        playerObj.GetComponent<GhostMovement>().itemBeingPossessedObject.Value = itemRef;
+        playerObj.GetComponent<PossessedMovement>().itemBeingPossessedObject.Value = itemRef;
     }
 
     public void UpdateProgress() {

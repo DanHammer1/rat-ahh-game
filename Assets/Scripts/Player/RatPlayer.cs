@@ -18,7 +18,7 @@ public class RatPlayer : Player {
     public Action possessedItem;
     public Action unPossessedItem;
     public NetworkVariable<bool> isPossessingItem = new NetworkVariable<bool>(false);
-    GhostMovement ghostMovement;
+    PossessedMovement possessedMovement;
 
 
     public override void OnNetworkSpawn() {
@@ -27,7 +27,7 @@ public class RatPlayer : Player {
         possessedItem += PossessedItem;
         unPossessedItem += UnPossessedItem;
         boxCollider = GetComponent<BoxCollider>();
-        ghostMovement = GetComponent<GhostMovement>();
+        possessedMovement = GetComponent<PossessedMovement>();
     }
 
     public void InitialiseRatFeatures() {
@@ -55,7 +55,7 @@ public class RatPlayer : Player {
         PossessedItemRpc();
     }
     void UnPossessedItem() {
-        if (ghostMovement.itemBeingPossessedObject.Value.TryGet(out NetworkObject itemBeingPossessed)) {
+        if (possessedMovement.itemBeingPossessedObject.Value.TryGet(out NetworkObject itemBeingPossessed)) {
             itemBeingPossessed.GetComponent<Possessable>().SetIsPossessedRpc(false);
         }
         UnPossessedItemRpc();
@@ -86,6 +86,6 @@ public class RatPlayer : Player {
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void SetItemBeingPossessedObjectRpc() {
-        ghostMovement.itemBeingPossessedObject.Value = default;
+        possessedMovement.itemBeingPossessedObject.Value = default;
     }
 }

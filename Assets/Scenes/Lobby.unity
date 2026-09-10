@@ -15203,7 +15203,7 @@ MonoBehaviour:
   emotesUI: {fileID: 1649283957}
   objectivesUIGameObject: {fileID: 0}
   ghostRulesUIGameObject: {fileID: 0}
-  ratGhostJumpMeterUI: {fileID: 1873038314}
+  ratPossessedJumpMeterUI: {fileID: 1873038314}
   clingObjectiveIcon: {fileID: 0}
   cheeseObjectiveIcon: {fileID: 0}
   deliveryObjectiveIcon: {fileID: 0}
@@ -15577,7 +15577,7 @@ GameObject:
   - component: {fileID: 1873038316}
   - component: {fileID: 1873038315}
   m_Layer: 5
-  m_Name: RatGhostJumpMeter
+  m_Name: RatPossessedJumpMeter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

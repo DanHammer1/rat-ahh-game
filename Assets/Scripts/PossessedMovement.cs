@@ -4,14 +4,14 @@ using System.Collections;
 using NUnit.Framework;
 using UnityEngine.UI;
 
-public class GhostMovement : NetworkBehaviour {
+public class PossessedMovement : NetworkBehaviour {
     public NetworkVariable<NetworkObjectReference> itemBeingPossessedObject = new NetworkVariable<NetworkObjectReference>();
     private float jumpForce;
     private float maxJumpForce = 10f;
     private bool isChargingJump = false;
     private float cooldown = 0;
     private bool isOnCooldown = false;
-    public GameObject ratGhostJumpMeterUI;
+    public GameObject ratPossessedJumpMeterUI;
     public GameObject jumpMeter;
     public Image jumpMeterImage;
     RatPlayer ratPlayer;
@@ -19,17 +19,17 @@ public class GhostMovement : NetworkBehaviour {
     public override void OnNetworkSpawn() {
         base.OnNetworkSpawn();
         if (!IsOwner) return;
-        ratGhostJumpMeterUI = Assets.instance.ratGhostJumpMeterUI;
-        ratGhostJumpMeterUI.SetActive(false);
+        ratPossessedJumpMeterUI = Assets.instance.ratPossessedJumpMeterUI;
+        ratPossessedJumpMeterUI.SetActive(false);
         ratPlayer = GetComponent<RatPlayer>();
         ratPlayer.possessedItem += AssignJumpMeterVariables;
-        ratPlayer.unPossessedItem += () => ratGhostJumpMeterUI.SetActive(false);
+        ratPlayer.unPossessedItem += () => ratPossessedJumpMeterUI.SetActive(false);
     }
 
     void AssignJumpMeterVariables() {
-        jumpMeter = ratGhostJumpMeterUI.transform.Find("JumpMeter/JumpProgressBar").gameObject;
+        jumpMeter = ratPossessedJumpMeterUI.transform.Find("JumpMeter/JumpProgressBar").gameObject;
         jumpMeterImage = jumpMeter?.GetComponent<Image>();
-        ratGhostJumpMeterUI.SetActive(true);
+        ratPossessedJumpMeterUI.SetActive(true);
     }
 
     void FixedUpdate() {
@@ -81,7 +81,7 @@ public class GhostMovement : NetworkBehaviour {
         PossessedJumpRpc(direction, jumpForce);
 
         // activate cooldown
-        cooldown = Constants.ghostJumpCooldown;
+        cooldown = Constants.possessedJumpCooldown;
         isOnCooldown = true;
         while (cooldown > 0) {
             cooldown -= Time.deltaTime;
