@@ -19,6 +19,7 @@ public class RatPlayer : Player {
     public Action unPossessedItem;
     public NetworkVariable<bool> isPossessingItem = new NetworkVariable<bool>(false);
     PossessedMovement possessedMovement;
+    public GameObject ratPossessedJumpMeterUI;
 
 
     public override void OnNetworkSpawn() {
@@ -28,6 +29,7 @@ public class RatPlayer : Player {
         unPossessedItem += UnPossessedItem;
         boxCollider = GetComponent<BoxCollider>();
         possessedMovement = GetComponent<PossessedMovement>();
+        ratPossessedJumpMeterUI = Assets.instance.ratPossessedJumpMeterUI;
     }
 
     public void InitialiseRatFeatures() {
@@ -39,6 +41,7 @@ public class RatPlayer : Player {
         }
         if (IsServer) lives.Value = ProgressManager.instance.startingRatLives.Value;
     }
+
 
     public void OnLivesChanged(int oldValue, int newValue) {
         if (!IsOwner) return;
@@ -58,6 +61,7 @@ public class RatPlayer : Player {
         if (possessedMovement.itemBeingPossessedObject.Value.TryGet(out NetworkObject itemBeingPossessed)) {
             itemBeingPossessed.GetComponent<Possessable>().SetIsPossessedRpc(false);
         }
+        hideRatPossessedJumpMeterUIRpc();
         UnPossessedItemRpc();
         SetItemBeingPossessedObjectRpc();
         SetIsPossessingItemRpc(false);
@@ -77,6 +81,12 @@ public class RatPlayer : Player {
         movement.isMovementLocked = false;
         movement.toggleGravity = true;
 
+    }
+
+    [Rpc(SendTo.Owner)]
+    public void hideRatPossessedJumpMeterUIRpc() {
+        ratPossessedJumpMeterUI.SetActive(false);
+        Debug.Log("ran here");
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]

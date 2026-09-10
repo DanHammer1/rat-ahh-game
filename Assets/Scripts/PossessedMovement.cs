@@ -19,11 +19,10 @@ public class PossessedMovement : NetworkBehaviour {
     public override void OnNetworkSpawn() {
         base.OnNetworkSpawn();
         if (!IsOwner) return;
-        ratPossessedJumpMeterUI = Assets.instance.ratPossessedJumpMeterUI;
-        ratPossessedJumpMeterUI.SetActive(false);
         ratPlayer = GetComponent<RatPlayer>();
+        ratPossessedJumpMeterUI = Assets.instance.ratPossessedJumpMeterUI;
         ratPlayer.possessedItem += AssignJumpMeterVariables;
-        ratPlayer.unPossessedItem += () => ratPossessedJumpMeterUI.SetActive(false);
+        ratPossessedJumpMeterUI.SetActive(false);
     }
 
     void AssignJumpMeterVariables() {
@@ -63,7 +62,6 @@ public class PossessedMovement : NetworkBehaviour {
             if (Input.GetKeyUp(KeyCode.Space)) break;
             jumpForce += Time.deltaTime * 6;
             jumpMeterImage.fillAmount = Mathf.Min(jumpForce / maxJumpForce, 1);
-            Debug.Log(jumpMeterImage.fillAmount);
             yield return null;
         }
 

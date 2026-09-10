@@ -99,6 +99,7 @@ public abstract class Item : NetworkBehaviour, IInteractable {
         if (TryGetComponent<Possessable>(out Possessable possessable)) {
             if (possessable.isPossessed.Value && possessable.ratPlayerRef.Value.TryGet(out NetworkObject ratPlayer)) {
                 ratPlayer.GetComponent<RatPlayer>().unPossessedItem.Invoke();
+                Debug.Log("Should def be inactive");
             }
         }
     }
