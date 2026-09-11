@@ -35,6 +35,10 @@ public class MainMenu : NetworkBehaviour {
     public void Host() {
         if (joined) return;
 
+        if (GameManager.Instance.clientIds != null) GameManager.Instance.clientIds.Clear();
+        if (GameManager.Instance.clientNames != null) GameManager.Instance.clientNames.Clear();
+        if (GameManager.Instance.clientRoles != null) GameManager.Instance.clientRoles.Clear();
+
         NetworkManager.Singleton.StartHost();
 
         if (GameManager.Instance.clientIds == null) GameManager.Instance.clientIds = new NetworkList<ulong>();
@@ -274,7 +278,8 @@ public class MainMenu : NetworkBehaviour {
             ipInput.interactable = false;
             nameInput.interactable = false;
         } else {
-            startGameButton.interactable = true;
+            if (IsServer) startGameButton.interactable = true;
+            else startGameButton.interactable = false;
             disconnectButton.interactable = true;
             hostButton.interactable = false;
             joinButton.interactable = false;
