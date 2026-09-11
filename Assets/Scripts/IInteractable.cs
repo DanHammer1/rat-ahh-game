@@ -75,12 +75,22 @@ public interface IInteractable {
     }
     public static bool HitInteractable(out RaycastHit hit) {
         hit = default;
+        float radius = 0.15f;
+        // if (Physics.SphereCast(
+        //     Player.localPlayer.viewPosition.transform.position,
+        //     radius,
+        //     PlayerCamera.mainCamera.transform.forward,
+        //     out hit,
+        //     1f, LayerMask.GetMask("InteractableObject", "groundLayer"))) {
+
+        //     if (LayerMask.LayerToName(hit.collider.gameObject.layer).Equals("InteractableObject")) return true;
+        // }
         if (Physics.SphereCast(
-            Player.localPlayer.viewPosition.transform.position,
-            0.1f,
+            Player.localPlayer.viewPosition.transform.position - (PlayerCamera.mainCamera.transform.forward * radius),
+            radius,
             PlayerCamera.mainCamera.transform.forward,
             out hit,
-            1f, LayerMask.GetMask("InteractableObject", "groundLayer"))) {
+            1f + radius, LayerMask.GetMask("InteractableObject", "groundLayer"))) {
 
             if (LayerMask.LayerToName(hit.collider.gameObject.layer).Equals("InteractableObject")) return true;
         }
