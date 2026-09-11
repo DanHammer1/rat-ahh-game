@@ -111,7 +111,7 @@ public class Coin : NetworkBehaviour, IInteractable {
             ToggleRigidbodyGravityRpc();
             ToggleIsBeingCarriedRpc();
             SetPlayerCarryingCoinRpc(Player.localPlayer.gameObject);
-            Player.localPlayer.transform.GetComponent<Movement>().MultiplyMoveSpeedRpc(Constants.carryingCoinMoveSpeedMultiplier);
+            // Player.localPlayer.transform.GetComponent<Movement>().MultiplyMoveSpeedRpc(Constants.carryingCoinMoveSpeedMultiplier);
         }
     }
 

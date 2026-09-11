@@ -866,16 +866,21 @@ MonoBehaviour:
   playersUIList: {fileID: 0}
   scoreList: {fileID: 0}
   returningToLobbyText: {fileID: 0}
-  defaultTime:
+  startingMatchLength:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 600
-  time:
+  remainingMatchLength:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 10
+  startingRatLives:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 3
   returningToLobbyTimer: {fileID: 0}
   IsActive: 0
   onActivateExecuted: 0
@@ -3425,6 +3430,8 @@ MonoBehaviour:
   startGameButton: {fileID: 1910071640}
   hostButton: {fileID: 1446252078}
   joinButton: {fileID: 1593533404}
+  becomeHiderButton: {fileID: 679307601}
+  becomeHunterButton: {fileID: 121415233}
 --- !u!114 &1996144109
 MonoBehaviour:
   m_ObjectHideFlags: 0

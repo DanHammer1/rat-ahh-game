@@ -61,8 +61,6 @@ public class Player : NetworkBehaviour {
     Animator animator;
     public CinemachineImpulseSource impulseSource;
 
-    public GameObject eatCheesePrompt;
-    public GameObject pickUpCoinPrompt;
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void ToggleIsCarryingCoinRpc() {

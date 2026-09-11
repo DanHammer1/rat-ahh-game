@@ -1,7 +1,5 @@
 using UnityEngine;
 using Unity.Netcode;
-using System.Collections;
-using Unity.VisualScripting.Antlr3.Runtime;
 
 public class PoisonGasHitbox : NetworkBehaviour {
     void OnTriggerEnter(Collider other) {

@@ -46,15 +46,24 @@ public class Weapon : Item {
 
         Debug.DrawRay(ray.origin, ray.direction * data.attackRange, Color.red, 5f);
 
-        if (Physics.SphereCast(ray, data.rayRadius, out RaycastHit hit, data.attackRange)) Debug.Log(hit.collider.gameObject.name + ", " + hit.collider.gameObject.tag);
-        if (Physics.SphereCast(ray, data.rayRadius, out hit, data.attackRange, ignoreMask)) {
-
-            Debug.Log(hit.collider.gameObject.name + ", " + hit.collider.gameObject.tag);
-
-            if (hit.collider.gameObject.tag == "PlayerMouse") {
-                RatPlayer colliderRatScript = hit.collider.gameObject.GetComponent<RatPlayer>();
-                colliderRatScript.EditHealthServerRpc(colliderRatScript.health.Value - data.damage);
-            }
+        RaycastHit[] hits = Physics.SphereCastAll(ray, data.rayRadius, data.attackRange, ignoreMask);
+        System.Array.Sort(hits, (first, second) => first.distance.CompareTo(second.distance));
+        foreach (RaycastHit hit in hits) {
+            RatPlayer colliderRatScript = hit.collider.GetComponentInParent<RatPlayer>();
+            if (colliderRatScript == null || colliderRatScript.isGhost) continue;
+            colliderRatScript.EditHealthServerRpc(colliderRatScript.health.Value - data.damage);
+            break;
         }
+        // if (Physics.SphereCast(ray, data.rayRadius, out RaycastHit hit, data.attackRange)) Debug.Log(hit.collider.gameObject.name + ", " + hit.collider.gameObject.tag);
+        // if (Physics.SphereCast(ray, data.rayRadius, out hit, data.attackRange, ignoreMask)) {
+
+        //     Debug.Log(hit.collider.gameObject.name + ", " + hit.collider.gameObject.tag);
+
+        //     if (hit.collider.gameObject.tag == "PlayerMouse" && !hit.collider.gameObject.GetComponent<RatPlayer>().isGhost) {
+        //         RatPlayer colliderRatScript = hit.collider.gameObject.GetComponent<RatPlayer>();
+        //         colliderRatScript.EditHealthServerRpc(colliderRatScript.health.Value - data.damage);
+        //     }
+        // }
+
     }
 }

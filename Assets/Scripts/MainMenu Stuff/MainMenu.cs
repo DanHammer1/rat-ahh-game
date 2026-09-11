@@ -20,6 +20,8 @@ public class MainMenu : NetworkBehaviour {
     public Button startGameButton;
     public Button hostButton;
     public Button joinButton;
+    public Button becomeHiderButton;
+    public Button becomeHunterButton;
 
     bool joined = false;
     bool attemptingToJoin = false;
@@ -270,6 +272,8 @@ public class MainMenu : NetworkBehaviour {
             joinButton.interactable = true;
             ipInput.interactable = true;
             nameInput.interactable = true;
+            becomeHiderButton.interactable = false;
+            becomeHunterButton.interactable = false;
         } else if (!joined && attemptingToJoin) {
             startGameButton.interactable = false;
             disconnectButton.interactable = false;
@@ -277,6 +281,8 @@ public class MainMenu : NetworkBehaviour {
             joinButton.interactable = false;
             ipInput.interactable = false;
             nameInput.interactable = false;
+            becomeHiderButton.interactable = false;
+            becomeHunterButton.interactable = false;
         } else {
             if (IsServer) startGameButton.interactable = true;
             else startGameButton.interactable = false;
@@ -285,6 +291,8 @@ public class MainMenu : NetworkBehaviour {
             joinButton.interactable = false;
             ipInput.interactable = false;
             nameInput.interactable = false;
+            becomeHiderButton.interactable = true;
+            becomeHunterButton.interactable = true;
         }
 
     }

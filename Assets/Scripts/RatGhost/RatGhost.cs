@@ -23,6 +23,7 @@ public class RatGhost : NetworkBehaviour {
         playerRenderer.materials = Assets.instance.ratGhostMaterials;
         ratPlayer.isGhost = true;
         ghostShader.enabled = true;
+        GetComponent<PoisonGasDamage>().enabled = false;
 
         Assets.instance.objectivesUIGameObject.transform.parent.gameObject.SetActive(false);
         Assets.instance.ghostRulesUIGameObject.SetActive(true);
