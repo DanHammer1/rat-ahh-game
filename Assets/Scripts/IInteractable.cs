@@ -30,30 +30,8 @@ public interface IInteractable {
     public static bool CheckPlayerFacingInteractableObject() {
         if (Player.localPlayer == null) return false;
 
-        bool hitSomething = false;
         RaycastHit hit;
-
-        if (Physics.SphereCast(
-            Player.localPlayer.viewPosition.transform.position,
-            0.1f,
-            PlayerCamera.mainCamera.transform.forward,
-            out hit,
-            1f, LayerMask.GetMask("InteractableObject", "groundLayer"))) {
-
-            hitSomething = (LayerMask.LayerToName(hit.collider.gameObject.layer).Equals("InteractableObject"));
-        }
-
-        // Second check incase spherecast spawns on interactable and returns false
-        if (hitSomething || Physics.Raycast(
-            Player.localPlayer.viewPosition.transform.position,
-            PlayerCamera.mainCamera.transform.forward,
-            out hit,
-            1f, LayerMask.GetMask("InteractableObject", "groundLayer"))) {
-
-            hitSomething = (LayerMask.LayerToName(hit.collider.gameObject.layer).Equals("InteractableObject"));
-        }
-
-        if (!hitSomething) return false;
+        if (!HitInteractable(out hit)) return false;
 
         GameObject interactPrompt = GameObject.FindWithTag("InteractionPrompt");
         IInteractable implementationScript = null;
@@ -78,32 +56,12 @@ public interface IInteractable {
         return !Player.localPlayer.dead;
     }
 
+
     public bool CheckPlayerInRange() {
         if (Player.localPlayer == null) return false;
 
         RaycastHit hit;
-        bool hitSomething = false;
-        if (Physics.SphereCast(
-            Player.localPlayer.viewPosition.transform.position,
-            0.1f,
-            PlayerCamera.mainCamera.transform.forward,
-            out hit,
-            1f, LayerMask.GetMask("InteractableObject", "groundLayer"))) {
-
-            hitSomething = (LayerMask.LayerToName(hit.collider.gameObject.layer).Equals("InteractableObject"));
-        }
-
-        // Second check incase spherecast spawns on interactable and returns false
-        if (hitSomething || Physics.Raycast(
-            Player.localPlayer.viewPosition.transform.position,
-            PlayerCamera.mainCamera.transform.forward,
-            out hit,
-            1f, LayerMask.GetMask("InteractableObject", "groundLayer"))) {
-
-            hitSomething = (LayerMask.LayerToName(hit.collider.gameObject.layer).Equals("InteractableObject"));
-        }
-
-        if (!hitSomething) return false;
+        if (!HitInteractable(out hit)) return false;
 
         if (hit.collider.gameObject == null || LayerMask.LayerToName(hit.collider.gameObject.layer) == "groundLayer") return false;
 
@@ -111,6 +69,30 @@ public interface IInteractable {
         IInteractable[] interactables = hitObject.GetComponents<IInteractable>();
         foreach (IInteractable interactable in interactables) {
             if (ReferenceEquals(interactable, this) && CheckExtraInteractionConditions()) return true;
+        }
+
+        return false;
+    }
+    public static bool HitInteractable(out RaycastHit hit) {
+        hit = default;
+        if (Physics.SphereCast(
+            Player.localPlayer.viewPosition.transform.position,
+            0.1f,
+            PlayerCamera.mainCamera.transform.forward,
+            out hit,
+            1f, LayerMask.GetMask("InteractableObject", "groundLayer"))) {
+
+            if (LayerMask.LayerToName(hit.collider.gameObject.layer).Equals("InteractableObject")) return true;
+        }
+
+        // Second check incase spherecast spawns on interactable and returns false
+        if (Physics.Raycast(
+            Player.localPlayer.viewPosition.transform.position,
+            PlayerCamera.mainCamera.transform.forward,
+            out hit,
+            1f, LayerMask.GetMask("InteractableObject", "groundLayer"))) {
+
+            if (LayerMask.LayerToName(hit.collider.gameObject.layer).Equals("InteractableObject")) return true;
         }
 
         return false;
