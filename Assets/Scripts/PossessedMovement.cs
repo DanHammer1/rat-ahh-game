@@ -11,17 +11,22 @@ public class PossessedMovement : NetworkBehaviour {
     private bool isChargingJump = false;
     private float cooldown = 0;
     private bool isOnCooldown = false;
+
     public GameObject ratPossessedJumpMeterUI;
     public GameObject jumpMeter;
     public Image jumpMeterImage;
+
+    public GameObject cooldownMeterUI;
+    public GameObject cooldownMeter;
+    public Image cooldownMeterImage;
     RatPlayer ratPlayer;
 
     public override void OnNetworkSpawn() {
         base.OnNetworkSpawn();
         if (!IsOwner) return;
         ratPlayer = GetComponent<RatPlayer>();
-        ratPossessedJumpMeterUI = Assets.instance.ratPossessedJumpMeterUI;
         ratPlayer.possessedItem += AssignJumpMeterVariables;
+        ratPossessedJumpMeterUI = Assets.instance.ratPossessedJumpMeterUI;
         ratPossessedJumpMeterUI.SetActive(false);
     }
 
@@ -29,6 +34,11 @@ public class PossessedMovement : NetworkBehaviour {
         jumpMeter = ratPossessedJumpMeterUI.transform.Find("JumpMeter/JumpProgressBar").gameObject;
         jumpMeterImage = jumpMeter?.GetComponent<Image>();
         ratPossessedJumpMeterUI.SetActive(true);
+        cooldownMeterUI = ratPossessedJumpMeterUI.transform.Find("CooldownMeter").gameObject;
+        cooldownMeter = cooldownMeterUI.transform.Find("CooldownProgressBar").gameObject;
+        cooldownMeterImage = cooldownMeter?.GetComponent<Image>();
+        cooldownMeterUI.SetActive(false);
+
     }
 
     void FixedUpdate() {
@@ -80,12 +90,15 @@ public class PossessedMovement : NetworkBehaviour {
 
         // activate cooldown
         cooldown = Constants.possessedJumpCooldown;
+        cooldownMeterUI.SetActive(true);
         isOnCooldown = true;
         while (cooldown > 0) {
             cooldown -= Time.deltaTime;
+            cooldownMeterImage.fillAmount = cooldown / Constants.possessedJumpCooldown;
             yield return null;
         }
         cooldown = 0;
+        cooldownMeterUI.SetActive(false);
         isOnCooldown = false;
     }
 }
