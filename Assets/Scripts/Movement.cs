@@ -86,22 +86,36 @@ public class Movement : NetworkBehaviour {
     }
 
     public bool CheckPlayerGrounded() {
-        BoxCollider boxCollider = GetComponent<BoxCollider>();
+        // BoxCollider boxCollider = GetComponent<BoxCollider>();
 
-        float xScale = boxCollider.size.x * gameObject.transform.lossyScale.x * 1.01f;
-        float zScale = boxCollider.size.z * gameObject.transform.lossyScale.z * 1.01f;
+        // float xScale = boxCollider.size.x * gameObject.transform.lossyScale.x * 1.01f;
+        // float zScale = boxCollider.size.z * gameObject.transform.lossyScale.z * 1.01f;
 
-        if (Physics.BoxCast(
-            transform.position + Vector3.up * 0.03f,
-            new Vector3(xScale / 2, 0, zScale / 2),
+        // if (Physics.BoxCast(
+        //     transform.position + Vector3.up * 0.03f,
+        //     new Vector3(xScale / 2, 0, zScale / 2),
+        //     Vector3.down,
+        //     out RaycastHit hit,
+        //     Quaternion.Euler(0, transform.eulerAngles.y, 0),
+        //     0.035f, GROUNDLAYER)) {
+        //     // Debug.Log("detected ground");
+        //     return true;
+        // }
+
+        CapsuleCollider capsuleCollider = GetComponent<CapsuleCollider>();
+        Bounds capsuleBounds = capsuleCollider.bounds;
+        float maxDistance = 0.015f + ((capsuleBounds.size.y / 2) - capsuleBounds.extents.x);
+        if (Physics.SphereCast(
+            capsuleBounds.center,
+            capsuleBounds.extents.x,
             Vector3.down,
             out RaycastHit hit,
-            Quaternion.Euler(0, transform.eulerAngles.y, 0),
-            0.035f, GROUNDLAYER)) {
-            // Debug.Log("detected ground");
+            maxDistance,
+            GROUNDLAYER)) {
+            Debug.Log("GROUND");
             return true;
         }
-        // Debug.Log("didn't detect ground");
+        Debug.Log("didn't detect ground");
         return false;
     }
 

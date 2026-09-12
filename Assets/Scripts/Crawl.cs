@@ -9,14 +9,14 @@ public class Crawl : NetworkBehaviour {
     public bool isCrawling = false;
     bool isTryingToStand = false;
     Animator animator;
-    BoxCollider boxCollider;
+    CapsuleCollider capsuleCollider;
     GameObject viewPosition;
     HunterPlayer hunterPlayer;
     [SerializeField] private LayerMask standCheckMask;
 
     public override void OnNetworkSpawn() {
         animator = GetComponent<Animator>();
-        boxCollider = GetComponent<BoxCollider>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
         viewPosition = transform.Find("ViewPosition").gameObject;
         hunterPlayer = transform.GetComponent<HunterPlayer>();
 
@@ -25,8 +25,8 @@ public class Crawl : NetworkBehaviour {
         onCrawlStart += () => animator.SetBool("isCrawling", isCrawling);
         onCrawlStart += () => viewPosition.transform.position -= new Vector3(0, 0.6f, 0);
         onCrawlStart += () => {
-            boxCollider.size = new Vector3(boxCollider.size.x, Constants.boxColliderCrawlingSizeY, Constants.boxColliderCrawlingSizeZ);
-            boxCollider.center = new Vector3(boxCollider.center.x, Constants.boxColliderCrawlingCenterY, boxCollider.center.z);
+            capsuleCollider.center = new Vector3(capsuleCollider.center.x, Constants.capsuleColliderCrawlingCenterY, capsuleCollider.center.z);
+            capsuleCollider.height = Constants.capsuleColliderCrawlingHeight;
         };
         onCrawlStart += () => hunterPlayer.DisableRigBuilderRpc();
 
@@ -35,8 +35,8 @@ public class Crawl : NetworkBehaviour {
         onCrawlEnd += () => animator.SetBool("isCrawling", isCrawling);
         onCrawlEnd += () => viewPosition.transform.position -= new Vector3(0, -0.6f, 0);
         onCrawlEnd += () => {
-            boxCollider.size = new Vector3(boxCollider.size.x, Constants.boxColliderStandingSizeY, Constants.boxColliderStandingSizeZ);
-            boxCollider.center = new Vector3(boxCollider.center.x, Constants.boxColliderStandingCenterY, boxCollider.center.z);
+            capsuleCollider.center = new Vector3(capsuleCollider.center.x, Constants.capsuleColliderStandingCenterY, capsuleCollider.center.z);
+            capsuleCollider.height = Constants.capsuleColliderStandingHeight;
         };
         onCrawlEnd += () => hunterPlayer.EnableRigBuilderRpc();
     }
@@ -66,10 +66,10 @@ public class Crawl : NetworkBehaviour {
     }
 
     bool CanStand() {
-        return !Physics.CheckBox(
-            transform.position + new Vector3(0, (Constants.boxColliderStandingSizeY / 2) + 0.01f, 0),
-            new Vector3(Constants.boxColliderStandingSizeX / 2, Constants.boxColliderStandingSizeY / 2, Constants.boxColliderStandingSizeZ / 2),
-            transform.rotation,
+        return !Physics.CheckCapsule(
+            transform.position + new Vector3(0, Constants.capsuleColliderStandingCenterY - (Constants.capsuleColliderStandingHeight / 2) + capsuleCollider.radius, 0),
+            transform.position + new Vector3(0, Constants.capsuleColliderStandingCenterY + (Constants.capsuleColliderStandingHeight / 2) - capsuleCollider.radius, 0),
+            capsuleCollider.radius,
             standCheckMask
             ) && !hunterPlayer.isSwinging;
     }

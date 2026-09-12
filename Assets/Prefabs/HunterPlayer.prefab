@@ -158,7 +158,7 @@ GameObject:
   - component: {fileID: 6867819731970602610}
   - component: {fileID: 1192673047784221271}
   - component: {fileID: 5707144768937015800}
-  - component: {fileID: 5087415636832496150}
+  - component: {fileID: 5085626218278191062}
   - component: {fileID: 4292440838297754564}
   - component: {fileID: 3287385557172209536}
   - component: {fileID: 277702710320456352}
@@ -186,7 +186,7 @@ Transform:
   m_GameObject: {fileID: 1339862214881163576}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.73, y: 0.14, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -254,10 +254,12 @@ MonoBehaviour:
     m_InternalValue: 0
   dead: 0
   movement: {fileID: 0}
+  boxCollider: {fileID: 0}
   rb: {fileID: 0}
   playerCamera: {fileID: 0}
   clientNetworkTransform: {fileID: 0}
   viewPosition: {fileID: 4496285853245265043}
+  skinnedMeshRenderer: {fileID: 0}
   abilityIcon: {fileID: 0}
   abilityIconBackgroundOutline: {fileID: 0}
   abilityIconBackgroundOutlineImage: {fileID: 0}
@@ -281,8 +283,6 @@ MonoBehaviour:
   scoreText: {fileID: 0}
   isInUIMenu: 0
   impulseSource: {fileID: 0}
-  eatCheesePrompt: {fileID: 0}
-  pickUpCoinPrompt: {fileID: 0}
   ratAbilityTarget: {fileID: 4496285853245265043}
   isBeingClung:
     UpdateTraits:
@@ -385,14 +385,14 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!65 &5087415636832496150
-BoxCollider:
+--- !u!136 &5085626218278191062
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1339862214881163576}
-  m_Material: {fileID: 13400000, guid: 1c8c0868f719a614f8c0a09a40360611, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -403,8 +403,10 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.1, y: 0.8, z: 0.06293762}
+  serializedVersion: 2
+  m_Radius: 0.065
+  m_Height: 0.81
+  m_Direction: 1
   m_Center: {x: 0, y: 0.4, z: 0}
 --- !u!114 &4292440838297754564
 MonoBehaviour:

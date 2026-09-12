@@ -41,6 +41,11 @@ public class Constants : MonoBehaviour {
     public static float boxColliderCrawlingSizeY = 0.12f;
     public static float boxColliderCrawlingSizeZ = 0.062937f;
     public static float boxColliderCrawlingCenterY = 0.04f;
+
+    public static float capsuleColliderStandingHeight = 0.81f;
+    public static float capsuleColliderStandingCenterY = 0.4f;
+    public static float capsuleColliderCrawlingHeight = 0.12f; // todo
+    public static float capsuleColliderCrawlingCenterY = 0.04f;
     # endregion
 
     # region "Camera"
