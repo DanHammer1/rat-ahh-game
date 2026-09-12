@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: DefaultCrowbarData
   m_EditorClassIdentifier: 
   attackDuration: 0.5
-  damage: 8
+  damage: 10
   rayRadius: 0.15
   attackRange: 3.2
