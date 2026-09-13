@@ -7,22 +7,29 @@ using System.Collections;
 
 public class CheeseObjective : Objective {
     public GameObject cheese;
+    public bool isConditionCleared = false;
 
     public CheeseObjective() : base("Eat Cheese") {
         completionScore = ObjectiveScores.cheeseScore;
         objectiveIcon = Assets.instance.cheeseObjectiveIcon;
 
-        CheeseSpawner.instance.onCheeseObtained += () => {
-            cheese = CheeseSpawner.instance.GetRandomCheese();
-            ObjectManager.MakeObjectSpectral(cheese.transform.Find("Renderer").gameObject);
-            Timer.CreateTimer(Constants.cheeseSpawnInterval, Timer.OnFinish.DESTROY, () => { if (this == null) return; ObjectManager.TakeAwaySpectral(cheese.transform.Find("Renderer").gameObject); },
-                "Spectral Effect removal for cheese timer.", null, cheese);
-        };
-        CheeseSpawner.instance.ForceObtainRandomCheese();
+        // CheeseSpawner.instance.onCheeseSelected += () => {
+        //     cheese = CheeseSpawner.instance.GetRandomCheese();
+        // ObjectManager.MakeObjectSpectral(cheese.transform.Find("Renderer").gameObject);
+        // Timer.CreateTimer(Constants.cheeseSpawnInterval, Timer.OnFinish.DESTROY, () => { 
+        //     if (this == null) return; 
+        //     ObjectManager.TakeAwaySpectral(cheese.transform.Find("Renderer").gameObject); 
+        //     },
+        //     "Spectral Effect removal for cheese timer.", 
+        //     null, 
+        //     cheese
+        //     );
+        // };
+        // CheeseSpawner.instance.ForceSelectRandomCheese();
     }
 
     public override bool CheckConditionCleared() {
-        return (cheese == null);
+        return isConditionCleared;
     }
 
     public override String GetDialogueText() {

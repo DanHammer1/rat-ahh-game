@@ -11,7 +11,7 @@ public class CheeseSpawner : NetworkBehaviour {
     public List<GameObject> cheeseSpawnLocations;
     public NetworkList<NetworkObjectReference> takenSpawnLocations;
 
-    public Action onCheeseObtained;
+    // public Action onCheeseSelected;
 
     void Awake() {
         instance = this;
@@ -25,10 +25,19 @@ public class CheeseSpawner : NetworkBehaviour {
         takenSpawnLocations = new NetworkList<NetworkObjectReference>();
     }
 
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.J)) {
+            SpawnRandomCheeseRpc();
+        }
+    }
+
     void Start() {
         if (!IsServer) return;
 
-        Timer.CreateTimer(30, Timer.OnFinish.REPEAT, () => SpawnRandomCheeseRpc(), "Cheese spawn repeating timer"); // TODO should this be Constants.cheeseSpawnInterval instead of 30?
+        SpawnRandomCheeseRpc();
+        SpawnRandomCheeseRpc();
+        SpawnRandomCheeseRpc();
+        Timer.CreateTimer(Constants.cheeseSpawnInterval, Timer.OnFinish.REPEAT, () => SpawnRandomCheeseRpc(), "Cheese spawn repeating timer");
     }
 
     List<GameObject> GetVacantCheeseSpots() {
@@ -69,21 +78,22 @@ public class CheeseSpawner : NetworkBehaviour {
         cheese.GetComponent<Cheese>().onDestroyed += () => takenSpawnLocations.Remove(cheese);
     }
 
-    public IEnumerator ForceObtainRandomCheeseOverTime() {
-        if (takenSpawnLocations.Count == 0) {
-            SpawnRandomCheeseRpc();
-        }
+    // public IEnumerator ForceSelectRandomCheeseOverTime() {
+    //     if (takenSpawnLocations.Count == 0) {
+    //         SpawnRandomCheeseRpc();
+    //     }
 
-        while (takenSpawnLocations.Count == 0) {
-            yield return null;
-        }
+    //     while (takenSpawnLocations.Count == 0) {
+    //         yield return null;
+    //     }
 
-        onCheeseObtained?.Invoke();
-    }
+    //     onCheeseSelected?.Invoke();
+    //     Debug.Log("oncheeseselected invoked");
+    // }
 
-    public void ForceObtainRandomCheese() {
-        StartCoroutine(ForceObtainRandomCheeseOverTime());
-    }
+    // public void ForceSelectRandomCheese() {
+    //     StartCoroutine(ForceSelectRandomCheeseOverTime());
+    // }
 
     public GameObject GetRandomCheese() {
         if (takenSpawnLocations.Count == 0) {

@@ -112,10 +112,10 @@ public class Movement : NetworkBehaviour {
             out RaycastHit hit,
             maxDistance,
             GROUNDLAYER)) {
-            Debug.Log("GROUND");
+            // Debug.Log("GROUND");
             return true;
         }
-        Debug.Log("didn't detect ground");
+        // Debug.Log("didn't detect ground");
         return false;
     }
 

@@ -16,7 +16,7 @@ public class Cheese : NetworkBehaviour, IInteractable {
     public Action onPlayerSeesObject;
 
     private float eatProgress = 0;
-    private float totalInteractionTime = 10f;
+    private float totalInteractionTime = 6f;
 
     public override void OnNetworkSpawn() {
         onPlayerSeesObject += () => ObjectManager.TakeAwaySpectral(transform.Find("Renderer").gameObject);
@@ -29,7 +29,6 @@ public class Cheese : NetworkBehaviour, IInteractable {
         if (ObjectManager.CheckPlayerSeesObject(this.gameObject)) {
             onPlayerSeesObject?.Invoke();
         }
-        ;
     }
 
     public bool CheckExtraInteractionConditions() {
@@ -42,9 +41,14 @@ public class Cheese : NetworkBehaviour, IInteractable {
 
     public void Interact() {
         //todo consider below - should eating cheese always give points even if its not an objective?
-        Player.localPlayer.EditScoreServerRpc(Player.localPlayer.score.Value + ObjectiveScores.cheeseScore);
-        Player.localPlayer.scoreText.text = $"Score: {Player.localPlayer.score.Value}";
+        if (Player.localPlayer == null) return;
         DespawnServerRpc();
+        foreach (Objective objective in ProgressManager.instance.objectives) {
+            if (objective is CheeseObjective cheeseObjective) {
+                cheeseObjective.isConditionCleared = true;
+                return;
+            }
+        }
     }
 
     public void UpdateProgress() {
