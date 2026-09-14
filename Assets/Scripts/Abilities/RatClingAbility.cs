@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using ParrelSync.NonCore;
 using UnityEditor.Search;
 using UnityEngine.SceneManagement;
+using NUnit.Framework;
 
 public class RatClingAbility : Ability {
     Transform clingHead;
@@ -19,7 +20,7 @@ public class RatClingAbility : Ability {
     public float ratAbilityHunterStunDuration;
     public float ratAbilityHunterShakeMeter;
     protected GameObject ratAbilityShakeUI;
-    BoxCollider boxCollider;
+    CapsuleCollider capsuleCollider;
 
     public override Sprite GetIconSprite() {
         return Assets.instance.ratClingAbilityIcon;
@@ -32,7 +33,7 @@ public class RatClingAbility : Ability {
     public override void OnNetworkSpawn() {
         base.OnNetworkSpawn();
 
-        boxCollider = GetComponent<BoxCollider>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
 
         if (!IsOwner) return;
 
@@ -48,11 +49,16 @@ public class RatClingAbility : Ability {
         if (SceneManager.GetActiveScene().name != "Game") return;
 
         if (transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox")) {
-            HunterPlayer hunterPlayer = other.GetComponentInParent<HunterPlayer>();
-            localHunterInRange = hunterPlayer;
+            if (!localHunterInRange.isBeingClung.Value) {
+                HunterPlayer hunterPlayer = other.GetComponentInParent<HunterPlayer>();
+                localHunterInRange = hunterPlayer;
 
-            if (IsOwner && !localHunterInRange.isBeingClung.Value) {
-                ratAbilityInRange = true;
+                if (IsOwner) {
+                    ratAbilityInRange = true;
+                }
+            } else {
+                localHunterInRange = null;
+                ratAbilityInRange = false;
             }
         }
     }
@@ -139,7 +145,7 @@ public class RatClingAbility : Ability {
 
     [Rpc(SendTo.Everyone)]
     public void SetColliderStateRpc(bool state) {
-        boxCollider.enabled = state;
+        capsuleCollider.enabled = state;
     }
 
     void UnCling() {

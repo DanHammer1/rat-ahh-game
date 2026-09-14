@@ -34,13 +34,6 @@ public class Constants : MonoBehaviour {
     public static float hunterAscendMultiplier = 0.7f;
     public static float hunterCameraFOV = 60f;
     public static float hunterMaxCameraThirdPersonRadius = 0.4f;
-    public static float boxColliderStandingSizeX = 0.1f;
-    public static float boxColliderStandingSizeY = 0.8f;
-    public static float boxColliderStandingSizeZ = 0.062937f;
-    public static float boxColliderStandingCenterY = 0.4f;
-    public static float boxColliderCrawlingSizeY = 0.12f;
-    public static float boxColliderCrawlingSizeZ = 0.062937f;
-    public static float boxColliderCrawlingCenterY = 0.04f;
 
     public static float capsuleColliderStandingHeight = 0.81f;
     public static float capsuleColliderStandingCenterY = 0.4f;
