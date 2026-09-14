@@ -1,12 +1,10 @@
 using UnityEngine;
 using Unity.Netcode;
 
-public class RatDashAbility : Ability
-{
+public class RatDashAbility : Ability {
     public ParticleSystem dashAbilityParticles;
 
-    public override void ExecuteAbility()
-    {
+    public override void ExecuteAbility() {
         GetComponent<Rigidbody>().AddForce(transform.forward * Constants.ratDashAbilityPower, ForceMode.Impulse);
         ToggleParticleSystemClientRpc(true);
         GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.RatDashAbility);
@@ -15,35 +13,29 @@ public class RatDashAbility : Ability
     }
 
     [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
-    public void ToggleParticleSystemClientRpc(bool state)
-    {
+    public void ToggleParticleSystemClientRpc(bool state) {
         if (state == true)
             dashAbilityParticles.Play();
         else dashAbilityParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
     }
 
-    public override bool CheckAbilityExecutable()
-    {
+    public override bool CheckAbilityExecutable() {
         return true;
     }
 
-    public override Sprite GetIconSprite()
-    {
+    public override Sprite GetIconSprite() {
         return Assets.instance.ratDashAbilityIcon;
     }
 
-    public override float GetAbilityCooldown()
-    {
+    public override float GetAbilityCooldown() {
         return Constants.ratDashAbilityCooldown;
     }
 
-    protected override void Update()
-    {
+    protected override void Update() {
         base.Update();
     }
 
-    public override void OnNetworkSpawn()
-    {
+    public override void OnNetworkSpawn() {
         base.OnNetworkSpawn();
     }
 }

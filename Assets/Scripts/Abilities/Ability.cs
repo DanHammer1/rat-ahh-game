@@ -16,6 +16,7 @@ public abstract class Ability : NetworkBehaviour {
     protected Image abilityIconFilled;
     protected TextMeshProUGUI abilityHotKeyText;
     protected TextMeshProUGUI scoreText;
+    public bool isEnabled = true;
 
     public abstract void ExecuteAbility();
     public abstract bool CheckAbilityExecutable();
@@ -34,7 +35,7 @@ public abstract class Ability : NetworkBehaviour {
     }
 
     private bool AllExecutionConditionsMet() {
-        return (CheckAbilityExecutable() && Input.GetKeyDown(hotkey) && IsOwner && !Player.localPlayer.isInUIMenu);
+        return (CheckAbilityExecutable() && Input.GetKeyDown(hotkey) && IsOwner && !Player.localPlayer.isInUIMenu && isEnabled);
     }
 
     public override void OnNetworkSpawn() {

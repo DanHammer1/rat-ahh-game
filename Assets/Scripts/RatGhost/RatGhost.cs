@@ -24,9 +24,13 @@ public class RatGhost : NetworkBehaviour {
         ratPlayer.isGhost = true;
         ghostShader.enabled = true;
         GetComponent<PoisonGasDamage>().enabled = false;
+        GetComponent<RatClingAbility>().isEnabled = false;
+        GetComponent<RatDashAbility>().isEnabled = false;
+        GetComponent<RatInvisibilityAbility>().isEnabled = false;
 
         Assets.instance.objectivesUIGameObject.transform.parent.gameObject.SetActive(false);
         Assets.instance.ghostRulesUIGameObject.SetActive(true);
+        Assets.instance.abilityParent.SetActive(false);
 
         ProgressManager.instance.RemoveAllObjectives();
     }
