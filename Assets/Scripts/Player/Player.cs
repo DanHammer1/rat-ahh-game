@@ -30,7 +30,7 @@ public class Player : NetworkBehaviour {
     public Action onRevive;
 
     public Movement movement;
-    public BoxCollider boxCollider;
+    public CapsuleCollider capsuleCollider;
     public Rigidbody rb;
     public PlayerCamera playerCamera;
     public ClientNetworkTransform clientNetworkTransform;
@@ -75,7 +75,7 @@ public class Player : NetworkBehaviour {
     public override void OnNetworkSpawn() {
         animator = GetComponent<Animator>();
         movement = GetComponent<Movement>();
-        boxCollider = GetComponent<BoxCollider>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
         clientNetworkTransform = GetComponent<ClientNetworkTransform>();
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
@@ -127,7 +127,7 @@ public class Player : NetworkBehaviour {
 
     [ServerRpc]
     public void SetColliderStateServerRpc(bool state) {
-        boxCollider.enabled = state;
+        capsuleCollider.enabled = state;
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]

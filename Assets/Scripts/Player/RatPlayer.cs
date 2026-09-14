@@ -27,7 +27,6 @@ public class RatPlayer : Player {
         InitialiseRatFeatures();
         possessedItem += PossessedItem;
         unPossessedItem += UnPossessedItem;
-        boxCollider = GetComponent<BoxCollider>();
         possessedMovement = GetComponent<PossessedMovement>();
         ratPossessedJumpMeterUI = Assets.instance.ratPossessedJumpMeterUI;
     }
@@ -70,14 +69,14 @@ public class RatPlayer : Player {
     [Rpc(SendTo.Everyone)]
     void PossessedItemRpc() {
         skinnedMeshRenderer.enabled = false;
-        boxCollider.enabled = false;
+        capsuleCollider.enabled = false;
         movement.isMovementLocked = true;
         movement.toggleGravity = false;
     }
     [Rpc(SendTo.Everyone)]
     void UnPossessedItemRpc() {
         skinnedMeshRenderer.enabled = true;
-        boxCollider.enabled = true;
+        capsuleCollider.enabled = true;
         movement.isMovementLocked = false;
         movement.toggleGravity = true;
 

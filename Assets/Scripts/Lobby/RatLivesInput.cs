@@ -16,21 +16,29 @@ public class RatLivesInput : NetworkBehaviour {
     public void OnEndEdit() {
         if (int.TryParse(input.text, out int newValue) && newValue > 0) {
             newValue = Mathf.Clamp(newValue, 1, 10);
-            ProgressManager.instance.SetStartingRatLivesRpc(newValue);
+            SetStartingRatLives(newValue);
         } else {
             input.text = ProgressManager.instance.startingRatLives.Value.ToString();
         }
     }
 
     public void IncrementStartingRatLives() {
-        ProgressManager.instance.SetStartingRatLivesRpc(Mathf.Clamp(ProgressManager.instance.startingRatLives.Value + 1, 1, 10));
+        SetStartingRatLives(Mathf.Clamp(ProgressManager.instance.startingRatLives.Value + 1, 1, 10));
     }
 
     public void DecrementStartingRatLives() {
-        ProgressManager.instance.SetStartingRatLivesRpc(Mathf.Clamp(ProgressManager.instance.startingRatLives.Value - 1, 1, 10));
+        SetStartingRatLives(Mathf.Clamp(ProgressManager.instance.startingRatLives.Value - 1, 1, 10));
+    }
+
+    void SetStartingRatLives(int value) {
+        if (ProgressManager.instance == null || !ProgressManager.instance.IsSpawned)
+            return;
+
+        ProgressManager.instance.SetStartingRatLivesRpc(value);
     }
 
     void OnStartingRatLivesChanged(int oldValue, int newValue) {
         input.text = newValue.ToString();
     }
 }
+

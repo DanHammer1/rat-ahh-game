@@ -46,6 +46,7 @@ public class ProgressManager : NetworkBehaviour {
         if (onActivateExecuted) yield break;
 
         GameManager.gameState = GameManager.GameState.GAME;
+        Debug.Log("activated");
 
         if (IsServer) remainingMatchLength.Value = startingMatchLength.Value;
 
@@ -117,7 +118,7 @@ public class ProgressManager : NetworkBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (!IsServer || !IsActive || !NetworkManager.Singleton) return;
+        if (!IsServer || !IsActive || NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening) return;
 
         //UpdatePlayerUIListClientRpc();
         UpdateScoreListClientRpc();

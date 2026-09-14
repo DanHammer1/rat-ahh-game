@@ -65,6 +65,8 @@ public class PlayerCamera : MonoBehaviour {
     }
 
     void Update() {
+        if (GameManager.gameState == GameManager.GameState.MAINMENU) return;
+
         // Test screen shake - press K
         if (Input.GetKeyDown(KeyCode.K)) {
             TestScreenShake();
@@ -100,11 +102,15 @@ public class PlayerCamera : MonoBehaviour {
                 movement.yaw = transform.eulerAngles.y;
         }
 
-        thirdPersonRadius = GameManager.GetLocalRole() switch {
-            GameManager.PlayerRole.HUNTER => Mathf.Clamp(thirdPersonRadius, 0, Constants.hunterMaxCameraThirdPersonRadius),
-            GameManager.PlayerRole.HIDER => Mathf.Clamp(thirdPersonRadius, 0, Constants.ratMaxCameraThirdPersonRadius),
-            _ => thirdPersonRadius
-        };
+        try {
+            thirdPersonRadius = GameManager.GetLocalRole() switch {
+                GameManager.PlayerRole.HUNTER => Mathf.Clamp(thirdPersonRadius, 0, Constants.hunterMaxCameraThirdPersonRadius),
+                GameManager.PlayerRole.HIDER => Mathf.Clamp(thirdPersonRadius, 0, Constants.ratMaxCameraThirdPersonRadius),
+                _ => thirdPersonRadius
+            };
+        } catch {
+            return;
+        }
 
         if (thirdPersonRadius < 0.2) {
             thirdPersonRadius = 0;

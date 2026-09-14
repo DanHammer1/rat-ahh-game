@@ -40,15 +40,25 @@ public class GameManager : NetworkBehaviour {
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        SceneManager.sceneLoaded += (scene, b) => {
-            sceneReady = false;
-            playersSpawned = false;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
-            if (scene.name == "MainMenu") {
-                GetComponent<ProgressManager>().IsActive = false;
-                GetComponent<ProgressManager>().onActivateExecuted = false;
+    public override void OnDestroy() {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        base.OnDestroy();
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        sceneReady = false;
+        playersSpawned = false;
+
+        if (scene.name == "MainMenu") {
+            ProgressManager progressManager = GetComponent<ProgressManager>();
+            if (progressManager != null) {
+                progressManager.IsActive = false;
+                progressManager.onActivateExecuted = false;
             }
-        };
+        }
     }
 
     public void DespawnObjects() {
@@ -56,6 +66,30 @@ public class GameManager : NetworkBehaviour {
             objectToDespawn.Despawn(true);
         }
         spawnedObjectsToDespawn.Clear();
+    }
+
+    public static void DisconnectToMainMenu() {
+        NetworkManager networkManager = NetworkManager.Singleton;
+
+        gameState = GameState.MAINMENU;
+
+        if (Instance != null && networkManager != null && networkManager.IsServer) {
+            Instance.clientIds.Clear();
+            Instance.clientNames.Clear();
+            Instance.clientRoles.Clear();
+        }
+
+        if (networkManager != null && networkManager.IsListening) {
+            networkManager.Shutdown();
+        }
+
+        if (Instance != null) {
+            SceneManager.sceneLoaded -= Instance.OnSceneLoaded;
+            Destroy(Instance.gameObject);
+            Instance = null;
+        }
+
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
     private static List<ulong> GetIds(int role) {

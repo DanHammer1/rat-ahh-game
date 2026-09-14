@@ -7,12 +7,21 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEditor;
+using Unity.VisualScripting;
 
-public class Loading : NetworkBehaviour {
+public class Loading : MonoBehaviour {
     public CinemachineTargetGroup targetGroup;
     PlayerCamera playerCamera;
-    void Start() {
+    public static Loading instance;
+    void Awake() {
+        if (instance != null) {
+            Destroy(this.gameObject);
+            return;
+        } else instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    void Start() {
 
         playerCamera = FindFirstObjectByType<PlayerCamera>();
 
@@ -28,15 +37,19 @@ public class Loading : NetworkBehaviour {
         string sceneToLoad;
         switch (GameManager.gameState) {
             case GameManager.GameState.MAINMENU:
+                GameManager.gameState = GameManager.GameState.LOBBY;
                 sceneToLoad = "Lobby";
                 break;
             case GameManager.GameState.LOBBY:
+                GameManager.gameState = GameManager.GameState.GAME;
                 sceneToLoad = "Game";
                 break;
             case GameManager.GameState.GAME:
+                GameManager.gameState = GameManager.GameState.LOBBY;
                 sceneToLoad = "Lobby";
                 break;
             default:
+                GameManager.gameState = GameManager.GameState.LOBBY;
                 sceneToLoad = "Lobby";
                 break;
         }
@@ -55,13 +68,20 @@ public class Loading : NetworkBehaviour {
         if (!NetworkManager.Singleton.IsServer)
             return;
 
-        StartCoroutine(GameManager.Instance.SpawnAllPlayers());
-        if (GameManager.gameState == GameManager.GameState.LOBBY) {
+        StartCoroutine(FinishLoading());
+    }
+
+    private IEnumerator FinishLoading() {
+        yield return StartCoroutine(GameManager.Instance.SpawnAllPlayers());
+
+        if (GameManager.gameState == GameManager.GameState.GAME) {
             GameManager.Instance.OnGameStartClientRpc();
         } else {
             GameManager.Instance.OnLobbyStartClientRpc();
         }
 
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted -= OnLoadEventCompleted;
+
+        Destroy(gameObject);
     }
 }

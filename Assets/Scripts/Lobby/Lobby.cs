@@ -180,12 +180,7 @@ public class Lobby : NetworkBehaviour {
             lobbyText.text = "Disconnected.";
         }
 
-        NetworkManager.Singleton.Shutdown();
-
-        if (!IsServer) return;
-
-        GameManager.Instance.clientIds.Clear();
-        GameManager.Instance.clientNames.Clear();
+        GameManager.DisconnectToMainMenu();
     }
 
     void Update() {

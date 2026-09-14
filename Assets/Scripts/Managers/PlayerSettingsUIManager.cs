@@ -114,5 +114,11 @@ public class PlayerSettingsUIManager : NetworkBehaviour {
         }
     }
 
+    public void Disconnect() {
+        foreach (TextMeshPro lobbyText in lobbyTexts) {
+            lobbyText.text = "Disconnected.";
+        }
 
+        GameManager.DisconnectToMainMenu();
+    }
 }
