@@ -51,7 +51,7 @@ public class RatClingAbility : Ability {
             HunterPlayer hunterPlayer = other.GetComponentInParent<HunterPlayer>();
             localHunterInRange = hunterPlayer;
 
-            if (IsOwner) {
+            if (IsOwner && !localHunterInRange.isBeingClung.Value) {
                 ratAbilityInRange = true;
             }
         }
@@ -116,7 +116,7 @@ public class RatClingAbility : Ability {
             float t = elapsed / ratAbilityDuration;
             elapsed += Time.fixedDeltaTime;
 
-            if (Vector3.Distance(transform.position, targetPos) <= Constants.ratAbilityClingRange) {
+            if (Vector3.Distance(transform.position, targetPos) <= Constants.ratAbilityClingRange && !localHunterInRange.isBeingClung.Value) {
                 SetColliderStateRpc(false);
                 rb.linearVelocity = Vector3.zero;
                 rb.angularVelocity = Vector3.zero;
