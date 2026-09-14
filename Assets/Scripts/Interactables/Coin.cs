@@ -47,7 +47,7 @@ public class Coin : NetworkBehaviour, IInteractable {
         SetCoinParentRpc(GameObject.Find("Coin Container").GetComponent<NetworkObject>());
         ToggleBoxColliderRpc();
         ToggleRigidbodyGravityRpc();
-        player.transform.GetComponent<Movement>().MultiplyMoveSpeedRpc(1 / Constants.carryingCoinMoveSpeedMultiplier);
+        // player.transform.GetComponent<Movement>().MultiplyMoveSpeedRpc(1 / Constants.carryingCoinMoveSpeedMultiplier);
         pickUpProgress = 0;
         unassignPlayerCoroutine = StartCoroutine(UnassignPlayer());
     }
