@@ -34,9 +34,10 @@ public class DeathHandler : NetworkBehaviour {
 
     public void KillPlayer() {
         if (IsServer) {
-            GetComponent<Player>().EditHealthServerRpc(0);
-            GetComponent<Player>().EditScoreServerRpc(0);
-            GetComponent<RatPlayer>().lives.Value--;
+            RatPlayer ratPlayer = GetComponent<RatPlayer>();
+            ratPlayer.EditHealthServerRpc(0);
+            ratPlayer.EditScoreServerRpc((int)(ratPlayer.score.Value - Mathf.Floor(0.2f * ratPlayer.score.Value)));
+            ratPlayer.lives.Value--;
             GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.RatDie, transform.position);
         }
         GetComponent<Player>().dead = true;

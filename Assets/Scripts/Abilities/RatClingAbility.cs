@@ -49,8 +49,8 @@ public class RatClingAbility : Ability {
         if (SceneManager.GetActiveScene().name != "Game") return;
 
         if (transform.tag == "PlayerMouse" && other.CompareTag("Rat Stun Hitbox")) {
-            if (!localHunterInRange.isBeingClung.Value) {
-                HunterPlayer hunterPlayer = other.GetComponentInParent<HunterPlayer>();
+            HunterPlayer hunterPlayer = other.GetComponentInParent<HunterPlayer>();
+            if (!hunterPlayer.isBeingClung.Value) {
                 localHunterInRange = hunterPlayer;
 
                 if (IsOwner) {

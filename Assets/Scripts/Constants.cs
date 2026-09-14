@@ -24,6 +24,7 @@ public class Constants : MonoBehaviour {
     public static float ratInvisibilityAbilityDuration = 7f;
     public static float ratInvisibilityAbilityVignetteFadeDuration = 0.5f;
     public static float possessedJumpCooldown = 1f;
+    public static float scoreLossOnDeath = 0.2f;
     # endregion
 
     # region "Hunter"
