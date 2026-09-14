@@ -92,6 +92,17 @@ public class GameManager : NetworkBehaviour {
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
+    public void ReturnToLobby() {
+        if (!IsServer || NetworkManager.Singleton == null || !NetworkManager.Singleton.IsListening)
+            return;
+
+        DespawnObjects();
+        // LoadingScreen changes GAME to LOBBY for the next network scene.
+        NetworkManager.Singleton.SceneManager.LoadScene(
+            "LoadingScreen",
+        LoadSceneMode.Single);
+    }
+
     private static List<ulong> GetIds(int role) {
         List<ulong> newList = new List<ulong>();
 

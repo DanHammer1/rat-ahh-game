@@ -1,18 +1,14 @@
 using UnityEngine;
 using Unity.Netcode;
 using Unity.Collections;
-using TMPro;
-using UnityEngine.SceneManagement;
-using Unity.Netcode.Transports.UTP;
-using System.Collections.Generic;
-using System.Collections;
 using System;
 using Unity.Cinemachine;
-using Unity.VisualScripting;
+using UnityEngine.UI;
 
 [DefaultExecutionOrder(-100)]
 public class PlayerSettingsUIManagerGame : NetworkBehaviour {
     public GameObject playerSettingsUI;
+    public Button returnToLobbyButton;
     public CinemachineInputAxisController cinemachineCamera;
     Movement movement;
 
@@ -30,6 +26,10 @@ public class PlayerSettingsUIManagerGame : NetworkBehaviour {
         string clientRole = ((GameManager.PlayerRole[])Enum.GetValues(typeof(GameManager.PlayerRole)))[clientRoleIndex].ToString();
 
         return $@"{clientId} - {clientName} - {clientRole}";
+    }
+
+    public override void OnNetworkSpawn() {
+        returnToLobbyButton.interactable = IsServer;
     }
 
     void Update() {
@@ -58,5 +58,9 @@ public class PlayerSettingsUIManagerGame : NetworkBehaviour {
 
     public void Disconnect() {
         GameManager.DisconnectToMainMenu();
+    }
+
+    public void ReturnToLobby() {
+        GameManager.Instance.ReturnToLobby();
     }
 }
