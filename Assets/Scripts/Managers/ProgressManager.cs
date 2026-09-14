@@ -35,6 +35,9 @@ public class ProgressManager : NetworkBehaviour {
     public bool onActivateExecuted = false;
     public bool isGameEnded;
     public bool movingToLobby = false;
+    public Coroutine clearObjectiveTextCoroutine;
+    Objective clearingObjective;
+    ObjectiveListSlot clearingObjectiveSlot;
 
 
     public static ProgressManager instance;
@@ -287,7 +290,7 @@ public class ProgressManager : NetworkBehaviour {
         foreach (Objective objective in objectives) {
             if (objective.CheckConditionCleared()) {
                 objectivesToSucceed.Add(objective);
-                StartCoroutine(ClearObjectiveText(objective));
+                clearObjectiveTextCoroutine = StartCoroutine(ClearObjectiveText(objective));
             } else if (objective.CheckObjectiveCancelled()) {
                 objectivesToRemove.Add(objective);
                 RemoveObjectiveText(objective);
@@ -316,6 +319,10 @@ public class ProgressManager : NetworkBehaviour {
 
         foreach (var slot in objectiveListSlots) {
             if (slot.currentObjective == null) {
+                if (clearingObjectiveSlot == slot) {
+                    StopClearObjectiveAnimation(); //todo
+                }
+
                 slot.currentObjective = objective;
                 slot.text.text = objective.objectiveText;
                 slot.text.transform.localScale = Vector3.one;
@@ -324,6 +331,9 @@ public class ProgressManager : NetworkBehaviour {
                 GameObject checkbox = slot.text.transform.parent.Find("DotPoint/Checkbox").gameObject;
                 checkbox.SetActive(false);
                 slot.objectiveIcon.gameObject.SetActive(true);
+                Transform ratStamp = slot.text.transform.parent.Find("DotPoint/RatStamp");
+                GameObject ratStampObject = ratStamp.gameObject;
+                ratStampObject.SetActive(false);
                 return;
             }
         }
@@ -334,6 +344,8 @@ public class ProgressManager : NetworkBehaviour {
     public IEnumerator ClearObjectiveText(Objective objective) {
         foreach (var slot in objectiveListSlots) {
             if (slot.currentObjective == objective) {
+                clearingObjective = objective;
+                clearingObjectiveSlot = slot;
                 slot.currentObjective = null;
 
                 Transform ratStamp = slot.text.transform.parent.Find("DotPoint/RatStamp");
@@ -358,7 +370,20 @@ public class ProgressManager : NetworkBehaviour {
                 ratStampObject.LeanScale(new Vector3(0, 0, 0), 0.5f).setEaseInBack();
                 slot.objectiveIcon.gameObject.LeanScale(new Vector3(0, 0, 0), 0.5f).setEaseInBack();
                 checkbox.SetActive(true);
+
+                if (clearingObjective == objective) {
+                    clearObjectiveTextCoroutine = null;
+                    clearingObjective = null;
+                    clearingObjectiveSlot = null;
+                }
             }
+        }
+    }
+
+    void StopClearObjectiveAnimation() {
+        if (clearObjectiveTextCoroutine != null) {
+            StopCoroutine(clearObjectiveTextCoroutine);
+            clearObjectiveTextCoroutine = null;
         }
     }
 
@@ -382,6 +407,7 @@ public class ProgressManager : NetworkBehaviour {
                 ratStampObject.transform.localScale = Vector3.zero;
                 slot.objectiveIcon.transform.localScale = Vector3.zero;
                 checkbox.SetActive(true);
+                Debug.Log("should have worked");
             }
         }
     }
