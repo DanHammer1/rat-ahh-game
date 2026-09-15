@@ -28,16 +28,13 @@ public class DialogueManager : MonoBehaviour {
 
         dialogueUI.SetActive(false);
 
-        onDialogueActivate += () => {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        };
-        onDialogueEnd += () => {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        };
-
         instance = this;
+    }
+
+    void Update() {
+        if (dialogueUI.activeSelf && Input.GetMouseButton(0)) {
+            EndDialogue();
+        }
     }
 
     public void EndDialogue() {

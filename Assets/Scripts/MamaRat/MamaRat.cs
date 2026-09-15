@@ -9,7 +9,7 @@ public class MamaRat : NetworkBehaviour, IInteractable {
     private Animator animator;
 
     private float interactionProgress = 0;
-    private float interactionCompletionTime = 1f;
+    private float interactionCompletionTime = 0.0001f;
     private bool interactable = true;
     private bool dialogueActive = false;
 
@@ -25,7 +25,7 @@ public class MamaRat : NetworkBehaviour, IInteractable {
 
     public String GetInteractionPromptText() {
         return (GameManager.GetLocalRole() != GameManager.PlayerRole.HIDER) ?
-            "Only rats can speak rat language." : "Hold E to talk to mama rat.";
+            "Only rats can speak rat language." : "Press E to talk to mama rat.";
     }
 
     public void Interact() {
