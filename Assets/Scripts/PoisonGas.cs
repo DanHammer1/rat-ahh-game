@@ -23,6 +23,7 @@ public class PoisonGas : NetworkBehaviour {
         hitbox = transform.GetComponentInChildren<BoxCollider>();
         particles = transform.GetComponentInChildren<ParticleSystem>();
         main = particles.main;
+        GameManager.Instance.spawnedObjectsToDespawn.Add(NetworkObject);
 
         RaycastHit hit;
 
@@ -61,6 +62,7 @@ public class PoisonGas : NetworkBehaviour {
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     private void DespawnServerRpc() {
         if (NetworkObject != null && NetworkObject.IsSpawned) {
+            GameManager.Instance.spawnedObjectsToDespawn.Remove(NetworkObject);
             NetworkObject.Despawn();
         }
     }
