@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 using Unity.Netcode;
 using System.Collections;
 
@@ -36,7 +37,14 @@ public class DeathHandler : NetworkBehaviour {
         if (IsServer) {
             RatPlayer ratPlayer = GetComponent<RatPlayer>();
             ratPlayer.EditHealthServerRpc(0);
-            ratPlayer.EditScoreServerRpc((int)(ratPlayer.score.Value - Mathf.Floor(0.2f * ratPlayer.score.Value)));
+
+            float scoreToDeduct = Mathf.Floor(0.2f * ratPlayer.score.Value);
+            ratPlayer.EditScoreServerRpc((int)(ratPlayer.score.Value - scoreToDeduct));
+            GameObject scoreAddedNotice = Instantiate(Assets.instance.scoreAddedNotice);
+            scoreAddedNotice.GetComponent<TextMeshProUGUI>().text = $"- {scoreToDeduct}";
+            scoreAddedNotice.GetComponent<TextMeshProUGUI>().color = new Color(1, 0, 0, 1);
+            scoreAddedNotice.transform.SetParent(GameObject.FindWithTag("ScoreAddedParent").transform);
+
             ratPlayer.lives.Value--;
             GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.RatDie, transform.position);
         }

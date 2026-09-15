@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
 using System;
+using TMPro;
 
 public abstract class Objective {
     public string objectiveText;
@@ -12,6 +13,11 @@ public abstract class Objective {
 
     public Objective(string objectiveText) {
         this.objectiveText = objectiveText;
+        onConditionCleared += () => {
+            GameObject scoreAddedNotice = UnityEngine.Object.Instantiate(Assets.instance.scoreAddedNotice);
+            scoreAddedNotice.GetComponent<TextMeshProUGUI>().text = $"+ {completionScore}";
+            scoreAddedNotice.transform.SetParent(GameObject.FindWithTag("ScoreAddedParent").transform);
+        };
         onConditionCleared += () => Player.localPlayer.AddScoreServerRpc(completionScore);
         onConditionCleared += () => GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.ObjectiveComplete);
         onConditionCleared += () => ProgressManager.instance.objectives.Remove(this);

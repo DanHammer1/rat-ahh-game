@@ -43,6 +43,7 @@ public class Assets : MonoBehaviour {
     public GameObject objectivesUIGameObject;
     public GameObject ghostRulesUIGameObject;
     public GameObject ratPossessedJumpMeterUI;
+    public GameObject scoreAddedNotice;
     # endregion
 
     #region "Objective Icons"
