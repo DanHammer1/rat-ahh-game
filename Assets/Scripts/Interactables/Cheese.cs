@@ -32,7 +32,7 @@ public class Cheese : NetworkBehaviour, IInteractable {
     }
 
     public bool CheckExtraInteractionConditions() {
-        return (GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER);
+        return GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER && !((RatPlayer)Player.localPlayer).isGhost;
     }
 
     public string GetInteractionPromptText() {
