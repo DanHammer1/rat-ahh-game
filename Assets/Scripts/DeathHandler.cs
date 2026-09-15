@@ -38,12 +38,26 @@ public class DeathHandler : NetworkBehaviour {
             RatPlayer ratPlayer = GetComponent<RatPlayer>();
             ratPlayer.EditHealthServerRpc(0);
 
+            // deduct score
             float scoreToDeduct = Mathf.Floor(0.2f * ratPlayer.score.Value);
             ratPlayer.EditScoreServerRpc((int)(ratPlayer.score.Value - scoreToDeduct));
             GameObject scoreAddedNotice = Instantiate(Assets.instance.scoreAddedNotice);
             scoreAddedNotice.GetComponent<TextMeshProUGUI>().text = $"- {scoreToDeduct}";
             scoreAddedNotice.GetComponent<TextMeshProUGUI>().color = new Color(1, 0, 0, 1);
             scoreAddedNotice.transform.SetParent(GameObject.FindWithTag("ScoreAddedParent").transform);
+
+            // drop coin
+            if (ratPlayer.isCarryingCoin.Value) {
+                NetworkObject dyingRat = GetComponent<NetworkObject>();
+                foreach (Coin coin in FindObjectsByType<Coin>(FindObjectsSortMode.None)) {
+                    if (coin.isBeingCarried.Value &&
+                        coin.playerCarryingCoin.Value.TryGet(out NetworkObject carrier) &&
+                        carrier == dyingRat) {
+                        coin.DropCoinRpc();
+                        break;
+                    }
+                }
+            }
 
             ratPlayer.lives.Value--;
             GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.RatDie, transform.position);
