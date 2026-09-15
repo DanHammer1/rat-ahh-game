@@ -63,7 +63,7 @@ public class GameManager : NetworkBehaviour {
 
     public void DespawnObjects() {
         foreach (NetworkObject objectToDespawn in spawnedObjectsToDespawn) {
-            objectToDespawn.Despawn(true);
+            if (objectToDespawn != null) objectToDespawn.Despawn(true);
         }
         spawnedObjectsToDespawn.Clear();
     }

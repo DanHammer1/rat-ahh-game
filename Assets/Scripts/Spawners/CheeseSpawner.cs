@@ -73,6 +73,7 @@ public class CheeseSpawner : NetworkBehaviour {
 
         GameObject cheese = Instantiate(cheesePrefab, vacantSpot, Quaternion.identity);
         cheese.GetComponent<NetworkObject>().Spawn();
+        GameManager.Instance.spawnedObjectsToDespawn.Add(cheese.GetComponent<NetworkObject>());
 
         takenSpawnLocations.Add(cheese);
         cheese.GetComponent<Cheese>().onDestroyed += () => takenSpawnLocations.Remove(cheese);

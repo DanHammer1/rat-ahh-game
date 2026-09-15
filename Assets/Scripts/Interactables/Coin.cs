@@ -142,6 +142,7 @@ public class Coin : NetworkBehaviour, IInteractable {
     }
     IEnumerator WaitThenDespawnCoin() {
         yield return new WaitForSeconds(0.2f);
+        GameManager.Instance.spawnedObjectsToDespawn.Remove(NetworkObject);
         DespawnServerRpc();
     }
 

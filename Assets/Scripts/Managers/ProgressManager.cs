@@ -108,6 +108,11 @@ public class ProgressManager : NetworkBehaviour {
         IsActive = false;
         this.enabled = false;
 
+        objectiveListSlots.Clear();
+        clearObjectiveTextCoroutine = null;
+        clearingObjective = null;
+        clearingObjectiveSlot = null;
+
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]

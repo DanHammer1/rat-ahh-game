@@ -42,6 +42,7 @@ public class Cheese : NetworkBehaviour, IInteractable {
     public void Interact() {
         //todo consider below - should eating cheese always give points even if its not an objective?
         if (Player.localPlayer == null) return;
+        GameManager.Instance.spawnedObjectsToDespawn.Remove(NetworkObject);
         DespawnServerRpc();
         foreach (Objective objective in ProgressManager.instance.objectives) {
             if (objective is CheeseObjective cheeseObjective) {
