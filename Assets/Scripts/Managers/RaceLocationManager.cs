@@ -29,22 +29,22 @@ public class RaceLocationManager : NetworkBehaviour {
         if (randomIndex == 0) {
             return new List<string> {
                 "1ST FLOOR OFFICE TO LEDGE OVERLOOKING STAIRS",
-                "office - stairs ledge"
+                $"office - stairs ledge ({ObjectiveScores.raceScore})"
             };
         } else if (randomIndex == 1) {
             return new List<string> {
                 "1ST FLOOR BEDROOM TO GARAGE",
-                "bedroom - garage"
+                $"bedroom - garage ({ObjectiveScores.raceScore})"
             };
         } else if (randomIndex == 2) {
             return new List<string> {
                 "KITCHEN TO TOP BUNK BED",
-                "kitchen - bunk bed"
+                $"kitchen - bunk bed ({ObjectiveScores.raceScore})"
             };
         } else if (randomIndex == 3) {
             return new List<string> {
                 "2ND FLOOR DESK TO OFFICE BATHROOM",
-                "upstairs desk - office"
+                $"upstairs desk - office ({ObjectiveScores.raceScore})"
             };
         }
         return new List<string> {

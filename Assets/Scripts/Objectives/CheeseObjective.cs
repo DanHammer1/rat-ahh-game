@@ -9,7 +9,7 @@ public class CheeseObjective : Objective {
     public GameObject cheese;
     public bool isConditionCleared = false;
 
-    public CheeseObjective() : base("Eat Cheese") {
+    public CheeseObjective() : base($"Eat Cheese ({ObjectiveScores.cheeseScore})") {
         completionScore = ObjectiveScores.cheeseScore;
         objectiveIcon = Assets.instance.cheeseObjectiveIcon;
 

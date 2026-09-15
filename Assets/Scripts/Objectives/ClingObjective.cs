@@ -5,11 +5,11 @@ using System;
 using Unity.Collections;
 using System.Collections;
 
-public class AbilityObjective : Objective {
+public class ClingObjective : Objective {
     private bool completed = false;
 
-    public AbilityObjective() : base("Use cling ability on a Hunter.") {
-        completionScore = ObjectiveScores.abilityScore;
+    public ClingObjective() : base($"Use cling ability on a Hunter  ({ObjectiveScores.clingScore})") {
+        completionScore = ObjectiveScores.clingScore;
         objectiveIcon = Assets.instance.clingObjectiveIcon;
         HunterPlayer.onHunterClung += () => completed = true;
     }

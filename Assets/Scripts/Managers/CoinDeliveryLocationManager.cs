@@ -20,22 +20,22 @@ public class CoinDeliveryLocationManager : NetworkBehaviour {
         if (randomIndex == 0) {
             return new List<string> {
                 "GARAGE BIN",
-                "garage bin"
+                $"garage bin ({ObjectiveScores.deliveryScore})"
             };
         } else if (randomIndex == 1) {
             return new List<string> {
                 "GARAGE WASHING MACHINES",
-                "washing machines"
+                $"washing machines ({ObjectiveScores.deliveryScore})"
             };
         } else if (randomIndex == 2) {
             return new List<string> {
                 "SECOND FLOOR TOILET",
-                "upstairs toilet"
+                $"upstairs toilet ({ObjectiveScores.deliveryScore})"
             };
         } else if (randomIndex == 3) {
             return new List<string> {
                 "VAULT BEHIND ME",
-                "Mama Rat's vault"
+                $"Mama Rat's vault ({ObjectiveScores.deliveryScore})"
             };
         }
         return new List<string> {
