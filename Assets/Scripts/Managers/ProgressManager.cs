@@ -12,6 +12,7 @@ using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine.Animations;
 using UnityEngine.Events;
 using Unity.Cinemachine;
+using System.Linq;
 
 public class ProgressManager : NetworkBehaviour {
     public TextMeshProUGUI timer;
@@ -259,13 +260,13 @@ public class ProgressManager : NetworkBehaviour {
 
         string text = $"<b><u>Leaderboard</u></b>\n";
 
-        foreach (int i in GameManager.GetHiderIndexs()) {
-            Player[] players = GameObject.FindObjectsByType<Player>(FindObjectsSortMode.None);
-
-            foreach (Player player in players) {
-                if (GameManager.Instance.clientIds[i] == player.clientId.Value) {
+        RatPlayer[] ratPlayers = GameObject.FindObjectsByType<RatPlayer>(FindObjectsSortMode.None);
+        ratPlayers = ratPlayers.OrderByDescending(x => x.score.Value).ToArray();
+        foreach (RatPlayer ratPlayer in ratPlayers) {
+            foreach (int i in GameManager.GetHiderIndexs()) {
+                if (GameManager.Instance.clientIds[i] == ratPlayer.clientId.Value) {
                     string name = GameManager.Instance.clientNames[i].Value;
-                    text += $"{name}: {player.score.Value}\n";
+                    text += $"{name}: {ratPlayer.score.Value}\n";
                     break;
                 }
             }
