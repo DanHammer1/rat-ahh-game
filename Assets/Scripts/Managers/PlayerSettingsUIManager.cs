@@ -96,7 +96,7 @@ public class PlayerSettingsUIManager : NetworkBehaviour {
         }
     }
 
-    void TogglePlayerSettingsUI() {
+    public void TogglePlayerSettingsUI() {
         playerSettingsUI.SetActive(!playerSettingsUI.activeSelf);
         movement = Player.localPlayer.GetComponent<Movement>();
         Player.localPlayer.GetComponent<Player>().isInUIMenu = !Player.localPlayer.GetComponent<Player>().isInUIMenu;
