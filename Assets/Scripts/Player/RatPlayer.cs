@@ -53,6 +53,8 @@ public class RatPlayer : Player {
     }
 
     void PossessedItem() {
+        Assets.instance.dropItemPrompt.SetActive(true);
+        Assets.instance.dropItemPrompt.GetComponent<TextMeshProUGUI>().text = "Press Q to unpossess";
         SetIsPossessingItemRpc(true);
         PossessedItemRpc();
     }
@@ -60,6 +62,7 @@ public class RatPlayer : Player {
         if (possessedMovement.itemBeingPossessedObject.Value.TryGet(out NetworkObject itemBeingPossessed)) {
             itemBeingPossessed.GetComponent<Possessable>().SetIsPossessedRpc(false);
         }
+        Assets.instance.dropItemPrompt.SetActive(false);
         hideRatPossessedJumpMeterUIRpc();
         UnPossessedItemRpc();
         SetItemBeingPossessedObjectRpc();

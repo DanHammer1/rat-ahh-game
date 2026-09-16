@@ -50,6 +50,8 @@ public abstract class Item : NetworkBehaviour, IInteractable {
 
             ToggleCollidersRpc(true);
 
+            Assets.instance.dropItemPrompt.SetActive(false);
+
             ((HunterPlayer)(Player.localPlayer)).SetCarryingItemRpc(false);
         }
     }
@@ -91,6 +93,9 @@ public abstract class Item : NetworkBehaviour, IInteractable {
 
         SetIsEquippedRpc(true);
         GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.itemPickup, Player.localPlayer.transform.position);
+
+        Assets.instance.dropItemPrompt.SetActive(true);
+        Assets.instance.dropItemPrompt.GetComponent<TextMeshProUGUI>().text = "Press Q to drop item";
 
         ((HunterPlayer)Player.localPlayer).SetCarryingItemRpc(true);
         UpdateHunterPlayerRefRpc(Player.localPlayer.NetworkObject);

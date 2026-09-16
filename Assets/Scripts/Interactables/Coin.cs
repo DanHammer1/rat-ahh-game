@@ -92,6 +92,7 @@ public class Coin : NetworkBehaviour, IInteractable {
         transform.rotation = spine.rotation * Quaternion.Euler(0, 0, 90);
 
         if (Player.localPlayer.NetworkObject == player && Input.GetKeyDown(KeyCode.Q) && !Player.localPlayer.isInUIMenu) {
+            Assets.instance.dropItemPrompt.SetActive(false);
             DropCoinRpc();
         }
     }
@@ -106,6 +107,8 @@ public class Coin : NetworkBehaviour, IInteractable {
             StopUnassignCoroutineRpc();
             SetCoinParentRpc(Player.localPlayer.GetComponent<NetworkObject>());
             Player.localPlayer.ToggleIsCarryingCoinRpc();
+            Assets.instance.dropItemPrompt.SetActive(true);
+            Assets.instance.dropItemPrompt.GetComponent<TextMeshProUGUI>().text = "Press Q to drop coin";
             // Player.localPlayer.ToggleIsCarryingCoinClientRpc();
             ToggleBoxColliderRpc();
             ToggleRigidbodyGravityRpc();
