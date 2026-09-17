@@ -28,13 +28,18 @@ public class RatInvisibilityAbility : Ability {
     public void ExecuteAbilityRpc() {
         SetInvisibleRpc();
         Timer.CreateTimer(Constants.ratInvisibilityAbilityDuration, Timer.OnFinish.DESTROY,
-            () => { SetVisibleRpc(); });
+            () => {
+                RatPlayer ratPlayer = GetComponent<RatPlayer>();
+                if (ratPlayer.dead.Value || ratPlayer.isGhost || !ratPlayer.isInvisible) return;
+                SetVisibleRpc();
+            });
     }
 
     [Rpc(SendTo.Everyone)]
-    void SetVisibleRpc() {
+    public void SetVisibleRpc() {
         playerRenderer.materials = Assets.instance.ratMaterials;
         gameObject.GetComponent<RatPlayer>().isInvisible = false;
+        //GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.InvisibilityExit);
     }
 
     [Rpc(SendTo.Everyone)]
@@ -60,7 +65,11 @@ public class RatInvisibilityAbility : Ability {
         GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.InvisibilityEnter);
         ExecuteAbilityRpc();
         Timer.CreateTimer(Constants.ratInvisibilityAbilityDuration, Timer.OnFinish.DESTROY,
-            () => { GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.InvisibilityExit); });
+            () => {
+                RatPlayer ratPlayer = GetComponent<RatPlayer>();
+                if (ratPlayer.dead.Value || ratPlayer.isGhost || !ratPlayer.isInvisible) return;
+                GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.InvisibilityExit);
+            });
     }
 
     public override bool CheckAbilityExecutable() {

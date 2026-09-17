@@ -42,6 +42,9 @@ public class DeathHandler : NetworkBehaviour {
             RatPlayer ratPlayer = GetComponent<RatPlayer>();
             ratPlayer.EditHealthServerRpc(0);
             ratPlayer.SetDeadStateRpc(true);
+            if (ratPlayer.isInvisible) {
+                ratPlayer.GetComponent<RatInvisibilityAbility>().SetVisibleRpc();
+            }
 
             // deduct score
             float scoreToDeduct = Mathf.Floor(0.2f * ratPlayer.score.Value);
