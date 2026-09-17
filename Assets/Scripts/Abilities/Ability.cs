@@ -35,7 +35,7 @@ public abstract class Ability : NetworkBehaviour {
     }
 
     private bool AllExecutionConditionsMet() {
-        return (CheckAbilityExecutable() && Input.GetKeyDown(hotkey) && IsOwner && !Player.localPlayer.isInUIMenu && isEnabled);
+        return (CheckAbilityExecutable() && Input.GetKeyDown(hotkey) && IsOwner && !Player.localPlayer.isInUIMenu && isEnabled && !Player.localPlayer.dead.Value);
     }
 
     public override void OnNetworkSpawn() {

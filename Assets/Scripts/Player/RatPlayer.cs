@@ -18,6 +18,7 @@ public class RatPlayer : Player {
     public Action possessedItem;
     public Action unPossessedItem;
     public NetworkVariable<bool> isPossessingItem = new NetworkVariable<bool>(false);
+    public NetworkVariable<NetworkObjectReference> coinBeingCarried = new NetworkVariable<NetworkObjectReference>();
     PossessedMovement possessedMovement;
     public GameObject ratPossessedJumpMeterUI;
 

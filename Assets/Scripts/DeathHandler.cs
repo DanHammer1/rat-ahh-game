@@ -49,15 +49,9 @@ public class DeathHandler : NetworkBehaviour {
 
             // drop coin
             if (ratPlayer.isCarryingCoin.Value) {
-                NetworkObject dyingRat = GetComponent<NetworkObject>();
-                foreach (Coin coin in FindObjectsByType<Coin>(FindObjectsSortMode.None)) {
-                    if (coin.isBeingCarried.Value &&
-                        coin.playerCarryingCoin.Value.TryGet(out NetworkObject carrier) &&
-                        carrier == dyingRat) {
-                        coin.DropCoinRpc();
-                        break;
-                    }
-                }
+                NetworkObject coinObj = ratPlayer.coinBeingCarried.Value;
+                Coin coin = coinObj.GetComponent<Coin>();
+                coin.DropCoinRpc();
             }
 
             ratPlayer.lives.Value--;

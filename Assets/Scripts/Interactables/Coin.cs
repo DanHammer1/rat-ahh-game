@@ -26,8 +26,8 @@ public class Coin : NetworkBehaviour, IInteractable {
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    public void ToggleIsBeingCarriedRpc() {
-        isBeingCarried.Value = !isBeingCarried.Value;
+    public void SetIsBeingCarriedRpc(bool state) {
+        isBeingCarried.Value = state;
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -36,20 +36,35 @@ public class Coin : NetworkBehaviour, IInteractable {
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SetCoinBeingCarriedRpc(bool beingCarried) {
+        if (playerCarryingCoin.Value.TryGet(out NetworkObject playerObj)) {
+            RatPlayer ratPlayer = playerObj.GetComponent<RatPlayer>();
+            if (beingCarried) {
+                ratPlayer.coinBeingCarried.Value = NetworkObject;
+            } else {
+                ratPlayer.coinBeingCarried.Value = default;
+            }
+        }
+    }
+
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void DropCoinRpc() {
+        Debug.Log("1");
         NetworkObject player;
         playerCarryingCoin.Value.TryGet(out player);
 
-        ToggleIsBeingCarriedRpc();
+        SetIsBeingCarriedRpc(false);
         player.transform.GetComponent<Player>().ToggleIsCarryingCoinRpc();
         // player.transform.GetComponent<Player>().ToggleIsCarryingCoinClientRpc();
         transform.position = player.transform.TransformPoint(new Vector3(0, 2f, 3f));
         SetCoinParentRpc(GameObject.Find("Coin Container").GetComponent<NetworkObject>());
-        ToggleBoxColliderRpc();
-        ToggleRigidbodyGravityRpc();
+        SetCoinBeingCarriedRpc(false);
+        SetBoxColliderRpc(true);
+        SetRigidbodyGravityRpc(true);
         // player.transform.GetComponent<Movement>().MultiplyMoveSpeedRpc(1 / Constants.carryingCoinMoveSpeedMultiplier);
         pickUpProgress = 0;
         unassignPlayerCoroutine = StartCoroutine(UnassignPlayer());
+        Debug.Log("2");
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -110,21 +125,24 @@ public class Coin : NetworkBehaviour, IInteractable {
             Assets.instance.dropItemPrompt.SetActive(true);
             Assets.instance.dropItemPrompt.GetComponent<TextMeshProUGUI>().text = "Press Q to drop coin";
             // Player.localPlayer.ToggleIsCarryingCoinClientRpc();
-            ToggleBoxColliderRpc();
-            ToggleRigidbodyGravityRpc();
-            ToggleIsBeingCarriedRpc();
+            SetBoxColliderRpc(false);
+            Debug.Log("interact ran");
+            SetRigidbodyGravityRpc(false);
+            SetIsBeingCarriedRpc(true);
             SetPlayerCarryingCoinRpc(Player.localPlayer.gameObject);
+            SetCoinBeingCarriedRpc(true);
             // Player.localPlayer.transform.GetComponent<Movement>().MultiplyMoveSpeedRpc(Constants.carryingCoinMoveSpeedMultiplier);
         }
     }
 
     [Rpc(SendTo.Everyone)]
-    private void ToggleRigidbodyGravityRpc() {
-        this.GetComponent<Rigidbody>().useGravity = !this.GetComponent<Rigidbody>().useGravity;
+    private void SetRigidbodyGravityRpc(bool state) {
+        this.GetComponent<Rigidbody>().useGravity = state;
     }
     [Rpc(SendTo.Everyone)]
-    private void ToggleBoxColliderRpc() {
-        this.GetComponent<BoxCollider>().enabled = !this.GetComponent<BoxCollider>().enabled;
+    private void SetBoxColliderRpc(bool state) {
+        Debug.Log("hello");
+        this.GetComponent<BoxCollider>().enabled = state;
     }
 
 
