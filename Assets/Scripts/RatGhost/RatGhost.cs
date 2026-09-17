@@ -19,6 +19,16 @@ public class RatGhost : NetworkBehaviour {
     }
 
     void BecomeGhost() {
+        BecomeGhostRpc();
+        Assets.instance.objectivesUIGameObject.transform.parent.gameObject.SetActive(false);
+        Assets.instance.ghostRulesUIGameObject.SetActive(true);
+        Assets.instance.abilityParent.SetActive(false);
+
+        ProgressManager.instance.RemoveAllObjectives();
+    }
+
+    [Rpc(SendTo.Everyone)]
+    void BecomeGhostRpc() {
         playerRenderer = transform.Find("Renderer").GetComponent<SkinnedMeshRenderer>();
         playerRenderer.materials = Assets.instance.ratGhostMaterials;
         ratPlayer.isGhost = true;
@@ -27,11 +37,5 @@ public class RatGhost : NetworkBehaviour {
         GetComponent<RatClingAbility>().isEnabled = false;
         GetComponent<RatDashAbility>().isEnabled = false;
         GetComponent<RatInvisibilityAbility>().isEnabled = false;
-
-        Assets.instance.objectivesUIGameObject.transform.parent.gameObject.SetActive(false);
-        Assets.instance.ghostRulesUIGameObject.SetActive(true);
-        Assets.instance.abilityParent.SetActive(false);
-
-        ProgressManager.instance.RemoveAllObjectives();
     }
 }

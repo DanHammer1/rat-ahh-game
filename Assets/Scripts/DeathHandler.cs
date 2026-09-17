@@ -4,9 +4,17 @@ using Unity.Netcode;
 using System.Collections;
 using Unity.Netcode.Components;
 using System;
+using Unity.VisualScripting;
 
 public class DeathHandler : NetworkBehaviour {
     bool isRagdolled = false;
+    RatPlayer ratPlayer;
+    Timer respawnTimer;
+    NetworkVariable<float> respawnTimeRemaining = new NetworkVariable<float>(Constants.respawnTime);
+    public override void OnNetworkSpawn() {
+        base.OnNetworkSpawn();
+        ratPlayer = GetComponent<RatPlayer>();
+    }
     public void ToggleRagdoll(bool state) {
         isRagdolled = state;
         Rigidbody[] ragdollRigidbodies = GetComponentsInChildren<Rigidbody>(true);
@@ -39,7 +47,6 @@ public class DeathHandler : NetworkBehaviour {
 
     public void KillPlayer() {
         if (IsServer) {
-            RatPlayer ratPlayer = GetComponent<RatPlayer>();
             ratPlayer.EditHealthServerRpc(0);
             ratPlayer.SetDeadStateRpc(true);
             if (ratPlayer.isInvisible) {
@@ -59,6 +66,7 @@ public class DeathHandler : NetworkBehaviour {
 
             ratPlayer.lives.Value--;
             GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.RatDie, transform.position);
+            ActivateRespawnPromptClientRpc(true, RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp));
         }
         ToggleRagdoll(true);
     }
@@ -73,6 +81,13 @@ public class DeathHandler : NetworkBehaviour {
 
         if (!IsServer) return;
         TeleportPlayerClientRpc(RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp));
+        ActivateRespawnPromptClientRpc(false, RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp));
+        respawnTimeRemaining.Value = Constants.respawnTime;
+    }
+
+    [Rpc(SendTo.SpecifiedInParams)]
+    public void ActivateRespawnPromptClientRpc(bool state, RpcParams rpcParams = default) {
+        Assets.instance.respawnPrompt.SetActive(state);
     }
 
     [Rpc(SendTo.SpecifiedInParams)]
@@ -94,12 +109,23 @@ public class DeathHandler : NetworkBehaviour {
         player.onDeath += () => {
             if (!IsServer) return;
             KillPlayer();
-            Timer.CreateTimer(Constants.respawnTime, Timer.OnFinish.DESTROY,
-                () => { RevivePlayer(); GetComponent<Player>().onRevive?.Invoke(); }, "Rat Revival Timer");
+            respawnTimer = Timer.CreateTimer(Constants.respawnTime, Timer.OnFinish.DESTROY,
+                () => { RevivePlayer(); GetComponent<Player>().onRevive?.Invoke(); }, "Rat Revival Timer").GetComponent<Timer>();
         };
         player.dead.OnValueChanged += (bool oldState, bool newState) => {
             if (newState) ToggleRagdoll(true);
             else ToggleRagdoll(false);
         };
+    }
+
+    void Update() {
+        if (IsServer && ratPlayer.dead.Value) {
+            respawnTimeRemaining.Value -= Time.deltaTime;
+        }
+
+        if (!IsOwner) return;
+        if (ratPlayer.dead.Value) {
+            Assets.instance.respawnPrompt.transform.Find("RespawnCountdown").GetComponent<TextMeshProUGUI>().text = $"RESPAWNING IN {Math.Ceiling(respawnTimeRemaining.Value)}";
+        }
     }
 }
