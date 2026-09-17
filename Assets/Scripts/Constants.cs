@@ -62,6 +62,8 @@ public class Constants : MonoBehaviour {
     # region "Match Settings"
     public static int defaultStartingRatLives = 3;
     public static int defaultStartingMatchLength = 600;
+    public static int minStartingLives = 1;
+    public static int maxStartingLives = 8;
     # endregion
 
     void Awake() {

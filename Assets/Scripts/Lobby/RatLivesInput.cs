@@ -15,7 +15,7 @@ public class RatLivesInput : NetworkBehaviour {
     }
     public void OnEndEdit() {
         if (int.TryParse(input.text, out int newValue) && newValue > 0) {
-            newValue = Mathf.Clamp(newValue, 1, 10);
+            newValue = Mathf.Clamp(newValue, Constants.minStartingLives, Constants.maxStartingLives);
             SetStartingRatLives(newValue);
         } else {
             input.text = ProgressManager.instance.startingRatLives.Value.ToString();
@@ -23,11 +23,11 @@ public class RatLivesInput : NetworkBehaviour {
     }
 
     public void IncrementStartingRatLives() {
-        SetStartingRatLives(Mathf.Clamp(ProgressManager.instance.startingRatLives.Value + 1, 1, 10));
+        SetStartingRatLives(Mathf.Clamp(ProgressManager.instance.startingRatLives.Value + 1, Constants.minStartingLives, Constants.maxStartingLives));
     }
 
     public void DecrementStartingRatLives() {
-        SetStartingRatLives(Mathf.Clamp(ProgressManager.instance.startingRatLives.Value - 1, 1, 10));
+        SetStartingRatLives(Mathf.Clamp(ProgressManager.instance.startingRatLives.Value - 1, Constants.minStartingLives, Constants.maxStartingLives));
     }
 
     void SetStartingRatLives(int value) {
