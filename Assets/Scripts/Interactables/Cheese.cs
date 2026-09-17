@@ -9,7 +9,7 @@ public class Cheese : NetworkBehaviour, IInteractable {
 
     public bool ShowInteractionUI => showInteractionUI;
     public bool playerInRange = false;
-    private RatPlayer localPlayerInRange;
+    private bool isEaten = false;
 
     public Action onDestroyed;
     public Action onSpawned;
@@ -42,14 +42,17 @@ public class Cheese : NetworkBehaviour, IInteractable {
     }
 
     public void Interact() {
-        if (Player.localPlayer == null) return;
+        if (Player.localPlayer == null || isEaten) return;
         DespawnServerRpc();
+        isEaten = true;
         foreach (Objective objective in ProgressManager.instance.objectives) {
             if (objective is CheeseObjective cheeseObjective) {
                 cheeseObjective.isConditionCleared = true;
                 return;
             }
         }
+        // if no objective, give some points
+        Player.localPlayer.AddScoreServerRpc(ObjectiveScores.baseCheeseScore);
     }
 
     public void UpdateProgress() {
