@@ -66,7 +66,7 @@ public class CoinSpawner : NetworkBehaviour {
         coin.GetComponent<NetworkObject>().Spawn();
 
         takenSpawnLocations.Add(coin);
-        // coin.GetComponent<Coin>().onDestroyed += () => takenSpawnLocations.Remove(coin); TODO
+        // coin.GetComponent<Coin>().onDestroyed += () => takenSpawnLocations.Remove(coin);
     }
 
     public IEnumerator ForceObtainRandomCoinOverTime() {
@@ -78,7 +78,7 @@ public class CoinSpawner : NetworkBehaviour {
             yield return null;
         }
 
-        // onCoinObtained?.Invoke(); TODO
+        // onCoinObtained?.Invoke();
     }
 
     public void ForceObtainRandomCoin() {

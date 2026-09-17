@@ -50,7 +50,6 @@ public class ProgressManager : NetworkBehaviour {
         if (onActivateExecuted) yield break;
 
         GameManager.gameState = GameManager.GameState.GAME;
-        Debug.Log("activated");
 
         if (IsServer) remainingMatchLength.Value = startingMatchLength.Value;
 
@@ -169,7 +168,7 @@ public class ProgressManager : NetworkBehaviour {
     void OnGameEnd() {
         CreateResultsClientRpc();
         DisableGameplayClientRpc();
-        returningToLobbyTimer = Timer.CreateTimer(8f, Timer.OnFinish.DESTROY, // todo move time to constants.cs
+        returningToLobbyTimer = Timer.CreateTimer(Constants.returnToLobbyTime, Timer.OnFinish.DESTROY,
             () => {
                 movingToLobby = true;
                 GameManager.Instance.DespawnObjects();
@@ -326,7 +325,7 @@ public class ProgressManager : NetworkBehaviour {
         foreach (var slot in objectiveListSlots) {
             if (slot.currentObjective == null) {
                 if (clearingObjectiveSlot == slot) {
-                    StopClearObjectiveAnimation(); //todo
+                    StopClearObjectiveAnimation();
                 }
 
                 slot.currentObjective = objective;

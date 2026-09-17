@@ -23,10 +23,10 @@ public class Player : NetworkBehaviour {
     public NetworkVariable<float> maxHealth = new NetworkVariable<float>(100);
     public NetworkVariable<float> health = new NetworkVariable<float>();
 
+    public NetworkVariable<bool> dead = new NetworkVariable<bool>(false);
     public Action onSpawn;
     private bool spawned = false;
     public Action onDeath;
-    public bool dead = false;
     public Action onRevive;
 
     public Movement movement;
@@ -106,6 +106,18 @@ public class Player : NetworkBehaviour {
         shakeProgressBarImage = shakeProgressBar?.GetComponent<Image>();
 
         impulseSource = GetComponent<CinemachineImpulseSource>();
+
+        score.OnValueChanged += (int oldValue, int newValue) => {
+            int difference = newValue - oldValue;
+            GameObject scoreAddedNotice = Instantiate(Assets.instance.scoreAddedNotice);
+            scoreAddedNotice.transform.SetParent(GameObject.FindWithTag("ScoreAddedParent").transform);
+            if (newValue - oldValue > 0) {
+                scoreAddedNotice.GetComponent<TextMeshProUGUI>().text = $"+{difference}";
+            } else {
+                scoreAddedNotice.GetComponent<TextMeshProUGUI>().text = $"{difference}";
+                scoreAddedNotice.GetComponent<TextMeshProUGUI>().color = new Color(1, 0, 0, 1);
+            }
+        };
     }
 
     void SetupCamera() {
@@ -145,6 +157,11 @@ public class Player : NetworkBehaviour {
         score.Value += newScore;
     }
 
+    [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
+    public void SetDeadStateRpc(bool state) {
+        dead.Value = state;
+    }
+
     protected virtual void Update() {
         if (!spawned) {
             onSpawn?.Invoke();
@@ -155,8 +172,9 @@ public class Player : NetworkBehaviour {
             ClearConsole();
         }
 
-        if (health.Value <= 0 && !dead) {
+        if (IsServer && health.Value <= 0 && !dead.Value) {
             onDeath?.Invoke();
+            Debug.Log(health.Value + ", " + dead.Value); // activates sometimes when rat revives todo
         }
     }
 

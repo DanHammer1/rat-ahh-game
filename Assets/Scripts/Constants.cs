@@ -38,7 +38,7 @@ public class Constants : MonoBehaviour {
 
     public static float capsuleColliderStandingHeight = 0.81f;
     public static float capsuleColliderStandingCenterY = 0.4f;
-    public static float capsuleColliderCrawlingHeight = 0.12f; // todo
+    public static float capsuleColliderCrawlingHeight = 0.12f;
     public static float capsuleColliderCrawlingCenterY = 0.04f;
     # endregion
 
@@ -47,7 +47,7 @@ public class Constants : MonoBehaviour {
     # endregion
 
     # region "Misc"
-    public static float respawnTime = 10;
+    public static float respawnTime = 5;
     public static float cheeseSpawnInterval = 30;
     public static float coinSpawnInterval = 30;
     public static float piggyBankBreakSpeed = 2.5f;
@@ -56,6 +56,7 @@ public class Constants : MonoBehaviour {
     public static float piggyBankDespawnTime = 6f;
     public static int maxObjectives = 3;
     public static float poisonDPS = 20f;
+    public static float returnToLobbyTime = 5f;
     # endregion
 
     # region "Match Settings"

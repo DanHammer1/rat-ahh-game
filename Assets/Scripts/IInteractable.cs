@@ -53,7 +53,7 @@ public interface IInteractable {
         interactPrompt.GetComponent<TextMeshProUGUI>().text = newInteractText;
         implementationScript.UpdateProgressBar(implementationScript.GetProgress());
 
-        return !Player.localPlayer.dead;
+        return !Player.localPlayer.dead.Value;
     }
 
 

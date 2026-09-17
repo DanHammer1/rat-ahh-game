@@ -114,7 +114,7 @@ public class Movement : NetworkBehaviour {
             }
         }
 
-        if (!IsOwner || Player.localPlayer.dead) return;
+        if (!IsOwner || Player.localPlayer.dead.Value) return;
 
         if (!isMovementLocked) {
             moveHorizontal = Input.GetAxisRaw("Horizontal");
