@@ -70,12 +70,18 @@ public class PlayerCamera : MonoBehaviour {
     void InitializeCameraRotation() {
         float spawnYaw = playerObj.transform.eulerAngles.y;
 
-        if (cinemachinePanTilt != null) {
-            cinemachinePanTilt.PanAxis.Value = spawnYaw;
-        }
-        movement.InitializeRotation(spawnYaw);
+        SetCameraRotation(spawnYaw);
         isCameraInitialized = true;
         //Debug.Log("spawnYaw: " + spawnYaw);
+    }
+
+    public void SetCameraRotation(float yaw) {
+        if (cinemachinePanTilt != null) {
+            cinemachinePanTilt.PanAxis.Value = yaw;
+        }
+        if (movement != null) {
+            movement.InitializeRotation(yaw);
+        }
     }
 
     void Update() {

@@ -97,10 +97,14 @@ public class DeathHandler : NetworkBehaviour {
         body.angularVelocity = Vector3.zero;
         body.position = Vector3.zero;
 
-        transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+        transform.SetPositionAndRotation(Constants.ratSpawnPosition, Constants.ratSpawnRotation);
         Physics.SyncTransforms();
 
-        GetComponent<ClientNetworkTransform>().Teleport(Vector3.zero, Quaternion.identity, transform.localScale);
+        GetComponent<ClientNetworkTransform>().Teleport(Constants.ratSpawnPosition, Constants.ratSpawnRotation, transform.localScale);
+        PlayerCamera.instance.SetCameraRotation(Constants.ratSpawnRotation.eulerAngles.y);
+        if (PlayerCamera.instance.cameraState == PlayerCamera.CameraState.ThirdPerson) {
+            PlayerCamera.instance.thirdPersonRadius = Constants.ratMaxCameraThirdPersonRadius / 2;
+        }
     }
 
     void Start() {
