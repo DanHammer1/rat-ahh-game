@@ -58,10 +58,6 @@ public class Constants : MonoBehaviour {
     public static float poisonDPS = 20f;
     public static float returnToLobbyTime = 5f;
     public static float huntersReleasingTime = 8f;
-    public static Vector3 hunterSpawnPosition = new Vector3(0.11f, 0.1f, 6.4f);
-    public static Quaternion hunterSpawnRotation = Quaternion.Euler(0f, 180f, 0f);
-    public static Vector3 ratSpawnPosition = new Vector3(-0.2595f, 1.9f, 0.9567f);
-    public static Quaternion ratSpawnRotation = Quaternion.Euler(0f, -90f, 0f);
 
     #endregion
 

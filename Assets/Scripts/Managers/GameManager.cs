@@ -190,10 +190,19 @@ public class GameManager : NetworkBehaviour {
             }
         } else {
             foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds) {
-                Vector3 spawnPos = GetRole(clientId) == PlayerRole.HUNTER ? Constants.hunterSpawnPosition : Constants.ratSpawnPosition;
+                Vector3 spawnPos;
+                Quaternion spawnRotation;
+                if (GetRole(clientId) == PlayerRole.HUNTER) {
+                    Transform hunterSpawnLocation = Assets.instance.hunterSpawnLocation.transform;
+                    spawnPos = hunterSpawnLocation.position;
+                    spawnRotation = hunterSpawnLocation.rotation;
+                } else {
+                    Transform ratSpawnLocation = Assets.instance.ratNests.transform.Find("RatNestSpawn");
+                    spawnPos = ratSpawnLocation.position;
+                    spawnPos += ratSpawnLocation.forward * 0.2f;
+                    spawnRotation = ratSpawnLocation.rotation;
+                }
                 spawnPos += new Vector3(UnityEngine.Random.Range(-0.03f, 0.03f), 0, UnityEngine.Random.Range(-0.03f, 0.03f));
-                Quaternion spawnRotation = GetRole(clientId) == PlayerRole.HUNTER ? Constants.hunterSpawnRotation : Constants.ratSpawnRotation;
-                Debug.Log(spawnPos);
                 SpawnPlayer(GetRole(clientId), clientId, spawnPos, spawnRotation);
             }
         }

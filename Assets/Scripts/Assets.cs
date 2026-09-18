@@ -47,6 +47,8 @@ public class Assets : MonoBehaviour {
     public GameObject dropItemPrompt;
     public GameObject respawnPrompt;
     public GameObject hunterReleaseDoor;
+    public GameObject ratNests;
+    public GameObject hunterSpawnLocation;
     # endregion
 
     #region "Objective Icons"

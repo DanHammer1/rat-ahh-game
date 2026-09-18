@@ -97,11 +97,17 @@ public class DeathHandler : NetworkBehaviour {
         body.angularVelocity = Vector3.zero;
         body.position = Vector3.zero;
 
-        transform.SetPositionAndRotation(Constants.ratSpawnPosition, Constants.ratSpawnRotation);
+        GameObject respawnLocation = Assets.instance.ratNests.transform.GetChild(UnityEngine.Random.Range(1, Assets.instance.ratNests.transform.childCount)).gameObject;
+        Vector3 respawnPos = respawnLocation.transform.position;
+        respawnPos += respawnLocation.transform.forward * 0.2f;
+        respawnPos += new Vector3(UnityEngine.Random.Range(-0.02f, 0.02f), 0, UnityEngine.Random.Range(-0.02f, 0.02f));
+        Quaternion respawnRotation = respawnLocation.transform.rotation;
+
+        transform.SetPositionAndRotation(respawnPos, respawnRotation);
         Physics.SyncTransforms();
 
-        GetComponent<ClientNetworkTransform>().Teleport(Constants.ratSpawnPosition, Constants.ratSpawnRotation, transform.localScale);
-        PlayerCamera.instance.SetCameraRotation(Constants.ratSpawnRotation.eulerAngles.y);
+        GetComponent<ClientNetworkTransform>().Teleport(respawnPos, respawnRotation, transform.localScale);
+        PlayerCamera.instance.SetCameraRotation(respawnRotation.eulerAngles.y);
         if (PlayerCamera.instance.cameraState == PlayerCamera.CameraState.ThirdPerson) {
             PlayerCamera.instance.thirdPersonRadius = Constants.ratMaxCameraThirdPersonRadius / 2;
         }
