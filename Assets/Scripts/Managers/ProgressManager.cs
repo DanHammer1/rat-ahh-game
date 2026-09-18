@@ -411,7 +411,6 @@ public class ProgressManager : NetworkBehaviour {
                 ratStampObject.transform.localScale = Vector3.zero;
                 slot.objectiveIcon.transform.localScale = Vector3.zero;
                 checkbox.SetActive(true);
-                Debug.Log("should have worked");
             }
         }
     }

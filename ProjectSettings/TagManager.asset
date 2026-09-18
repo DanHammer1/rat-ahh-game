@@ -42,6 +42,7 @@ TagManager:
   - RatAbilitySlapPrompt
   - ReturningToLobbyText
   - ScoreAddedParent
+  - HuntersReleasingNotice
   layers:
   - Default
   - TransparentFX

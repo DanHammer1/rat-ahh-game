@@ -41,6 +41,10 @@ public class Door : NetworkBehaviour, IInteractable {
             "Door interaction cooldown Timer", () => Input.GetKeyUp(KeyCode.E));
     }
 
+    public bool CheckExtraInteractionConditions() {
+        return this.enabled;
+    }
+
     public void OnInteractingExit() {
         interactionProgress = 0;
     }
@@ -85,7 +89,7 @@ public class Door : NetworkBehaviour, IInteractable {
         animator = GetComponent<Animator>();
     }
 
-    void Start() {
+    void Awake() {
         onDoorClosed += () => {
             GetComponent<BoxCollider>().isTrigger = false;
             GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.DoorClose, transform.GetChild(0).position);

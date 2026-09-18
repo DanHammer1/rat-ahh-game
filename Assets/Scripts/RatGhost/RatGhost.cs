@@ -12,11 +12,11 @@ public class RatGhost : NetworkBehaviour {
         ratPlayer.onRevive += () => { if (ratPlayer.lives.Value == 0) BecomeGhost(); };
     }
 
-    void Update() {
-        if (Input.GetKeyDown(KeyCode.K)) {
-            BecomeGhost();
-        }
-    }
+    // void Update() {
+    //     if (Input.GetKeyDown(KeyCode.K)) {
+    //         BecomeGhost();
+    //     }
+    // }
 
     void BecomeGhost() {
         BecomeGhostRpc();

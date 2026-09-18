@@ -6,6 +6,7 @@ using System.Collections;
 using Unity.Collections;
 using UnityEngine.SceneManagement;
 using FMODUnity;
+using UnityEditor.PackageManager;
 public class GameManager : NetworkBehaviour {
     public enum PlayerRole {
         HUNTER,
@@ -166,6 +167,7 @@ public class GameManager : NetworkBehaviour {
             playerInstance = Instantiate(ratPrefab, spawnPos, spawnRotation);
         }
         NetworkObject netObj = playerInstance.GetComponent<NetworkObject>();
+        netObj.GetComponent<Player>().initialSpawnPosition.Value = spawnPos;
 
         netObj.SpawnAsPlayerObject(clientId, true);
         netObj.GetComponent<Player>().clientId.Value = clientId;
@@ -181,8 +183,19 @@ public class GameManager : NetworkBehaviour {
         }
 
         AssignPlayerRoles();
-        foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds) {
-            SpawnPlayer(GetRole(clientId), clientId);
+
+        if (gameState != GameState.GAME) {
+            foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds) {
+                SpawnPlayer(GetRole(clientId), clientId);
+            }
+        } else {
+            foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds) {
+                Vector3 spawnPos = GetRole(clientId) == PlayerRole.HUNTER ? Constants.hunterSpawnPosition : Constants.ratSpawnPosition;
+                spawnPos += new Vector3(UnityEngine.Random.Range(-0.03f, 0.03f), 0, UnityEngine.Random.Range(-0.03f, 0.03f));
+                Quaternion spawnRotation = GetRole(clientId) == PlayerRole.HUNTER ? Constants.hunterSpawnRotation : Constants.ratSpawnRotation;
+                Debug.Log(spawnPos);
+                SpawnPlayer(GetRole(clientId), clientId, spawnPos, spawnRotation);
+            }
         }
 
         playersSpawned = true;

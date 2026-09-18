@@ -63,7 +63,6 @@ public class RaceStart : NetworkBehaviour {
             startText.SetActive(true);
             finishText.SetActive(false);
             raceTimerUI.SetActive(false);
-            Debug.Log("you failed");
         }
     }
 }

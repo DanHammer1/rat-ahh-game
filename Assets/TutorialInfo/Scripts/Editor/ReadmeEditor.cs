@@ -8,40 +8,32 @@ using System.Reflection;
 
 [CustomEditor(typeof(Readme))]
 [InitializeOnLoad]
-public class ReadmeEditor : Editor
-{
+public class ReadmeEditor : Editor {
     static string s_ShowedReadmeSessionStateName = "ReadmeEditor.showedReadme";
-    
+
     static string s_ReadmeSourceDirectory = "Assets/TutorialInfo";
 
     const float k_Space = 16f;
 
-    static ReadmeEditor()
-    {
+    static ReadmeEditor() {
         EditorApplication.delayCall += SelectReadmeAutomatically;
     }
 
-    static void RemoveTutorial()
-    {
+    static void RemoveTutorial() {
         if (EditorUtility.DisplayDialog("Remove Readme Assets",
-            
+
             $"All contents under {s_ReadmeSourceDirectory} will be removed, are you sure you want to proceed?",
             "Proceed",
-            "Cancel"))
-        {
-            if (Directory.Exists(s_ReadmeSourceDirectory))
-            {
+            "Cancel")) {
+            if (Directory.Exists(s_ReadmeSourceDirectory)) {
                 FileUtil.DeleteFileOrDirectory(s_ReadmeSourceDirectory);
                 FileUtil.DeleteFileOrDirectory(s_ReadmeSourceDirectory + ".meta");
-            }
-            else
-            {
+            } else {
                 Debug.Log($"Could not find the Readme folder at {s_ReadmeSourceDirectory}");
             }
 
             var readmeAsset = SelectReadme();
-            if (readmeAsset != null)
-            {
+            if (readmeAsset != null) {
                 var path = AssetDatabase.GetAssetPath(readmeAsset);
                 FileUtil.DeleteFileOrDirectory(path + ".meta");
                 FileUtil.DeleteFileOrDirectory(path);
@@ -51,49 +43,40 @@ public class ReadmeEditor : Editor
         }
     }
 
-    static void SelectReadmeAutomatically()
-    {
-        if (!SessionState.GetBool(s_ShowedReadmeSessionStateName, false))
-        {
+    static void SelectReadmeAutomatically() {
+        if (!SessionState.GetBool(s_ShowedReadmeSessionStateName, false)) {
             var readme = SelectReadme();
             SessionState.SetBool(s_ShowedReadmeSessionStateName, true);
 
-            if (readme && !readme.loadedLayout)
-            {
+            if (readme && !readme.loadedLayout) {
                 LoadLayout();
                 readme.loadedLayout = true;
             }
         }
     }
 
-    static void LoadLayout()
-    {
+    static void LoadLayout() {
         var assembly = typeof(EditorApplication).Assembly;
         var windowLayoutType = assembly.GetType("UnityEditor.WindowLayout", true);
         var method = windowLayoutType.GetMethod("LoadWindowLayout", BindingFlags.Public | BindingFlags.Static);
         method.Invoke(null, new object[] { Path.Combine(Application.dataPath, "TutorialInfo/Layout.wlt"), false });
     }
 
-    static Readme SelectReadme()
-    {
+    static Readme SelectReadme() {
         var ids = AssetDatabase.FindAssets("Readme t:Readme");
-        if (ids.Length == 1)
-        {
+        if (ids.Length == 1) {
             var readmeObject = AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GUIDToAssetPath(ids[0]));
 
             Selection.objects = new UnityEngine.Object[] { readmeObject };
 
             return (Readme)readmeObject;
-        }
-        else
-        {
+        } else {
             Debug.Log("Couldn't find a readme");
             return null;
         }
     }
 
-    protected override void OnHeaderGUI()
-    {
+    protected override void OnHeaderGUI() {
         var readme = (Readme)target;
         Init();
 
@@ -101,8 +84,7 @@ public class ReadmeEditor : Editor
 
         GUILayout.BeginHorizontal("In BigTitle");
         {
-            if (readme.icon != null)
-            {
+            if (readme.icon != null) {
                 GUILayout.Space(k_Space);
                 GUILayout.Label(readme.icon, GUILayout.Width(iconWidth), GUILayout.Height(iconWidth));
             }
@@ -120,27 +102,21 @@ public class ReadmeEditor : Editor
         GUILayout.EndHorizontal();
     }
 
-    public override void OnInspectorGUI()
-    {
+    public override void OnInspectorGUI() {
         var readme = (Readme)target;
         Init();
 
-        foreach (var section in readme.sections)
-        {
-            if (!string.IsNullOrEmpty(section.heading))
-            {
+        foreach (var section in readme.sections) {
+            if (!string.IsNullOrEmpty(section.heading)) {
                 GUILayout.Label(section.heading, HeadingStyle);
             }
 
-            if (!string.IsNullOrEmpty(section.text))
-            {
+            if (!string.IsNullOrEmpty(section.text)) {
                 GUILayout.Label(section.text, BodyStyle);
             }
 
-            if (!string.IsNullOrEmpty(section.linkText))
-            {
-                if (LinkLabel(new GUIContent(section.linkText)))
-                {
+            if (!string.IsNullOrEmpty(section.linkText)) {
+                if (LinkLabel(new GUIContent(section.linkText))) {
                     Application.OpenURL(section.url);
                 }
             }
@@ -148,56 +124,49 @@ public class ReadmeEditor : Editor
             GUILayout.Space(k_Space);
         }
 
-        if (GUILayout.Button("Remove Readme Assets", ButtonStyle))
-        {
+        if (GUILayout.Button("Remove Readme Assets", ButtonStyle)) {
             RemoveTutorial();
         }
     }
 
     bool m_Initialized;
 
-    GUIStyle LinkStyle
-    {
+    GUIStyle LinkStyle {
         get { return m_LinkStyle; }
     }
 
     [SerializeField]
     GUIStyle m_LinkStyle;
 
-    GUIStyle TitleStyle
-    {
+    GUIStyle TitleStyle {
         get { return m_TitleStyle; }
     }
 
     [SerializeField]
     GUIStyle m_TitleStyle;
 
-    GUIStyle HeadingStyle
-    {
+    GUIStyle HeadingStyle {
         get { return m_HeadingStyle; }
     }
 
     [SerializeField]
     GUIStyle m_HeadingStyle;
 
-    GUIStyle BodyStyle
-    {
+    GUIStyle BodyStyle {
         get { return m_BodyStyle; }
     }
 
     [SerializeField]
     GUIStyle m_BodyStyle;
 
-    GUIStyle ButtonStyle
-    {
+    GUIStyle ButtonStyle {
         get { return m_ButtonStyle; }
     }
 
     [SerializeField]
     GUIStyle m_ButtonStyle;
 
-    void Init()
-    {
+    void Init() {
         if (m_Initialized)
             return;
         m_BodyStyle = new GUIStyle(EditorStyles.label);
@@ -225,8 +194,7 @@ public class ReadmeEditor : Editor
         m_Initialized = true;
     }
 
-    bool LinkLabel(GUIContent label, params GUILayoutOption[] options)
-    {
+    bool LinkLabel(GUIContent label, params GUILayoutOption[] options) {
         var position = GUILayoutUtility.GetRect(label, LinkStyle, options);
 
         Handles.BeginGUI();

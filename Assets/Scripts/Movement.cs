@@ -49,11 +49,14 @@ public class Movement : NetworkBehaviour {
 
     public Vector3 movement;
     public float yaw;
+    bool rotationInitialized;
     Crawl crawl;
 
 
     public override void OnNetworkSpawn() {
         rb = GetComponent<Rigidbody>();
+        yaw = transform.eulerAngles.y;
+        rotationInitialized = false;
         cameraTransform = FindFirstObjectByType<Camera>().transform;
         player = GetComponent<Player>();
         TryGetComponent<RatPlayer>(out ratPlayer);
@@ -106,7 +109,6 @@ public class Movement : NetworkBehaviour {
 
     void Update() {
         isMovementLocked = player.dead.Value || player.isInUIMenu || (ratPlayer?.isPossessingItem.Value ?? false);
-        Debug.Log(isMovementLocked);
     }
 
     void FixedUpdate() {
@@ -176,12 +178,15 @@ public class Movement : NetworkBehaviour {
 
         switch (PlayerCamera.instance.cameraState) {
             case PlayerCamera.CameraState.FirstPerson:
-                yaw = Mathf.Atan2(camForward.x, camForward.z) * Mathf.Rad2Deg;
+                if (rotationInitialized) {
+                    yaw = Mathf.Atan2(camForward.x, camForward.z) * Mathf.Rad2Deg;
+                }
                 break;
 
             case PlayerCamera.CameraState.ThirdPerson:
-                if (movement != Vector3.zero)
+                if (movement != Vector3.zero) {
                     yaw = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;
+                }
                 break;
         }
         ;
@@ -189,6 +194,7 @@ public class Movement : NetworkBehaviour {
         // Apply rotation
         if (!isRotationLocked) {
             Quaternion targetRotation = Quaternion.Euler(0, yaw, 0);
+            // if (GameManager.gameState == GameManager.GameState.GAME) Debug.Log(targetRotation.eulerAngles);
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, 8f * Time.fixedDeltaTime));
         }
 
@@ -201,6 +207,11 @@ public class Movement : NetworkBehaviour {
             Vector3 velocityChange = targetVelocity - velocity;
             rb.AddForce(velocityChange * forceMultiplier, ForceMode.Acceleration);
         }
+    }
+
+    public void InitializeRotation(float initialYaw) {
+        yaw = initialYaw;
+        rotationInitialized = true;
     }
 
     void LimitSpeed(float maxSpeed) {

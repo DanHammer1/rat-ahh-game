@@ -49,7 +49,6 @@ public class Coin : NetworkBehaviour, IInteractable {
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     public void DropCoinRpc() {
-        Debug.Log("1");
         NetworkObject player;
         playerCarryingCoin.Value.TryGet(out player);
 
@@ -64,7 +63,6 @@ public class Coin : NetworkBehaviour, IInteractable {
         // player.transform.GetComponent<Movement>().MultiplyMoveSpeedRpc(1 / Constants.carryingCoinMoveSpeedMultiplier);
         pickUpProgress = 0;
         unassignPlayerCoroutine = StartCoroutine(UnassignPlayer());
-        Debug.Log("2");
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
@@ -126,7 +124,6 @@ public class Coin : NetworkBehaviour, IInteractable {
             Assets.instance.dropItemPrompt.GetComponent<TextMeshProUGUI>().text = "Press Q to drop coin";
             // Player.localPlayer.ToggleIsCarryingCoinClientRpc();
             SetBoxColliderRpc(false);
-            Debug.Log("interact ran");
             SetRigidbodyGravityRpc(false);
             SetIsBeingCarriedRpc(true);
             SetPlayerCarryingCoinRpc(Player.localPlayer.gameObject);
@@ -141,7 +138,6 @@ public class Coin : NetworkBehaviour, IInteractable {
     }
     [Rpc(SendTo.Everyone)]
     private void SetBoxColliderRpc(bool state) {
-        Debug.Log("hello");
         this.GetComponent<BoxCollider>().enabled = state;
     }
 

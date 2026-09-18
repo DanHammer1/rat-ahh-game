@@ -51,6 +51,7 @@ public class RatPlayer : Player {
 
     protected override void Update() {
         base.Update();
+        if (GameManager.gameState == GameManager.GameState.GAME) Debug.Log(transform.position);
     }
 
     void PossessedItem() {
@@ -89,7 +90,6 @@ public class RatPlayer : Player {
     [Rpc(SendTo.Owner)]
     public void hideRatPossessedJumpMeterUIRpc() {
         ratPossessedJumpMeterUI.SetActive(false);
-        Debug.Log("ran here");
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]

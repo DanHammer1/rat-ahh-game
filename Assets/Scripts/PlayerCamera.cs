@@ -14,12 +14,14 @@ public class PlayerCamera : MonoBehaviour {
     CinemachineInputAxisController cinemachineInputAxisController;
     CinemachineDecollider cinemachineDecollider;
     CinemachineCamera cinemachineCamera;
+    CinemachinePanTilt cinemachinePanTilt;
     CinemachineBasicMultiChannelPerlin cinemachineNoise;
     Movement movement;
     SkinnedMeshRenderer playerRenderer;
 
     public float thirdPersonRadius; // If 0 then first person.
     public bool isCameraLocked;
+    bool isCameraInitialized = false;
 
     void Awake() {
         instance = this;
@@ -49,6 +51,7 @@ public class PlayerCamera : MonoBehaviour {
         cinemachineInputAxisController = instance.GetComponent<CinemachineInputAxisController>();
         cinemachineDecollider = instance.GetComponent<CinemachineDecollider>();
         cinemachineCamera = instance.GetComponent<CinemachineCamera>();
+        cinemachinePanTilt = instance.GetComponent<CinemachinePanTilt>();
         cinemachineNoise = instance.GetComponent<CinemachineBasicMultiChannelPerlin>();
         mouseSensitivity = Constants.mouseSensitivity;
 
@@ -64,20 +67,27 @@ public class PlayerCamera : MonoBehaviour {
         disableCameraCollision();
     }
 
+    void InitializeCameraRotation() {
+        float spawnYaw = playerObj.transform.eulerAngles.y;
+
+        if (cinemachinePanTilt != null) {
+            cinemachinePanTilt.PanAxis.Value = spawnYaw;
+        }
+        movement.InitializeRotation(spawnYaw);
+        isCameraInitialized = true;
+        //Debug.Log("spawnYaw: " + spawnYaw);
+    }
+
     void Update() {
         isCameraLocked = Player.localPlayer?.isInUIMenu ?? false;
-        Debug.Log(isCameraLocked);
+        //Debug.Log(transform.rotation.eulerAngles);
         if (GameManager.gameState == GameManager.GameState.MAINMENU) return;
-
-        // Test screen shake - press K
-        if (Input.GetKeyDown(KeyCode.K)) {
-            TestScreenShake();
-        }
 
         if (Player.localPlayer != null) {
             playerObj = Player.localPlayer.gameObject;
             movement = playerObj.GetComponent<Movement>();
             playerRenderer = playerObj.transform.Find("Renderer").GetComponent<SkinnedMeshRenderer>();
+            if (!isCameraInitialized) InitializeCameraRotation();
         } else return;
 
         Vector3 centrePos = playerObj.transform.GetChild(1).position;
@@ -100,8 +110,11 @@ public class PlayerCamera : MonoBehaviour {
 
             // Only sync player rotation when camera is not locked (i.e., not during ability)
 
-            if (cameraState == CameraState.FirstPerson)
-                movement.yaw = transform.eulerAngles.y;
+            if (cameraState == CameraState.FirstPerson && cinemachinePanTilt != null) {
+                movement.yaw = cinemachinePanTilt.PanAxis.Value;
+            }
+            //if (cameraState == CameraState.FirstPerson) movement.yaw = transform.eulerAngles.y;
+
 
         }
 

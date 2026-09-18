@@ -20,6 +20,7 @@ public class Player : NetworkBehaviour {
     public Transform cameraTarget;
 
     public NetworkVariable<ulong> clientId = new NetworkVariable<ulong>();
+    public NetworkVariable<Vector3> initialSpawnPosition = new NetworkVariable<Vector3>();
     public NetworkVariable<float> maxHealth = new NetworkVariable<float>(100);
     public NetworkVariable<float> health = new NetworkVariable<float>();
 
@@ -79,6 +80,10 @@ public class Player : NetworkBehaviour {
         rb = GetComponent<Rigidbody>();
         clientNetworkTransform = GetComponent<ClientNetworkTransform>();
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+
+        transform.SetPositionAndRotation(initialSpawnPosition.Value, transform.rotation);
+        rb.position = initialSpawnPosition.Value;
+        Physics.SyncTransforms();
 
         if (IsServer) {
             maxHealth.Value = 100;
@@ -174,7 +179,6 @@ public class Player : NetworkBehaviour {
 
         if (IsServer && health.Value <= 0 && !dead.Value) {
             onDeath?.Invoke();
-            Debug.Log(health.Value + ", " + dead.Value); // activates sometimes when rat revives todo
         }
     }
 
