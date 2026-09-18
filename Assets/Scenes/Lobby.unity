@@ -2968,7 +2968,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63975d71543e83f4ba87cd2f14085702, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  playerObj: {fileID: 0}
   thirdPersonRadius: 0
   isCameraLocked: 0
   thirdPersonScrollSensitivity: 10
@@ -5658,7 +5658,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.47843137}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.69803923}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -14302,7 +14302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.47058824}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.69803923}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -15507,6 +15507,10 @@ MonoBehaviour:
   ratPossessedJumpMeterUI: {fileID: 1873038314}
   scoreAddedNotice: {fileID: 0}
   dropItemPrompt: {fileID: 0}
+  respawnPrompt: {fileID: 0}
+  hunterReleaseDoor: {fileID: 0}
+  ratNests: {fileID: 0}
+  hunterSpawnLocation: {fileID: 0}
   clingObjectiveIcon: {fileID: 0}
   cheeseObjectiveIcon: {fileID: 0}
   deliveryObjectiveIcon: {fileID: 0}
@@ -18576,7 +18580,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63975d71543e83f4ba87cd2f14085702, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
+  playerObj: {fileID: 0}
   thirdPersonRadius: 0
   isCameraLocked: 0
   thirdPersonScrollSensitivity: 2
