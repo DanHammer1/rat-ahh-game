@@ -9,7 +9,7 @@ using System;
 public class PlayerCamera : MonoBehaviour {
     public static PlayerCamera instance;
     public static GameObject mainCamera;
-    public GameObject player;
+    public GameObject playerObj;
     CinemachinePositionComposer cinemachinePositionComposer;
     CinemachineInputAxisController cinemachineInputAxisController;
     CinemachineDecollider cinemachineDecollider;
@@ -65,6 +65,8 @@ public class PlayerCamera : MonoBehaviour {
     }
 
     void Update() {
+        isCameraLocked = Player.localPlayer?.isInUIMenu ?? false;
+        Debug.Log(isCameraLocked);
         if (GameManager.gameState == GameManager.GameState.MAINMENU) return;
 
         // Test screen shake - press K
@@ -73,12 +75,12 @@ public class PlayerCamera : MonoBehaviour {
         }
 
         if (Player.localPlayer != null) {
-            player = Player.localPlayer.gameObject;
-            movement = player.GetComponent<Movement>();
-            playerRenderer = player.transform.Find("Renderer").GetComponent<SkinnedMeshRenderer>();
+            playerObj = Player.localPlayer.gameObject;
+            movement = playerObj.GetComponent<Movement>();
+            playerRenderer = playerObj.transform.Find("Renderer").GetComponent<SkinnedMeshRenderer>();
         } else return;
 
-        Vector3 centrePos = player.transform.GetChild(1).position;
+        Vector3 centrePos = playerObj.transform.GetChild(1).position;
 
         if (!isCameraLocked) {
             xMovement = Input.GetAxis("Mouse X");
@@ -89,9 +91,9 @@ public class PlayerCamera : MonoBehaviour {
         }
 
 
-        if (!player.GetComponent<Player>().isInUIMenu) thirdPersonRadius -= Input.GetAxis("Mouse ScrollWheel") * thirdPersonScrollSensitivity;
-
+        //if (!playerObj.GetComponent<Player>().isInUIMenu) thirdPersonRadius -= Input.GetAxis("Mouse ScrollWheel") * thirdPersonScrollSensitivity;
         if (!isCameraLocked) {
+            thirdPersonRadius -= Input.GetAxis("Mouse ScrollWheel") * thirdPersonScrollSensitivity;
             netX += xMovement;
             netY -= yMovement;
             netY = Mathf.Clamp(netY, -90, 90);
@@ -100,6 +102,7 @@ public class PlayerCamera : MonoBehaviour {
 
             if (cameraState == CameraState.FirstPerson)
                 movement.yaw = transform.eulerAngles.y;
+
         }
 
         try {

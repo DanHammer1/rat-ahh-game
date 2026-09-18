@@ -104,12 +104,10 @@ public class PlayerSettingsUIManager : NetworkBehaviour {
         if (playerSettingsUI.activeSelf) {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            movement.isMovementLocked = true;
             cinemachineCamera.enabled = false;
         } else {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            movement.isMovementLocked = false;
             cinemachineCamera.enabled = true;
         }
     }

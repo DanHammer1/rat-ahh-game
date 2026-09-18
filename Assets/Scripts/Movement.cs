@@ -11,6 +11,8 @@ using NUnit.Framework.Constraints;
 public class Movement : NetworkBehaviour {
     Animator animator;
     public Transform headBone;
+    Player player;
+    RatPlayer ratPlayer;
 
     // camera rotation
     private Transform cameraTransform;
@@ -53,6 +55,8 @@ public class Movement : NetworkBehaviour {
     public override void OnNetworkSpawn() {
         rb = GetComponent<Rigidbody>();
         cameraTransform = FindFirstObjectByType<Camera>().transform;
+        player = GetComponent<Player>();
+        TryGetComponent<RatPlayer>(out ratPlayer);
 
         // Set the raycast to be slightly beneath the player's feet
         playerHeight = GetComponent<Collider>().bounds.size.y; //  / 2 * transform.localScale.y removed
@@ -80,9 +84,6 @@ public class Movement : NetworkBehaviour {
         }
         movementRecoveryMultiplier = 1;
 
-        GetComponent<Player>().onDeath += () => isMovementLocked = true;
-        GetComponent<Player>().onRevive += () => isMovementLocked = false;
-
     }
 
     public bool CheckPlayerGrounded() {
@@ -101,6 +102,11 @@ public class Movement : NetworkBehaviour {
         }
         // Debug.Log("didn't detect ground");
         return false;
+    }
+
+    void Update() {
+        isMovementLocked = player.dead.Value || player.isInUIMenu || (ratPlayer?.isPossessingItem.Value ?? false);
+        Debug.Log(isMovementLocked);
     }
 
     void FixedUpdate() {

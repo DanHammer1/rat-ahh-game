@@ -53,8 +53,6 @@ public class MatchSettingsButton : NetworkBehaviour, IInteractable {
         showInteractionUI = !state;
         cinemachineCamera.enabled = !state;
         interactable = !state;
-        movement = Player.localPlayer.GetComponent<Movement>();
-        movement.isMovementLocked = state;
     }
 
     public void OnInteractingExit() {
