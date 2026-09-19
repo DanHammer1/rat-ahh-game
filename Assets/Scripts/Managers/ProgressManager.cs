@@ -116,6 +116,9 @@ public class ProgressManager : NetworkBehaviour {
         clearObjectiveTextCoroutine = null;
         clearingObjective = null;
         clearingObjectiveSlot = null;
+        isGameEnded = false;
+        isViewingResults = false;
+        movingToLobby = false;
 
     }
 
@@ -148,21 +151,23 @@ public class ProgressManager : NetworkBehaviour {
             OnGameEnd(false);
         }
 
-        if (IsServer && !isGameEnded) {
-            RatPlayer[] ratPlayers = FindObjectsByType<RatPlayer>(FindObjectsSortMode.None);
-            if (ratPlayers.Length == 0) return; // todo remove
-            int totalLives = 0;
-
-            foreach (RatPlayer ratPlayer in ratPlayers) {
-                totalLives += ratPlayer.lives.Value;
-            }
-
-            if (totalLives == 0) {
-                OnGameEnd(true);
-            }
-        }
+        CheckForGameEnd();
 
         UpdateObjectiveUIListClientRpc();
+    }
+
+    public void CheckForGameEnd() {
+        if (!IsServer || !IsActive || isGameEnded) return;
+
+        RatPlayer[] ratPlayers = FindObjectsByType<RatPlayer>(FindObjectsSortMode.None);
+        if (ratPlayers.Length == 0) return; // todo remove
+
+        int totalLives = 0;
+        foreach (RatPlayer ratPlayer in ratPlayers) {
+            totalLives += ratPlayer.lives.Value;
+        }
+
+        if (totalLives == 0) OnGameEnd(true);
     }
 
     [ClientRpc]
@@ -184,6 +189,8 @@ public class ProgressManager : NetworkBehaviour {
     }
 
     void OnGameEnd(bool huntersWon) {
+        if (isGameEnded) return;
+        isGameEnded = true;
         CreateResultsClientRpc(huntersWon);
         DisableGameplayClientRpc();
     }

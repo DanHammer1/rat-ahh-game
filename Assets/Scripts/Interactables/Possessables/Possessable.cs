@@ -40,7 +40,7 @@ public abstract class Possessable : NetworkBehaviour, IInteractable {
     }
 
     public bool CheckExtraInteractionConditions() {
-        return GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER && !((RatPlayer)(Player.localPlayer)).isPossessingItem.Value && !isPossessed.Value;
+        return GameManager.GetLocalRole() == GameManager.PlayerRole.HIDER && !((RatPlayer)(Player.localPlayer)).isPossessingItem.Value && !isPossessed.Value; // todo add && ratplayer is ghost and test
     }
 
     public abstract string GetInteractionPromptText();

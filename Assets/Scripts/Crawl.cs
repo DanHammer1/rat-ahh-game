@@ -42,7 +42,7 @@ public class Crawl : NetworkBehaviour {
     }
 
     void Update() {
-        if (!IsOwner) return;
+        if (!IsOwner || ProgressManager.instance.isGameEnded) return;
         if (Input.GetKey(KeyCode.LeftShift)) {
             if (!isCrawling && !hunterPlayer.isSwinging) {
                 onCrawlStart?.Invoke();

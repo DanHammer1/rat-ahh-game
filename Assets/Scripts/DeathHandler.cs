@@ -66,12 +66,14 @@ public class DeathHandler : NetworkBehaviour {
 
             ratPlayer.lives.Value = Mathf.Max(0, ratPlayer.lives.Value - 1);
             GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.RatDie, transform.position);
-            ActivateRespawnPromptClientRpc(true, RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp));
+            ProgressManager.instance.CheckForGameEnd();
+            if (!ProgressManager.instance.isGameEnded) ActivateRespawnPromptClientRpc(true, RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp));
         }
         ToggleRagdoll(true);
     }
 
     public void RevivePlayer() {
+        if (ProgressManager.instance.isGameEnded) return;
         Player player = GetComponent<Player>();
 
         if (IsServer) {
