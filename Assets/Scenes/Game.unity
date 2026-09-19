@@ -5876,7 +5876,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 310}
-  m_SizeDelta: {x: 749.77, y: 50}
+  m_SizeDelta: {x: 1057.4, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &678553176
 MonoBehaviour:
@@ -17713,7 +17713,7 @@ GameObject:
   - component: {fileID: 2005392949}
   m_Layer: 0
   m_Name: EndGameResults
-  m_TagString: Untagged
+  m_TagString: EndGameResults
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19132,7 +19132,7 @@ GameObject:
   - component: {fileID: 2085253508}
   m_Layer: 5
   m_Name: ReturningToLobbyText
-  m_TagString: ReturningToLobbyText
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

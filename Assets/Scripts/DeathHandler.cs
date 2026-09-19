@@ -64,7 +64,7 @@ public class DeathHandler : NetworkBehaviour {
                 coin.DropCoinRpc();
             }
 
-            ratPlayer.lives.Value--;
+            ratPlayer.lives.Value = Mathf.Max(0, ratPlayer.lives.Value - 1);
             GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.RatDie, transform.position);
             ActivateRespawnPromptClientRpc(true, RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp));
         }

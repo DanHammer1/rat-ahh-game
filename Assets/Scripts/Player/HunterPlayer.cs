@@ -103,7 +103,7 @@ public class HunterPlayer : Player {
             }
 
             shakeProgressBarImage.fillAmount = Mathf.Clamp01(ratAbilityHunterShakeMeter.Value / Constants.maxRatAbilityHunterShakeMeter);
-            Debug.Log(ratAbilityHunterShakeMeter.Value);
+            // Debug.Log(ratAbilityHunterShakeMeter.Value);
         } else if (isDizzy.Value) {
             ratAbilityShakeUI?.SetActive(false);
             ratAbilityHunterShakeMeter.Value = 0;

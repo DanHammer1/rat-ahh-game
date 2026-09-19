@@ -43,6 +43,7 @@ TagManager:
   - ReturningToLobbyText
   - ScoreAddedParent
   - HuntersReleasingNotice
+  - EndGameResults
   layers:
   - Default
   - TransparentFX

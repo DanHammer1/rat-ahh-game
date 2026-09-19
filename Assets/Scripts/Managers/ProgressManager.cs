@@ -35,6 +35,8 @@ public class ProgressManager : NetworkBehaviour {
     public bool IsActive = false;
     public bool onActivateExecuted = false;
     public bool isGameEnded;
+    public NetworkVariable<bool> huntersWon = new NetworkVariable<bool>(false);
+    public NetworkVariable<bool> ratsWon = new NetworkVariable<bool>(false);
     public bool movingToLobby = false;
     public Coroutine clearObjectiveTextCoroutine;
     Objective clearingObjective;
@@ -140,6 +142,25 @@ public class ProgressManager : NetworkBehaviour {
             UpdateReturnToLobbyTimerClientRpc(returningToLobbyTimer.GetTimeRemaining());
         }
 
+        if (remainingMatchLength.Value < 0 && IsServer && !isGameEnded) {
+            OnGameEnd(false);
+        }
+
+        if (IsServer && !isGameEnded) {
+            RatPlayer[] ratPlayers = FindObjectsByType<RatPlayer>(FindObjectsSortMode.None);
+            if (ratPlayers.Length == 0) return; // todo remove
+            int totalLives = 0;
+
+            foreach (RatPlayer ratPlayer in ratPlayers) {
+                totalLives += ratPlayer.lives.Value;
+            }
+
+            if (totalLives == 0) {
+                OnGameEnd(true);
+            }
+        }
+        Debug.Log(isGameEnded);
+
         UpdateObjectiveUIListClientRpc();
     }
 
@@ -150,10 +171,6 @@ public class ProgressManager : NetworkBehaviour {
             return;
         }
         timer.text = $"Time remaining: {(int)remainingMatchLength.Value}";
-
-        if (remainingMatchLength.Value < 0 && IsServer && !isGameEnded) {
-            OnGameEnd();
-        }
     }
 
     [ClientRpc]
@@ -165,8 +182,8 @@ public class ProgressManager : NetworkBehaviour {
         returningToLobbyText.text = $"(Returning to lobby in {(int)timeRemaining}...)";
     }
 
-    void OnGameEnd() {
-        CreateResultsClientRpc();
+    void OnGameEnd(bool huntersWon) {
+        CreateResultsClientRpc(huntersWon);
         DisableGameplayClientRpc();
         returningToLobbyTimer = Timer.CreateTimer(Constants.returnToLobbyTime, Timer.OnFinish.DESTROY,
             () => {
@@ -179,10 +196,16 @@ public class ProgressManager : NetworkBehaviour {
     }
 
     [ClientRpc]
-    void CreateResultsClientRpc() {
+    void CreateResultsClientRpc(bool huntersWon) {
         Assets.instance.endGameResults?.SetActive(true);
         isGameEnded = true;
-        returningToLobbyText = GameObject.FindWithTag("ReturningToLobbyText").GetComponent<TextMeshProUGUI>();
+
+        GameObject endGameResults = GameObject.FindWithTag("EndGameResults");
+
+        TextMeshProUGUI winningTeamText = endGameResults.transform.Find("WinningTeamText").GetComponent<TextMeshProUGUI>();
+        winningTeamText.text = huntersWon ? "HUNTERS WIN!!" : "RATS WIN!!";
+
+        returningToLobbyText = endGameResults.transform.Find("ReturningToLobbyText").GetComponent<TextMeshProUGUI>();
         foreach (var (clientId, rank) in OrderByScore()) {
             if (GameManager.GetRole(clientId) == GameManager.PlayerRole.HUNTER) continue;
             GameObject playerResult = Instantiate(Assets.instance.playerResult, GameObject.Find("PlayerRankings").transform);

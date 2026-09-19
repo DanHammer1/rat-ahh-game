@@ -51,7 +51,6 @@ public class RatPlayer : Player {
 
     protected override void Update() {
         base.Update();
-        if (GameManager.gameState == GameManager.GameState.GAME) Debug.Log(transform.position);
     }
 
     void PossessedItem() {
