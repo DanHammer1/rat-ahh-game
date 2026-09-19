@@ -35,6 +35,7 @@ public class ProgressManager : NetworkBehaviour {
     public bool IsActive = false;
     public bool onActivateExecuted = false;
     public bool isGameEnded;
+    public bool isViewingResults;
     public NetworkVariable<bool> huntersWon = new NetworkVariable<bool>(false);
     public NetworkVariable<bool> ratsWon = new NetworkVariable<bool>(false);
     public bool movingToLobby = false;
@@ -58,6 +59,7 @@ public class ProgressManager : NetworkBehaviour {
         onActivateExecuted = true;
         isGameEnded = false;
         movingToLobby = false;
+        isViewingResults = false;
 
         GameObject timerGameObject = GameObject.FindWithTag("TimerUI");
         GameObject objectivesUIGameObject = Assets.instance.objectivesUIGameObject;
@@ -138,7 +140,7 @@ public class ProgressManager : NetworkBehaviour {
             UpdateTimerClientRpc();
         }
 
-        if (isGameEnded && !movingToLobby) {
+        if (isGameEnded && isViewingResults && !movingToLobby) {
             UpdateReturnToLobbyTimerClientRpc(returningToLobbyTimer.GetTimeRemaining());
         }
 
@@ -159,7 +161,6 @@ public class ProgressManager : NetworkBehaviour {
                 OnGameEnd(true);
             }
         }
-        Debug.Log(isGameEnded);
 
         UpdateObjectiveUIListClientRpc();
     }
@@ -185,27 +186,50 @@ public class ProgressManager : NetworkBehaviour {
     void OnGameEnd(bool huntersWon) {
         CreateResultsClientRpc(huntersWon);
         DisableGameplayClientRpc();
-        returningToLobbyTimer = Timer.CreateTimer(Constants.returnToLobbyTime, Timer.OnFinish.DESTROY,
-            () => {
-                movingToLobby = true;
-                GameManager.Instance.DespawnObjects();
-                NetworkManager.Singleton.SceneManager.LoadScene(
-                    "LoadingScreen",
-                LoadSceneMode.Single);
-            }).GetComponent<Timer>();
     }
 
     [ClientRpc]
     void CreateResultsClientRpc(bool huntersWon) {
-        Assets.instance.endGameResults?.SetActive(true);
+        StartCoroutine(CreateResultsCoroutine(huntersWon));
+    }
+
+    IEnumerator CreateResultsCoroutine(bool huntersWon) {
         isGameEnded = true;
 
-        GameObject endGameResults = GameObject.FindWithTag("EndGameResults");
+        GameObject endGameResults = Assets.instance.endGameResults;
+        endGameResults.SetActive(true);
+        GameObject gameOverNotice = endGameResults.transform.Find("GameOverNotice").gameObject;
+        GameObject results = endGameResults.transform.Find("Results").gameObject;
+        results.SetActive(false);
 
-        TextMeshProUGUI winningTeamText = endGameResults.transform.Find("WinningTeamText").GetComponent<TextMeshProUGUI>();
+        gameOverNotice.GetComponent<TextMeshProUGUI>().text = huntersWon ? "RATS ELIMINATED!\nHUNTERS WIN!" : "TIME UP!\nRATS SURVIVED!";
+
+        float elapsed = 0;
+        float duration = 2;
+
+        while (elapsed < duration) {
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        gameOverNotice.SetActive(false);
+        results.SetActive(true);
+
+        if (IsServer) {
+            returningToLobbyTimer = Timer.CreateTimer(Constants.returnToLobbyTime, Timer.OnFinish.DESTROY,
+                () => {
+                    movingToLobby = true;
+                    GameManager.Instance.DespawnObjects();
+                    NetworkManager.Singleton.SceneManager.LoadScene(
+                        "LoadingScreen",
+                    LoadSceneMode.Single);
+                }).GetComponent<Timer>();
+        }
+
+        TextMeshProUGUI winningTeamText = results.transform.Find("WinningTeamText").GetComponent<TextMeshProUGUI>();
         winningTeamText.text = huntersWon ? "HUNTERS WIN!!" : "RATS WIN!!";
 
-        returningToLobbyText = endGameResults.transform.Find("ReturningToLobbyText").GetComponent<TextMeshProUGUI>();
+        returningToLobbyText = results.transform.Find("ReturningToLobbyText").GetComponent<TextMeshProUGUI>();
         foreach (var (clientId, rank) in OrderByScore()) {
             if (GameManager.GetRole(clientId) == GameManager.PlayerRole.HUNTER) continue;
             GameObject playerResult = Instantiate(Assets.instance.playerResult, GameObject.Find("PlayerRankings").transform);
@@ -223,6 +247,7 @@ public class ProgressManager : NetworkBehaviour {
             playerResult.transform.Find("UsernameText").GetComponent<TextMeshProUGUI>().text = GameManager.GetName(clientId).ToString();
             playerResult.transform.Find("ScoreText").GetComponent<TextMeshProUGUI>().text = GetScore(clientId).ToString();
         }
+        isViewingResults = true;
     }
 
     [ClientRpc]
