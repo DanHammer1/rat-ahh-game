@@ -129,7 +129,7 @@ public abstract class Item : NetworkBehaviour, IInteractable {
         // Disabled if being clung or in ui menu
         if (hunterPlayerRef.Value.TryGet(out NetworkObject playerObj)) {
             HunterPlayer hunterPlayer = playerObj.GetComponent<HunterPlayer>();
-            if (hunterPlayer.isBeingClung.Value || hunterPlayer.isInUIMenu) return;
+            if (hunterPlayer.isBeingClung.Value || hunterPlayer.isInUIMenu || ProgressManager.instance.isGameEnded) return;
         }
         OnUseItem();
     }

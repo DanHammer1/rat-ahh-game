@@ -108,7 +108,7 @@ public class Movement : NetworkBehaviour {
     }
 
     void Update() {
-        isMovementLocked = player.dead.Value || player.isInUIMenu || (ratPlayer?.isPossessingItem.Value ?? false);
+        isMovementLocked = player.dead.Value || player.isInUIMenu || ProgressManager.instance.isGameEnded || (ratPlayer?.isPossessingItem.Value ?? false);
     }
 
     void FixedUpdate() {

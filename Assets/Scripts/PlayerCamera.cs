@@ -85,7 +85,7 @@ public class PlayerCamera : MonoBehaviour {
     }
 
     void Update() {
-        isCameraLocked = Player.localPlayer?.isInUIMenu ?? false;
+        isCameraLocked = (Player.localPlayer?.isInUIMenu ?? false) || ProgressManager.instance.isGameEnded;
         //Debug.Log(transform.rotation.eulerAngles);
         if (GameManager.gameState == GameManager.GameState.MAINMENU) return;
 

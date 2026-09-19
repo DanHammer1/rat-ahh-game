@@ -19,7 +19,7 @@ public interface IInteractable {
         return true;
     }
     public bool CheckGlobalInteractionConditions() {
-        return !Player.localPlayer.isInUIMenu;
+        return !Player.localPlayer.isInUIMenu || ProgressManager.instance.isGameEnded;
     }
 
     public void TryInteract() {
