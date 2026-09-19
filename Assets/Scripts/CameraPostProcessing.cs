@@ -9,7 +9,7 @@ using Unity.VisualScripting;
 public class CameraPostProcessing : MonoBehaviour {
     CinemachineVolumeSettings postProcessingSettings;
 
-    public float maxVignetteIntensity = 0.5f;
+    public float maxVignetteIntensity = 0.4f;
     public float minVignetteIntensity = 0;
     public float maxAperture = 27f;
     public float recoveryTimer;

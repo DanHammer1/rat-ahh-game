@@ -18492,7 +18492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66148b7492fc8d9479ff07b4438c7bf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxVignetteIntensity: 0.5
+  maxVignetteIntensity: 0.4
   minVignetteIntensity: 0
   maxAperture: 27
   recoveryTimer: 0
