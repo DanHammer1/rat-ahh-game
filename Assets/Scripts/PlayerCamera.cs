@@ -85,7 +85,7 @@ public class PlayerCamera : MonoBehaviour {
     }
 
     void Update() {
-        isCameraLocked = (Player.localPlayer?.isInUIMenu ?? false) || ProgressManager.instance.isGameEnded;
+        isCameraLocked = (Player.localPlayer?.isInUIMenu ?? false) || (ProgressManager.instance?.isGameEnded ?? false);
         //Debug.Log(transform.rotation.eulerAngles);
         if (GameManager.gameState == GameManager.GameState.MAINMENU) return;
 
@@ -174,6 +174,8 @@ public class PlayerCamera : MonoBehaviour {
 
         cinemachineInputAxisController.Controllers[0].Input.Gain = mouseSensitivity * movement.movementRecoveryMultiplier;
         cinemachineInputAxisController.Controllers[1].Input.Gain = -mouseSensitivity * movement.movementRecoveryMultiplier;
+
+        cinemachineInputAxisController.enabled = !isCameraLocked;
     }
 
     void LateUpdate() {

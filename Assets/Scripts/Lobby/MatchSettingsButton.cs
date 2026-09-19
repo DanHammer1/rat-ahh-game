@@ -12,7 +12,6 @@ public class MatchSettingsButton : NetworkBehaviour, IInteractable {
     private float interactionCompletionTime = 0f;
     private bool interactable = true;
     public GameObject matchSettingsUI;
-    public CinemachineInputAxisController cinemachineCamera;
     Movement movement;
 
     public enum State {
@@ -51,7 +50,6 @@ public class MatchSettingsButton : NetworkBehaviour, IInteractable {
         Cursor.lockState = state ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = state;
         showInteractionUI = !state;
-        cinemachineCamera.enabled = !state;
         interactable = !state;
     }
 

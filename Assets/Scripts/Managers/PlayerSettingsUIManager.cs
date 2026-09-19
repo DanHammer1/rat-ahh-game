@@ -16,7 +16,6 @@ public class PlayerSettingsUIManager : NetworkBehaviour {
     public TextMeshPro[] lobbyTexts;
     public GameObject playerSettingsUI;
     public MatchSettingsButton matchSettingsButton;
-    public CinemachineInputAxisController cinemachineCamera;
     Movement movement;
 
 
@@ -104,11 +103,9 @@ public class PlayerSettingsUIManager : NetworkBehaviour {
         if (playerSettingsUI.activeSelf) {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            cinemachineCamera.enabled = false;
         } else {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            cinemachineCamera.enabled = true;
         }
     }
 

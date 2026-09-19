@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class PlayerSettingsUIManagerGame : NetworkBehaviour {
     public GameObject playerSettingsUI;
     public Button returnToLobbyButton;
-    public CinemachineInputAxisController cinemachineCamera;
     Movement movement;
 
     public string GetClientInfo(ulong clientId) {
@@ -46,11 +45,9 @@ public class PlayerSettingsUIManagerGame : NetworkBehaviour {
         if (playerSettingsUI.activeSelf) {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            cinemachineCamera.enabled = false;
         } else {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            cinemachineCamera.enabled = true;
         }
     }
 

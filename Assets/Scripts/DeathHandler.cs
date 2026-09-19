@@ -138,6 +138,7 @@ public class DeathHandler : NetworkBehaviour {
         if (!IsOwner) return;
         if (ratPlayer.dead.Value) {
             Assets.instance.respawnPrompt.transform.Find("RespawnCountdown").GetComponent<TextMeshProUGUI>().text = $"RESPAWNING IN {Math.Ceiling(respawnTimeRemaining.Value)}";
+            if (ProgressManager.instance.isGameEnded) Assets.instance.respawnPrompt.SetActive(false);
         }
     }
 }
