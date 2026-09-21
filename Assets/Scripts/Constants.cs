@@ -50,6 +50,7 @@ public class Constants : MonoBehaviour {
     public static float respawnTime = 5;
     public static float cheeseSpawnInterval = 30;
     public static float coinSpawnInterval = 30;
+    public static float piggyBankSpawnInterval = 60;
     public static float piggyBankBreakSpeed = 2.5f;
     public static int piggyBankMinCoinsSpawned = 2;
     public static int piggyBankMaxCoinsSpawned = 4;

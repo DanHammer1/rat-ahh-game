@@ -44,6 +44,7 @@ TagManager:
   - ScoreAddedParent
   - HuntersReleasingNotice
   - EndGameResults
+  - PiggyBankSpawnPoints
   layers:
   - Default
   - TransparentFX

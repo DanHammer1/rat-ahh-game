@@ -1,9 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Unity.Netcode;
-using System;
 
 public class CheeseSpawner : NetworkBehaviour {
     public static CheeseSpawner instance;

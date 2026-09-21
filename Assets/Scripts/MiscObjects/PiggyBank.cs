@@ -4,6 +4,7 @@ using Unity.Netcode;
 
 
 public class PiggyBank : NetworkBehaviour {
+    public GameObject spawnLocation;
     public GameObject piggyBankFracturedPrefab;
     public GameObject coinPrefab;
 
