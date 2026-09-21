@@ -885,6 +885,17 @@ MonoBehaviour:
   IsActive: 0
   onActivateExecuted: 0
   isGameEnded: 0
+  isViewingResults: 0
+  huntersWon:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  ratsWon:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
   movingToLobby: 0
 --- !u!1 &663073559
 GameObject:
@@ -3573,7 +3584,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -0.000028372, y: 228}
-  m_SizeDelta: {x: 438.6706, y: 152.73682}
+  m_SizeDelta: {x: 438.6706, y: 93.63}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2048837198
 MonoBehaviour:
