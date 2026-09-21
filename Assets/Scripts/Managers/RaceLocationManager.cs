@@ -48,8 +48,8 @@ public class RaceLocationManager : NetworkBehaviour {
             };
         } else if (randomIndex == 4) {
             return new List<string> {
-                "CAR TO BALCONY",
-                $"car - balcony ({ObjectiveScores.raceScore})"
+                "BALCONY TO CAR",
+                $"balcony - car ({ObjectiveScores.raceScore})"
             };
         }
         return new List<string> {
