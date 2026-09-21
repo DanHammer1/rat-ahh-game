@@ -46,6 +46,11 @@ public class RaceLocationManager : NetworkBehaviour {
                 "2ND FLOOR DESK TO OFFICE BATHROOM",
                 $"upstairs desk - office ({ObjectiveScores.raceScore})"
             };
+        } else if (randomIndex == 4) {
+            return new List<string> {
+                "CAR TO BALCONY",
+                $"car - balcony ({ObjectiveScores.raceScore})"
+            };
         }
         return new List<string> {
             "error choosing race",
