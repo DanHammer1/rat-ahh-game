@@ -75,6 +75,7 @@ public class DeathHandler : NetworkBehaviour {
     public void RevivePlayer() {
         if (ProgressManager.instance.isGameEnded) return;
         Player player = GetComponent<Player>();
+        player.onRevive?.Invoke();
 
         if (IsServer) {
             player.EditHealthServerRpc(player.maxHealth.Value);
@@ -122,7 +123,7 @@ public class DeathHandler : NetworkBehaviour {
             if (!IsServer) return;
             KillPlayer();
             respawnTimer = Timer.CreateTimer(Constants.respawnTime, Timer.OnFinish.DESTROY,
-                () => { RevivePlayer(); GetComponent<Player>().onRevive?.Invoke(); }, "Rat Revival Timer").GetComponent<Timer>();
+                () => { RevivePlayer(); }, "Rat Revival Timer").GetComponent<Timer>();
         };
         player.dead.OnValueChanged += (bool oldState, bool newState) => {
             if (newState) ToggleRagdoll(true);
