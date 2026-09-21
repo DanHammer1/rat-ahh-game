@@ -382,16 +382,21 @@ public class ProgressManager : NetworkBehaviour {
                     StopClearObjectiveAnimation();
                 }
 
+                GameObject checkbox = slot.text.transform.parent.Find("DotPoint/Checkbox").gameObject;
+                Transform ratStamp = slot.text.transform.parent.Find("DotPoint/RatStamp");
+                GameObject ratStampObject = ratStamp.gameObject;
+
+                LeanTween.cancel(slot.text.gameObject);
+                LeanTween.cancel(ratStampObject);
+                LeanTween.cancel(slot.objectiveIcon.gameObject);
+
                 slot.currentObjective = objective;
                 slot.text.text = objective.objectiveText;
                 slot.text.transform.localScale = Vector3.one;
                 slot.objectiveIcon.sprite = objective.objectiveIcon;
                 slot.objectiveIcon.transform.localScale = Vector3.one;
-                GameObject checkbox = slot.text.transform.parent.Find("DotPoint/Checkbox").gameObject;
                 checkbox.SetActive(false);
                 slot.objectiveIcon.gameObject.SetActive(true);
-                Transform ratStamp = slot.text.transform.parent.Find("DotPoint/RatStamp");
-                GameObject ratStampObject = ratStamp.gameObject;
                 ratStampObject.SetActive(false);
                 return;
             }
