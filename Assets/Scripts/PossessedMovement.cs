@@ -53,7 +53,7 @@ public class PossessedMovement : NetworkBehaviour {
         if (Input.GetKeyDown(KeyCode.Q)) {
             GetComponent<RatPlayer>().unPossessedItem.Invoke();
         }
-        if (Input.GetKeyDown(KeyCode.Space) && !isChargingJump && !isOnCooldown) {
+        if (Input.GetKey(KeyCode.Space) && !isChargingJump && !isOnCooldown) {
             isChargingJump = true;
             StartCoroutine(ChargeJump());
         }
