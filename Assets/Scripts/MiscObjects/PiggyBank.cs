@@ -29,6 +29,7 @@ public class PiggyBank : NetworkBehaviour {
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
     void OnBreakRpc(Vector3 position, Quaternion rotation) {
         SpawnObject(piggyBankFracturedPrefab, position, rotation);
+        PiggyBankSpawner.instance?.takenSpawnLocations.Remove(NetworkObject);
 
         int coinsSpawned = UnityEngine.Random.Range(Constants.piggyBankMinCoinsSpawned, Constants.piggyBankMaxCoinsSpawned + 1);
         for (int i = 0; i < coinsSpawned; i++) {
