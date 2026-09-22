@@ -16,7 +16,9 @@ public class Taunt : NetworkBehaviour {
     void Update() {
         if (!IsOwner) return;
 
-        if (Input.GetKeyDown(hotkey) && playable && !GetComponent<Player>().isInUIMenu) {
+        Player player = GetComponent<Player>();
+        TryGetComponent<RatPlayer>(out RatPlayer ratPlayer);
+        if (Input.GetKeyDown(hotkey) && playable && !player.isInUIMenu && (!ratPlayer?.dead.Value ?? true) && (!ratPlayer?.isGhost ?? true)) {
             playable = false;
             StartCoroutine(ReactivateTaunt());
             GameManager.PlayGlobalSoundEffectInWorld(GetSfxFromTaunt(tauntType));
