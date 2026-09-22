@@ -1653,7 +1653,6 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   showInteractionUI: 1
   matchSettingsUI: {fileID: 633759654}
-  cinemachineCamera: {fileID: 2045982350}
   settingsUI: 1
 --- !u!1 &192164847
 GameObject:
@@ -9052,7 +9051,7 @@ Transform:
   m_GameObject: {fileID: 1077212988}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.03, z: 0}
   m_LocalScale: {x: 0.5, y: 0.05, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12070,7 +12069,6 @@ MonoBehaviour:
   - {fileID: 163848994}
   playerSettingsUI: {fileID: 1728563876}
   matchSettingsButton: {fileID: 191504352}
-  cinemachineCamera: {fileID: 2045982350}
 --- !u!114 &1474587969
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16165,7 +16163,7 @@ Transform:
   m_GameObject: {fileID: 1901643248}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.03, z: 0}
   m_LocalScale: {x: 0.5, y: 0.05, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
