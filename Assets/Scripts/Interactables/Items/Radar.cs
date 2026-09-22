@@ -4,12 +4,14 @@ using Unity.Netcode;
 public class Radar : Item {
     public override void OnUseItem() {
         GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.radarUse, transform.GetChild(0).position);
-        Player[] players = FindObjectsByType<Player>(FindObjectsSortMode.None);
+        RatPlayer[] ratPlayers = FindObjectsByType<RatPlayer>(FindObjectsSortMode.None);
 
-        foreach (Player player in players) {
-            GameObject playerObj = player.gameObject;
+        foreach (RatPlayer ratPlayer in ratPlayers) {
+            if (ratPlayer.isGhost || ratPlayer.dead.Value) continue;
 
-            if (player != Player.localPlayer && (playerObj.transform.position -
+            GameObject playerObj = ratPlayer.gameObject;
+
+            if (ratPlayer != Player.localPlayer && (playerObj.transform.position -
                 Player.localPlayer.transform.position).magnitude < 15f) {
 
                 ObjectManager.MakeObjectSpectral(playerObj);
