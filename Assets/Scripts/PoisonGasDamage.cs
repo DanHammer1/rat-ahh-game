@@ -27,9 +27,9 @@ public class PoisonGasDamage : NetworkBehaviour {
             if (poisonTimer >= poisonInterval) {
                 ratPlayer.EditHealthServerRpc(ratPlayer.health.Value - (Constants.poisonDPS * poisonInterval));
                 int randomSFX = Random.Range(1, 4);
-                if (randomSFX == 1) GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.poisonDamage1);
-                else if (randomSFX == 2) GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.poisonDamage2);
-                else if (randomSFX == 3) GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.poisonDamage3);
+                if (randomSFX == 1) GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.poisonDamage1, ratPlayer.transform.position);
+                else if (randomSFX == 2) GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.poisonDamage2, ratPlayer.transform.position);
+                else if (randomSFX == 3) GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.poisonDamage3, ratPlayer.transform.position);
                 poisonTimer = 0f;
             }
         } else {

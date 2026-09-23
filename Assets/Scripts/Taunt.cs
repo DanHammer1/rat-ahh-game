@@ -21,7 +21,7 @@ public class Taunt : NetworkBehaviour {
         if (Input.GetKeyDown(hotkey) && playable && !player.isInUIMenu && (!ratPlayer?.dead.Value ?? true) && (!ratPlayer?.isGhost ?? true)) {
             playable = false;
             StartCoroutine(ReactivateTaunt());
-            GameManager.PlayGlobalSoundEffectInWorld(GetSfxFromTaunt(tauntType));
+            GameManager.PlayGlobalSoundEffectInWorld(GetSfxFromTaunt(tauntType), transform.position);
 
             if (tauntType == TauntType.Loud) {
                 ObjectManager.MakeObjectSpectralForEveryone(Player.localPlayer.gameObject);

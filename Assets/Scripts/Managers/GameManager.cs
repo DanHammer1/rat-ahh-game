@@ -253,6 +253,11 @@ public class GameManager : NetworkBehaviour {
     }
 
     public static void PlayGlobalSoundEffectInWorld(Assets.SfxType soundEffect) {
-        GameManager.Instance.PlayGlobalSoundEffectInWorldClientRpc(soundEffect, Player.localPlayer.transform.position);
+        GameManager.Instance.PlayGlobalSoundEffectAtLocalPositionClientRpc(soundEffect);
+    }
+
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
+    private void PlayGlobalSoundEffectAtLocalPositionClientRpc(Assets.SfxType soundEffect) {
+        PlayLocalSoundEffectInWorld(soundEffect);
     }
 }

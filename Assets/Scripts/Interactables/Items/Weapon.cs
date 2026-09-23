@@ -11,7 +11,7 @@ public class Weapon : Item {
     }
     public override void OnUseItem() {
         Attack();
-        GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.CrowbarSwing);
+        GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.CrowbarSwing, transform.position);
     }
 
     public override string GetInteractionPromptText() {
@@ -53,7 +53,7 @@ public class Weapon : Item {
             if (colliderRatScript == null || colliderRatScript.isGhost) continue;
             float newHealth = colliderRatScript.health.Value - data.damage;
             colliderRatScript.EditHealthServerRpc(newHealth);
-            if (newHealth > 0) GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.crowbarDamage);
+            if (newHealth > 0) GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.crowbarDamage, colliderRatScript.transform.position);
             break;
         }
         // if (Physics.SphereCast(ray, data.rayRadius, out RaycastHit hit, data.attackRange)) Debug.Log(hit.collider.gameObject.name + ", " + hit.collider.gameObject.tag);

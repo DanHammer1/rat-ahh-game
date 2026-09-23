@@ -7,7 +7,7 @@ public class RatDashAbility : Ability {
     public override void ExecuteAbility() {
         GetComponent<Rigidbody>().AddForce(transform.forward * Constants.ratDashAbilityPower, ForceMode.Impulse);
         ToggleParticleSystemClientRpc(true);
-        GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.RatDashAbility);
+        GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.RatDashAbility, transform.position);
         Timer.CreateTimer(0.2f, Timer.OnFinish.DESTROY,
             () => ToggleParticleSystemClientRpc(false), "Particle Stop timer.");
     }

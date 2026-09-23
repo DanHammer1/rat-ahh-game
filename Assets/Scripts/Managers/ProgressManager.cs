@@ -191,6 +191,7 @@ public class ProgressManager : NetworkBehaviour {
     void OnGameEnd(bool huntersWon) {
         if (isGameEnded) return;
         isGameEnded = true;
+        GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.whistle);
         CreateResultsClientRpc(huntersWon);
         DisableGameplayClientRpc();
     }

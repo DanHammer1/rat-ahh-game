@@ -15667,6 +15667,13 @@ MonoBehaviour:
       Data3: 40361146
       Data4: -739785419
     Path: event:/PoisonDamage3SFX
+  whistleSFX:
+    Guid:
+      Data1: 1982776194
+      Data2: 1205463959
+      Data3: -215907164
+      Data4: -1044163990
+    Path: event:/WhistleSFX
 --- !u!1 &1855722275
 GameObject:
   m_ObjectHideFlags: 0
