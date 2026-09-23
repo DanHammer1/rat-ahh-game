@@ -20629,6 +20629,13 @@ MonoBehaviour:
       Data3: -1813156736
       Data4: 299186802
     Path: event:/DropCoinSFX
+  crowbarDamageSFX:
+    Guid:
+      Data1: -698768440
+      Data2: 1155324042
+      Data3: -1851563100
+      Data4: 217593054
+    Path: event:/CrowbarDamageSFX
 --- !u!1 &1870836120
 GameObject:
   m_ObjectHideFlags: 0

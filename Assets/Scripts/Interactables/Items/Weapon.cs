@@ -51,7 +51,9 @@ public class Weapon : Item {
         foreach (RaycastHit hit in hits) {
             RatPlayer colliderRatScript = hit.collider.GetComponentInParent<RatPlayer>();
             if (colliderRatScript == null || colliderRatScript.isGhost) continue;
-            colliderRatScript.EditHealthServerRpc(colliderRatScript.health.Value - data.damage);
+            float newHealth = colliderRatScript.health.Value - data.damage;
+            colliderRatScript.EditHealthServerRpc(newHealth);
+            if (newHealth > 0) GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.crowbarDamage);
             break;
         }
         // if (Physics.SphereCast(ray, data.rayRadius, out RaycastHit hit, data.attackRange)) Debug.Log(hit.collider.gameObject.name + ", " + hit.collider.gameObject.tag);
