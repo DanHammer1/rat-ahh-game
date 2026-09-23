@@ -101,6 +101,9 @@
 	</object>
 	<object class="MixerBusPanner" id="{00a1d93d-13af-40af-81e4-e84efc64c084}" />
 	<object class="SingleSound" id="{5ce6df55-8fed-48f5-882b-05e1ff687fbe}">
+		<relationship name="modulators">
+			<destination>{36625863-aff6-45c6-a4bc-2841b747065b}</destination>
+		</relationship>
 		<relationship name="audioFile">
 			<destination>{972f0a31-540d-41e3-8cc8-70fb2f99717c}</destination>
 		</relationship>
@@ -113,6 +116,14 @@
 		</property>
 		<property name="overrideRange">
 			<value>true</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{36625863-aff6-45c6-a4bc-2841b747065b}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="amount">
+			<value>4</value>
 		</property>
 	</object>
 </objects>
