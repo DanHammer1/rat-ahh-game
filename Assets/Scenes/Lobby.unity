@@ -15632,6 +15632,13 @@ MonoBehaviour:
       Data3: -56357972
       Data4: -2069914312
     Path: event:/PickupCoinSFX
+  dropCoinSFX:
+    Guid:
+      Data1: 549715169
+      Data2: 1249523118
+      Data3: -1813156736
+      Data4: 299186802
+    Path: event:/DropCoinSFX
 --- !u!1 &1855722275
 GameObject:
   m_ObjectHideFlags: 0

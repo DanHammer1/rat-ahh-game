@@ -106,6 +106,7 @@ public class Coin : NetworkBehaviour, IInteractable {
 
         if (Player.localPlayer.NetworkObject == player && Input.GetKeyDown(KeyCode.Q) && !Player.localPlayer.isInUIMenu && !ProgressManager.instance.isGameEnded) {
             Assets.instance.dropItemPrompt.SetActive(false);
+            GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.dropCoin);
             DropCoinRpc();
         }
     }
