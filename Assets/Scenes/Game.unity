@@ -20615,6 +20615,13 @@ MonoBehaviour:
       Data3: -995157102
       Data4: 1125673405
     Path: event:/RatTauntLoudSFX
+  pickupCoinSFX:
+    Guid:
+      Data1: 252964212
+      Data2: 1250325122
+      Data3: -56357972
+      Data4: -2069914312
+    Path: event:/PickupCoinSFX
 --- !u!1 &1870836120
 GameObject:
   m_ObjectHideFlags: 0

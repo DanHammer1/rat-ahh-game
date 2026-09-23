@@ -128,6 +128,7 @@ public class Coin : NetworkBehaviour, IInteractable {
             SetIsBeingCarriedRpc(true);
             SetPlayerCarryingCoinRpc(Player.localPlayer.gameObject);
             SetCoinBeingCarriedRpc(true);
+            GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.pickupCoin);
             // Player.localPlayer.transform.GetComponent<Movement>().MultiplyMoveSpeedRpc(Constants.carryingCoinMoveSpeedMultiplier);
         }
     }

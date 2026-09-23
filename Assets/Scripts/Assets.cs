@@ -77,6 +77,7 @@ public class Assets : MonoBehaviour {
     public EventReference ratTauntSoftSFX;
     public EventReference ratTauntMediumSFX;
     public EventReference ratTauntLoudSFX;
+    public EventReference pickupCoinSFX;
 
     #endregion
 
@@ -100,7 +101,8 @@ public class Assets : MonoBehaviour {
         radarPing,
         ratTauntSoft,
         ratTauntMedium,
-        ratTauntLoud
+        ratTauntLoud,
+        pickupCoin,
     }
 
     public EventReference GetEventReferenceFromSfxType(SfxType type) {
@@ -121,6 +123,7 @@ public class Assets : MonoBehaviour {
             SfxType.ratTauntSoft => ratTauntSoftSFX,
             SfxType.ratTauntMedium => ratTauntMediumSFX,
             SfxType.ratTauntLoud => ratTauntLoudSFX,
+            SfxType.pickupCoin => pickupCoinSFX,
             _ => default
         };
 
