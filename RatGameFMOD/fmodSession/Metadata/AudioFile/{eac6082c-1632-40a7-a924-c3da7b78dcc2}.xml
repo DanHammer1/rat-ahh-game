@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{eac6082c-1632-40a7-a924-c3da7b78dcc2}">
+		<property name="assetPath">
+			<value>PoisonDamage2SFX.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.33333333333333331</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{7c81cc79-26a0-4890-be22-e9dc0e5853aa}</destination>
+		</relationship>
+	</object>
+</objects>

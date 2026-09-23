@@ -15646,6 +15646,27 @@ MonoBehaviour:
       Data3: -1851563100
       Data4: 217593054
     Path: event:/CrowbarDamageSFX
+  poisonDamage1SFX:
+    Guid:
+      Data1: -235448789
+      Data2: 1156107649
+      Data3: -966358865
+      Data4: 1800757156
+    Path: event:/PoisonDamage1SFX
+  poisonDamage2SFX:
+    Guid:
+      Data1: -226545079
+      Data2: 1323758785
+      Data3: -935446644
+      Data4: -1612151135
+    Path: event:/PoisonDamage2SFX
+  poisonDamage3SFX:
+    Guid:
+      Data1: -276737517
+      Data2: 1265632180
+      Data3: 40361146
+      Data4: -739785419
+    Path: event:/PoisonDamage3SFX
 --- !u!1 &1855722275
 GameObject:
   m_ObjectHideFlags: 0
