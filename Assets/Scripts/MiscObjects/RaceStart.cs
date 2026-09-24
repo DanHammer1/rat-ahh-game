@@ -48,10 +48,17 @@ public class RaceStart : NetworkBehaviour {
     IEnumerator StartRaceCoroutine(float duration) {
         GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.raceStart);
         float remaining = duration;
+        int prevSeconds = Mathf.FloorToInt(remaining);
         while (remaining > 0) {
             remaining -= Time.deltaTime;
 
             int seconds = Mathf.FloorToInt(remaining);
+            if (prevSeconds != seconds) {
+                prevSeconds = seconds;
+                if (seconds % 2 == 0) GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.raceTicking1);
+                else GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.raceTicking2);
+            }
+            if (remaining < 0) remaining = 0;
             int milliseconds = Mathf.FloorToInt((remaining - seconds) * 100f);
             raceTimerUIText.text = $"{seconds:00}:{milliseconds:00}\nPress L to cancel";
             yield return null;

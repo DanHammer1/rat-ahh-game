@@ -15688,6 +15688,20 @@ MonoBehaviour:
       Data3: -549269098
       Data4: 1709735560
     Path: event:/RaceSuccessSFX
+  raceTicking1SFX:
+    Guid:
+      Data1: 1644275236
+      Data2: 1158890678
+      Data3: -1088083550
+      Data4: -1300561425
+    Path: event:/RaceTicking1SFX
+  raceTicking2SFX:
+    Guid:
+      Data1: -114330452
+      Data2: 1141763610
+      Data3: -1662905200
+      Data4: 1436582562
+    Path: event:/RaceTicking2SFX
 --- !u!1 &1855722275
 GameObject:
   m_ObjectHideFlags: 0
