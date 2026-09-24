@@ -28,7 +28,8 @@ public class RaceFinish : NetworkBehaviour {
     }
 
     void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("PlayerMouse")) {
+        if (other.gameObject == Player.localPlayer.gameObject) {
+            GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.raceSuccess);
             startTrigger.enabled = false;
             finishTrigger.enabled = false;
             startText.SetActive(false);

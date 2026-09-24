@@ -4547,6 +4547,83 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3878623852962701257, guid: 00447e79cc247e9459108957aeda5023, type: 3}
   m_PrefabInstance: {fileID: 367823135}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &368998005
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 368998006}
+  - component: {fileID: 368998008}
+  - component: {fileID: 368998009}
+  m_Layer: 0
+  m_Name: CoinSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &368998006
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368998005}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 195.63338, y: -208.10216, z: -88.355644}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1096691375}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &368998008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368998005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 112236582
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
+--- !u!114 &368998009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368998005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46de98813007c214a8961ec9cb37f836, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  coinPrefab: {fileID: 8770749662742894988, guid: 06c4ccd3ef4e4244eb5c3b67a90d7fd4, type: 3}
+  coinSpawnLocations: []
+  takenSpawnLocations:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
 --- !u!1 &376739936
 GameObject:
   m_ObjectHideFlags: 0
@@ -13018,6 +13095,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 502164466}
+  - {fileID: 368998006}
   - {fileID: 451538208}
   - {fileID: 1058822924}
   m_Father: {fileID: 0}
@@ -20664,6 +20742,20 @@ MonoBehaviour:
       Data3: -215907164
       Data4: -1044163990
     Path: event:/WhistleSFX
+  raceStartSFX:
+    Guid:
+      Data1: 1760219314
+      Data2: 1224451133
+      Data3: -1112738925
+      Data4: -407381759
+    Path: event:/RaceStartSFX
+  raceSuccessSFX:
+    Guid:
+      Data1: -2056393697
+      Data2: 1135385710
+      Data3: -549269098
+      Data4: 1709735560
+    Path: event:/RaceSuccessSFX
 --- !u!1 &1870836120
 GameObject:
   m_ObjectHideFlags: 0

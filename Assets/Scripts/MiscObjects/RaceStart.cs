@@ -35,7 +35,7 @@ public class RaceStart : NetworkBehaviour {
     }
 
     void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("PlayerMouse")) {
+        if (other.gameObject == Player.localPlayer.gameObject) {
             startTrigger.enabled = false;
             finishTrigger.enabled = true;
             startText.SetActive(false);
@@ -46,6 +46,7 @@ public class RaceStart : NetworkBehaviour {
     }
 
     IEnumerator StartRaceCoroutine(float duration) {
+        GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.raceStart);
         float remaining = duration;
         while (remaining > 0) {
             remaining -= Time.deltaTime;

@@ -15674,6 +15674,20 @@ MonoBehaviour:
       Data3: -215907164
       Data4: -1044163990
     Path: event:/WhistleSFX
+  raceStartSFX:
+    Guid:
+      Data1: 1760219314
+      Data2: 1224451133
+      Data3: -1112738925
+      Data4: -407381759
+    Path: event:/RaceStartSFX
+  raceSuccessSFX:
+    Guid:
+      Data1: -2056393697
+      Data2: 1135385710
+      Data3: -549269098
+      Data4: 1709735560
+    Path: event:/RaceSuccessSFX
 --- !u!1 &1855722275
 GameObject:
   m_ObjectHideFlags: 0

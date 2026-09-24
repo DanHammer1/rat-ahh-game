@@ -84,6 +84,8 @@ public class Assets : MonoBehaviour {
     public EventReference poisonDamage2SFX;
     public EventReference poisonDamage3SFX;
     public EventReference whistleSFX;
+    public EventReference raceStartSFX;
+    public EventReference raceSuccessSFX;
 
     #endregion
 
@@ -115,6 +117,8 @@ public class Assets : MonoBehaviour {
         poisonDamage2,
         poisonDamage3,
         whistle,
+        raceStart,
+        raceSuccess,
     }
 
     public EventReference GetEventReferenceFromSfxType(SfxType type) {
@@ -142,6 +146,8 @@ public class Assets : MonoBehaviour {
             SfxType.poisonDamage2 => poisonDamage2SFX,
             SfxType.poisonDamage3 => poisonDamage3SFX,
             SfxType.whistle => whistleSFX,
+            SfxType.raceStart => raceStartSFX,
+            SfxType.raceSuccess => raceSuccessSFX,
             _ => default
         };
 

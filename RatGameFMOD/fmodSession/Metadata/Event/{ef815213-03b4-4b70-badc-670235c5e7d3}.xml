@@ -59,11 +59,7 @@
 			<destination>{f417ab11-1a27-4083-9b8a-6898d5c0e1cd}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{ff9c93b0-9da7-452b-a641-2b3fd14be493}">
-		<property name="maximumDistance">
-			<value>4</value>
-		</property>
-	</object>
+	<object class="EventAutomatableProperties" id="{ff9c93b0-9da7-452b-a641-2b3fd14be493}" />
 	<object class="MarkerTrack" id="{85fd611f-db70-4d38-b52f-945bfc84b100}" />
 	<object class="Timeline" id="{091b4276-48e0-45b1-84eb-5f5860cb3093}">
 		<property name="isProxyEnabled">
@@ -117,7 +113,14 @@
 	</object>
 	<object class="MixerBusFader" id="{9f1b93c1-54bb-4c46-93ae-82bfc9885a8e}" />
 	<object class="MixerBusFader" id="{63ad7bb4-88bf-41df-92d0-a6294f2c6374}" />
-	<object class="SpatialiserEffect" id="{b48d1687-adbd-417e-b053-7f0423d3ffd6}" />
+	<object class="SpatialiserEffect" id="{b48d1687-adbd-417e-b053-7f0423d3ffd6}">
+		<property name="maximumDistance">
+			<value>4</value>
+		</property>
+		<property name="overrideRange">
+			<value>true</value>
+		</property>
+	</object>
 	<object class="RandomizerModulator" id="{a81ec764-3807-4204-89d6-c64655831936}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>pitch</value>

@@ -19,10 +19,10 @@ public class CoinSpawner : NetworkBehaviour {
         coinSpawnLocations = new List<GameObject>();
         GameObject coinSpawnLocationParent = GameObject.FindWithTag("CoinSpawnParent");
 
-        foreach (Transform spawnLocation in coinSpawnLocationParent.transform) {
-            coinSpawnLocations.Add(spawnLocation.gameObject);
-        }
-        takenSpawnLocations = new NetworkList<NetworkObjectReference>();
+        // foreach (Transform spawnLocation in coinSpawnLocationParent.transform) {
+        //     coinSpawnLocations.Add(spawnLocation.gameObject);
+        // }
+        // takenSpawnLocations = new NetworkList<NetworkObjectReference>();
     }
 
     void Start() {
