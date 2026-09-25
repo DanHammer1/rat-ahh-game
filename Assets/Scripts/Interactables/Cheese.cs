@@ -43,6 +43,7 @@ public class Cheese : NetworkBehaviour, IInteractable {
 
     public void Interact() {
         if (Player.localPlayer == null || isEaten) return;
+        GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.eatCheese, transform.position);
         DespawnServerRpc();
         isEaten = true;
         foreach (Objective objective in ProgressManager.instance.objectives) {

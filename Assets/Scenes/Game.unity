@@ -20798,6 +20798,13 @@ MonoBehaviour:
       Data3: -1757489761
       Data4: -53636588
     Path: event:/StampSFX
+  eatCheeseSFX:
+    Guid:
+      Data1: -1334323054
+      Data2: 1128981057
+      Data3: 1984053634
+      Data4: 1932613331
+    Path: event:/EatCheeseSFX
 --- !u!1 &1870836120
 GameObject:
   m_ObjectHideFlags: 0

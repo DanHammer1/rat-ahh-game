@@ -92,6 +92,7 @@ public class Assets : MonoBehaviour {
     public EventReference respawnGhostSFX;
     public EventReference raceFailSFX;
     public EventReference stampSFX;
+    public EventReference eatCheeseSFX;
 
     #endregion
 
@@ -131,6 +132,7 @@ public class Assets : MonoBehaviour {
         respawnGhost,
         raceFail,
         stamp,
+        eatCheese,
     }
 
     public EventReference GetEventReferenceFromSfxType(SfxType type) {
@@ -166,6 +168,7 @@ public class Assets : MonoBehaviour {
             SfxType.respawnGhost => respawnGhostSFX,
             SfxType.raceFail => raceFailSFX,
             SfxType.stamp => stampSFX,
+            SfxType.eatCheese => eatCheeseSFX,
             _ => default
         };
 
