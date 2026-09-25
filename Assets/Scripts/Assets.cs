@@ -73,7 +73,7 @@ public class Assets : MonoBehaviour {
     public EventReference piggyBankBreakSFX;
     public EventReference radarPingSFX;
     public EventReference radarUseSFX;
-    public EventReference itemPickupSfx;
+    public EventReference pickupCrowbarSFX;
     public EventReference ratTauntSoftSFX;
     public EventReference ratTauntMediumSFX;
     public EventReference ratTauntLoudSFX;
@@ -95,6 +95,8 @@ public class Assets : MonoBehaviour {
     public EventReference eatCheeseSFX;
     public EventReference possessItemSFX;
     public EventReference unPossessItemSFX;
+    public EventReference pickupPoisonSprayCanSFX;
+    public EventReference pickupRadarSFX;
 
     #endregion
 
@@ -113,7 +115,7 @@ public class Assets : MonoBehaviour {
         MamaRatNoise,
         ObjectiveComplete,
         PiggyBankBreak,
-        itemPickup,
+        pickupCrowbar,
         radarUse,
         radarPing,
         ratTauntSoft,
@@ -137,6 +139,8 @@ public class Assets : MonoBehaviour {
         eatCheese,
         possessItem,
         unPossessItem,
+        pickupPoisonSprayCan,
+        pickupRadar,
     }
 
     public EventReference GetEventReferenceFromSfxType(SfxType type) {
@@ -151,7 +155,7 @@ public class Assets : MonoBehaviour {
             SfxType.MamaRatNoise => mamaRatNoiseSFX,
             SfxType.ObjectiveComplete => objectiveCompleteSFX,
             SfxType.PiggyBankBreak => piggyBankBreakSFX,
-            SfxType.itemPickup => itemPickupSfx,
+            SfxType.pickupCrowbar => pickupCrowbarSFX,
             SfxType.radarUse => radarUseSFX,
             SfxType.radarPing => radarPingSFX,
             SfxType.ratTauntSoft => ratTauntSoftSFX,
@@ -175,6 +179,8 @@ public class Assets : MonoBehaviour {
             SfxType.eatCheese => eatCheeseSFX,
             SfxType.possessItem => possessItemSFX,
             SfxType.unPossessItem => unPossessItemSFX,
+            SfxType.pickupPoisonSprayCan => pickupPoisonSprayCanSFX,
+            SfxType.pickupRadar => pickupRadarSFX,
             _ => default
         };
 

@@ -20665,13 +20665,13 @@ MonoBehaviour:
       Data3: -1786809722
       Data4: -1369150460
     Path: event:/RadarUseSFX
-  itemPickupSfx:
+  pickupCrowbarSFX:
     Guid:
       Data1: -1900224955
       Data2: 1238613978
       Data3: -317577578
       Data4: 1473231028
-    Path: event:/ItemPickupHumanSFX
+    Path: event:/PickupCrowbarSFX
   ratTauntSoftSFX:
     Guid:
       Data1: -2147037562
@@ -20819,6 +20819,20 @@ MonoBehaviour:
       Data3: 1548529559
       Data4: 1225773812
     Path: event:/UnPossessItemSFX
+  pickupPoisonSprayCanSFX:
+    Guid:
+      Data1: -1485092051
+      Data2: 1232284809
+      Data3: -938889056
+      Data4: -1723525170
+    Path: event:/PickupPoisonSprayCanSFX
+  pickupRadarSFX:
+    Guid:
+      Data1: 401695990
+      Data2: 1291608756
+      Data3: -627441789
+      Data4: 2064672563
+    Path: event:/PickupRadarSFX
 --- !u!1 &1870836120
 GameObject:
   m_ObjectHideFlags: 0

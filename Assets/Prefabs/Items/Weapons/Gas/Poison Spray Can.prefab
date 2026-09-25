@@ -204,6 +204,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   showInteractionUI: 1
+  pickupSound: 34
   cooldown: 0.03
   hunterPlayerRef:
     UpdateTraits:

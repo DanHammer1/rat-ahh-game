@@ -6,6 +6,7 @@ using Unity.Netcode.Components;
 
 public abstract class Item : NetworkBehaviour, IInteractable {
     [SerializeField] private bool showInteractionUI = true;
+    [SerializeField] private Assets.SfxType pickupSound = Assets.SfxType.pickupCrowbar;
 
     public bool ShowInteractionUI => showInteractionUI;
     private float pickUpProgress = 0;
@@ -92,7 +93,7 @@ public abstract class Item : NetworkBehaviour, IInteractable {
         ToggleCollidersRpc(false);
 
         SetIsEquippedRpc(true);
-        GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.itemPickup, Player.localPlayer.transform.position);
+        GameManager.PlayLocalSoundEffectInWorld(pickupSound, Player.localPlayer.transform.position);
 
         Assets.instance.dropItemPrompt.SetActive(true);
         Assets.instance.dropItemPrompt.GetComponent<TextMeshProUGUI>().text = "Press Q to drop item";
