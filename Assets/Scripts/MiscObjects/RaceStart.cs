@@ -5,6 +5,7 @@ using System.Collections;
 using System.Timers;
 using UnityEditor.EditorTools;
 using TMPro;
+using UnityEngine.Rendering;
 
 
 public class RaceStart : NetworkBehaviour {
@@ -28,6 +29,7 @@ public class RaceStart : NetworkBehaviour {
             raceTimer = null;
             startTrigger.enabled = true;
             finishTrigger.enabled = false;
+            GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.raceFail);
             startText.SetActive(true);
             finishText.SetActive(false);
             raceTimerUI.SetActive(false);
@@ -50,17 +52,17 @@ public class RaceStart : NetworkBehaviour {
         float remaining = duration;
         int prevSeconds = Mathf.FloorToInt(remaining);
         while (remaining > 0) {
-            remaining -= Time.deltaTime;
 
             int seconds = Mathf.FloorToInt(remaining);
             if (prevSeconds != seconds) {
                 prevSeconds = seconds;
-                if (seconds % 2 == 0) GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.raceTicking1);
-                else GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.raceTicking2);
+                if (seconds % 2 == 0 && seconds != -1) GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.raceTicking1);
+                else if (seconds != 0) GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.raceTicking2);
             }
             if (remaining < 0) remaining = 0;
             int milliseconds = Mathf.FloorToInt((remaining - seconds) * 100f);
             raceTimerUIText.text = $"{seconds:00}:{milliseconds:00}\nPress L to cancel";
+            remaining -= Time.deltaTime;
             yield return null;
         }
 
@@ -68,6 +70,7 @@ public class RaceStart : NetworkBehaviour {
             remaining = 0;
             startTrigger.enabled = true;
             finishTrigger.enabled = false;
+            GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.raceFail);
             startText.SetActive(true);
             finishText.SetActive(false);
             raceTimerUI.SetActive(false);

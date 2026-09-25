@@ -18748,15 +18748,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2048223004139087474, guid: 4eb61002cdb8fef4184197cecf93e4ad, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.15
+      value: -2.214
       objectReference: {fileID: 0}
     - target: {fileID: 2048223004139087474, guid: 4eb61002cdb8fef4184197cecf93e4ad, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.22
+      value: 0.199
       objectReference: {fileID: 0}
     - target: {fileID: 2048223004139087474, guid: 4eb61002cdb8fef4184197cecf93e4ad, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.73
+      value: -3.6711
       objectReference: {fileID: 0}
     - target: {fileID: 2048223004139087474, guid: 4eb61002cdb8fef4184197cecf93e4ad, type: 3}
       propertyPath: m_LocalRotation.w
@@ -20784,6 +20784,13 @@ MonoBehaviour:
       Data3: -1780043081
       Data4: -1781244998
     Path: event:/RespawnGhostSFX
+  raceFailSFX:
+    Guid:
+      Data1: -627419109
+      Data2: 1336383087
+      Data3: -1204639554
+      Data4: -198970115
+    Path: event:/RaceFailSFX
 --- !u!1 &1870836120
 GameObject:
   m_ObjectHideFlags: 0
