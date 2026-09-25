@@ -88,6 +88,8 @@ public class Assets : MonoBehaviour {
     public EventReference raceSuccessSFX;
     public EventReference raceTicking1SFX;
     public EventReference raceTicking2SFX;
+    public EventReference respawnSFX;
+    public EventReference respawnGhostSFX;
 
     #endregion
 
@@ -123,6 +125,8 @@ public class Assets : MonoBehaviour {
         raceSuccess,
         raceTicking1,
         raceTicking2,
+        respawn,
+        respawnGhost,
     }
 
     public EventReference GetEventReferenceFromSfxType(SfxType type) {
@@ -154,6 +158,8 @@ public class Assets : MonoBehaviour {
             SfxType.raceSuccess => raceSuccessSFX,
             SfxType.raceTicking1 => raceTicking1SFX,
             SfxType.raceTicking2 => raceTicking2SFX,
+            SfxType.respawn => respawnSFX,
+            SfxType.respawnGhost => respawnGhostSFX,
             _ => default
         };
 

@@ -20770,6 +20770,20 @@ MonoBehaviour:
       Data3: -1662905200
       Data4: 1436582562
     Path: event:/RaceTicking2SFX
+  respawnSFX:
+    Guid:
+      Data1: 91926124
+      Data2: 1320316393
+      Data3: -1060148302
+      Data4: 1856000484
+    Path: event:/RespawnSFX
+  respawnGhostSFX:
+    Guid:
+      Data1: -1113960178
+      Data2: 1280528336
+      Data3: -1780043081
+      Data4: -1781244998
+    Path: event:/RespawnGhostSFX
 --- !u!1 &1870836120
 GameObject:
   m_ObjectHideFlags: 0

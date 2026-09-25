@@ -82,10 +82,17 @@ public class DeathHandler : NetworkBehaviour {
             player.SetDeadStateRpc(false);
         }
 
-        if (!IsServer) return;
-        TeleportPlayerClientRpc(RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp));
-        ActivateRespawnPromptClientRpc(false, RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp));
-        respawnTimeRemaining.Value = Constants.respawnTime;
+
+        if (IsServer) {
+            TeleportPlayerClientRpc(RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp));
+            ActivateRespawnPromptClientRpc(false, RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp));
+            respawnTimeRemaining.Value = Constants.respawnTime;
+        }
+        if (IsOwner) {
+            if (!player.GetComponent<RatPlayer>().isGhost) GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.respawn);
+            else GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.respawnGhost);
+
+        }
     }
 
     [Rpc(SendTo.SpecifiedInParams)]
