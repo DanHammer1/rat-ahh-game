@@ -20805,6 +20805,20 @@ MonoBehaviour:
       Data3: 1984053634
       Data4: 1932613331
     Path: event:/EatCheeseSFX
+  possessItemSFX:
+    Guid:
+      Data1: 896427693
+      Data2: 1300211809
+      Data3: 406541717
+      Data4: -1558235018
+    Path: event:/PossessItemSFX
+  unPossessItemSFX:
+    Guid:
+      Data1: 385577591
+      Data2: 1074151398
+      Data3: 1548529559
+      Data4: 1225773812
+    Path: event:/UnPossessItemSFX
 --- !u!1 &1870836120
 GameObject:
   m_ObjectHideFlags: 0

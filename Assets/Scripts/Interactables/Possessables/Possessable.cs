@@ -50,6 +50,7 @@ public abstract class Possessable : NetworkBehaviour, IInteractable {
         if (ratPlayerRef.Value.TryGet(out NetworkObject playerObj)) {
             RatPlayer ratPlayer = playerObj.GetComponent<RatPlayer>();
             ratPlayer.possessedItem.Invoke();
+            GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.possessItem, transform.position);
             SetItemBeingPossessedRpc(ratPlayerRef.Value, NetworkObject);
             SetIsPossessedRpc(true);
         }

@@ -63,6 +63,7 @@ public class RatPlayer : Player {
         if (possessedMovement.itemBeingPossessedObject.Value.TryGet(out NetworkObject itemBeingPossessed)) {
             itemBeingPossessed.GetComponent<Possessable>().SetIsPossessedRpc(false);
         }
+        GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.unPossessItem);
         Assets.instance.dropItemPrompt.SetActive(false);
         hideRatPossessedJumpMeterUIRpc();
         UnPossessedItemRpc();
