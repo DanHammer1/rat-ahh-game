@@ -19,7 +19,7 @@ public abstract class Objective {
         //     scoreAddedNotice.transform.SetParent(GameObject.FindWithTag("ScoreAddedParent").transform);
         // };
         onConditionCleared += () => Player.localPlayer.AddScoreServerRpc(completionScore);
-        onConditionCleared += () => GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.ObjectiveComplete);
+        onConditionCleared += () => GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.stamp);
         onConditionCleared += () => ProgressManager.instance.objectives.Remove(this);
         onObjectiveCancelled += () => ProgressManager.instance.objectives.Remove(this);
     }

@@ -20791,6 +20791,13 @@ MonoBehaviour:
       Data3: -1204639554
       Data4: -198970115
     Path: event:/RaceFailSFX
+  stampSFX:
+    Guid:
+      Data1: -1459249953
+      Data2: 1213354399
+      Data3: -1757489761
+      Data4: -53636588
+    Path: event:/StampSFX
 --- !u!1 &1870836120
 GameObject:
   m_ObjectHideFlags: 0
