@@ -1,23 +1,27 @@
 using UnityEngine;
 using Unity.Netcode;
 
-public class Radar : Item {
-    public override void OnUseItem() {
+public class Radar : Item
+{
+    public override void OnUseItem()
+    {
         GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.radarUse, transform.GetChild(0).position);
         RatPlayer[] ratPlayers = FindObjectsByType<RatPlayer>(FindObjectsSortMode.None);
 
-        foreach (RatPlayer ratPlayer in ratPlayers) {
+        foreach (RatPlayer ratPlayer in ratPlayers)
+        {
             if (ratPlayer.isGhost || ratPlayer.dead.Value) continue;
 
             GameObject playerObj = ratPlayer.gameObject;
 
             if (ratPlayer != Player.localPlayer && (playerObj.transform.position -
-                Player.localPlayer.transform.position).magnitude < 15f) {
+                Player.localPlayer.transform.position).magnitude < 15f)
+            {
 
                 ObjectManager.MakeObjectSpectral(playerObj);
 
                 Timer newTimer = Timer.CreateTimer(5, Timer.OnFinish.DESTROY, () =>
-                    ObjectManager.TakeAwaySpectral(playerObj), "Spectral player removal timer.").GetComponent<Timer>();
+                    ObjectManager.TakeAwaySpectral(playerObj, "OutlinedObjects"), "Spectral player removal timer.").GetComponent<Timer>();
 
                 newTimer.Subscribe(playerObj);
             }
@@ -27,13 +31,16 @@ public class Radar : Item {
         DespawnServerRpc();
     }
 
-    public override string GetInteractionPromptText() {
+    public override string GetInteractionPromptText()
+    {
         return "Hold E to pick up radar.";
     }
 
     [Rpc(SendTo.Server, InvokePermission = RpcInvokePermission.Everyone)]
-    private void DespawnServerRpc() {
-        if (NetworkObject != null && NetworkObject.IsSpawned) {
+    private void DespawnServerRpc()
+    {
+        if (NetworkObject != null && NetworkObject.IsSpawned)
+        {
             NetworkObject.Despawn();
         }
     }

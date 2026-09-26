@@ -21,12 +21,17 @@ public class ObjectManager : NetworkBehaviour
 
     public static void TakeAwaySpectral(GameObject objectReference)
     {
+        TakeAwaySpectral(objectReference, "Default");
+    }
+
+    public static void TakeAwaySpectral(GameObject objectReference, string layerName)
+    {
         if (objectReference == null) return;
 
         if (objectReference.transform.Find("Renderer") != null)
             objectReference = objectReference.transform.Find("Renderer").gameObject;
 
-        objectReference.layer = LayerMask.NameToLayer("Default");
+        objectReference.layer = LayerMask.NameToLayer(layerName);
     }
 
     public static void MakeObjectSpectralForEveryone(GameObject objectReference)
@@ -43,14 +48,19 @@ public class ObjectManager : NetworkBehaviour
 
     public static void TakeObjectSpectralForEveryone(GameObject objectReference)
     {
-        ObjectManager.instance.TakeObjectSpectralRpc(objectReference);
+        ObjectManager.instance.TakeObjectSpectralRpc(objectReference, "Default");
+    }
+
+    public static void TakeObjectSpectralForEveryone(GameObject objectReference, string layerName)
+    {
+        ObjectManager.instance.TakeObjectSpectralRpc(objectReference, layerName);
     }
 
     [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
-    public void TakeObjectSpectralRpc(NetworkObjectReference networkObjectReference)
+    public void TakeObjectSpectralRpc(NetworkObjectReference networkObjectReference, string layerName)
     {
         networkObjectReference.TryGet(out NetworkObject networkObject);
-        TakeAwaySpectral(networkObject.gameObject);
+        TakeAwaySpectral(networkObject.gameObject, layerName);
     }
 
     public static bool CheckPlayerSeesObject(GameObject objectReference)
