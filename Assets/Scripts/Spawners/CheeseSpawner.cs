@@ -24,9 +24,9 @@ public class CheeseSpawner : NetworkBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.J)) {
-            SpawnRandomCheeseRpc();
-        }
+        // if (Input.GetKeyDown(KeyCode.J)) {
+        //     SpawnRandomCheeseRpc();
+        // }
     }
 
     void Start() {

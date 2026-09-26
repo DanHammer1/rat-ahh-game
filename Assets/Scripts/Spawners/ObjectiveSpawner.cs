@@ -9,7 +9,7 @@ public class ObjectiveSpawner : MonoBehaviour {
     {
         typeof(CheeseObjective),
         typeof(DeliveryObjective),
-        // typeof(ClingObjective),
+        typeof(ClingObjective),
         typeof(RaceObjective),
     };
 

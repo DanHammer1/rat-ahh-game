@@ -173,9 +173,9 @@ public class Player : NetworkBehaviour {
             spawned = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.O)) {
-            ClearConsole();
-        }
+        // if (Input.GetKeyDown(KeyCode.O)) {
+        //     ClearConsole();
+        // }
 
         if (IsServer && health.Value <= 0 && !dead.Value) {
             onDeath?.Invoke();

@@ -24,7 +24,7 @@ public class RaceStart : NetworkBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.L) && raceTimer != null) {
+        if (Input.GetKeyDown(KeyCode.C) && raceTimer != null) {
             StopCoroutine(raceTimer);
             raceTimer = null;
             startTrigger.enabled = true;
@@ -61,7 +61,7 @@ public class RaceStart : NetworkBehaviour {
             }
             if (remaining < 0) remaining = 0;
             int milliseconds = Mathf.FloorToInt((remaining - seconds) * 100f);
-            raceTimerUIText.text = $"{seconds:00}:{milliseconds:00}\nPress L to cancel";
+            raceTimerUIText.text = $"{seconds:00}:{milliseconds:00}\nPress C to cancel";
             remaining -= Time.deltaTime;
             yield return null;
         }
