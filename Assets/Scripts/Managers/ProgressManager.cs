@@ -8,7 +8,6 @@ using Unity.Netcode.Transports.UTP;
 using System.Collections.Generic;
 using System.Collections;
 using System;
-using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine.Animations;
 using UnityEngine.Events;
 using Unity.Cinemachine;

@@ -6,8 +6,6 @@ using System.Collections;
 using UnityEditor;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
-using ParrelSync.NonCore;
-using UnityEditor.Search;
 using UnityEngine.SceneManagement;
 using NUnit.Framework;
 

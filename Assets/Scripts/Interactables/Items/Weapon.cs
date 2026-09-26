@@ -1,7 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
 using System.Collections;
-using UnityEditor.U2D;
 
 public class Weapon : Item {
     public CrowbarData data;

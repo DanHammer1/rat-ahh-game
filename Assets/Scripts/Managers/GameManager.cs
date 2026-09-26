@@ -6,7 +6,6 @@ using System.Collections;
 using Unity.Collections;
 using UnityEngine.SceneManagement;
 using FMODUnity;
-using UnityEditor.PackageManager;
 public class GameManager : NetworkBehaviour {
     public enum PlayerRole {
         HUNTER,
