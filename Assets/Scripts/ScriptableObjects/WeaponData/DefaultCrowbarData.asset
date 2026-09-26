@@ -15,4 +15,4 @@ MonoBehaviour:
   attackDuration: 0.5
   damage: 10
   rayRadius: 0.15
-  attackRange: 3.2
+  attackRange: 2.6
