@@ -87,10 +87,12 @@ public class DeathHandler : NetworkBehaviour {
             TeleportPlayerClientRpc(RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp));
             ActivateRespawnPromptClientRpc(false, RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp));
             respawnTimeRemaining.Value = Constants.respawnTime;
+            player.GetComponent<PoisonGasDamage>().poisonZonesCount = 0;
         }
         if (IsOwner) {
             if (!player.GetComponent<RatPlayer>().isGhost) GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.respawn);
             else GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.respawnGhost);
+
 
         }
     }

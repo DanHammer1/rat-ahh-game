@@ -2,6 +2,7 @@ using UnityEngine;
 using Unity.Netcode;
 using System.Collections;
 using Unity.VisualScripting.Antlr3.Runtime;
+using System.Collections.Generic;
 
 public class PoisonGasDamage : NetworkBehaviour {
     public bool isPoisoned = false;
@@ -21,6 +22,7 @@ public class PoisonGasDamage : NetworkBehaviour {
             isPoisoned = false;
             poisonZonesCount = 0;
         }
+        Debug.Log(poisonZonesCount);
 
         if (isPoisoned && ratPlayer.health.Value > 0) {
             poisonTimer += Time.deltaTime;
