@@ -90,7 +90,7 @@ public class PlayerSettingsUIManager : NetworkBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.BackQuote) && matchSettingsButton.settingsUI == MatchSettingsButton.State.CLOSED) {
+        if (Input.GetKeyDown(KeyCode.Escape) && matchSettingsButton.settingsUI == MatchSettingsButton.State.CLOSED) {
             TogglePlayerSettingsUI();
         }
     }

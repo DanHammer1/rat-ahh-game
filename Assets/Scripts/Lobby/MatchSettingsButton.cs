@@ -93,7 +93,7 @@ public class MatchSettingsButton : NetworkBehaviour, IInteractable {
             ((IInteractable)this).TryInteract();
         }
 
-        if (Input.GetKey(KeyCode.BackQuote) && settingsUI == State.OPEN) {
+        if (Input.GetKey(KeyCode.Escape) && settingsUI == State.OPEN) {
             CloseMatchSettings();
         }
     }
