@@ -209,8 +209,8 @@ public class RatClingAbility : Ability {
         if (isClinging.Value && IsOwner && localHunterInRange != null) {
             clingHead = localHunterInRange.movement.headBone;
             HunterPlayer hunterPlayer = localHunterInRange.GetComponent<HunterPlayer>();
-            SetHunterClingStateServerRpc(localHunterInRange.NetworkObjectId, true);
             localHunterInRange.CheckJustGotClung(true);
+            SetHunterClingStateServerRpc(localHunterInRange.NetworkObjectId, true);
             transform.position =
                 clingHead.position +
                 clingHead.TransformDirection(Vector3.forward * 0.1f) +
