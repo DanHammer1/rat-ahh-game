@@ -204,7 +204,7 @@ public class RatClingAbility : Ability {
         //     UnCling();
         // }
 
-        if (isClinging.Value && IsOwner) {
+        if (isClinging.Value && IsOwner && localHunterInRange != null) {
             clingHead = localHunterInRange.movement.headBone;
             HunterPlayer hunterPlayer = localHunterInRange.GetComponent<HunterPlayer>();
             SetHunterClingStateServerRpc(localHunterInRange.NetworkObjectId, true);
