@@ -11,7 +11,7 @@ public class PoisonGas : NetworkBehaviour {
     Color minColor;
     Color maxColor;
     float travelDistance = 1f;
-    float speed = 2f;
+    float speed = 4f;
     float deceleration = 1f;
     float lifeTimer = 0f;
     float colorTransitionDuration = 2f;

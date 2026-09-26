@@ -56,7 +56,7 @@ public class Constants : MonoBehaviour {
     public static int piggyBankMaxCoinsSpawned = 4;
     public static float piggyBankDespawnTime = 6f;
     public static int maxObjectives = 3;
-    public static float poisonDPS = 20f;
+    public static float poisonDPS = 25f;
     public static float returnToLobbyTime = 5f;
     public static float huntersReleasingTime = 8f;
 
