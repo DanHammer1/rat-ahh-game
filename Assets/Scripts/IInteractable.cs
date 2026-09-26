@@ -23,7 +23,7 @@ public interface IInteractable {
     }
 
     public void TryInteract() {
-        if (CheckInteractionShouldTrigger()) Interact();
+        if (CheckInteractionShouldTrigger() && !Player.localPlayer.dead.Value) Interact();
         TryUpdateProgress();
     }
 
