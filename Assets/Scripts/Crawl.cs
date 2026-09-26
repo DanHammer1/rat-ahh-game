@@ -22,6 +22,7 @@ public class Crawl : NetworkBehaviour {
 
         // On Crawl Start
         onCrawlStart += () => isCrawling = true;
+        onCrawlStart += () => animator.CrossFade("Idle", 0.05f, 0);
         onCrawlStart += () => animator.SetBool("isCrawling", isCrawling);
         onCrawlStart += () => viewPosition.transform.position -= new Vector3(0, 0.6f, 0);
         onCrawlStart += () => {
