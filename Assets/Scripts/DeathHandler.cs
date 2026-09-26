@@ -87,13 +87,7 @@ public class DeathHandler : NetworkBehaviour {
             TeleportPlayerClientRpc(RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp));
             ActivateRespawnPromptClientRpc(false, RpcTarget.Single(OwnerClientId, RpcTargetUse.Temp));
             respawnTimeRemaining.Value = Constants.respawnTime;
-            player.GetComponent<PoisonGasDamage>().poisonZonesCount = 0;
-        }
-        if (IsOwner) {
-            if (!player.GetComponent<RatPlayer>().isGhost) GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.respawn);
-            else GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.respawnGhost);
-
-
+            player.GetComponent<PoisonGasDamage>().isPoisoned = false;
         }
     }
 
@@ -115,6 +109,7 @@ public class DeathHandler : NetworkBehaviour {
         respawnPos += new Vector3(UnityEngine.Random.Range(-0.02f, 0.02f), 0, UnityEngine.Random.Range(-0.02f, 0.02f));
         Quaternion respawnRotation = respawnLocation.transform.rotation;
 
+
         transform.SetPositionAndRotation(respawnPos, respawnRotation);
         Physics.SyncTransforms();
 
@@ -123,6 +118,9 @@ public class DeathHandler : NetworkBehaviour {
         if (PlayerCamera.instance.cameraState == PlayerCamera.CameraState.ThirdPerson) {
             PlayerCamera.instance.thirdPersonRadius = Constants.ratMaxCameraThirdPersonRadius / 2;
         }
+
+        if (!Player.localPlayer.GetComponent<RatPlayer>().isGhost) GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.respawn);
+        else GameManager.PlayLocalSoundEffectInWorld(Assets.SfxType.respawnGhost);
     }
 
     void Start() {

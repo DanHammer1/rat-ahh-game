@@ -6,21 +6,18 @@ using System.Collections.Generic;
 
 public class PoisonGasDamage : NetworkBehaviour {
     public bool isPoisoned = false;
-    public int poisonZonesCount = 0;
     float poisonTimer = 0f;
-    float poisonInterval = 0.5f;
+    float poisonInterval = 0.3f;
     public RatPlayer ratPlayer;
 
 
 
     void Update() {
         if (!IsServer) return;
-
-        isPoisoned = poisonZonesCount >= 1;
+        Debug.Log(isPoisoned);
 
         if (ratPlayer.health.Value <= 0) {
             isPoisoned = false;
-            poisonZonesCount = 0;
         }
 
         if (isPoisoned && ratPlayer.health.Value > 0) {
