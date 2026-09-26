@@ -1,8 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Constants : MonoBehaviour
-{
+public class Constants : MonoBehaviour {
     public static Constants instance;
 
     public static float mouseSensitivity = 1f;
@@ -21,7 +20,7 @@ public class Constants : MonoBehaviour
     public static float ratCameraFOV = 60f;
     public static float ratMaxCameraThirdPersonRadius = 0.8f;
     public static float ratDashAbilityPower = 16f;
-    public static float ratInvisibilityAbilityCooldown = 20f; // 60f after testing is done
+    public static float ratInvisibilityAbilityCooldown = 40f; // 60f after testing is done
     public static float ratInvisibilityAbilityDuration = 7f;
     public static float ratInvisibilityAbilityVignetteFadeDuration = 0.5f;
     public static float possessedJumpCooldown = 1f;
@@ -70,8 +69,7 @@ public class Constants : MonoBehaviour
     public static int maxStartingLives = 8;
     # endregion
 
-    void Awake()
-    {
+    void Awake() {
         instance = this;
     }
 }
