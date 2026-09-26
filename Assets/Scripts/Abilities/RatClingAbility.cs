@@ -176,6 +176,7 @@ public class RatClingAbility : Ability {
 
         rb.useGravity = true;
         rb.detectCollisions = true;
+        rb.linearDamping = 2;
 
         movement.isPerformingAbility = false;
     }
