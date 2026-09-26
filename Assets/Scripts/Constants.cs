@@ -1,7 +1,8 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Constants : MonoBehaviour {
+public class Constants : MonoBehaviour
+{
     public static Constants instance;
 
     public static float mouseSensitivity = 1f;
@@ -34,7 +35,7 @@ public class Constants : MonoBehaviour {
     public static float hunterFallMultiplier = 0.7f;
     public static float hunterAscendMultiplier = 0.7f;
     public static float hunterCameraFOV = 60f;
-    public static float hunterMaxCameraThirdPersonRadius = 0.4f;
+    public static float hunterMaxCameraThirdPersonRadius = 0.0f;
 
     public static float capsuleColliderStandingHeight = 0.81f;
     public static float capsuleColliderStandingCenterY = 0.4f;
@@ -69,7 +70,8 @@ public class Constants : MonoBehaviour {
     public static int maxStartingLives = 8;
     # endregion
 
-    void Awake() {
+    void Awake()
+    {
         instance = this;
     }
 }
