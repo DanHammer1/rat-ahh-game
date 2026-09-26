@@ -11,6 +11,7 @@ public class Crawl : NetworkBehaviour {
     Animator animator;
     CapsuleCollider capsuleCollider;
     GameObject viewPosition;
+    Vector3 standingViewPosition;
     HunterPlayer hunterPlayer;
     [SerializeField] private LayerMask standCheckMask;
 
@@ -18,13 +19,14 @@ public class Crawl : NetworkBehaviour {
         animator = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider>();
         viewPosition = transform.Find("ViewPosition").gameObject;
+        standingViewPosition = viewPosition.transform.localPosition;
         hunterPlayer = transform.GetComponent<HunterPlayer>();
 
         // On Crawl Start
         onCrawlStart += () => isCrawling = true;
         onCrawlStart += () => animator.CrossFade("Idle", 0.05f, 0);
         onCrawlStart += () => animator.SetBool("isCrawling", isCrawling);
-        onCrawlStart += () => viewPosition.transform.position -= new Vector3(0, 0.6f, 0);
+        onCrawlStart += () => viewPosition.transform.localPosition = standingViewPosition + new Vector3(0, -0.6f, 0);
         onCrawlStart += () => {
             capsuleCollider.center = new Vector3(capsuleCollider.center.x, Constants.capsuleColliderCrawlingCenterY, capsuleCollider.center.z);
             capsuleCollider.height = Constants.capsuleColliderCrawlingHeight;
@@ -34,7 +36,7 @@ public class Crawl : NetworkBehaviour {
         // On Crawl End
         onCrawlEnd += () => isCrawling = false;
         onCrawlEnd += () => animator.SetBool("isCrawling", isCrawling);
-        onCrawlEnd += () => viewPosition.transform.position -= new Vector3(0, -0.6f, 0);
+        onCrawlEnd += () => viewPosition.transform.localPosition = standingViewPosition;
         onCrawlEnd += () => {
             capsuleCollider.center = new Vector3(capsuleCollider.center.x, Constants.capsuleColliderStandingCenterY, capsuleCollider.center.z);
             capsuleCollider.height = Constants.capsuleColliderStandingHeight;

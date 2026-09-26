@@ -29,7 +29,7 @@ public class Constants : MonoBehaviour {
 
     # region "Hunter"
     public static float hunterMoveSpeed = 1.3f;
-    public static float crawlSpeedMultiplier = 0.4f;
+    public static float hunterCrawlMoveSpeed = hunterMoveSpeed * 0.3f;
     public static float hunterJumpForce = 0.3f;
     public static float hunterFallMultiplier = 0.7f;
     public static float hunterAscendMultiplier = 0.7f;

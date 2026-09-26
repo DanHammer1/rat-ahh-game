@@ -81,8 +81,8 @@ public class Movement : NetworkBehaviour {
             ascendMultiplier = Constants.hunterAscendMultiplier;
             headBone = animator.GetBoneTransform(HumanBodyBones.Head);
             crawl = GetComponent<Crawl>();
-            crawl.onCrawlStart += () => moveSpeed *= Constants.crawlSpeedMultiplier;
-            crawl.onCrawlEnd += () => moveSpeed *= 1 / Constants.crawlSpeedMultiplier;
+            crawl.onCrawlStart += () => moveSpeed = Constants.hunterCrawlMoveSpeed;
+            crawl.onCrawlEnd += () => moveSpeed = Constants.hunterMoveSpeed;
 
         }
         movementRecoveryMultiplier = 1;
