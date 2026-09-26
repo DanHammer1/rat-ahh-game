@@ -21,6 +21,7 @@ public class RatClingAbility : Ability {
     public float ratAbilityHunterShakeMeter;
     protected GameObject ratAbilityShakeUI;
     CapsuleCollider capsuleCollider;
+    private float originalDrag = 2;
 
     public override Sprite GetIconSprite() {
         return Assets.instance.ratClingAbilityIcon;
@@ -102,7 +103,7 @@ public class RatClingAbility : Ability {
 
         Rigidbody rb = movement.GetComponent<Rigidbody>();
         rb.linearVelocity = Vector3.zero;
-        float originalDrag = rb.linearDamping;
+        originalDrag = rb.linearDamping;
 
         movement.isGrounded = false;
         movement.pressedSpace = true;
@@ -176,7 +177,7 @@ public class RatClingAbility : Ability {
 
         rb.useGravity = true;
         rb.detectCollisions = true;
-        rb.linearDamping = 2;
+        rb.linearDamping = originalDrag;
 
         movement.isPerformingAbility = false;
     }
