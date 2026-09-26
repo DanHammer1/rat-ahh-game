@@ -14,7 +14,6 @@ public class PoisonGasDamage : NetworkBehaviour {
 
     void Update() {
         if (!IsServer) return;
-        Debug.Log(isPoisoned);
 
         if (ratPlayer.health.Value <= 0) {
             isPoisoned = false;
