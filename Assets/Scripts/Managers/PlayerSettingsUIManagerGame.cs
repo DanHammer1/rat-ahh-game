@@ -24,7 +24,7 @@ public class PlayerSettingsUIManagerGame : NetworkBehaviour {
 
         string clientRole = ((GameManager.PlayerRole[])Enum.GetValues(typeof(GameManager.PlayerRole)))[clientRoleIndex].ToString();
 
-        return $@"{clientId} - {clientName} - {clientRole}";
+        return $@"{clientName} - {clientRole}";
     }
 
     public override void OnNetworkSpawn() {
