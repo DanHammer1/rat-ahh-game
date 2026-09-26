@@ -198,7 +198,7 @@ public class RatClingAbility : Ability {
         base.Update();
         if (!IsOwner) return;
 
-        if (Input.GetKeyDown(KeyCode.Q) && isClinging.Value) {
+        if (Input.GetKeyDown(KeyCode.Q) && isClinging.Value && localHunterInRange != null) {
             isSlapping = !isSlapping;
             UpdateHunterSlapCountServerRpc(localHunterInRange.NetworkObjectId, 1, "Add");
         }
