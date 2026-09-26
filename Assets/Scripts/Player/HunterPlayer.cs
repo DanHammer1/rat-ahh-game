@@ -93,6 +93,7 @@ public class HunterPlayer : Player {
         if (!IsOwner) return;
 
         if (isBeingClung.Value) {
+            if (GameManager.Instance.controllableSoundEffectPlaying) GameManager.StopControllableGlobalSoundEffect(Assets.SfxType.spraying);
             movement.movementRecoveryMultiplier = Mathf.Exp(-0.1f * slapCount.Value);
             ratAbilityShakeUI?.SetActive(true);
             float mouseMovement = Mathf.Sqrt(Mathf.Pow(Input.GetAxis("Mouse X"), 2f) + Mathf.Pow(Input.GetAxis("Mouse Y"), 2));
