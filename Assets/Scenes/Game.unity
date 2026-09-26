@@ -20612,7 +20612,7 @@ MonoBehaviour:
   ratAbilitySlapPrompt: {fileID: 765735144}
   playerResult: {fileID: 262776366012718800, guid: 04b664943e6c1074c98bf6e37954e692, type: 3}
   endGameResults: {fileID: 2005392947}
-  tauntsUI: {fileID: 0}
+  tauntsUI: {fileID: 1055829423}
   emotesUI: {fileID: 0}
   objectivesUIGameObject: {fileID: 1619903776}
   ghostRulesUIGameObject: {fileID: 333630024}

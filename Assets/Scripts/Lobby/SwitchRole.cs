@@ -23,7 +23,7 @@ public class SwitchRole : NetworkBehaviour {
             playerRole == GameManager.PlayerRole.HIDER && Player.localPlayer.GetComponent<RatPlayer>().isInvisible == true) {
             return;
         }
-        SwitchUIElements();
+        SwitchUIElements(role);
         SwitchRolesServerRpc(role);
     }
 
@@ -40,10 +40,11 @@ public class SwitchRole : NetworkBehaviour {
         client.PlayerObject.Despawn(true);
         GameManager.Instance.SpawnPlayer(role, clientId, spawnPos, spawnRotation);
     }
-    void SwitchUIElements() {
-        Assets.instance.abilityParent.SetActive(!Assets.instance.abilityParent.activeSelf);
-        Assets.instance.tauntsUI.SetActive(!Assets.instance.tauntsUI.activeSelf);
-        Assets.instance.emotesUI.SetActive(!Assets.instance.emotesUI.activeSelf);
+    void SwitchUIElements(GameManager.PlayerRole role) {
+        bool isHunter = role == GameManager.PlayerRole.HUNTER ? true : false;
+        Assets.instance.abilityParent.SetActive(!isHunter);
+        Assets.instance.tauntsUI.SetActive(!isHunter);
+        Assets.instance.emotesUI.SetActive(isHunter);
     }
 
     void OnTriggerStay(Collider other) {

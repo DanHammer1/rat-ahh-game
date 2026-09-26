@@ -20,10 +20,15 @@ public class RatGhost : NetworkBehaviour {
 
     void BecomeGhost() {
         BecomeGhostRpc();
+        BecomeGhostClientRpc();
+    }
+
+    [Rpc(SendTo.Owner)]
+    void BecomeGhostClientRpc() {
         Assets.instance.objectivesUIGameObject.transform.parent.gameObject.SetActive(false);
         Assets.instance.ghostRulesUIGameObject.SetActive(true);
         Assets.instance.abilityParent.SetActive(false);
-
+        Assets.instance.tauntsUI.SetActive(false);
         ProgressManager.instance.RemoveAllObjectives();
     }
 
