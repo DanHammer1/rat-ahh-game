@@ -24,7 +24,7 @@ public class HunterPlayer : Player {
     public float dizzyDuration;
     public int currentSlapCount;
     public bool isSwinging = false;
-    public bool isSpraying = true;
+    public bool isSpraying = false;
 
     public static Action onHunterClung;
 

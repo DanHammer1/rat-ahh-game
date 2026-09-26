@@ -35,7 +35,7 @@ public abstract class Item : NetworkBehaviour, IInteractable {
         useTimer.AddProgressionCondition(() => isEquipped.Value);
     }
 
-    void Update() {
+    public virtual void Update() {
         ((IInteractable)this).TryInteract();
 
         if (NetworkManager.Singleton == null) return;

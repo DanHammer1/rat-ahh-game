@@ -15765,6 +15765,13 @@ MonoBehaviour:
       Data3: -627441789
       Data4: 2064672563
     Path: event:/PickupRadarSFX
+  sprayingSFX:
+    Guid:
+      Data1: 900020489
+      Data2: 1282056667
+      Data3: 2088847776
+      Data4: -130914324
+    Path: event:/SpraySFX
 --- !u!1 &1855722275
 GameObject:
   m_ObjectHideFlags: 0

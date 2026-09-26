@@ -20,11 +20,11 @@ public class PoisonGasCan : Item {
     public override void OnUseItem() {
         // GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.CrowbarSwing);
         if (hunterPlayerRef.Value.TryGet(out NetworkObject playerObj)) {
-            Crawl crawl = playerObj.GetComponent<Crawl>();
             HunterPlayer player = playerObj.GetComponent<HunterPlayer>();
             Animator animator = player.GetComponent<Animator>();
             player.isSpraying = true;
             animator.SetBool("isSpraying", true);
+            if (!GameManager.Instance.controllableSoundEffectPlaying) GameManager.StartControllableGlobalSoundEffect(Assets.SfxType.spraying, transform.position);
             StartCoroutine(SetIsSprayingDelay(player, false));
         }
         SpawnPoisonGasRpc(PlayerCamera.mainCamera.transform.rotation);
@@ -34,11 +34,22 @@ public class PoisonGasCan : Item {
         yield return new WaitForSeconds(cooldown);
         if (!Input.GetMouseButton(0)) {
             player.isSpraying = state;
+            if (GameManager.Instance.controllableSoundEffectPlaying) GameManager.StopControllableGlobalSoundEffect(Assets.SfxType.spraying);
             player.GetComponent<Animator>().SetBool("isSpraying", false);
         }
     }
 
     public override string GetInteractionPromptText() {
         return "Hold E to pick up poison spray can.";
+    }
+
+    public override void Update() {
+        base.Update();
+        if (hunterPlayerRef.Value.TryGet(out NetworkObject playerObj)) {
+            HunterPlayer player = playerObj.GetComponent<HunterPlayer>();
+            if (player.isSpraying) {
+                GameManager.UpdateControllableGlobalSoundEffectPosition(transform.position);
+            }
+        }
     }
 }

@@ -242,6 +242,11 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
+  initialSpawnPosition:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: {x: 0, y: 0, z: 0}
   maxHealth:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0
@@ -252,9 +257,13 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
-  dead: 0
+  dead:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
   movement: {fileID: 0}
-  boxCollider: {fileID: 0}
+  capsuleCollider: {fileID: 0}
   rb: {fileID: 0}
   playerCamera: {fileID: 0}
   clientNetworkTransform: {fileID: 0}
@@ -313,7 +322,7 @@ MonoBehaviour:
   dizzyDuration: 0
   currentSlapCount: 0
   isSwinging: 0
-  isSpraying: 1
+  isSpraying: 0
 --- !u!114 &6867819731970602610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -752,6 +761,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   showInteractionUI: 1
+  pickupSound: 10
   cooldown: 0
   hunterPlayerRef:
     UpdateTraits:

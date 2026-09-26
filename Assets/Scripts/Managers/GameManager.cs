@@ -32,6 +32,10 @@ public class GameManager : NetworkBehaviour {
 
     public List<NetworkObject> spawnedObjectsToDespawn = new List<NetworkObject>();
 
+    private FMOD.Studio.EventInstance controllableSoundEffect;
+    public bool controllableSoundEffectPlaying;
+
+
     void Awake() {
         if (Instance != null && Instance != this) {
             Destroy(gameObject);
@@ -260,4 +264,53 @@ public class GameManager : NetworkBehaviour {
     private void PlayGlobalSoundEffectAtLocalPositionClientRpc(Assets.SfxType soundEffect) {
         PlayLocalSoundEffectInWorld(soundEffect);
     }
+
+    public static void StartControllableGlobalSoundEffect(Assets.SfxType soundEffect, Vector3 worldPosition) {
+        GameManager.Instance.StartControllableGlobalSoundEffectClientRpc(soundEffect, worldPosition);
+    }
+
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
+    private void StartControllableGlobalSoundEffectClientRpc(Assets.SfxType soundEffect, Vector3 worldPosition) {
+        // Stop the previous controllable sound if one is already playing
+        if (controllableSoundEffectPlaying) {
+            controllableSoundEffect.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            controllableSoundEffect.release();
+        }
+
+        var eventReference = Assets.instance.GetEventReferenceFromSfxType(soundEffect);
+        controllableSoundEffect = RuntimeManager.CreateInstance(eventReference);
+        controllableSoundEffect.set3DAttributes(
+            RuntimeUtils.To3DAttributes(worldPosition)
+        );
+        controllableSoundEffect.start();
+        controllableSoundEffectPlaying = true;
+    }
+
+    public static void StopControllableGlobalSoundEffect(Assets.SfxType soundEffect) {
+        GameManager.Instance.StopControllableGlobalSoundEffectClientRpc(soundEffect);
+    }
+
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
+    private void StopControllableGlobalSoundEffectClientRpc(Assets.SfxType soundEffect) {
+        // Stop the previous controllable sound if one is already playing
+        if (!controllableSoundEffectPlaying) return;
+
+        controllableSoundEffect.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        controllableSoundEffect.release();
+        controllableSoundEffectPlaying = false;
+    }
+
+    public static void UpdateControllableGlobalSoundEffectPosition(Vector3 worldPosition) {
+        GameManager.Instance.UpdateControllableGlobalSoundEffectPositionClientRpc(worldPosition);
+    }
+
+    [Rpc(SendTo.Everyone, InvokePermission = RpcInvokePermission.Everyone)]
+    private void UpdateControllableGlobalSoundEffectPositionClientRpc(Vector3 worldPosition) {
+        if (!controllableSoundEffectPlaying) return;
+
+        controllableSoundEffect.set3DAttributes(
+            RuntimeUtils.To3DAttributes(worldPosition)
+        );
+    }
+
 }

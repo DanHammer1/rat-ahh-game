@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{23a381db-0d85-435b-9bb2-759b201f5324}">
+		<property name="name">
+			<value>isSpraying</value>
+		</property>
+		<relationship name="folder">
+			<destination>{4108d984-f597-4aaa-9421-d34973ee93f5}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{9dadac97-1fe2-499f-8def-65b01daced00}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{9dadac97-1fe2-499f-8def-65b01daced00}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>2</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>Value A</value>
+			<value>Value B</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
