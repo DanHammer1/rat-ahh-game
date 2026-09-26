@@ -7184,7 +7184,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 10:00\nPress L to cancel
+  m_text: 10:00\nPress C to cancel
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1b8879c548cf1c54e8a85b4334769df2, type: 2}
   m_sharedMaterial: {fileID: 967633953587589982, guid: 1b8879c548cf1c54e8a85b4334769df2, type: 2}

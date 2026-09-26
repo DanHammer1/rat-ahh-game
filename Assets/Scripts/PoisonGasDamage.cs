@@ -22,7 +22,6 @@ public class PoisonGasDamage : NetworkBehaviour {
             isPoisoned = false;
             poisonZonesCount = 0;
         }
-        Debug.Log(poisonZonesCount);
 
         if (isPoisoned && ratPlayer.health.Value > 0) {
             poisonTimer += Time.deltaTime;

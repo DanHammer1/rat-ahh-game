@@ -200,9 +200,9 @@ public class RatClingAbility : Ability {
             isSlapping = !isSlapping;
             UpdateHunterSlapCountServerRpc(localHunterInRange.NetworkObjectId, 1, "Add");
         }
-        if (Input.GetKeyDown(KeyCode.U) && isClinging.Value) {
-            UnCling();
-        }
+        // if (Input.GetKeyDown(KeyCode.U) && isClinging.Value) {
+        //     UnCling();
+        // }
 
         if (isClinging.Value && IsOwner) {
             clingHead = localHunterInRange.movement.headBone;

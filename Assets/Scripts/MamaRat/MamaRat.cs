@@ -54,8 +54,8 @@ public class MamaRat : NetworkBehaviour, IInteractable {
     }
     void Update() {
         ((IInteractable)this).TryInteract();
-        if (Input.GetKeyDown(KeyCode.O)) {
-            onInteraction.Invoke();
-        }
+        // if (Input.GetKeyDown(KeyCode.O)) {
+        //     onInteraction.Invoke();
+        // }
     }
 }

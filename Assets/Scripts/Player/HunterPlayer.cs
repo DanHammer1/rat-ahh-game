@@ -117,12 +117,12 @@ public class HunterPlayer : Player {
         }
         currentSlapCount = slapCount.Value;
 
-        if (Input.GetKeyDown(KeyCode.O)) {
-            Time.timeScale *= 0.5f;
-        }
-        if (Input.GetKeyDown(KeyCode.P)) {
-            Time.timeScale *= 2f;
-        }
+        // if (Input.GetKeyDown(KeyCode.O)) {
+        //     Time.timeScale *= 0.5f;
+        // }
+        // if (Input.GetKeyDown(KeyCode.P)) {
+        //     Time.timeScale *= 2f;
+        // }
     }
 
     public void UpdateDizzyDuration() {

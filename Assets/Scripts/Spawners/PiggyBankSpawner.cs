@@ -38,9 +38,9 @@ public class PiggyBankSpawner : NetworkBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Y)) {
-            SpawnRandomPiggyBankRpc();
-        }
+        // if (Input.GetKeyDown(KeyCode.Y)) {
+        //     SpawnRandomPiggyBankRpc();
+        // }
     }
 
     List<GameObject> GetVacantPiggyBankSpots() {
