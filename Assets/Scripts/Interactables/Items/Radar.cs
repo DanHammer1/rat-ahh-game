@@ -12,12 +12,12 @@ public class Radar : Item {
             GameObject playerObj = ratPlayer.gameObject;
 
             if (ratPlayer != Player.localPlayer && (playerObj.transform.position -
-                Player.localPlayer.transform.position).magnitude < 15f) {
+                Player.localPlayer.transform.position).magnitude < 30f) {
 
-                ObjectManager.MakeObjectSpectral(playerObj);
+                ObjectManager.MakeObjectSpectralForEveryone(playerObj);
 
                 Timer newTimer = Timer.CreateTimer(5, Timer.OnFinish.DESTROY, () =>
-                    ObjectManager.TakeAwaySpectral(playerObj, "OutlinedObjects"), "Spectral player removal timer.").GetComponent<Timer>();
+                    ObjectManager.TakeObjectSpectralForEveryone(playerObj, "OutlinedObjects"), "Spectral player removal timer.").GetComponent<Timer>();
 
                 newTimer.Subscribe(playerObj);
             }
