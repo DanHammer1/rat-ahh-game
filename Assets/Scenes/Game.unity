@@ -30887,6 +30887,7 @@ GameObject:
   - component: {fileID: 6875886254912349550}
   - component: {fileID: 3964474250925148634}
   - component: {fileID: 8424668919024295935}
+  - component: {fileID: 8424668919024295936}
   m_Layer: 10
   m_Name: UpperFloor
   m_TagString: Untagged
@@ -32064,6 +32065,27 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 1588621559322762894, guid: 27718ac9775f2b74f98eb0b55a58eb2b, type: 3}
+--- !u!65 &8424668919024295936
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6464834064432929464}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.008364416, y: 0.00046434414, z: 0.0060515255}
+  m_Center: {x: -0.0008746583, y: 0.006780887, z: 0.0023374879}
 --- !u!1 &8597000095876775384
 GameObject:
   m_ObjectHideFlags: 0
