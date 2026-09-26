@@ -32,7 +32,7 @@ public class PlayerSettingsUIManagerGame : NetworkBehaviour {
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.BackQuote)) {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
             TogglePlayerSettingsUI();
         }
     }
