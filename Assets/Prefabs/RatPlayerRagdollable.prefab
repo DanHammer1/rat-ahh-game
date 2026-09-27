@@ -12630,6 +12630,11 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
+  initialSpawnPosition:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: {x: 0, y: 0, z: 0}
   maxHealth:
     UpdateTraits:
       MinSecondsBetweenUpdates: 0
@@ -12640,9 +12645,13 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
-  dead: 0
+  dead:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
   movement: {fileID: 0}
-  boxCollider: {fileID: 0}
+  capsuleCollider: {fileID: 0}
   rb: {fileID: 0}
   playerCamera: {fileID: 0}
   clientNetworkTransform: {fileID: 0}
@@ -12683,6 +12692,10 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 0
+  coinBeingCarried:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
   ratPossessedJumpMeterUI: {fileID: 0}
 --- !u!114 &437846356746991623
 MonoBehaviour:
@@ -13009,6 +13022,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   hotkey: 116
   abilitySlotIndex: 0
+  isEnabled: 1
   ratAbilityInRange: 0
   isClinging:
     UpdateTraits:
@@ -13033,6 +13047,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   hotkey: 304
   abilitySlotIndex: 1
+  isEnabled: 1
   dashAbilityParticles: {fileID: 8151830305099574436}
 --- !u!114 &5834448014269310003
 MonoBehaviour:
@@ -13047,8 +13062,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  hotkey: 105
+  hotkey: 114
   abilitySlotIndex: 2
+  isEnabled: 1
   invisibilityParticles: {fileID: 0}
 --- !u!114 &3718505796022474179
 MonoBehaviour:
@@ -13121,7 +13137,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   isPoisoned: 0
-  poisonZonesCount: 0
   ratPlayer: {fileID: -4236754629211622639}
 --- !u!64 &6201170529866288369
 MeshCollider:
