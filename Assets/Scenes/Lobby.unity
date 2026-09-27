@@ -14881,6 +14881,13 @@ MonoBehaviour:
       Data3: 2088847776
       Data4: -130914324
     Path: event:/SpraySFX
+  slapSFX:
+    Guid:
+      Data1: 948864736
+      Data2: 1187187448
+      Data3: 180533637
+      Data4: -1034898954
+    Path: event:/SlapSFX
 --- !u!1 &1855722275
 GameObject:
   m_ObjectHideFlags: 0

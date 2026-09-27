@@ -98,6 +98,7 @@ public class Assets : MonoBehaviour {
     public EventReference pickupPoisonSprayCanSFX;
     public EventReference pickupRadarSFX;
     public EventReference sprayingSFX;
+    public EventReference slapSFX;
 
     #endregion
 
@@ -143,6 +144,7 @@ public class Assets : MonoBehaviour {
         pickupPoisonSprayCan,
         pickupRadar,
         spraying,
+        slap,
     }
 
     public EventReference GetEventReferenceFromSfxType(SfxType type) {
@@ -184,6 +186,7 @@ public class Assets : MonoBehaviour {
             SfxType.pickupPoisonSprayCan => pickupPoisonSprayCanSFX,
             SfxType.pickupRadar => pickupRadarSFX,
             SfxType.spraying => sprayingSFX,
+            SfxType.slap => slapSFX,
             _ => default
         };
 

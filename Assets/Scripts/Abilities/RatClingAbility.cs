@@ -196,8 +196,9 @@ public class RatClingAbility : Ability {
         base.Update();
         if (!IsOwner) return;
 
-        if (Input.GetKeyDown(KeyCode.Q) && isClinging.Value && localHunterInRange != null) {
+        if (Input.GetKeyDown(KeyCode.S) && isClinging.Value && localHunterInRange != null) {
             isSlapping = !isSlapping;
+            GameManager.PlayGlobalSoundEffectInWorld(Assets.SfxType.slap, transform.position);
             UpdateHunterSlapCountServerRpc(localHunterInRange.NetworkObjectId, 1, "Add");
         }
         // if (Input.GetKeyDown(KeyCode.U) && isClinging.Value) {
