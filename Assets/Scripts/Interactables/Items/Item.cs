@@ -42,6 +42,7 @@ public abstract class Item : NetworkBehaviour, IInteractable {
         if (!hunterPlayerRef.Value.TryGet(out NetworkObject hunterPlayer) || !isEquipped.Value) return;
 
         if (Player.localPlayer && GameManager.GetLocalRole() != GameManager.PlayerRole.HUNTER) return;
+        if (hunterPlayer != Player.localPlayer.NetworkObject) return;
 
         if (Input.GetKeyDown(KeyCode.Q)) {
             SetIsEquippedRpc(false);
